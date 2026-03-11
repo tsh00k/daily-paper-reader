@@ -1,0 +1,697 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-03-11T19:41:21.683269+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 10,
+    "deep_cap": 6,
+    "deep_selected": 7,
+    "quick_candidates": 25,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2603.02530v1",
+      "title": "Contractor-Expander and Universal Inverse Optimal Positive Nonlinear Control",
+      "abstract": "For general control-affine nonlinear systems in the positive orthant, and with positive controls, we show how strict CLFs can be utilized for inverse optimal stabilization. Conventional ``LgV'' inverse optimal feedback laws, for systems with unconstrained states and controls, assume sign-unconstrained inputs and input penalties that are class-K in the input magnitude, hence symmetric about zero. Such techniques do not extend to positive-state-and-control systems. Major customizations are needed, and introduced in this paper, for positive systems where highly asymmetric (or unconventionally symmetric) costs not only on the state but also on control are necessary. For the predator-prey positive-state positive-input benchmark system, with a strict CLF built in our previous paper, we prototype two inverse optimal methodological frameworks that employ particular ``contractor and expander functions.'' One framework (A) employs a triple consisting of a CLF, a stabilizing feedback, and an expander, whereas the other framework (B) employs a pair of a CLF and a contractor function. Both frameworks yield inverse optimal stabilizer constructions, on positive orthants of arbitrary dimensions. Framework B demands more design effort than framework A but is free of conditions that may fail to hold in general. Biological interpretation for the predator-prey model illuminates that such inverse optimal control constructions are bio-ecologically meaningful. In addition to general frameworks, we present one fully explicit design: a Sontag-like universal formula for inverse optimal stabilization of positive-orthant systems by positive feedback.",
+      "authors": [
+        "Miroslav Krstic"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-03-03T02:37:51+00:00",
+      "link": "https://arxiv.org/pdf/2603.02530v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "inverse optimal stabilization for nonlinear systems",
+      "llm_evidence_cn": "非线性系统的逆最优稳定化",
+      "llm_evidence": "非线性系统的逆最优稳定化",
+      "canonical_evidence": "非线性系统的逆最优稳定化",
+      "llm_tldr_en": "Develops inverse optimal control frameworks for positive nonlinear systems using control Lyapunov functions.",
+      "llm_tldr_cn": "利用控制Lyapunov函数为正非线性系统开发了逆最优控制框架。",
+      "llm_tldr": "利用控制Lyapunov函数为正非线性系统开发了逆最优控制框架。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "mathematical foundations of inverse optimal control",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.02783v1",
+      "title": "Generative adversarial imitation learning for robot swarms: Learning from human demonstrations and trained policies",
+      "abstract": "In imitation learning, robots are supposed to learn from demonstrations of the desired behavior. Most of the work in imitation learning for swarm robotics provides the demonstrations as rollouts of an existing policy. In this work, we provide a framework based on generative adversarial imitation learning that aims to learn collective behaviors from human demonstrations. Our framework is evaluated across six different missions, learning both from manual demonstrations and demonstrations derived from a PPO-trained policy. Results show that the imitation learning process is able to learn qualitatively meaningful behaviors that perform similarly well as the provided demonstrations. Additionally, we deploy the learned policies on a swarm of TurtleBot 4 robots in real-robot experiments. The exhibited behaviors preserved their visually recognizable character and their performance is comparable to the one achieved in simulation.",
+      "authors": [
+        "Mattes Kraus",
+        "Jonas Kuckling"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-03-03T09:23:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.02783v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "generative adversarial imitation learning for robot swarms from human demonstrations",
+      "llm_evidence_cn": "基于人类演示的机器人集群生成对抗模仿学习",
+      "llm_evidence": "基于人类演示的机器人集群生成对抗模仿学习",
+      "canonical_evidence": "基于人类演示的机器人集群生成对抗模仿学习",
+      "llm_tldr_en": "Applies GAIL to learn collective behaviors for robot swarms from human and expert demonstrations.",
+      "llm_tldr_cn": "应用生成对抗模仿学习（GAIL）从人类和专家演示中学习机器人集群的集体行为。",
+      "llm_tldr": "应用生成对抗模仿学习（GAIL）从人类和专家演示中学习机器人集群的集体行为。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "generative adversarial inverse reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07797v1",
+      "title": "Toward Global Intent Inference for Human Motion by Inverse Reinforcement Learning",
+      "abstract": "This paper investigates whether a single, unified cost function can explain and predict human reaching movements, in contrast with existing approaches that rely on subject- or posture-specific optimization criteria. Using the Minimal Observation Inverse Reinforcement Learning (MO-IRL) algorithm, together with a seven-dimensional set of candidate cost terms, we efficiently estimate time-varying cost weights for a standard planar reaching task. MO-IRL provides orders-of-magnitude faster convergence than bilevel formulations, while using only a fraction of the available data, enabling the practical exploration of time-varying cost structures. Three levels of generality are evaluated: Subject-Dependent Posture-Dependent, Subject-Dependent Posture-Independent, and Subject-Independent Posture-Independent. Across all cases, time-varying weights substantially improve trajectory reconstruction, yielding an average 27% reduction in RMSE compared to the baseline. The inferred costs consistently highlight a dominant role for joint-acceleration regulation, complemented by smaller contributions from torque-change smoothness. Overall, a single subject- and posture-agnostic time-varying cost function is shown to predict human reaching trajectories with high accuracy, supporting the existence of a unified optimality principle governing this class of movements.",
+      "authors": [
+        "Sarmad Mehrdad",
+        "Maxime Sabbah",
+        "Vincent Bonnet",
+        "Ludovic Righetti"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-03-08T20:37:19+00:00",
+      "link": "https://arxiv.org/pdf/2603.07797v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "Minimal Observation Inverse Reinforcement Learning (MO-IRL) for human motion",
+      "llm_evidence_cn": "用于人体运动的最小观测逆强化学习 (MO-IRL)",
+      "llm_evidence": "用于人体运动的最小观测逆强化学习 (MO-IRL)",
+      "canonical_evidence": "用于人体运动的最小观测逆强化学习 (MO-IRL)",
+      "llm_tldr_en": "Uses MO-IRL to estimate time-varying cost functions for human reaching movements efficiently.",
+      "llm_tldr_cn": "使用MO-IRL算法高效估计人体伸手动作的随时间变化的代价函数。",
+      "llm_tldr": "使用MO-IRL算法高效估计人体伸手动作的随时间变化的代价函数。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "foundational and recent advances in inverse reinforcement learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.03778v1",
+      "title": "Inverse Contextual Bandits without Rewards: Learning from a Non-Stationary Learner via Suffix Imitation",
+      "abstract": "We study the Inverse Contextual Bandit (ICB) problem, in which a learner seeks to optimize a policy while an observer, who cannot access the learner's rewards and only observes actions, aims to recover the underlying problem parameters. During the learning process, the learner's behavior naturally transitions from exploration to exploitation, resulting in non-stationary action data that poses significant challenges for the observer. To address this issue, we propose a simple and effective framework called Two-Phase Suffix Imitation. The framework discards data from an initial burn-in phase and performs empirical risk minimization using only data from a subsequent imitation phase. We derive a predictive decision loss bound that explicitly characterizes the bias-variance trade-off induced by the choice of burn-in length. Despite the severe information deficit, we show that a reward-free observer can achieve a convergence rate of $\\tilde O(1/\\sqrt{N})$, matching the asymptotic efficiency of a fully reward-aware learner. This result demonstrates that a passive observer can effectively uncover the optimal policy from actions alone, attaining performance comparable to that of the learner itself.",
+      "authors": [
+        "Yuqi Kong",
+        "Xiao Zhang",
+        "Weiran Shen"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-03-04T06:36:13+00:00",
+      "link": "https://arxiv.org/pdf/2603.03778v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "recover underlying parameters from observed actions",
+      "llm_evidence_cn": "从观察到的动作中恢复底层参数",
+      "llm_evidence": "从观察到的动作中恢复底层参数",
+      "canonical_evidence": "从观察到的动作中恢复底层参数",
+      "llm_tldr_en": "Proposes a suffix imitation framework to recover reward parameters from non-stationary bandit observations.",
+      "llm_tldr_cn": "提出了一种后缀模仿框架，用于从非平稳老虎机观测中恢复奖励参数。",
+      "llm_tldr": "提出了一种后缀模仿框架，用于从非平稳老虎机观测中恢复奖励参数。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.05440v1",
+      "title": "Latent Wasserstein Adversarial Imitation Learning",
+      "abstract": "Imitation Learning (IL) enables agents to mimic expert behavior by learning from demonstrations. However, traditional IL methods require large amounts of medium-to-high-quality demonstrations as well as actions of expert demonstrations, both of which are often unavailable. To reduce this need, we propose Latent Wasserstein Adversarial Imitation Learning (LWAIL), a novel adversarial imitation learning framework that focuses on state-only distribution matching. It benefits from the Wasserstein distance computed in a dynamics-aware latent space. This dynamics-aware latent space differs from prior work and is obtained via a pre-training stage, where we train the Intention Conditioned Value Function (ICVF) to capture a dynamics-aware structure of the state space using a small set of randomly generated state-only data. We show that this enhances the policy's understanding of state transitions, enabling the learning process to use only one or a few state-only expert episodes to achieve expert-level performance. Through experiments on multiple MuJoCo environments, we demonstrate that our method outperforms prior Wasserstein-based IL methods and prior adversarial IL methods, achieving better results across various tasks.",
+      "authors": [
+        "Siqi Yang",
+        "Kai Yan",
+        "Alexander G. Schwing",
+        "Yu-Xiong Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-03-05T18:01:49+00:00",
+      "link": "https://arxiv.org/pdf/2603.05440v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "adversarial imitation learning framework focusing on state-only distribution matching",
+      "llm_evidence_cn": "专注于仅状态分布匹配的对抗性模仿学习框架",
+      "llm_evidence": "专注于仅状态分布匹配的对抗性模仿学习框架",
+      "canonical_evidence": "专注于仅状态分布匹配的对抗性模仿学习框架",
+      "llm_tldr_en": "Proposes LWAIL, an adversarial imitation learning method using Wasserstein distance in a dynamics-aware latent space.",
+      "llm_tldr_cn": "提出LWAIL，一种在动力学感知潜空间中使用Wasserstein距离的对抗性模仿学习方法。",
+      "llm_tldr": "提出LWAIL，一种在动力学感知潜空间中使用Wasserstein距离的对抗性模仿学习方法。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "generative adversarial inverse reinforcement learning",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07051v1",
+      "title": "Joint Inverse Learning of Cognitive Radar Perception and Perception-Action Policy",
+      "abstract": "Cognitive Radars (CRs) employ perception-action cycle to adapt their sensing and transmission strategies based on its' perception of the target kinematic states and mission objectives. This paper considers an inverse learning Electronic Counter Measure (ECM) that infers both the perception and perception-driven action policy of the adversarial CR's from the actions of the CR, i.e. the sensing and transmission actions taken by the CR. Existing frameworks, in the literature, assume the knowledge of either the perception or the perception-action policy and infer the other. However, this assumption is unrealistic in an adversarial setting. We address this gap by proposing an online, nonparametric Bayesian machine learning framework and developing the Inverse Particle Filter with Dependent Dirichlet Process (IPFDDP) algorithm, which characterizes the perception-dependent action policy using a Dependent Dirichlet Process (DDP) and embeds kernel-based DDP inference within a Bayesian inverse particle filtering framework to jointly estimate the CR's perception and perception-action policy. Extensive numerical simulations demonstrate that IPFDDP outperforms existing inverse learning methods in terms of mean squared error, Kullback-Leibler divergence between the estimated and true policy, and accuracy in identifying relative action preferences. Unlike the existing techniques, the proposed Bayesian formulation naturally quantifies uncertainty in inferred perception and perception-action policy, enabling active probing strategies for sample efficient inverse learning. Simulation results show that active probing integrated with IPFDDP achieves, on average, a 40% faster reduction in KL divergence compared to randomized probing.",
+      "authors": [
+        "Anoop C",
+        "Anup Aprem"
+      ],
+      "primary_category": "eess.SP",
+      "categories": [
+        "eess.SP"
+      ],
+      "published": "2026-03-07T06:10:43+00:00",
+      "link": "https://arxiv.org/pdf/2603.07051v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Bayesian framework for inverse learning of policies from actions",
+      "llm_evidence_cn": "从动作中逆向学习策略的贝叶斯框架",
+      "llm_evidence": "从动作中逆向学习策略的贝叶斯框架",
+      "canonical_evidence": "从动作中逆向学习策略的贝叶斯框架",
+      "llm_tldr_en": "Develops a Bayesian framework to infer perception and action policies from observed radar behaviors.",
+      "llm_tldr_cn": "开发了一个贝叶斯框架，从观察到的雷达行为中推断感知和动作策略。",
+      "llm_tldr": "开发了一个贝叶斯框架，从观察到的雷达行为中推断感知和动作策略。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "Bayesian approaches to inverse reinforcement learning",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2603.07784v1",
+      "title": "ProgAgent:A Continual RL Agent with Progress-Aware Rewards",
+      "abstract": "We present ProgAgent, a continual reinforcement learning (CRL) agent that unifies progress-aware reward learning with a high-throughput, JAX-native system architecture. Lifelong robotic learning grapples with catastrophic forgetting and the high cost of reward specification. ProgAgent tackles these by deriving dense, shaped rewards from unlabeled expert videos through a perceptual model that estimates task progress across initial, current, and goal observations. We theoretically interpret this as a learned state-potential function, delivering robust guidance in line with expert behaviors. To maintain stability amid online exploration - where novel, out-of-distribution states arise - we incorporate an adversarial push-back refinement that regularizes the reward model, curbing overconfident predictions on non-expert trajectories and countering distribution shift. By embedding this reward mechanism into a JIT-compiled loop, ProgAgent supports massively parallel rollouts and fully differentiable updates, rendering a sophisticated unified objective feasible: it merges PPO with coreset replay and synaptic intelligence for an enhanced stability-plasticity balance. Evaluations on ContinualBench and Meta-World benchmarks highlight ProgAgent's advantages: it markedly reduces forgetting, boosts learning speed, and outperforms key baselines in visual reward learning (e.g., Rank2Reward, TCN) and continual learning (e.g., Coreset, SI) - surpassing even an idealized perfect memory agent. Real-robot trials further validate its ability to acquire complex manipulation skills from noisy, few-shot human demonstrations.",
+      "authors": [
+        "Jinzhou Tan",
+        "Gabriel Adineera",
+        "Jinoh Kim"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-03-08T19:58:07+00:00",
+      "link": "https://arxiv.org/pdf/2603.07784v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Deriving rewards from unlabeled expert videos",
+      "llm_evidence_cn": "从无标签专家视频中获取奖励",
+      "llm_evidence": "从无标签专家视频中获取奖励",
+      "canonical_evidence": "从无标签专家视频中获取奖励",
+      "llm_tldr_en": "Learns progress-aware reward functions from expert demonstrations to guide robotic learning.",
+      "llm_tldr_cn": "从专家演示中学习进度感知奖励函数，以指导机器人学习。",
+      "llm_tldr": "从专家演示中学习进度感知奖励函数，以指导机器人学习。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2603.04861v1",
+      "title": "Causally Robust Reward Learning from Reason-Augmented Preference Feedback",
+      "abstract": "Preference-based reward learning is widely used for shaping agent behavior to match a user's preference, yet its sparse binary feedback makes it especially vulnerable to causal confusion. The learned reward often latches onto spurious features that merely co-occur with preferred trajectories during training, collapsing when those correlations disappear or reverse at test time. We introduce ReCouPLe, a lightweight framework that uses natural language rationales to provide the missing causal signal. Each rationale is treated as a guiding projection axis in an embedding space, training the model to score trajectories based on features aligned with that axis while de-emphasizing context that is unrelated to the stated reason. Because the same rationales (e.g., \"avoids collisions\", \"completes the task faster\") can appear across multiple tasks, ReCouPLe naturally reuses the same causal direction whenever tasks share semantics, and transfers preference knowledge to novel tasks without extra data or language-model fine-tuning. Our learned reward model can ground preferences on the articulated reason, aligning better with user intent and generalizing beyond spurious features. ReCouPLe outperforms baselines by up to 1.5x in reward accuracy under distribution shifts, and 2x in downstream policy performance in novel tasks. We have released our code at https://github.com/mj-hwang/ReCouPLe",
+      "authors": [
+        "Minjune Hwang",
+        "Yigit Korkmaz",
+        "Daniel Seita",
+        "Erdem Bıyık"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-03-05T06:35:21+00:00",
+      "link": "https://arxiv.org/pdf/2603.04861v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning reward functions from preference feedback and rationales",
+      "llm_evidence_cn": "从偏好反馈和理由中学习奖励函数",
+      "llm_evidence": "从偏好反馈和理由中学习奖励函数",
+      "canonical_evidence": "从偏好反馈和理由中学习奖励函数",
+      "llm_tldr_en": "Introduces a framework to learn causally robust rewards from preference feedback using natural language rationales.",
+      "llm_tldr_cn": "引入了一个框架，利用自然语言理由从偏好反馈中学习因果鲁棒的奖励。",
+      "llm_tldr": "引入了一个框架，利用自然语言理由从偏好反馈中学习因果鲁棒的奖励。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.05117v1",
+      "title": "SeedPolicy: Horizon Scaling via Self-Evolving Diffusion Policy for Robot Manipulation",
+      "abstract": "Imitation Learning (IL) enables robots to acquire manipulation skills from expert demonstrations. Diffusion Policy (DP) models multi-modal expert behaviors but suffers performance degradation as observation horizons increase, limiting long-horizon manipulation. We propose Self-Evolving Gated Attention (SEGA), a temporal module that maintains a time-evolving latent state via gated attention, enabling efficient recurrent updates that compress long-horizon observations into a fixed-size representation while filtering irrelevant temporal information. Integrating SEGA into DP yields Self-Evolving Diffusion Policy (SeedPolicy), which resolves the temporal modeling bottleneck and enables scalable horizon extension with moderate overhead. On the RoboTwin 2.0 benchmark with 50 manipulation tasks, SeedPolicy outperforms DP and other IL baselines. Averaged across both CNN and Transformer backbones, SeedPolicy achieves 36.8% relative improvement in clean settings and 169% relative improvement in randomized challenging settings over the DP. Compared to vision-language-action models such as RDT with 1.2B parameters, SeedPolicy achieves competitive performance with one to two orders of magnitude fewer parameters, demonstrating strong efficiency and scalability. These results establish SeedPolicy as a state-of-the-art imitation learning method for long-horizon robotic manipulation. Code is available at: https://github.com/Youqiang-Gui/SeedPolicy.",
+      "authors": [
+        "Youqiang Gui",
+        "Yuxuan Zhou",
+        "Shen Cheng",
+        "Xinyang Yuan",
+        "Haoqiang Fan",
+        "Peng Cheng",
+        "Shuaicheng Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-05T12:42:53+00:00",
+      "link": "https://arxiv.org/pdf/2603.05117v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "imitation learning from expert demonstrations",
+      "llm_evidence_cn": "从专家演示中进行模仿学习",
+      "llm_evidence": "从专家演示中进行模仿学习",
+      "canonical_evidence": "从专家演示中进行模仿学习",
+      "llm_tldr_en": "Introduces SeedPolicy to improve long-horizon robot manipulation through self-evolving diffusion policies.",
+      "llm_tldr_cn": "引入SeedPolicy，通过自进化扩散策略改进长程机器人操作任务。",
+      "llm_tldr": "引入SeedPolicy，通过自进化扩散策略改进长程机器人操作任务。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "relationship between imitation learning and inverse reinforcement learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.02491v1",
+      "title": "What Capable Agents Must Know: Selection Theorems for Robust Decision-Making under Uncertainty",
+      "abstract": "As artificial agents become increasingly capable, what internal structure is *necessary* for an agent to act competently under uncertainty? Classical results show that optimal control can be *implemented* using belief states or world models, but not that such representations are required. We prove quantitative \"selection theorems\" showing that low *average-case regret* on structured families of action-conditioned prediction tasks forces an agent to implement a predictive, structured internal state. Our results cover stochastic policies, partial observability, and evaluation under task distributions, without assuming optimality, determinism, or access to an explicit model. Technically, we reduce predictive modeling to binary \"betting\" decisions and show that regret bounds limit probability mass on suboptimal bets, enforcing the predictive distinctions needed to separate high-margin outcomes. In fully observed settings, this yields approximate recovery of the interventional transition kernel; under partial observability, it implies necessity of belief-like memory and predictive state, addressing an open question in prior world-model recovery work.",
+      "authors": [
+        "Aran Nayebi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO",
+        "q-bio.NC",
+        "stat.ML"
+      ],
+      "published": "2026-03-03T00:47:58+00:00",
+      "link": "https://arxiv.org/pdf/2603.02491v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "mathematical theorems for internal states in optimal control",
+      "llm_evidence_cn": "最优控制中内部状态的数学定理",
+      "llm_evidence": "最优控制中内部状态的数学定理",
+      "canonical_evidence": "最优控制中内部状态的数学定理",
+      "llm_tldr_en": "Proves selection theorems showing that low-regret agents must implement structured internal predictive models.",
+      "llm_tldr_cn": "证明了选择定理，表明低遗憾智能体必须实现结构化的内部预测模型。",
+      "llm_tldr": "证明了选择定理，表明低遗憾智能体必须实现结构化的内部预测模型。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "mathematical foundations of inverse optimal control",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.08476v1",
+      "title": "LAR-MoE: Latent-Aligned Routing for Mixture of Experts in Robotic Imitation Learning",
+      "abstract": "Imitation learning enables robots to acquire manipulation skills from demonstrations, yet deploying a policy across tasks with heterogeneous dynamics remains challenging, as models tend to average over distinct behavioral modes present in the demonstrations. Mixture-of-Experts (MoE) architectures address this by activating specialized subnetworks, but requires meaningful skill decompositions for expert routing. We introduce Latent-Aligned Routing for Mixture of Experts (LAR-MoE), a two-stage framework that decouples unsupervised skill discovery from policy learning. In pre-training, we learn a joint latent representation between observations and future actions through student-teacher co-training. In a post-training stage, the expert routing is regularized to follow the structure of the learned latent space, preventing expert collapse while maintaining parameter efficiency. We evaluate LAR-MoE in simulation and on hardware. On the LIBERO benchmark, our method achieves a 95.2% average success rate with 150M parameters. On a surgical bowel grasping and retraction task, LAR-MoE matches a supervised MoE baseline without requiring any phase annotations, and transfers zero-shot to ex vivo porcine tissue. Our findings suggest that latent-aligned routing provides a principled alternative to supervised skill decomposition, enabling structured expert specialization from unlabeled demonstrations.",
+      "authors": [
+        "Ariel Rodriguez",
+        "Chenpan Li",
+        "Lorenzo Mazza",
+        "Rayan Younis",
+        "Ortrun Hellig",
+        "Sebastian Bodenstedt",
+        "Martin Wagner",
+        "Stefanie Speidel"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-09T15:10:31+00:00",
+      "link": "https://arxiv.org/pdf/2603.08476v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "imitation learning from demonstrations across tasks",
+      "llm_evidence_cn": "跨任务演示的模仿学习",
+      "llm_evidence": "跨任务演示的模仿学习",
+      "canonical_evidence": "跨任务演示的模仿学习",
+      "llm_tldr_en": "Decouples skill discovery from policy learning in robotic imitation learning using a Mixture-of-Experts architecture.",
+      "llm_tldr_cn": "在机器人模仿学习中，利用混合专家架构将技能发现与策略学习解耦。",
+      "llm_tldr": "在机器人模仿学习中，利用混合专家架构将技能发现与策略学习解耦。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "relationship between imitation learning and inverse reinforcement learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.06831v1",
+      "title": "Learning-Based Robust Control: Unifying Exploration and Distributional Robustness for Reliable Robotics via Free Energy",
+      "abstract": "A key challenge towards reliable robotic control is devising computational models that can both learn policies and guarantee robustness when deployed in the field. Inspired by the free energy principle in computational neuroscience, to address these challenges, we propose a model for policy computation that jointly learns environment dynamics and rewards, while ensuring robustness to epistemic uncertainties. Expounding a distributionally robust free energy principle, we propose a modification to the maximum diffusion learning framework. After explicitly characterizing robustness of our policies to epistemic uncertainties in both environment and reward, we validate their effectiveness on continuous-control benchmarks, via both simulations and real-world experiments involving manipulation with a Franka Research~3 arm. Across simulation and zero-shot deployment, our approach narrows the sim-to-real gap, and enables repeatable tabletop manipulation without task-specific fine-tuning.",
+      "authors": [
+        "Hozefa Jesawada",
+        "Giovanni Russo",
+        "Abdalla Swikir",
+        "Fares Abu-Dakka"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "math.OC"
+      ],
+      "published": "2026-03-06T19:47:17+00:00",
+      "link": "https://arxiv.org/pdf/2603.06831v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "jointly learns environment dynamics and rewards via free energy principle",
+      "llm_evidence_cn": "通过自由能原理共同学习环境动力学和奖励",
+      "llm_evidence": "通过自由能原理共同学习环境动力学和奖励",
+      "canonical_evidence": "通过自由能原理共同学习环境动力学和奖励",
+      "llm_tldr_en": "A robust control model that learns rewards and dynamics using a distributionally robust free energy principle.",
+      "llm_tldr_cn": "一种利用分布鲁棒自由能原理学习奖励和动力学的鲁棒控制模型。",
+      "llm_tldr": "一种利用分布鲁棒自由能原理学习奖励和动力学的鲁棒控制模型。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.03280v1",
+      "title": "How to Peel with a Knife: Aligning Fine-Grained Manipulation with Human Preference",
+      "abstract": "Many essential manipulation tasks - such as food preparation, surgery, and craftsmanship - remain intractable for autonomous robots. These tasks are characterized not only by contact-rich, force-sensitive dynamics, but also by their \"implicit\" success criteria: unlike pick-and-place, task quality in these domains is continuous and subjective (e.g. how well a potato is peeled), making quantitative evaluation and reward engineering difficult. We present a learning framework for such tasks, using peeling with a knife as a representative example. Our approach follows a two-stage pipeline: first, we learn a robust initial policy via force-aware data collection and imitation learning, enabling generalization across object variations; second, we refine the policy through preference-based finetuning using a learned reward model that combines quantitative task metrics with qualitative human feedback, aligning policy behavior with human notions of task quality. Using only 50-200 peeling trajectories, our system achieves over 90% average success rates on challenging produce including cucumbers, apples, and potatoes, with performance improving by up to 40% through preference-based finetuning. Remarkably, policies trained on a single produce category exhibit strong zero-shot generalization to unseen in-category instances and to out-of-distribution produce from different categories while maintaining over 90% success rates.",
+      "authors": [
+        "Toru Lin",
+        "Shuying Deng",
+        "Zhao-Heng Yin",
+        "Pieter Abbeel",
+        "Jitendra Malik"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-03-03T18:59:32+00:00",
+      "link": "https://arxiv.org/pdf/2603.03280v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "imitation learning and reward engineering for manipulation",
+      "llm_evidence_cn": "针对操作任务的模仿学习和奖励工程",
+      "llm_evidence": "针对操作任务的模仿学习和奖励工程",
+      "canonical_evidence": "针对操作任务的模仿学习和奖励工程",
+      "llm_tldr_en": "A two-stage framework using imitation learning and preference alignment for fine-grained robot manipulation.",
+      "llm_tldr_cn": "一个结合模仿学习和偏好对齐的两阶段框架，用于实现精细的机器人操作。",
+      "llm_tldr": "一个结合模仿学习和偏好对齐的两阶段框架，用于实现精细的机器人操作。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.08531v1",
+      "title": "CRED: Counterfactual Reasoning and Environment Design for Active Preference Learning",
+      "abstract": "As a robot's operational environment and tasks to perform within it grow in complexity, the explicit specification and balancing of optimization objectives to achieve a preferred behavior profile moves increasingly farther out of reach. These systems benefit strongly by being able to align their behavior to reflect human preferences and respond to corrections, but manually encoding this feedback is infeasible. Active preference learning (APL) learns human reward functions by presenting trajectories for ranking. However, existing methods sample from fixed trajectory sets or replay buffers that limit query diversity and often fail to identify informative comparisons. We propose CRED, a novel trajectory generation method for APL that improves reward inference by jointly optimizing environment design and trajectory selection to efficiently query and extract preferences from users. CRED \"imagines\" new scenarios through environment design and leverages counterfactual reasoning -- by sampling possible rewards from its current belief and asking \"What if this were the true preference?\" -- to generate trajectory pairs that expose differences between competing reward functions. Comprehensive experiments and a user study show that CRED significantly outperforms state-of-the-art methods in reward accuracy and sample efficiency and receives higher user ratings.",
+      "authors": [
+        "Yi-Shiuan Tung",
+        "Gyanig Kumar",
+        "Wei Jiang",
+        "Bradley Hayes",
+        "Alessandro Roncone"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-09T16:01:54+00:00",
+      "link": "https://arxiv.org/pdf/2603.08531v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active preference learning to learn human reward functions",
+      "llm_evidence_cn": "通过主动偏好学习来学习人类奖励函数",
+      "llm_evidence": "通过主动偏好学习来学习人类奖励函数",
+      "canonical_evidence": "通过主动偏好学习来学习人类奖励函数",
+      "llm_tldr_en": "Proposes a counterfactual reasoning method for active preference learning to better infer human reward functions.",
+      "llm_tldr_cn": "提出一种用于主动偏好学习的反事实推理方法，以更好地推断人类奖励函数。",
+      "llm_tldr": "提出一种用于主动偏好学习的反事实推理方法，以更好地推断人类奖励函数。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "learning reward functions from demonstrations",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2603.06961v1",
+      "title": "Learning Quadruped Walking from Seconds of Demonstration",
+      "abstract": "Quadruped locomotion provides a natural setting for understanding when model-free learning can outperform model-based control design, by exploiting data patterns to bypass the difficulty of optimizing over discrete contacts and the combinatorial explosion of mode changes. We give a principled analysis of why imitation learning with quadrupeds can be inherently effective in a small data regime, based on the structure of its limit cycles, Poincaré return maps, and local numerical properties of neural networks. The understanding motivates a new imitation learning method that regulates the alignment between variations in a latent space and those over the output actions. Hardware experiments confirm that a few seconds of demonstration is sufficient to train various locomotion policies from scratch entirely offline with reasonable robustness.",
+      "authors": [
+        "Ruipeng Zhang",
+        "Hongzhan Yu",
+        "Ya-Chien Chang",
+        "Chenghao Li",
+        "Henrik I. Christensen",
+        "Sicun Gao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-03-07T00:47:30+00:00",
+      "link": "https://arxiv.org/pdf/2603.06961v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "imitation learning from demonstrations for quadruped walking",
+      "llm_evidence_cn": "针对四足步行的演示模仿学习",
+      "llm_evidence": "针对四足步行的演示模仿学习",
+      "canonical_evidence": "针对四足步行的演示模仿学习",
+      "llm_tldr_en": "Analyzes why imitation learning is effective for quadruped locomotion with very few demonstrations.",
+      "llm_tldr_cn": "分析了为什么模仿学习在极少量演示下对四足机器人运动控制依然有效。",
+      "llm_tldr": "分析了为什么模仿学习在极少量演示下对四足机器人运动控制依然有效。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "relationship between imitation learning and inverse reinforcement learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.03960v1",
+      "title": "Structural Action Transformer for 3D Dexterous Manipulation",
+      "abstract": "Achieving human-level dexterity in robots via imitation learning from heterogeneous datasets is hindered by the challenge of cross-embodiment skill transfer, particularly for high-DoF robotic hands. Existing methods, often relying on 2D observations and temporal-centric action representation, struggle to capture 3D spatial relations and fail to handle embodiment heterogeneity. This paper proposes the Structural Action Transformer (SAT), a new 3D dexterous manipulation policy that challenges this paradigm by introducing a structural-centric perspective. We reframe each action chunk not as a temporal sequence, but as a variable-length, unordered sequence of joint-wise trajectories. This structural formulation allows a Transformer to natively handle heterogeneous embodiments, treating the joint count as a variable sequence length. To encode structural priors and resolve ambiguity, we introduce an Embodied Joint Codebook that embeds each joint's functional role and kinematic properties. Our model learns to generate these trajectories from 3D point clouds via a continuous-time flow matching objective. We validate our approach by pre-training on large-scale heterogeneous datasets and fine-tuning on simulation and real-world dexterous manipulation tasks. Our method consistently outperforms all baselines, demonstrating superior sample efficiency and effective cross-embodiment skill transfer. This structural-centric representation offers a new path toward scaling policies for high-DoF, heterogeneous manipulators.",
+      "authors": [
+        "Xiaohan Lei",
+        "Min Wang",
+        "Bohong Weng",
+        "Wengang Zhou",
+        "Houqiang Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-03-04T11:38:12+00:00",
+      "link": "https://arxiv.org/pdf/2603.03960v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "imitation learning from heterogeneous datasets for robotics",
+      "llm_evidence_cn": "机器人异构数据集的模仿学习",
+      "llm_evidence": "机器人异构数据集的模仿学习",
+      "canonical_evidence": "机器人异构数据集的模仿学习",
+      "llm_tldr_en": "Introduces a structural-centric transformer for 3D dexterous manipulation via imitation learning.",
+      "llm_tldr_cn": "引入一种以结构为中心的 Transformer，通过模仿学习实现 3D 灵巧操作。",
+      "llm_tldr": "引入一种以结构为中心的 Transformer，通过模仿学习实现 3D 灵巧操作。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "relationship between imitation learning and inverse reinforcement learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2603.07530v1",
+      "title": "ICLR: In-Context Imitation Learning with Visual Reasoning",
+      "abstract": "In-context imitation learning enables robots to adapt to new tasks from a small number of demonstrations without additional training. However, existing approaches typically condition only on state-action trajectories and lack explicit representations of task intent. This limitation hinders performance in complex and ambiguous task settings where the same actions may be consistent with different objectives. To address this, we present In-Context Imitation Learning with Visual Reasoning (ICLR), a novel framework that augments demonstration prompts with structured visual reasoning traces representing anticipated future robot trajectories in image space. ICLR also jointly learns to generate reasoning traces and low-level actions within a unified autoregressive transformer, enabling the model to mimic not only action prediction but also the reasoning process that leads to those actions. We extensively evaluate ICLR in both simulation and real-world manipulation tasks and demonstrate consistent improvements in success rates and generalization to unseen tasks and novel object configurations compared to other in-context imitation learning methods. These results suggest that incorporating embodied visual reasoning represents a promising direction for enhancing the robustness and generalization of robotic in-context learning systems.",
+      "authors": [
+        "Toan Nguyen",
+        "Weiduo Yuan",
+        "Songlin Wei",
+        "Hui Li",
+        "Daniel Seita",
+        "Yue Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-03-08T08:40:05+00:00",
+      "link": "https://arxiv.org/pdf/2603.07530v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "in-context imitation learning with explicit representations of task intent",
+      "llm_evidence_cn": "具有显式任务意图表示的上下文模仿学习",
+      "llm_evidence": "具有显式任务意图表示的上下文模仿学习",
+      "canonical_evidence": "具有显式任务意图表示的上下文模仿学习",
+      "llm_tldr_en": "Introduces a framework for in-context imitation learning that uses visual reasoning to capture task intent.",
+      "llm_tldr_cn": "引入一种上下文模仿学习框架，利用视觉推理捕捉任务意图。",
+      "llm_tldr": "引入一种上下文模仿学习框架，利用视觉推理捕捉任务意图。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "relationship between imitation learning and inverse reinforcement learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2603.07705v1",
+      "title": "Deep Incentive Design with Differentiable Equilibrium Blocks",
+      "abstract": "Automated design of multi-agent interactions with desirable equilibrium outcomes is inherently difficult due to the computational hardness, non-uniqueness, and instability of the resulting equilibria. In this work, we propose the use of game-agnostic differentiable equilibrium blocks (DEBs) as modules in a novel, differentiable framework to address a wide variety of incentive design problems from economics and computer science. We call this framework deep incentive design (DID). To validate our approach, we examine three diverse, challenging incentive design tasks: contract design, machine scheduling, and inverse equilibrium problems. For each task, we train a single neural network using a unified pipeline and DEB. This architecture solves the full distribution of problem instances, parameterized by a context, handling all games across a wide range of scales (from two to sixteen actions per player).",
+      "authors": [
+        "Vinzenz Thoma",
+        "Georgios Piliouras",
+        "Luke Marris"
+      ],
+      "primary_category": "cs.GT",
+      "categories": [
+        "cs.GT",
+        "cs.LG"
+      ],
+      "published": "2026-03-08T16:15:03+00:00",
+      "link": "https://arxiv.org/pdf/2603.07705v1",
+      "tags": [
+        "keyword:IRLIOC",
+        "query:IRLIOC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "addresses inverse equilibrium problems using differentiable blocks",
+      "llm_evidence_cn": "使用可微模块解决逆均衡问题",
+      "llm_evidence": "使用可微模块解决逆均衡问题",
+      "canonical_evidence": "使用可微模块解决逆均衡问题",
+      "llm_tldr_en": "Proposes a differentiable framework for incentive design and inverse equilibrium problems in multi-agent systems.",
+      "llm_tldr_cn": "提出了一种用于多智能体系统激励设计和逆均衡问题的可微框架。",
+      "llm_tldr": "提出了一种用于多智能体系统激励设计和逆均衡问题的可微框架。",
+      "llm_tags": [
+        "query:irlioc"
+      ],
+      "matched_query_tag": "query:irlioc",
+      "matched_query_text": "theoretical frameworks for inverse optimal control",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

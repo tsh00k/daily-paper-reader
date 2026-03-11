@@ -1,0 +1,1338 @@
+Title: Contractor-Expander and Universal Inverse Optimal Positive Nonlinear Control
+
+URL Source: https://arxiv.org/pdf/2603.02530v1
+
+Published Time: Wed, 04 Mar 2026 01:23:44 GMT
+
+Number of Pages: 17
+
+Markdown Content:
+# Contractor-Expander and Universal Inverse Optimal Positive Nonlinear Control 
+
+# Miroslav Krstic a
+
+> a
+
+Department of Mechanical and Aerospace Engineering, University of California at San Diego, La Jolla, CA, 92093-0411 USA 
+
+Abstract 
+
+For general control-affine nonlinear systems in the positive orthant, and with positive controls, we show how strict CLFs can be utilized for inverse optimal stabilization. Conventional “LgV” inverse optimal feedback laws, for systems with unconstrained states and controls, assume sign-unconstrained inputs and input penalties that are class-K in the input magnitude, hence symmetric about zero. Such techniques do not extend to positive-state-and-control systems. Major customizations are needed, and introduced in this paper, for positive systems where highly asymmetric (or unconventionally symmetric) costs not only on the state but also on control are necessary. For the predator-prey positive-state positive-input benchmark system, with a strict CLF built in our previous paper, we prototype two inverse optimal methodological frameworks that employ particular “contractor and expander functions.” One framework (A) employs a triple consisting of a CLF, a stabilizing feedback, and an expander, whereas the other framework (B) employs a pair of a CLF and a contractor function. Both frameworks yield inverse optimal stabilizer constructions, on positive orthants of arbitrary dimensions. Framework B demands more design effort than framework A but is free of conditions that may fail to hold in general. Biological interpretation for the predator-prey model illuminates that such inverse optimal control constructions are bio-ecologically meaningful. In addition to general frameworks, we present one fully explicit design: a Sontag-like universal formula for inverse optimal stabilization of positive-orthant systems by positive feedback. 
+
+1 Introduction 
+
+In this paper, which has little technical precedent, we solve the inverse optimal stabilization problems for systems with positive states and controls. Motivated by pedagogy and easing the reader into novel concepts, we first consider the predator-prey system ˙X = ( 1 −Y )X (1a) ˙Y = ( X −U)Y (1b) where X is the prey concentration, Y the predator concen-tration, and U the rate of harvesting of the predator. System (1) is a control design benchmark within the broader class of control–affine system on the positive orthant ˙ξ = f (ξ ) + g(ξ ) ω, ξ ∈ (0, ∞)n, (2) with ω ∈ (0, ∞) and equilibrium ξ ⋆ = 1 := [ 1, 1, . . . , 1]T,
+
+ω⋆ = 1, i.e. f (1) + g(1) = 0, to which we advance in the second half of the paper. As is the case for (1), the equilibrium pair ξ ⋆ = 1,
+
+ω⋆ = 1 in (2) is taken without loss of generality (using conponentwise state rescaling), in the same sense that x =
+
+⋆ This paper was not presented at any IFAC meeting. 
+
+Email address: mkrstic@ucsd.edu (Miroslav Krstic). 
+
+0, u = 0 would be taken without loss of generality for con-ventional Euclidean-state-space systems with real-valued in-puts, ˙ x = f (x) + g(x)u, x ∈ Rn, u ∈ R.The predator-prey model (1), though stripped of locally destabilizing terms that may induce the popularly known limit-cycling oscillations between the predator and prey con-centrations, is a clean and challenging benchmark for con-trol of positive-state positive-input systems (2). In [6] we designed a globally asymptotically stabilizing positive feed-back and a strict CLF for (1). In this paper, with a strict CLF in hand, we progress to the more challenging task of 
+
+inverse optimal stabilization , not tackled before for systems with positive states and inputs. 
+
+LgV controllers and inverse optimality with sign-unconstrained feedback. The basic result on inverse-optimal stabilization for control-affine nonlinear systems ˙x = f (x) + g(x)u , f (0) = 0 , (3) with a scalar input goes as follows, by adapting and gener-alizing results from [7]. Given a CLF V (x), if feedback of the form 
+
+u0 = −
+
+ℓγ
+
+
+
+|LgV (x)|/pr(x)
+
+
+
+LgV (x) , (4) where ℓ denotes the Legendre-Fenchel transformation (the anti-derivative of the inverse function of the derivative of a 
+
+Preprint submitted to Automatica 
+
+> arXiv:2603.02530v1 [eess.SY] 3 Mar 2026
+
+function), is stabilizing with respect to V for some strictly positive function r(x) and some C1 class K∞ function γ,whose derivative is also K∞, then the “fortified” feedback 
+
+u∗ = −sgn (LgV )(γ′)−1
+
+
+
+|LgV (x)|/pr(x)
+
+pr(x) (5) 
+
+= sgn (LgV (x)) 
+
+d
+
+
+
+u0 LgV (x)/pr(x)
+
+
+
+d
+
+
+
+|LgV (x)|/pr(x)
+
+ (6) 
+
+= ( ℓγ)′ ◦
+
+ ℓγ
+
+Id 
+
+−1
+
+(u0) , (7) where (6) and (7) are forms not previously reported in the literature, is the minimizer of the meaningful cost 
+
+J = 
+
+> Z∞
+> 0
+
+h
+
+ℓγ
+
+
+
+|LgV (x)|/pr(x)
+
+
+
+− L f V
+
+| {z }  
+
+> >0∀x̸=0
+
++ γ
+
+p r(x)|u|
+
+ i 
+
+dt . (8) If γ(s) = s2/4, then 
+
+u∗ = 2u0 = −2 1
+
+r LgV , (9) has the sign of −LgV and the cost on control is r(x)u2/4, which is symmetric about u = 0. Such an approach, with sign-indefinite feedback (5), is clearly inapplicable to systems with positive states and ad-mitting only positive inputs for stabilization. When the equi-librium is strictly in the positive orthant, and the correspond-ing equilibrium value of control also strictly positive, costs on both control and the state highly asymmetric relative to the equilibrium are needed. 
+
+Literature. Sontag’s universal formula for stabilization is the quintessential inverse optimal stabilizer. Two universal formulae exist that are the most relevant to our work—one applicable with positive controls [8] and one for positive states [15], but neither simultaneously. For stabilization by positive feedback , a universal for-mula was introduced in [8]. However, even though there exists a logarithmic coordinate change that transforms the positive predator-prey model into the state space R2 covered by [8], such a formula is not applicable to the predator-prey CLF here. It is admissible for stabilization only by over-harvesting relative to the equilibrium harvesting rate. Alas, for the predator-prey CLF, there is a set of positive measure of predator and prey concentrations (shown later as (15) in Sec. 2) at which both LgV and L f V are positive, when only overharvesting is admissible for control. Since positive un-derharvesting is also necessary for global stabilization, [8] is inapplicable. The other reference of considerable relevance to our objective here is [15], with a universal formula for stabiliza-tion of an equilibrium in the interior of the positive orthant. But, when applied to our model, the formula from [15] re-sults in both positive and negative harvesting inputs. Other literature that relates the most closely to our paper is, first and foremost, the author’s decade-old [9], which considers a nearly identical model, but with a strictification that produces a very complex CLF, unappealing for a use in inverse optimal stabilization. Our very recent [16] deals with stabilization of a different predator-prey model, where the simultaneous, non-discriminating harvesting of both the predator and the prey is inevitable. We forego here the study of the model with simultaneous harvesting because, while that model presents clear challenges, they are heretofore overcome by ad hoc feedback designs. It is the predator-prey model with single-species harvesting that has a potential for methodological generalizations, to competition systems and to food chain structures, both via backstepping. The inspiration for our work here also comes from the CLF strictification for the SIR dynamics in [3], since our predator-prey dynamics are essentially the (S,I) portion of the SIR, where I = predator and S = prey. 
+
+Generalizations of the predator-prey result. The design here for the predator-prey benchmark, which occupies the first half of the paper, is not ad hoc. It is a part of a general framework, extending the LgV -based inverse optimal control for Euclidean-state-space real-valued-controls [7] to systems with positive states and inputs. While we could have presented the general result first, followed by a construction for the predator-prey model, this is thus far our only constructive realization of this frame-work. We find it pedagogically advantageous, to proceed from a fully explicit example to a general framework, i.e., by “induction,” rather than “deductively,” which initially over-whelms, by abstraction. We accompany the introduction of our general inverse optimality framework with one concrete general inverse-optimal construction—a universal formula mirroring Son-tag’s for positive-orthant positive-input systems. Both the constructive and the universal results matter. Universal for-mulae don’t exist without constructive designs that supply CLFs. And, on the other hand, a constructive framework is most clearly realized, conceptually if not practically, through a universal formula. 
+
+Application domains and theory driven by them. Sys-tems with positive states and positive control inputs arise in many concrete settings where both the quantities being mod-eled and the actuation mechanisms are intrinsically nonneg-ative. In ecology and resource management, predator–prey dynamics, fisheries harvesting, and invasive-species control involve population levels and harvesting or stocking rates that cannot be negative. In epidemiology, SIR-type infection 2models use vaccination, testing, or treatment rates as non-negative control inputs acting on positive compartments. In chemical and biochemical reactors, species concentrations are positive and manipulated through feed rates or catalyst injections that can only add material. In pharmacokinetics, drug amounts in body compartments are regulated via infu-sion rates that are strictly nonnegative. In energy and infras-tructure systems, reservoir storage levels are controlled by nonnegative inflow rates, and battery charge states are in-fluenced by charging currents constrained to be positive. In traffic and queueing networks, vehicle densities and queue lengths are regulated through metering or service rates that cannot take negative values. In economic growth and capital accumulation models, capital stocks are positive and driven by nonnegative investment rates. These applications share the structural constraint that both the state and the admis-sible controls lie in the positive orthant, making positivity preservation and asymmetric control penalties natural and unavoidable. This body of practical problems has in turn driven the development of control and feedback analysis methodolo-gies that respect positivity constraints. In ecological and bio-chemical models, monotonicity and positivity preservation have motivated the use of monotone control system theory and co-positive Lyapunov functions to guarantee global sta-bility within the positive orthant [1,2]. In large-scale and net-worked settings, the inherent positivity of flows and buffer contents has led to scalable analysis and synthesis tools for positive systems that exploit Perron–Frobenius structure and enable distributed control design [13]. Ramp metering and traffic density control problems with nonnegative me-tering rates have resulted in locally optimal feedback laws that enforce positivity while optimizing throughput [10,11]. In energy and chemical process control, positivity of states and inputs underpins irreversible port-Hamiltonian model-ing and thermodynamically consistent stabilization meth-ods [12]. These results illustrate that positivity-driven con-trol design is a relevant direction spanning multiple applied domains. 
+
+Results, contributions, and ideas introduced: 
+
+(1) From strict CLF to inverse optimality. The paper does not merely present another stabilizer for the preda-tor–prey benchmark, but the first inverse-optimal char-acterization of a strict CLF for a positive-orthant non-linear system with a strictly positive equilibrium input. Relative to our recent work [6], where global stabiliza-tion of (1) was achieved via a strict CLF and a spe-cific backstepping feedback, the present paper estab-lishes that this strict CLF is in fact the value function of an infinite-horizon optimal control problem with a state-dependent and inherently asymmetric penalty on harvesting. (2) From optimization penalties symmetric around zero to asymmetric one-sided penalties. In contrast to classical inverse optimal constructions [7], which assume sign-indefinite inputs and symmetric penalties about zero, and unlike the universal positive-input formulas of [8] and the interior-positive equilibrium stabilizers of [15], the proposed construction operates under one-sided, unbounded control constraints and a nonzero equilib-rium input, and yields a parametrized family of glob-ally stabilizing inverse-optimal feedback laws. (3) Contractor-expander parametrization of asymmetric inverse optimality. The novelty lies in the Θ ◦ Σ = Id contractor-expander mechanism, which redesigns astabilizing feedback to make it inverse optimal. A contractor 1 Θ is a strictly increasing function on a positive real domain with a property that it produces an output smaller than its argument when the argu-ment is larger than unity, and an output larger than one when the argument is smaller than unity. An expander 
+
+Σ = Θ−1, already lurking in (7) but not previously dis-covered as such, is a function that does the opposite; an inverse function of a contractor. Our functions Θ, Σ
+
+simultaneously preserve strict Lyapunov decrease, enforce positivity of control, and induce biologically meaningful asymmetric costs. (4) Direct designs of inverse optimal feedbacks. A user ready to abandon a nominal feedback design that lacks an LgV structure and follow a recipe for a direct inverse optimal design, is given such a recipe in the paper. The recipe starts with a a choice of a contractor function in a broad family, and goes through the design of a pos-itive weight-on-control function, which automatically results in a controller with a nonlinear LgV structure, which ensures inverse optimality. (5) Universal formula for systems with positive states and controls. In addition to a general inverse optimality framework, we also provide a universal formula for positive-input stabilization in the positive orthant. In spite of an uncanny visual similarity with the original universal formula of Sontag [14], our formula differs significantly because the domains of its arguments dif-fer, due to the CLF condition being significantly more restrictive for positive systems relative to unconstrained systems. Our problem with positive-input stabilization on the positive orthant differs significantly from the Lin-Sontag problem on Rn in [8], and so do, conse-quently, the two respective universal formulae. 
+
+Organization. Section 2 recalls the predator–prey model and the strict CLF from [6], including the exact identifica-tion of the set S+ on which universal positive-control for-mulas fail. Section 3 introduces the expanded backstepping stabilizer U = Y Σ(Y /X) and establishes global asymptotic stability. Section 4 proposes the contractor function Θ and derives the associated control penalty Ψ. Section 5 proves          
+
+> 1We slightly misappropriate established terminology. Our con-tractor is a function that is not necessarily contractive globally for s>1 but is a contraction relative to s=1. Any attempt at full precision yields awkward terminology.
+
+3inverse-optimality via Hamilton–Jacobi–Bellman character-ization. Section 6 clarifies the connection between the pro-posed positive inverse optimal feedback and the classical 
+
+−r−1LgV structure. Section 7 interprets the resulting asym-metric control cost biologically and analytically. Section 8 explores the parametrization of contractor functions and the induced family of control penalties. Section 9 presents sim-ulations illustrating optimality and the role of the contractor mechanism. Section 10 proposes a universal formula for sta-bilization, a positive-input positive-state analog of Sontag’s formula. Sections 11 and 12 give general inverse optimal design for affine-in-positive-control positive-state nonlinear systems. For a reader ready to jump straight into more general but more abstract results, it is entirely feasible to read Section 10 first, followed by Sections 11 and 12, accompanied with the technical Section 4. 
+
+2 Predator-Prey Model and CLF 
+
+For the system (1), in [6] we designed the CLF 
+
+V (X,Y ) = Ω
+
+ 1
+
+X
+
+
+
++ Ω
+
+ YX
+
+
+
+, (10) where 
+
+Ω(S) = S − 1 − ln (S) (11) so that ˙V = L(X,Y ) + G(X,Y )U (12) where 
+
+L(X,Y ) = −(X − 1)2 +Y (Y − X)
+
+X , (13a) 
+
+G(X,Y ) = X −YX . (13b) The CLF (10), strict and global on (0, ∞)2 around X = Y = 1, is unlike anything seen for two-species population systems in the literature before [6]: not only non-separable in the Volterra-Lyapunov function Ω but also employing a recip-rocal argument. In [6] we proposed the globally asymptotically stabi-lizing positive feedback law 
+
+U0 = Y 2
+
+X . (14) With this notation, we can state clearly the reason for the inapplicability of the universal formula from [8]. With the shift of input u = U − 1 to an input that is equilibrium-anchoring, u = 0, one gets that ˙ V = ( L + G) + Gu . The uni-versal formula in [8] has the property u > 0. But L + G and 
+
+G are simultaneously positive on the entire triangular subset 
+
+S+ =
+
+n
+
+(X,Y ) ∈ (0, ∞)2 : 0 < Y < 1,
+
+(3 −Y ) − √5 (1 −Y )
+
+2 < X < (3 −Y ) + √5 (1 −Y )
+
+2
+
+o
+
+.
+
+(15) of X,Y > 0, so the formula [8, (22), (19), (16] is not globally stabilizing. 
+
+3 Motivation and Preview: An “Expander” Family that Fortifies the Backstepping Stabilizer 
+
+We start with feedback U0(X,Y ) = Y 2/X in (14), which results from a backstepping design, and study a version of this feedback in which the predator-to-prey ratio is “ex-panded”: amplified when Y > X and attenuated when Y < X.
+
+Theorem 1 Consider the predator-prey system (1) under the positive feedback law U(X,Y ) = Y Σ
+
+ YX
+
+
+
+(16) 
+
+where Σ : (0, ∞) → (0, ∞) is strictly increasing, satisfies 
+
+Σ(1) = 1, and it expands away from 1 in the sense that 
+
+Σ(s) < s , 0 < s < 1 (17a) 
+
+Σ(s) > s , s > 1 . (17b) 
+
+Then the equilibrium X = Y = 1 is globally asymptotically stable on (0, ∞)2.Proof. From (12), and, under the baseline stabilizing feed-back U0(X,Y ) = Y 2/X,
+
+L(X,Y ) + G(X,Y )U0(X,Y )= −q(X,Y ) = − (X − 1)2
+
+X − (Y − X)2
+
+XYX (18) is negative definite on (0, ∞)2 with unique zero at (1, 1).Writing ˙V = L + GU =  L + GU 0
+
+ + G (U −U0) = −q + G (U −U0),
+
+(19) it suffices to determine the sign of G(U − U0). Since 
+
+U = Y Σ(Y /X) and U0 = Y (Y /X), the property (17) im-plies sign (U − U0) = sign (Σ(s) − s), where s = Y /X > 0and s̸ = 1. Based on (17), the definition (13b), and X > 0, sign (U − U0) = − sign (G). Hence G(U − U0) ≤ 0 for all (X,Y ), with equality only when Y = X. Therefore ˙V ≤ − q < 0 for all (X,Y )̸ = ( 1, 1) and ˙ V (1, 1) = 0, which establishes global asymptotic stability of X = Y = 1. □
+
+One can come up with numerous examples of function 
+
+Σ that satisfy conditions (17). The simplest is, arguably, 
+
+Σ(s) = s2, giving U = Y 3/X2.To be precise, the function Σ performs an expansion for s > 1 but it acts, mathematically, as a contraction for 4s ∈ (0, 1). This may confuse, but it is consistent. The re-duction of control for Y /X ∈ (0, 1), while it looks like a mathematical contraction, namely, the weakening of control, is, biologically, actually strengthening of control. When the predator is dominated by the prey, reducing the harvesting of the predator actually represents the strengthening of con-trol. Hence, the term “expander” is meaningful for Σ for both s ∈ (0, 1) and s > 1. 
+
+4 Building Control Penalty from Feedback “Contrac-tor Function” 
+
+With the next technical lemma we lay the groundwork for building inverse-optimal cost functions Ψ(·) on control for different feedback laws, using a family of “contractor functions” Θ(·).
+
+Lemma 1 Assume Θ : (0, ∞) → (0, ∞) satisfies: (1) Θ ∈ C1(0, ∞) and Θ′(s) > 0 for all s > 0;(2) Θ(1) = 1 and D Θ(1) < 1;(3) (Θ(s) − s)( s − 1) < 0 for all s ̸ = 1;(4) lim s→0+ Θ(s) = 0 and lim s→∞ Θ(s) = ∞.Define Ψ separately on the two sides of 1 as follows. Fix s− 
+
+> 0
+
+∈ (0, 1) and s + 
+
+> 0
+
+∈ (1, ∞) and define 
+
+Ψ(s) = exp 
+
+Z ss−
+
+> 0
+
+1
+
+τ − Θ(τ) dτ
+
+
+
+, s ∈ (0, 1) (20a) 
+
+Ψ(s) = exp 
+
+Z ss+
+
+> 0
+
+1
+
+τ − Θ(τ) dτ
+
+
+
+, s ∈ (1, ∞) (20b) 
+
+Ψ(1) = 0 , by continuous extension. (20c) 
+
+Then the following holds: 
+
+A1. Ψ(s) > 0 for all s ̸ = 1, and Ψ(1) = 0.
+
+A2. Ψ is C 1 on (0, ∞) \ { 1} and satisfies the ODE 
+
+Ψ′(s) = 1
+
+s − Θ(s) Ψ(s) , Ψ(1) = 0 . (21) 
+
+A3. Ψ has a strict minimum at s = 1 and Ψ(s) → 0 as s → 1.
+
+A4. Ψ is strictly decreasing on (0, 1) and strictly increasing on (1, ∞).
+
+A5. Ψ is strictly convex on (0, ∞) \ { 1}.Proof. (of Lemma 1) 
+
+Proof of A1. For s̸ = 1, Ψ(s) = exp (·) > 0, and Ψ(1) = 0by definition. 
+
+Proof of A2. Differentiate the defining integrals (20a), (20b); the fundamental theorem of calculus gives 
+
+d(ln Ψ)/ds = 1/(s − Θ(s)) .
+
+Proof of A3. Let f (s) = s − Θ(s). Then f (1) = 0 and 
+
+f ′(1) = 1 − Θ′(1) > 0. Hence f (s) ∼ (1 − Θ′(1))( s − 1) near 1, so  
+
+> Zss0
+
+1
+
+f (τ) dτ ∼ 11 − Θ′(1) ln |s − 1| → − ∞ as s → 1, (22) which implies Ψ(s) → 0 and gives a strict minimum at 1. 
+
+Proof of A4. From A2, sign (Ψ′(s)) = sign 
+
+ 1
+
+s − Θ(s)
+
+
+
+. (23) By assumption (3), s − Θ(s) < 0 for s < 1 and s − Θ(s) > 0for s > 1, giving the claimed monotonicity. 
+
+Proof of A5. Rearrange (21) as 
+
+Θ(s) := s − Ψ(s)
+
+Ψ′(s) (24) and differentiate for s̸ = 1 to obtain 
+
+Θ′(s) = Ψ(s) Ψ′′ (s)(Ψ′(s)) 2 . (25) Since Θ′(s) > 0, Ψ(s) > 0 for s̸ = 1, and (Ψ′(s)) 2 > 0, it follows that Ψ′′ (s) > 0 for all s̸ = 1. □
+
+5 Inverse Optimal Stabilizer for Predator-Prey Theorem 2 Let Θ satisfy the conditions in Lemma 1 and Ψ
+
+be defined by (20) . The positive feedback law U∗(X,Y ) = Y Σ
+
+ YX
+
+
+
+X,Y > 0 (26) 
+
+where the expander function 
+
+Σ(s) := Θ−1(s) , s > 0 (27) 
+
+is the minimizer of the infinite-horizon cost J(U) =  
+
+> Z∞
+> 0
+
+
+
+q(X,Y ) + r (X,Y ) Ψ
+
+UY
+
+ 
+
+dt (28) 
+
+along the solutions of (1) , where the state cost q(X,Y ) = (X − 1)2
+
+X + (Y − X)2
+
+XYX , (29) 
+
+is positive definite on X ,Y > 0, and the state-dependent input weight defined as r(X,Y ) = − Y G (X,Y )
+
+Ψ′ (Σ(Y /X)) (30) 5Fig. 1. The “expander” nonlinearity Σ(s), defined by (27), (24), for Ψ = Ω defined in (11), and used in the controller (26). The identity function s in thin green gives the nominal backstepping feedback U0 = Y 2/X.
+
+for Y ̸ = X and as r (X, X) = lim Y →X r(X,Y ) is positive on X,Y > 0. Furthermore, the minimal cost is given by J∗ = V (X0,Y0) , (31) 
+
+where the value function is given by (10) , and the optimizer 
+
+(26) is also a global asymptotic stabilizer of X = Y = 1 with a region of attraction X ,Y > 0.Proof. We first verify that r (X,Y ) is positive on X,Y >
+
+0. Since G(X,Y ) = X−YX and X > 0, one has sign (G) = 
+
+sign (X −Y ). Since Y > 0 and G(X,Y ) = ( X −Y )/X, one has sign (−Y G ) = sign (Y /X −1). Moreover, because Σ is strictly increasing with Σ(1) = 1, it follows that sign (Σ(Y /X)−1) = 
+
+sign (Y /X − 1). For a strictly convex Ψ with minimum at 1, the derivative Ψ′(s) has the same sign as s − 1, hence sign (Ψ′(Σ(Y /X))) = sign (Y /X − 1). Therefore the numera-tor and denominator in the expression for r have the same sign, which implies r(X,Y ) > 0 for all Y̸ = X, X,Y > 0. At 
+
+Y = X, since r(X,Y ) > 0 for every Y̸ = X, and since the nu-merator and denominator in the expression for r(X,Y ) have the same sign for all Y̸ = X, it follows that r(X,Y ) remains positive as Y → X. Hence any limit value at Y = X is posi-tive (possibly +∞), and therefore r(X, X) > 0. From differentiation of V along trajectories of (1), we have (12), where L, G are defined by (13a), (13b). Define the Hamiltonian 
+
+H(X,Y,U) = q(X,Y ) + L(X,Y ) + G(X,Y )U
+
++r (X,Y ) Ψ(U/Y ) , (32) where 
+
+q(X,Y ) = −
+
+
+
+L(X,Y ) + G(X,Y )Y 2
+
+X
+
+
+
+, (33) with L, G defined by (13a), (13b), is equal to (29), and ev-ident to be strictly positive for all (X,Y )̸ = ( 1, 1) and van-ishes at (1, 1). For fixed (X,Y ), the mapping 
+
+U 7 → GU + r Ψ(U/Y ) (34) is strictly convex on (0, ∞) because Ψ is strictly convex and 
+
+r > 0. The mapping’s derivative is 
+
+∂∂U
+
+ GU + rΨ(U/Y ) = G + rY Ψ′(U/Y ). (35) By definition of r in (30), 
+
+G + rY Ψ′(U∗/Y ) = 0 , (36) so U∗ is the unique global minimizer. Substituting U = U∗
+
+into (32), 
+
+H(X,Y,U∗) = q + L + GU ∗ + r Ψ(U∗/Y ). (37) With r in (30), we obtain 
+
+GU ∗ + r Ψ(U∗/Y ) = GY 
+
+
+
+U∗/Y − Ψ(U∗/Y )
+
+Ψ′(U∗/Y )
+
+
+
+= GY Θ(U∗/Y ) = G Y 2
+
+X . (38) Hence 
+
+H(X,Y,U∗) = q + L + GY 2
+
+X = 0 (39) by definition of q in (33). Therefore min  
+
+> U>0
+
+H(X,Y,U) = 0, (40) so the stationary Hamilton–Jacobi–Bellman equation holds with value function V .To prove global asymptotic stability, we can simply invoke Theorem 1 by noting that Σ defined in (27) satisfies conditions (17). But we provide a proof customized to the optimal control result of this theorem. Recall from (37) and (39) that 
+
+q + L + GU ∗(X,Y ) + r Ψ(U∗/Y ) = 0, (41) which gives ˙V = L + GU ∗ = −q − r Ψ(U∗/Y ) . (42) Since, on X,Y > 0, q is positive definite at X = Y = 1, r is positive, and Ψ(U∗/Y ) nonnegative, the global asymptotic stability conclusion follows. □
+
+6 Recognizing LgV Control in the Inverse Optimal Feedback for Predator-Prey Dynamics 
+
+Recognizing the expected − 1
+
+r LgV structure, with some positive state-dependent gain r, in the feedback law (26), 6is difficult. First, what is LgV there? From (12) it appears like G = 1 − Y /X should play the LgV role. But one has to recognize that, as the actual input to the predator-prey model, one should regard not U, but the predator-scaled and shifted-to-setpoint-1 input u = U/Y − 1. To facilitate the recognition of the LgV format of the nominal and optimal controllers, we first specialize Theorem 2 to the Volterra-Lyapunov control cost Ω.
+
+Corollary 1 For 
+
+Ψ = Ω , (43) 
+
+with Ω defined in (11) , in which case 
+
+Θ(s) = s ln ss − 1 (44) 
+
+and r(X,Y ) = Π(Y /X)Y (45) 
+
+Π(Y /X) := ρ − 1
+
+Σ (ρ) − 1 Σ (ρ) , ρ = YX , (46) 
+
+with Σ given by (27) , the results of Theorem 2 hold. 
+
+For the “input” u, for the control cost (44) and with the recognition that (Ψ′)−1 = 1/(1 − s), and with the expander (27), the nominal control is expressed by 
+
+u0 = U∗
+
+Y − 1 =
+
+ln 
+
+
+
+1 + GY r
+
+
+
+GY r
+
+− 1 . (47) and the optimal control by 
+
+u∗ = U∗
+
+Y − 1 = −
+
+GY r
+
+1 + GY r
+
+. (48) Their relation is expressed by 
+
+u∗ = d (u0 GY /√r)
+
+d (GY /√r) , (49) consistent with the nominal-optimal relation (6). The actual nominal control is (after a fair bit of calcu-lation) 
+
+U0 = Y
+
+ln 
+
+
+
+1 + GY r
+
+
+
+GY r
+
+> 0 (50) and the optimal control is 
+
+U∗ = Y 11 + GY r
+
+> 0 . (51)         
+
+> Fig. 2. The functions that govern the feedback laws (50) and (51). Compared to the blue curve, for the nominal control, the red curve, representing the optimal control, decays twice as fast near z=0, a tell-tale sign of optimality (the gain margin of 1/2), and at a rate that gets even faster — ln (z)faster — as zgrows.
+
+A fascinating observation arises from Figure 2. The optimal control is amplified with the expender function Σ(·)
+
+as Y /X grows above 1 (and, likewise, attenuated, when Y /X
+
+decays below 1), as shown in Figure (1). However, in terms of the dependence on G(X,Y )Y /r(X,Y ), the two controllers are decreasing, and the optimal control decreases much more aggressively with the increase of GY /r. This is explainable simply but GY /r being a much more complex function of 
+
+X and Y than Y /X is. Though with less transparency, for a general convex Ψ,the controllers are written as 
+
+U0 = Y Θ
+
+
+
+(Ψ′)−1
+
+
+
+− GY r
+
+ 
+
+(52) 
+
+U∗ = Y (Ψ′)−1
+
+
+
+− GY r
+
+
+
+, (53) and the relation (49) is obeyed even for the general Ψ (with 
+
+u0 = U0/Y − 1, u∗ = U∗/Y − 1). 
+
+7 Biological Interpretation of Inverse Optimality 
+
+The particular inverse optimal result of Corollary 1 is rich with biologically interesting and justified information. 
+
+Asymmetry of optimal feedback: high-predator amplifi-cation and high-prey attenuation in predator harvesting 
+
+Let us first consider the optimal feedback (26) and the effect of the strictly increasing low-attenuator high-amplifier func-tion Σ(·) defined with (44) and (27). Near s = 0+, Σ(s) ∼
+
+s/| ln (s)|, which has a zero slope but its slope is higher than 
+
+sα for all α > 1, i.e., it is locally superlinear but less flat than any locally superlinear polynomial. So, Σ is a low-
+
+Y /X attenuator. It uses mild harvesting of the predator when the prey dominates the predator. As s → ∞, Σ(s) ∼ es. It is a high-Y /X amplifier, namely, it harvests the predator ag-gressively when the predator dominates the prey. Finally, 
+
+Σ(1) = 1 and Σ′(1) = 2. The latter property is a tell-tale sign 7of inverse optimality and the resulting use of twice the gain than is needed for mere stabilization, which results in a gain margin of (1/2, ∞).
+
+Predator-weighted and asymmetric control penalty We consider the complete control penalty term, r(X,Y )Ψ(U/Y ).Near s = 0+, Π(s) ∼ Σ(s) ∼ s/| ln (s)|, meaning Π(·)
+
+at zero is zero and flat. As s → ∞, Π(s) ∼ s. And, 
+
+Π(1) = 1/2, Π′(1) = 2/3. Let us now consider the sensitiv-ity of the state-dependent control cost to harvesting U:
+
+∂∂U
+
+
+
+r(X,Y ) Ψ
+
+UY
+
+ 
+
+= Π
+
+ YX
+
+  
+
+1 − YU
+
+
+
+. (54) This is a product of two functions, each increasing in its single arguments, Y /X and U/Y . The cost sensitivity can be studied. We focus on three cases that are not immediately intuitive, biologically. In the regime X ≫ Y ≫ U, prey are relatively abundant compared to predators, the predator is temporarily scarce in relative terms, and harvesting per predator is extremely low. A purely predator-centric heuristic would suggest reducing harvesting even further. However, in a predator–prey system where prey are relatively abundant, the predator has strong intrinsic recovery potential; shutting down harvesting en-tirely does not enhance survival but instead risks destabiliz-ing the prey–predator balance. The separable cost sensitivity to harvesting, ∂ [r(X,Y )Ψ(U/Y )] /∂U ∼ − Y /X   
+
+> |ln (Y/X)|
+> YU
+
+< 0, reflects this system-level perspective: it does not reward driv-ing harvest intensity U/Y toward zero simply because the predator population is momentarily small relative to prey, since the ecological context (relative prey abundance) al-ready provides recovery support. In the opposite regime, U ≫ Y ≫ X, the predator dom-inates the prey and is already being harvested at a high per-capita rate. One might expect that, since the preda-tor is abundant, further harvesting should remain inexpen-sive. Instead, the marginal sensitivity of the cost on con-trol, ∂ [r(X,Y )Ψ(U/Y )] /∂U ∼ Y /X ≫ 1, becomes large and positive because Π(Y /X) is large while 1 − Y /U is close to its saturation value of one. The model therefore reacts strongly against additional increases in harvesting. In eco-logical terms, once harvesting intensity per predator is al-ready high, the inverse optimal formulation treats further escalation as dangerous, even under predator dominance, thereby preventing overcorrection that could induce a deep depletion in the prey population. When Y ≪ X, r(X,Y ) is small, i.e., it appears that the inverse optimal formulation makes it cheap to harvest a rel-atively scarce predator. That is indeed the case and in fact reasonable: in this regime the abundance of the prey has a greater effect on the predator recovery and the system as a whole than the harvesting does.                  
+
+> Fig. 3. The “contractor” nonlinearities Θidefined in (55), with their growth trends quantified in (56).
+> Fig. 4. The control cost functions Ψi, obtained from the respective
+> Θi, using (21). Both Ψ1and Ψ3have barrier behavior at s=0, but
+> Ψ2does not. Of the three, Ψ1and Ψ1have the least aggressive growth for large s— linear.
+
+8 Exploring the Parametrizing Families of Contractor Functions and Control Penalties 
+
+Theorem 2 presents a broad parametrization of opti-mal controllers U∗ = Y Σ(Y /X) and control cost functions 
+
+Ψ(U/Y ) in terms of the strictly increasing ‘contractor func-tions’ Θ. This generality of the approach deserves at least a bit of illustration, which we perform in this section. We carefully choose three examples of contractor func-tions with different behaviors as s → 0 and s → ∞:
+
+Θ1(s) = s ln ss − 1 (55a) 
+
+Θ2(s) = √s (55b) 
+
+Θ3(s) = 2s − √s2 + 1 + 13 − √2 . (55c) The asymptotic behaviors of Θ1, Θ2, Θ3 are 
+
+Θ1 ∼ s| ln s| (s → 0+), Θ1 ∼ ln s (s → ∞) (56a) 
+
+Θ2 ∼ s1/2 (s → 0+), Θ2 ∼ s1/2 (s → ∞) (56b) 
+
+Θ3 ∼ c s (s → 0+), Θ3 ∼ κ s (s → ∞) (56c) 
+
+c = 23 − √2 , κ = 12(3 − √2) (56d) 8namely, Θ3, Θ1, Θ2 are, respectively, the least, medium, and most aggressively growing near s = 0, whereas Θ1, Θ2, Θ3
+
+are, respectively, the least, medium, and most aggressively growing for large s. These functions’ trends act in an inverse fashion when employed in the feedback (26) through (27). The corresponding Ψ-functions are 
+
+Ψ1(s) = s − 1 − ln s, (57a) 
+
+Ψ2(s) = ( √s − 1)2 (57b) 
+
+Ψ3(s) = see (21), not available in closed form, but see (60) Their asymptotic behaviors are, for Ψ1,
+
+Ψ1(0+) = + ∞, (58a) 
+
+Ψ1(s) ∼ | ln s| (s → 0+), (58b) 
+
+Ψ1(s) ∼ s (s → ∞), (58c) 
+
+Ψ1(s) ∼ 12 (s − 1)2 (s → 1) (58d) for Ψ2,
+
+Ψ2(0+) = 1, (59a) 
+
+Ψ2(s) = 1 − 2√s + s (s → 0+), (59b) 
+
+Ψ2(s) ∼ s (s → ∞), (59c) 
+
+Ψ2(s) ∼ 14 (s − 1)2 (s → 1) (59d) and for Ψ3,
+
+Ψ3(0+) = + ∞, (60a) 
+
+Ψ3(s) ∼ C s −(1+2√2) (s → 0+), (60b) 
+
+Ψ3(s) ∼ C s (22 +2√2)/17 (s → ∞), (60c) 
+
+Ψ3(s) ∼ C |s − 1|4+√2 (s → 1). (60d) As evident in the equations above, as well as shown in Figure 4, both Ψ1 and Ψ3 have barrier behavior at s = 0, but Ψ2 does not. Of the three, Ψ1 and Ψ2 has the least aggressive growth for large s — linear — while Ψ3 is superlinear. Around the minimum, Ψ1 and Ψ2 are quadratic in s − 1, whereas Ψ3 is more than twice as flat. In summary the contractor Θ, which generates the cost 
+
+Ψ, has a broad controller-shaping and cost-shaping diversity. It is capable of spanning optimal controllers that are cautious or aggressive, near or far from the setpoint, and all of them with meaningful and understandable costs on control. 
+
+9 Simulations: Illustration of Optimality and Effect of the Expander 
+
+The purpose of the simulations in this section is not to demonstrate stability — which is already guaranteed by Theorems 1 and 2 — but to illustrate how inverse optimality manifests itself dynamically, and how the expander function 
+
+Σ reshapes the transient response relative to the nominal backstepping controller U0 = Y 2/X.                                  
+
+> Fig. 5. With initial prey slightly depleted and predator dominant, the expander Σmakes the action of optimal control U∗=YΣ(Y/X)
+> stronger than the dominant control U0=Y2/Xand reduces the excursion of the trajectory on the way to the equilibrium
+> X=Y=U=1. Perhaps counterintuitively, the optimal controller, which harvests the predator more aggressively, prevents a deeper depletion of the prey than the nominal controller. While the con-trol cost r(X,Y)Ω(X,Y)is higher for the optimal control initially, the state cost q(X,Y)is lower for the duration of the transient, resulting in the overall cost J∗that is lower than Jachieved under the nominal control, as predicted by the theory, and this reduction happens to be considerable: 20%.
+
+Two classes of initial conditions are selected deliber-ately. First, we consider predator-dominant regimes with the prey initially depleted. In this case Y /X > 1, so the expander satisfies Σ(Y /X) > Y /X and amplifies harvesting intensity. This regime highlights the aggressive behavior of the opti-mal controller and tests whether expanded harvesting pre-vents deeper prey depletion. Figure 5 shows that the optimal feedback produces a visibly stronger initial control action, reduces the excursion of the trajectory in the (X,Y )-plane, and yields a substantially lower total cost J∗, in agreement with the Hamilton–Jacobi–Bellman characterization. Second, we examine prey-dominant regimes with a de-pleted predator. Here Y /X < 1 and the expander Σ attenuates the harvesting intensity, Σ(Y /X) < Y /X. This configuration is intentionally selected as a stress test for the optimal con-troller: attenuation weakens the initial harvesting action rel-ative to U0, so any performance advantage must arise from the state-dependent weighting structure rather than brute-force amplification. As seen in Figure 6, the state transients are nearly indistinguishable, while the control histories dif-fer markedly in early time. The total cost improvement is smaller but remains strictly positive, consistent with Theo-9Fig. 6. The initial condition with a depleted predator and an over-populated prey is particularly challenging for the optimal con-troller because the initial expander Σ(Y0/X0) = 0.16 is half of       
+
+> Y0/X0=0.35, making the initial optimal harvesting “weak.” The transients do not differ by much, but the control effort U(t)differs, as expected: the optimal control is first weaker and later stronger than the optimal control. As expected from the theory, the overall cost J∗of the optimal controller is lower, but only by about 3%, in this case, chosen to challenge the optimal controller.
+
+rem 2. These two regimes illustrate the essential mechanism of the expander Σ: amplification when the predator domi-nates, attenuation when the prey dominates. The simulations confirm that inverse optimality is reflected not merely in asymptotic convergence but in the structure of the transient response and in the distribution of control effort over time. 
+
+10 Universal Formula for Stabilization of Positive-Orthant Systems with Non-negative Control 
+
+In this section we make our first step towards general-izing the framework from the predator-prey benchmark to broader systems affine in control. Under a CLF assumption, we provide a universal formula for stabilization in the pos-itive orthant by non-negative control. Mimicking our proof in [5] that Sontag’s original universal formula [14] is inverse optimal, we establish inverse optimality of our universal for-mula for positive, non-negatively controlled systems. 
+
+Theorem 3 Consider the system 
+
+˙ξ = f (ξ ) + g(ξ ) ω, ξ ∈ (0, ∞)n, (61) 
+
+on the positive orthant (0, ∞)n, with a non-negative scalar input ω ∈ [0, ∞) and such that f (1) + g(1) = 0. Let V :
+
+(0, ∞)n → R≥0 be C 1, positive definite with respect to 1,proper in (0, ∞)n, and let it satisfy the (necessary and suffi-cient) CLF condition a(ξ ) ≥ 0 =⇒ b(ξ ) < 0, ∀ ξ̸ = 1 , (62) 
+
+where a(ξ ) := L f V (ξ ) + LgV (ξ ) (63a) 
+
+b(ξ ) := LgV (ξ ) . (63b) 
+
+The universal feedback 
+
+ω = ωκ (ξ ) = 1 + κ(ξ ) min {0, sgn {b(ξ )}} (64) 
+
+with ω(1) = 1 and 
+
+κ(ξ ) = a(ξ ) + pa2(ξ ) + b2(ξ )
+
+b(ξ ) , b(ξ )̸ = 0 (65) 
+
+guarantees that ˙V (ξ ) < 0 for all ξ̸ = 1 and minimizes J = 
+
+> Z∞
+> 0
+
+b2(ξ )
+
+a(ξ ) + pa2(ξ ) + b2(ξ )
+
+×
+
+
+
+1 + (ω − 1)2
+
+max {0, −sgn {b(ξ )}} 
+
+
+
+dt (66) 
+
+over all non-negative stabilizing feedback laws, where, when b(ξ ) ≥ 0, the fraction (ω−1)2  
+
+> max {0,−sgn {b(ξ)}}
+
+is to be interpreted as 
+
++∞ when ω̸ = 1 and as 0 when ω = 1. If additionally a (ξ0) <
+
+0 whenever b (ξ0) = 0 and ξ0̸ = 1, then ω is continuous on 
+
+(0, ∞)n.Proof. Fix ξ̸ = 1. If b(ξ ) ≥ 0, then ω(ξ ) = 1 by (64) and hence ˙ V (ξ ) = a(ξ ) < 0 by the CLF assumption. If b(ξ ) < 0, denoting s = √a2 + b2, the control ω(ξ ) = 1 + a+s 
+
+> −b
+
+yields ˙V (ξ ) = a + b(ω(ξ ) − 1) = a + b a+s 
+
+> −b
+
+= a − (a + s) = −s, i.e., ˙V = −
+
+p
+
+a2 + b2 < 0 , ∀ξ̸ = ξ ∗ . (67) The proof of inverse optimality mimics the proof of Theorem 3.2 in [5]. For proving continuity at ξ0 with b(ξ0) = 0 and 
+
+a(ξ0) < 0, take ξk → ξ0 with b(ξk) < 0 and denote ak =
+
+a(ξk), bk = b(ξk). For large k, ak < 0 and the identity ak +
+
+q
+
+a2 
+
+> k
+
++ b2 
+
+> k
+
+= b2   
+
+> kq
+> a2
+> k+b2
+> k+|ak|
+
+yields |ω(ξk) − 1| = ak+  
+
+> q
+> a2
+> k+b2
+> k
+> −bk
+
+=   
+
+> −bkq
+> a2
+> k+b2
+> k+|ak|
+
+≤ |bk| 
+
+> 2|ak|
+
+→ 0 = ω(ξ0) − 1. □
+
+Theorem 3 provides a universal feedback expressed di-rectly in terms of the Lie derivatives L f V (ξ ) and LgV (ξ )
+
+for systems on the positive orthant (0, ∞)n with nonnegative control ω ∈ [0, ∞). The construction is tailored to the nor-malization ξ ⋆ = 1 and ω⋆ = 1, so that the deviation variable is ω − 1 and the shifted drift term is incorporated into the definition (63). The resulting feedback depends only on L f V
+
+10 and LgV and enforces (67) whenever LgV (ξ ) < 0, while re-ducing to the equilibrium value ω = 1 when LgV (ξ ) ≥ 0, a region in which the CLF condition guarantees L f V (ξ ) < 0. By contrast, Lin and Sontag [8] treat control-affine sys-tems on Rn with restricted input sets, including strictly pos-itive controls, and construct universal stabilizers that remain positive globally. Their construction is necessarily geomet-ric and more elaborate, since it must reconcile the CLF de-crease condition with a fixed constraint u ∈ (0, ∞) across all directions in state space. The principal difference is therefore the following. In the positive-orthant setting of our Theorem 3, the feasibility geometry is asymmetric: whenever LgV (ξ ) ≥ 0, the CLF condition implies L f V (ξ ) < 0, so no positive actuation is required and the boundary value ω = 1 is already stabilizing. The universal formula only acts nontrivially on the control-active region LgV (ξ ) < 0. In the Euclidean setting of Lin-Sontag, no such drift-dominant region exists a priori, and the universal feedback must be active everywhere. Thus Theorem 3 may be viewed as the positive-orthant analog of Sontag-type universal formulas, specialized to nonnegative control and exploiting the intrinsic one-sided geometry of the Lyapunov feasibility condition. Our universal formula (65) looks nearly identical to Sontag’s classical formula for input-unconstrained stabiliza-tion on Rn [14], the most obvious difference being our b2
+
+under the square root, and Sontag’s b4 under the square root. Sontag’s b4 ensures continuity at b = 0 in the unconstrained setting, whereas in the present positive-control setting the square-root structure with b2 reflects the one-sided feasibil-ity geometry rather than a removable singularity. The main difference, apart from the obvious fact that our a(ξ ) differs from the one in Sontag’s problem by +LgV , is that our set for (a, b) excludes the open first quadrant, whereas Sontag’s set for (a, b) excludes only the negative horizontal line, since the control can act both positively and negatively. This is captured in the “projection operation” min {0, sgn {LgV (ξ )}} 
+
+in (64), which deactivates the control formula κ in the sec-ond quadrant of the (a, b) plane, namely, for all ξ where 
+
+LgV (ξ ) > 0. The inverse optimal result (66), for our universal for-mula (64), (65), is meaningful, since b2(ξ ) 
+
+> a(ξ)+
+
+√a2(ξ )+ b2(ξ ) is positive definite on the positive orthant (due to the CLF condition) and (ω−1)2  
+
+> max {0,−sgn {b(ξ)}}
+
+, the weight on the devia-tion of ω from its equilibrium value 1, is infinite when 
+
+LgV ≥ 0, which by (62) implies that L f V ≤ L f V + LgV < 0, namely, that ˙ V is negative and control effort other than the equilibrium-keeping control ω = 1 would be wasted.           
+
+> Fig. 7. Universal control for predator-prey, Uuniv (X,Y)shown in (68). Harvesting “floors” at the equilibrium value of U=1 since ˙ V
+> is already negative when the prey dominates the predator, X>Y.
+
+Universal formula for predator prey. With (13) substi-tuted into (64), (65), we obtain 
+
+Uuniv (X,Y ) = 1 +
+
+(0, X ≥ Y,
+
+κ(X,Y ), X < Y (68) where 
+
+κ = 1
+
+Y − X
+
+"
+
+(Y − 1)( Y − X) − (X − 1)2
+
++
+
+q (Y − 1)( Y − X) − (X − 1)22 + ( Y − X)2
+
+#
+
+. (69) Would we rather apply this feedback to the predator-prey system than the nominal U0 = Y 2/X or the simple inverse optimal U∗ = Y 3/X2 (obtained for Σ(s) = s2)? Unlikely. But there is merit in having a catalog of options. 
+
+11 General Expander-Parametrized Positive Inverse-Optimally Stabilizing Laws for (0, ∞)n-Systems 
+
+The universal formula in Section 10 is valuable, if one first has a CLF. But a CLF construction is typically the result of designing a controller, along with a construction of a CLF. So, the synthesis doesn’t end with a universal formula—the formula is one of the possible feedback laws for the user, who typically has to first design a CLF-affirming feedback law. Hence, the general question of stabilization, both basic and inverse optimal, is still in need of a design framework. For the predator-prey benchmark we designed three el-ements: a CLF, a basic stabilizing feedback law, and a family of inverse-optimal stabilizers. The predator-prey benchmark, while merely an example within a broad class of control-affine positive systems, provides a roadmap for a general-11 ized inverse optimal redesign, in which the key is finding a CLF and a nominal controller that satisfy certain conditions that are met for the predator-prey benchmark. We alert the reader that, in the next theorem, the in-put range (0, ∞) differs slightly, but importantly from the input range [0, ∞) in Theorem 3. The difference is not fun-damental but a matter of preference and the problem choice. In Theorem 3, acting with ω = 1 on LgV ≥ 0 is harmless and, applying such control in the predator-prey application might be regarded as ‘smart’—not bothering to harvest the predator below the equilibrium harvesting when the domi-nance of prey makes the harvesting variation unnecessary, as the predator growth is healthy for the overall system. In the next theorem, preference is placed on optimality subject to a strictly convex penalty on control; zero harvesting is a myopic efficiency which would destroy optimality over the infinite horizon. 
+
+Theorem 4 Let ω0 : (0, ∞)n → (0, ∞) satisfy ω0(1) = 1 and the strict CLF inequality q(ξ ) := −L f V (ξ ) − LgV (ξ ) ω0(ξ ) > 0, ∀ ξ̸ = 1. (70) 
+
+For every Σ : (0, ∞) → (0, ∞) that is C 1, strictly increas-ing, onto, normalized by Σ(1) = 1, and satisfies the sign-alignment condition 
+
+sign 
+
+
+
+Σ ω0(ξ ) − 1
+
+
+
+= − sign  LgV (ξ ), ∀ ξ̸ = 1
+
+(71) 
+
+the feedback 
+
+ω∗(ξ ) := Σ ω0(ξ ) (72) 
+
+minimizes, over all globally asymptotically stabilizing con-trollers, the infinite-horizon functional J(ω) =  
+
+> Z∞
+> 0
+
+
+
+q(ξ (t)) + r(ξ (t)) Ψ(ω(t)) 
+
+
+
+dt (73) 
+
+along the solutions of (61) , where Ψ : (0, ∞) → R≥0 is the strictly convex penalty (unique up to a positive scale factor) defined implicitly by 
+
+Ψ(s)
+
+Ψ′(s) = s − Σ−1(s), s̸ = 1, Ψ(1) = 0, (74) 
+
+the weight r (ξ ) is strictly positive on (0, ∞)n \ { 1} (with a positive extended-real limit at ξ = 1), and the product r(ξ )Ψ(ω), equivalently expressed as r(ξ )Ψ(ω) = LgV (ξ )
+
+
+
+ω0(ξ ) − Σ(ω0(ξ )) 
+
+
+
+× exp   
+
+> ZΣ−1(ω)
+> ω0(ξ)
+
+Σ′(σ )
+
+Σ(σ ) − σ dσ
+
+!
+
+, (75) 
+
+is convex in ω for all ξ ∈ (0, ∞)n and strictly positive for all 
+
+ω̸ = 1. Moreover, V is the value function, J∗ = V (ξ0) (76) 
+
+and the optimal closed loop is globally asymptotically stable on (0, ∞)n at ξ = 1.Proof. From (61), (70), ˙V = L f V + LgV ω = −q(ξ ) + LgV (ξ ) ( ω − ω0(ξ )) . (77) Add and subtract ω∗:˙V = −q(ξ ) + LgV (ξ ) ( ω − ω∗) + LgV (ξ ) ( ω∗ − ω0). (78) From the defining identity (74) evaluated at s = ω∗ and using 
+
+Σ−1(ω∗) = ω0, we obtain 
+
+Ψ(ω∗) = ( ω∗ − ω0) Ψ′(ω∗). (79) Define 
+
+r(ξ ) = − LgV (ξ )
+
+Ψ′(ω∗(ξ )) . (80) Using (71), ω∗ = Σ(ω0), and sign Ψ′(s) = sign (s − 1),we get LgV (ξ )Ψ′(ω∗(ξ )) < 0 for ξ̸ = 1, hence r(ξ ) = 
+
+−LgV (ξ )/Ψ′(ω∗(ξ )) > 0 on (0, ∞)n \ { 1}. Moreover, since 
+
+r(ξ ) > 0 for every ξ̸ = 1 and the numerator and denomi-nator in (80) have the same sign in a neighborhood of 1, it follows that any extended-real limit value of r(ξ ) as ξ → 1
+
+is positive (possibly +∞), and therefore r(1) > 0 in the extended-real sense. Next, from (79), (80), 
+
+LgV (ξ ) ( ω∗ − ω0) = −r(ξ ) Ψ(ω∗(ξ )) . (81) Substituting, ˙V = −q(ξ ) + LgV (ξ ) ( ω − ω∗) − r(ξ ) Ψ(ω∗(ξ )) . (82) The construction (74), equivalent to (21) with Θ = Σ−1,yields a C1 strictly convex Ψ with unique minimizer at 1, hence sign Ψ′(s) = sign (s − 1) for all s̸ = 1. By convexity of 
+
+Ψ,
+
+Ψ(ω) ≥ Ψ(ω∗) + Ψ′(ω∗) ( ω − ω∗). (83) Multiplying by r(ξ ) and using the definition of r,
+
+LgV (ξ ) ( ω − ω∗) ≥ r(ξ ) Ψ(ω∗) − r(ξ ) Ψ(ω). (84) Hence ˙V ≤ − q(ξ ) − r(ξ ) Ψ(ω). (85) For ξ̸ = 1, equality holds if and only if ω = ω∗(ξ ). Inte-grating over [0, ∞) gives  
+
+> Z∞
+> 0
+
+ q(ξ (t)) + r(ξ (t)) Ψ(ω(t))  dt (86) 
+
+≥ V (ξ (0)) − lim inf 
+
+> t→∞
+
+V (ξ (t)) ≥ V (ξ (0)) , (87) 12 with equality precisely for ω = ω∗. To derive (75), let s =
+
+Σ(σ ). Since Σ−1(Σ(σ )) = σ , this yields 
+
+Ψ′(Σ(σ )) 
+
+Ψ(Σ(σ )) = 1
+
+Σ(σ ) − σ (88) from (74). Differentiating ln Ψ(Σ(σ )) with respect to σ gives 
+
+ddσ ln Ψ(Σ(σ )) = Ψ′(Σ(σ )) 
+
+Ψ(Σ(σ )) Σ′(σ ) = Σ′(σ )
+
+Σ(σ ) − σ . (89) Integrating from σ = ω0(ξ ) to σ = Σ−1(ω) and using 
+
+Σ(ω0(ξ )) = ω∗(ξ ),
+
+Ψ(ω) = Ψ(ω∗(ξ )) exp   
+
+> ZΣ−1(ω)
+> ω0(ξ)
+
+Σ′(σ )
+
+Σ(σ ) − σ dσ
+
+!
+
+. (90) Multiplying (90) by r(ξ ) and substituting (81) yields (75). Under ω = ω∗,˙V = −q(ξ ) − r(ξ ) Ψ(ω∗(ξ )) < 0 (ξ̸ = 1), (91) so 1 is globally asymptotically stable and V is the value function. □
+
+Design pathway. Designing simultaneously a strict CLF and a globally stabilizing controller to satisfy condition (70), beyond the predator-prey example, is already difficult. But even more difficult is ensuring that such a (V, ω0) pair lends itself to satisfying condition (71) of sign-compatibility for some admissible (increasing, invertible, expansive) Σ.To at least get a taste of what it takes to satisfy condition (71), we remind the reader what this condition specializes itself to for the predator-prey model: 
+
+X > Y ⇐⇒ Σ
+
+ YX
+
+
+
+< 1, X < Y ⇐⇒ Σ
+
+ YX
+
+
+
+> 1.
+
+(92) While this relation looks simple, the sign-compatibility is met in an manner that is the opposite from easy: thanks to a carefully constructed pair V , of the Volterra-Lyapunov struc-ture with a backstepping transformation, and the nominal feedback ω0 = Y /X of the backstepping type. Condition (71) is best understood as the positive-input counterpart of the classical requirement that the inverse op-timal stabilizing nonlinear feedback for an input-affine sys-tem be of the form (3), namely, a generalized form of nega-tion of LgV .For LTI systems, this “negative of LgV ” form has been known since Kalman answered the question ”When is a lin-ear control system optimal?” [4] with his celebrated inverse-optimal feedback form u = −R−1B−1Px , where P is a solu-tion of not a Riccati but a Lyapunov algebraic equation. 
+
+Reciprocal symmetry. The function (ℓγ)′ ◦ (ℓγ/Id )−1 in (7) is the analog of the expander Σ, and (ℓγ/Id ) ◦  (ℓγ)′−1
+
+the analog of the contractor Θ. The difference that arises in positive systems is that, while (ℓγ)′ ◦ (ℓγ/Id )−1 is odd in a real variable (nominal sign-unconstrained control), expander 
+
+Σ is, in general, not symmetric relative to s = 1 on (0, ∞).However, ‘unconventionally symmetric’ Σ’s exist. A 
+
+“reciprocally symmetric” Σ(σ ) = 1/Σ σ /Σ(σ ), ∀ σ > 0results in a control cost Ψ that is not only strictly con-vex but itself satisfies the reciprocal symmetry of the form 
+
+ϒ(s) + ϒ(1/s) = 1, where ϒ(s) = Ψ(s)(s − 1)Ψ′(s) . The fact is proven with σ = Θ(s). This—reciprocal—form of symme-try is interesting because it holds for Σ = Θ−1 in (44) and 
+
+Ψ = Ω defined by (11), as well as for Σ(s) = s2 and the corresponding Ψ(s) = ( √s − 1)2.
+
+Expander with an ordinary odd symmetry in the univer-sal formula. If one takes the universal formula (64), (65) divided by two , and appropriately shifted by 1, namely, 
+
+ω = ωκ/2(ξ ) := 1 + 12 (ωκ (ξ ) − 1) , (93) and declares this as the nominal control 
+
+ω0(ξ ) = ωκ/2(ξ ) , (94) this feedback can be verified to guarantee ˙V = − 12
+
+p
+
+a2 + b2 < 0 , ∀ξ̸ = ξ ∗ , (95) namely, global asymptotic stability is guaranteed with one half of the universal formula ωκ . This is a signature of in-verse optimality of ωκ , a property formally established in Theorem 3. The question then is how this contraction re-lation between ωκ and ωκ/2 aligns with Theorem 4, and specifically with its expander redesign formula (72). The answer is simple—by combining (93), (94), (72), one gets 
+
+ωκ = 1 + 2(ωκ/2 − 1) , (96) namely, the redesign formula (72) holds with the expander 
+
+Σ(s) = 2s , (97) a R → R function with odd symmetry around s = 0. It is largely the anticipation of this feature of universal control— nor merely producing a universal formula but identifying it as a particular case of the inverse optimal redesign in Theorem 4—that has driven us to develop Section 10. 
+
+12 Constructive General Inverse Optimal Stabilizers 
+
+In Section 11 we pursued a parametrization of the in-verse optimal stabilizing controllers using an expander func-tion Σ. That is a very general framework, useful when the 13 alignment condition (71) is satisfied by the nominal con-troller ω0 and the expander, but a fully constructive frame-work is preferable, in which a controller is directly designed to be stabilizing and inverse optimal . Those two properties are provided by the universal controller (64), (65), however, one wants a broader catalog of controllers, for performance shaping — not just a single formula in relation to the opti-mal ωκ .The constructive framework we are after in this section is equivalent to designing (5), simultaneously over (γ, r). In this section, we provide a design with simultaneous choices of (Θ, r). The contractor Θ is chosen first, followed by a choice of the control weight r, obtaining in the end both an inverse optimally stabilizing controller, and a controller that is merely stabilizing and analogous to the half-universal formula ωκ/2.Consider system (61) and the associated ˙V = a + b(ω − 1) , (98) where a(ξ ), b(ξ ) are defined in (63), and denote by S ⊂
+
+R2 the set where b ≥ 0 ⇒ a < 0. Although the designs are expressed in terms of functions of Lie-derivative data (a, b),the controllers should be understood as feedback laws in the state ξ ∈ (0, ∞)n.
+
+Theorem 5 Let Θ : (0, ∞) → (0, ∞) satisfy the conditions in Lemma 1, with the strictly conved Ψ : (0, ∞) → (0, ∞) having the properties claimed in Lemma 1, and denote 
+
+℧ = Θ ◦ (Ψ′)−1 (99a) 
+
+℧−1 = Ψ′ ◦ Θ−1 , (99b) 
+
+where, under Lemma 1, ℧ is strictly increasing on (0, 1),satisfies ℧(0) = 1, and maps (0, 1) into (1, ∞), and conse-quently, ℧−1 : (1, ∞) → (0, 1) is strictly increasing and sat-isfies ℧−1(1) = 0. With the function r = r(a, b) ∈ (0, ∞] cho-sen such that r (a, b) = + ∞ for b ≥ 0, and for b < 0,r(a, b) > −b when a ≤ b + 1 (100) 
+
+and r(a, b) ∈
+
+
+
+−b, − b
+
+℧−1(a − b)
+
+
+
+when a > b + 1 (101) 
+
+the feedback 
+
+ω∗(a, b) = ( Ψ′)−1
+
+
+
+− br
+
+
+
+, (102) 
+
+with the limiting value ω∗(a, b) = 1 when r = + ∞, minimizes J(ω) =  
+
+> Z∞
+> 0
+
+h
+
+q(a, b) + r(a, b)Ψ(ω)
+
+i
+
+dt (103) 
+
+along the solutions of (61) , where q(a, b) = −a + b + b ℧
+
+
+
+− br
+
+
+
+, (104) 
+
+with limiting value q (a, b) = −a when r = + ∞, has the prop-erty that q(a, b) > 0 for all (a, b) ∈ S \ { (0, 0)} (105) 
+
+and q (0, 0) = 0. Furthermore, both the feedback (102) and 
+
+ω0(a, b) = ℧
+
+
+
+− br
+
+
+
+, (106) 
+
+with the limiting value ω0(a, b) = 1 when r = + ∞, are sta-bilizing at a = b = 0 on S with respect to the CLF V . Proof. For (a, b) ∈ S, consider the function 
+
+h(ω) = b(ω − 1) + rΨ(ω), (107) where r = r(a, b) and ω > 0. Since Ψ(ω) is strictly convex on (0, ∞), so is h(ω) whenever r < ∞. Its derivative is 
+
+h′(ω) = b + rΨ′(ω). (108) Setting (108) equal to zero yields 
+
+b + rΨ′(ω) = 0, (109) whose unique solution is (102). In the case b ≥ 0, the theo-rem sets r = + ∞, and the penalty term enforces ω = 1 = ω∗
+
+as the unique minimizer. Hence ω∗ uniquely minimizes h in all cases. Substituting (102) gives 
+
+b(ω∗ − 1) = b
+
+
+
+(Ψ′)−1
+
+
+
+− br
+
+
+
+− 1
+
+
+
+, (110) 
+
+rΨ(ω∗) = −b (ω∗ − Θ(ω∗)) , (111) and therefore 
+
+a + b(ω∗ − 1) + rΨ(ω∗) = −q(a, b). (112) Let ω(t) > 0 be arbitrary and consider (98). By convexity of Ψ,
+
+Ψ(ω) ≥ Ψ(ω∗) + Ψ′(ω∗)( ω − ω∗). (113) Multiplying (113) by r and using the stationarity condition (109) yields 
+
+b(ω − ω∗) ≥ rΨ(ω∗) − rΨ(ω). (114) Combining (98), (112), and (114) gives ˙V ≥ − q(a, b) − rΨ(ω). (115) 14 Integrating (115) over [0, T ], 
+
+> ZT
+> 0
+
+ q(a, b) + rΨ(ω) dt ≥ V (0) −V (T ). (116) Since V ≥ 0, letting T → ∞ yields J(ω) ≥ V (0). For ω ≡ ω∗,all inequalities hold with equality, so J(ω∗) = V (0), and therefore ω∗ minimizes J. The fact that q(a, b) is posi-tive definite is immediate. q(a, b) > 0. On the branch b <
+
+0, condition (101) implies − br > ℧−1(a − b). Since ℧ is strictly increasing on (0,1), it follows that ℧ − br
+
+ > a − b.Multiplying both sides by b < 0 reverses the inequality, yielding b ℧ − br
+
+ < b(a − b). Therefore, q(a, b) = −a + b +
+
+b ℧ − br
+
+ > 0. On the branch b ≥ 0, the theorem assigns 
+
+r = + ∞, hence ω∗ = 1 and q(a, b) = −a, and since (a, b) ∈ S
+
+implies b ≥ 0 ⇒ a < 0, it follows that q(a, b) = −a > 0. Fi-nally, q(0, 0) = 0 at equilibrium by definition. Now we turn to proving stabilization. Fix (a, b) ∈ S \ { (0, 0)}. If b ≥ 0, then one has r = + ∞ and ˙V = a + b(ω − 1) = a < 0, (117) since b ≥ 0 ⇒ a < 0 on S. If b < 0, then r > −b and hence 
+
+z := b/r ∈ (−1, 0), and we have ω = ω0 = ℧(−z) = Θ(ω∗);thus ˙V = a+b(ω0 −1) = a+b℧(−z)−b = −q(a, b) < 0. (118) For ω∗, with (112), ˙V = a + b(ω∗ − 1) = −q(a, b) − rΨ(ω∗). (119) Using the identity (112), and the facts that q(a, b) > 0 and 
+
+Ψ(ω∗) > 0 for ω∗̸ = 1, we conclude ˙ V < 0 under ω∗ as well. 
+
+□
+
+The inequalities (100), (101) are not just assumptions. A function r(a, b) that satisfies these inequalities can always be selected. So, controllers (102) and (106) should not be viewed as conceptual controllers but as concrete and uni-versal control laws, both stabilizing, and (102), additionally, inverse optimal. 
+
+Enforcing continuity of feedback. Next, we explain how to make a choice of r(a, b) to make the controller continuous. This is only one of infinitely many possibilities—the sim-plest one. On the control–active half–plane b < 0, a contin-uous realization of the optimizer ω∗(a, b) across the bound-ary a = b + 1 is obtained by choosing r midpoint within the interval (101), i.e., for all (a, b) ∈ S as 
+
+r(a, b) = 
+
+
+
+−b
+
+2 ℧−1(a − b) , b < 0 and a > b + 1,
+
++∞, else (120) where ℧−1 : (1, ∞) → (0, 1) is strictly increasing and satisfies 
+
+℧−1(1) = 0. With this choice, 
+
+ω∗(a, b) = ( Ψ′)−1
+
+
+
+− br(a, b)
+
+
+
+=
+
+((Ψ′)−1 2 ℧−1(a − b), b < 0 and a > b + 1,
+
+1, else. (121) Since ℧−1(a−b) → 0 as a ↓ b+1, one has r(a, b) → +∞ and hence ω∗(a, b) → (Ψ′)−1(0) = 1, ensuring continuity across the boundary a = b + 1. Moreover, along the line b = 0 with 
+
+a < 0, the condition a ≤ b + 1 is automatically satisfied, so 
+
+r = + ∞ and ω∗ = 1. This continuity-ensuring choice for ω∗
+
+makes ω0 also continuous, since ω0 = Θ(ω∗).The continuity-ensuring design is important enough to state as a corollary of Theorem 5. 
+
+Corollary 2 With the notation in Theorem 5, the continuous positive feedback laws 
+
+ω∗ =
+
+
+
+(Ψ′)−1
+
+
+
+2 Ψ′ Θ−1(a − b)
+
+, b < 0 and a > b + 1,
+
+1, else 
+
+(122a) 
+
+ω0 = Θ(ω∗) (122b) 
+
+are both globally stabilizing at a = b = 0 on S and (122a) 
+
+minimizes (103) with r(a, b) = 
+
+
+
+−b
+
+2 Ψ′ Θ−1(a − b) , b < 0 and a > b + 1,
+
++∞, else .
+
+(123) Next we specialize Theorem 5 to the canonical, Volterra 
+
+Ψ = Ω, which fixes the contractor design choice to Θ in (44), and then designs r(ξ ).
+
+Corollary 3 With the function r = r(a, b) ∈ (0, ∞] chosen such that r (a, b) = + ∞ for b ≥ 0, and for b < 0,r(a, b) > −b, (124) 
+
+and r(a, b) ln 
+
+ r(a, b)
+
+r(a, b) + b
+
+
+
+> a − b , (125) 
+
+the feedback 
+
+ω∗(a, b) = r(a, b)
+
+r(a, b) + b , (126) 
+
+with the limiting value ω∗(a, b) = 1 when r = + ∞, minimizes J(ω) =  
+
+> Z∞
+> 0
+
+
+
+q(a, b) + r(a, b) ω − 1 − ln ω
+
+dt (127) 15 along the solutions of (61) , where q(a, b) = −a + b + r(a, b) ln 
+
+ r(a, b)
+
+r(a, b) + b
+
+
+
+, (128) 
+
+with limiting value q (a, b) = −a when r = + ∞, has the prop-erty that q(a, b) > 0 for all (a, b) ∈ S \ { (0, 0)} (129) 
+
+and q (0, 0) = 0. Furthermore, both the feedback (102) and 
+
+ω0(a, b) = 
+
+ln 
+
+
+
+1 + br(a, b)
+
+
+
+br(a, b)
+
+, (130) 
+
+with the limiting value ω0(a, b) = 1 when r = + ∞, are sta-bilizing at a = b = 0 on S with respect to the CLF V . 
+
+Corollary 3 is essential for an illustration of the ap-plicability of Theorem 5. But it is nowhere near sufficient to illustrate the scope of the theorem’s applicability. One more example is essential. We take another basic example, 
+
+Θ(s) = √s studied in Section 8. The design recipe yields 
+
+ω∗ =
+
+(2(a − b) − 1, b < 0 and a > b + 1,
+
+1, else. (131) For the predator-prey system, a = L + G, b = G, and hence 
+
+a − b = L. In conclusion, 
+
+ω∗ =
+
+(2L − 1, G < 0 and L > 1,
+
+1, else. 
+
+= 1 +
+
+
+
+2 −(X−1)2+Y (Y −X)−XX , X < Y and 
+
+Y (Y − X) > X + ( X − 1)2,
+
+0, else. (132) While the universal controller (68), (69) is “population imbalance-averse,” reacting strongly to X ≈ Y , this con-troller is “prey extinction-averse,” reacting strongly to 
+
+X ≈ 0. Based on the plot of Ψ2(s) in Figure 4 (blue), the controller’s slow-growing penalty for predator harvesting is compatible with it being prey extinction-averse. 
+
+13 Conclusions 
+
+After several sections through which, using the predator-prey problem, we eased the reader into the struc-tural difficulties of inverse optimal stabilization under pos-itivity constraints on state and input, in the paper’s final three sections we presented the paper’s general framework and constructive results. Theorems 4 and 5 are general. If a user succeeds in constructing some stabilizing controller, and an associated strict CLF, then the theorems provide the following: (1) Theorem 4: if the nominal controller ω0 is sign-compatible with an expander Σ, an expanded version of the nominal controller, ω∗ = Σ(ω0), is stabilizing and inverse optimal. (2) Theorem 5 and its Corollary 2: the user can set aside the nominal stabilizing controller and employ only the associated CLF to design, from scratch, for a contractor function Θ, an inverse optimal stabilizer ω∗ directly, and obtain, as a bonus, also its non-optimal stabilizing “contracted counterpart” ω0 = Θ(ω∗).The two approaches may appear “commutative.” They are not. Theorem 5 is free of the sign-compatibility condition and is a direct construction applicable to all systems with positive states that are stabilizable globally by positive in-puts. A universal controller, a particularly explicit realization not within the general frameworks of Theorems 4 and 5, is presented in Theorem 3, guaranteeing both stabilization and inverse optimality, but without employing either an expander 
+
+Σ or the design pair (Θ, r) within the classes introduced in the paper. The inverse optimal design parametrizations (through expander Σ and weight r) are not developed in the paper for concrete classes of systems , such as strict-feedback and feedforward classes in the unconstrained Euclidean setting. Tempting generalizations, for future research, are for popu-lations with multiple species. It likely won’t be easy, how-ever, to find generalizations within positive systems that are open-loop unstable. Finally, besides the paper’s results, the moral of the story is that, yet again, for nonlinear optimal control, the inverse approach shows its strength compared to the direct approach. For instance, for (1), imagine postulating what at first might seem like a reasonable cost functional, 
+
+J = 
+
+> Z∞
+> 0
+
+(X − 1)2 + ( Y − 1)2 + ( U − 1)2 dt , (133) and not only having to solve the HJB PDE for the value function W (X,Y ) but also obtaining a direct-optimal feed-back U∗∗ = 1 + Y 
+
+> 2
+
+WY (X,Y ) that actually neither penalizes extinction nor negative harvesting. 
+
+Acknowledgment 
+
+The support by AFOSR grant FA9550-23-1-0535 and NSF grants ECCS-2151525 and CMMI-2228791 for this and other current related research is gratefully acknowledged. 
+
+References   
+
+> [1] D. Angeli and E. D. Sontag, “Monotone control systems,” IEEE Transactions on Automatic Control , vol. 48, no. 10, pp. 1684–1698, Oct. 2003.
+
+16 [2] F. Blanchini, P. Colaneri, and M. E. Valcher, “Co-positive lyapunov functions for the stabilization of positive switched systems,” 
+
+Automatica , vol. 113, p. 108770, 2020. [3] H. Ito, “Strict smooth lyapunov functions and vaccination control of the sir model certified by iss,” IEEE Transactions on Automatic Control , vol. 67, no. 9, pp. 4514–4528, 2022. [4] R. E. Kalman, “When is a linear control system optimal?” Journal of Basic Engineering , vol. 86, no. 1, pp. 51–60, 03 1964. [Online]. Available: https://doi.org/10.1115/1.3653115 [5] M. Krstic and Z.-H. Li, “Inverse optimal design of input-to-state stabilizing nonlinear controllers,” IEEE Transactions on Automatic Control , vol. 43, no. 3, pp. 336–350, 1998. [6] M. Krsti´ c, “Asymmetry demystified: Strict clfs and feedbacks for predator–prey interconnections,” IEEE Transactions on Automatic Control , 2026, under review. [Online]. Available: https://arxiv.org/abs/2602.21594 [7] M. Krsti´ c and H. Deng, Stabilization of Nonlinear Uncertain Systems ,ser. Communications and Control Engineering. London, UK: Springer, 1998. [8] Y. Lin and E. D. Sontag, “Control-lyapunov universal formulas for restricted inputs,” Control: Theory and Advanced Technology , vol. 10, no. 4, part 5, pp. 1981–2004, 1995, this article generalizes universal CLF formulas to systems with bounded and/or positive controls. [9] M. Malisoff and M. Krstic, “Stabilization and robustness analysis for a chain of exponential integrators using strict lyapunov functions,” 
+
+Automatica , vol. 68, pp. 184–193, 2016. [10] M. Papageorgiou, H. Haj-Salem, and J.-M. Blosseville, “Alinea: A local feedback control law for on-ramp metering,” in Transportation Research Record , no. 1320, 1991, pp. 58–64. [11] M. Papageorgiou, I. Papamichail, A. Messmer, and Y. Wang, “Traffic-responsive linked ramp-metering control,” Annual Reviews in Control ,vol. 45, pp. 278–305, 2018. [12] H. Ramirez, A. J. van der Schaft, and B. M. Maschke, “Irreversible port-hamiltonian systems: A generalization of energy-based modeling to nonequilibrium thermodynamics,” Chemical Engineering Science ,vol. 92, pp. 171–185, 2013. [13] A. Rantzer, “Scalable control of positive systems,” European Journal of Control , vol. 24, pp. 72–80, 2015. [14] E. D. Sontag, “A ‘universal’construction of artstein’s theorem on nonlinear stabilization,” Systems & control letters , vol. 13, no. 2, pp. 117–123, 1989. [15] T. R. V. Steentjes, A. Doban, and M. Lazar, “Feedback stabilization of positive nonlinear systems with applications to biological systems,” in 2018 17th European Control Conference (ECC) . IEEE, 2018, pp. 2684–2689. [16] C. Veil, M. Krsti´ c, I. Karafyllis, M. Diagne, and O. Sawodny, “Stabilization of predator–prey age-structured hyperbolic pde when harvesting both species is inevitable,” IEEE Transactions on Automatic Control , vol. 71, no. 1, pp. 123–138, 2026. 
+
+17
