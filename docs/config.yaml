@@ -25,3 +25,57 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: IRLIOC
+      description: 搜索关于逆强化学习（IRL）和逆最优控制（IOC）的相关论文
+      enabled: true
+      keywords:
+        - keyword: inverse reinforcement learning
+          keyword_cn: 逆强化学习
+          query: foundational and recent advances in inverse reinforcement learning
+        - keyword: inverse optimal control
+          keyword_cn: 逆最优控制
+          query: theoretical frameworks for inverse optimal control
+        - keyword: maximum entropy IRL
+          keyword_cn: 最大熵逆强化学习
+          query: maximum entropy principle in inverse reinforcement learning
+        - keyword: apprenticeship learning
+          keyword_cn: 学徒学习
+          query: apprenticeship learning via inverse reinforcement learning
+        - keyword: reward learning
+          keyword_cn: 奖励函数学习
+          query: learning reward functions from demonstrations
+        - keyword: imitation learning
+          keyword_cn: 模仿学习
+          query: relationship between imitation learning and inverse reinforcement learning
+        - keyword: Bayesian IRL
+          keyword_cn: 贝叶斯逆强化学习
+          query: Bayesian approaches to inverse reinforcement learning
+        - keyword: adversarial IRL
+          keyword_cn: 对抗式逆强化学习
+          query: generative adversarial inverse reinforcement learning
+        - keyword: demonstration learning
+          keyword_cn: 示教学习
+          query: learning from expert demonstrations using IOC
+      intent_queries:
+        - query: state of the art algorithms in inverse reinforcement learning
+          query_cn: 逆强化学习领域的前沿算法
+          enabled: true
+          source: manual
+          note: ''
+        - query: mathematical foundations of inverse optimal control
+          query_cn: 逆最优控制的数学基础
+          enabled: true
+          source: manual
+          note: ''
+        - query: applications of inverse reinforcement learning in robotics
+          query_cn: 逆强化学习在机器人领域的应用
+          enabled: true
+          source: manual
+          note: ''
+        - query: deep inverse reinforcement learning techniques
+          query_cn: 深度逆强化学习技术
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-03-11T07:39:49.486Z'
