@@ -1,0 +1,965 @@
+Title: Learning All-Terrain Locomotion for a Planetary Rover with Actively Articulated Suspension
+
+URL Source: https://arxiv.org/pdf/2606.06790v1
+
+Published Time: Mon, 08 Jun 2026 00:27:24 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# Learning All-Terrain Locomotion for a Planetary Rover with Actively Articulated Suspension 
+
+Arthur Bouton 1, Tristan D. Hasseler 1, Michael Paton 1, Travis Brown 1, Jacob Levy 2,William Reid 1, Joshua Martin 3, Hari Nayar 1   
+
+> 1Jet Propulsion Laboratory, California Institute of Technology, Pasadena, CA 91109 USA
+> 2Center for Autonomy, University of Texas at Austin, Austin, TX 78712 USA
+> 3Space Systems Laboratory, University of Maryland, MD 20742 USA Corresponding author: Arthur Bouton (email: arthur.bouton@jpl.nasa.gov). The research described in this publication was carried out at the Jet Propulsion Laboratory, California Institute of Technology, under contract with the National Aeronautics and Space Administration.
+
+ABSTRACT This paper presents ERNEST, a four-wheeled planetary rover concept equipped with a two-degree-of-freedom Active Gimbal Suspension that combines yaw and roll actuation to enable wheel reconfiguration, steering, and active load redistribution. A single neural network controller, trained to track a desired path across challenging terrain, fully unlocks the capabilities of this actuated suspension system for autonomous obstacle negotiation. A reinforcement learning framework is developed using the high-fidelity DARTS simulation engine, which combines rigid-contact dynamics and Bekker–Wong terramechanics, enabling the emergence of locomotion strategies adapted to loose-soil conditions. To obtain a single unified controller across heterogeneous terrains, a policy consolidation strategy merges the experience of terrain-specialized agents into one neural network, eliminating the need for explicit terrain classification and controller switching. The resulting controller operates on a combination of proprioceptive and exteroceptive feedback, including sparse stereo-derived terrain elevation, chassis attitude, joint states, and force–torque measurements. Zero-shot transfer to the physical rover is achieved through domain randomization, sensor noise injection, and model-to-real system identification. Experimental results demonstrate autonomous traversal of rock fields, a bump trap, a wheel-high step, sand ripples, and sandy slopes. On a 20° sandy slope, the learned controller reduces the cost of transport by 37 % on dry sand despite the additional actuation, and achieves superior performance on wet sand where the passive suspension becomes completely immobilized. 
+
+INDEX TERMS Field robots, reinforcement learning, robot control, suspensions (mechanical systems), space exploration. 
+
+I. INTRODUCTION 
+
+A. OBJECTIVE 
+
+Planetary rovers remain the most practical platform for long-range in situ surface exploration because wheeled lo-comotion offers energy efficiency, mechanical simplicity, and continuous ground-supported stability [1]–[4]. However, the scientific objectives of future missions are expected to drive vehicles into increasingly demanding environments that challenge the limits of passive suspensions: steep granular slopes, sandy dune fields patterned with periodic ripples, and boulder-strewn rocky terrain [5]. Enabling traversal of such terrains would not only open access to new scientifically valuable sites, but also allow rovers to take shorter paths between targets. This, in turn, can increase mission produc-tivity and may prove critical in scenarios where stopping in an unfavorable location risks mission loss, such as in permanently shadowed regions on the Moon or in the polar regions of Mars. The objective of this work is to develop a system that can substantially expand the mobility envelope of a wheeled rover while preserving the simplicity and efficiency that make wheeled systems attractive for planetary missions. More specifically, this paper seeks to demonstrate that a four-wheeled rover equipped with a two-degree-of-freedom active suspension can autonomously traverse a variety of terrains intractable for passive suspensions, when governed by a sufficiently versatile controller. 
+
+> © 2026. All rights reserved. 1
+> arXiv:2606.06790v1 [cs.RO] 5 Jun 2026 :
+> B. BACKGROUND
+
+Classical passive suspensions conform to terrain geometry under the effect of gravity. With an appropriate arrangement of passive joints, they can achieve near-uniform load distri-bution across the wheels around a nominal configuration [6], and exhibit strong performance over specific classes of ob-stacles [7]. However, passive suspension mechanisms cannot be optimized for all terrain conditions simultaneously. A design tailored to a particular obstacle geometry is likely to underperform in others [8]. Even when considering a single obstacle type, such as a step, there exists a lower bound on the friction coefficient below which no passive suspension can succeed, despite the diversity of proposed designs [9]. This limitation arises because passive systems rely exclusively on wheel–ground traction to generate the forces required for obstacle negotiation. On soft soil, the limitations of passive suspensions become particularly acute. Despite conservative path planning based on orbital imagery, NASA’s Opportunity rover experienced severe wheel sinkage at Endeavour Crater [10], while its twin Spirit became irretrievably embedded in soft sand, ultimately leading to mission termination [11]. Reflecting this well-recognized vulnerability, the Curiosity rover enforces operational con-straints that limit traverses to slopes below 15° [12]. One approach to extending mobility is to augment oth-erwise passive rovers with limited active reconfiguration. For example, actuators originally introduced for wheel de-ployment can be repurposed to shift the center of mass of six-wheeled rovers during obstacle traversal [13], [14]. Similarly, four-wheeled platforms such as the Sample Return Rover and Scarab combine passive bogies with a small number of additional actuators to modulate chassis height and roll attitude [15], [16]. These designs improve adaptabil-ity while avoiding the complexity of fully actuated limbs. However, their ability to redistribute load remains limited: they cannot control load transfer between front and rear wheels, and they rely on global body inclination, which is inherently coupled to vehicle stability. Moreover, they do not allow independent control of load distribution and wheel placement, which is required to actively sequence and assist obstacle traversal. Combining joints about the yaw and roll axes, the platform OpenWHEEL introduced the use of coordinated wheel repositioning and roll actuation to sequentially negotiate step-like obstacles [17]. However, the proposed control strategy remained open-loop and did not incorporate sensing feedback. Furthermore, the yaw joints, located above each wheel axle, are passive and driven by differential wheel speeds, and thus cannot actively assist in generating the forces required for obstacle negotiation. At the opposite end of the spectrum, fully actuated wheel-on-limb systems provide a significantly richer locomotion repertoire by enabling each wheel to be positioned indepen-dently with respect to the chassis [18]–[23]. Such platforms can achieve highly capable behaviors, including obstacle sur-mounting strategies that approach those of legged systems. However, they are constrained by the control complexity required to exploit their full kinematic potential. In addition, the large number of joints is seldom fully utilized, meaning that much of the associated actuation contributes primarily as mass and mechanical overhead. For locomotion on soft soils, a wheel can generate greater thrust when operated in a pushing configuration than through traction alone [24]. Consequently, several platforms have sought to exploit stationary or quasi-stationary wheels to assist propulsion through additional chassis actuation. This principle led to the development of “rolling-peristaltic” lo-comotion in the highly actuated six-wheeled Marsokhod chassis [25]. Similarly, suspension-assisted locomotion has been demonstrated on a six-wheeled ExoMars test rover, where deployment actuators within its 16-actuator suspen-sion system enable “wheel-walking” behaviors in sandy terrain [26]. In the case of four-wheeled platforms, fully actuated wheel-on-limb architectures such as WorkPartner and Hylos achieve “rolking” [27] and “peristaltic symmet-ric” [28] gaits, respectively. Using suspension kinematics derived from NASA’s RP15 lunar rover, the Mini Rover demonstrated a gait capable of effectively “swimming” up loosely consolidated slopes [29]. However, this motion re-quires eight additional active joints beyond the wheel drive actuators, along with a four-bar linkage at each wheel. With only two actuated joints controlling the wheelbase length of each bogie, Scarab achieves a “push–pull” or “inch-worming” motion [16], [30]. The rover MARCEL, also equipped with two actuated joints but oriented orthogonally to each other, enables a “crawling” motion [31] that com-bines wheel reconfiguration with active load redistribution. The latter approach was found experimentally to be more energy-efficient on steep, unconsolidated sandy slopes than the aforementioned gaits [32]. Model-free reinforcement learning (RL) has emerged as an effective framework for addressing complex locomotion problems. In recent years, it has achieved notable success in legged robotics [33], enabling the synthesis of controllers that are robust, versatile, and computationally efficient for real-time operation. For example, ANYmal has demonstrated the ability to combine multiple learned behaviors to traverse different types of obstacles, albeit relying on explicit obstacle classification and mode switching [34]. For wheel-on-limb platforms, the controller developed by Lee et al. leverages the full mobility of each limb to step over obstacles or climb stairs [35]. Building on [36], their approach relies on a priv-ileged teacher–student distillation framework coupled with a learned belief state, explicitly designed to cope with partial and noisy terrain perception. However, the terrain is assumed to be rigid throughout, with Coulomb friction; therefore, the agent is not exposed to the limitations of wheeled locomotion on soft soil. In wheeled systems with limited actuation, the rover MARCEL showed that a two-degree-of-freedom active chassis can be trained via reinforcement learning to negotiate 
+
+> 2
+
+step-like obstacles, although the study was restricted to a single scenario [37]. 
+
+> C. CONTRIBUTIONS
+
+The contributions of this paper are fourfold. First, it presents the design of the ERNEST planetary rover, integrating a simple yet versatile Active Gimbal Sus-pension, a clutch mechanism enabling transitions between passive and active suspension modes, and an associated wheel-synchronization control scheme for kinematically con-strained steering and reconfiguration. Second, it develops a reinforcement-learning framework using the high-fidelity DARTS simulation engine, which combines rigid contact and soft-soil terramechanics, enabling validation of a previously theorized gait through the obser-vation of emergent optimal behavior. Third, it introduces a policy-consolidation strategy that merges terrain-specialized experience into a single neural network, eliminating the need for multiple controllers and explicit switching. Fourth, it demonstrates deployment of the unified con-troller on the physical rover across diverse terrains, including rock fields, a Bickler trap, a wheel-high step, sand ripples, and both dry and wet unconsolidated sandy slopes, showing that the learned policy exhibits interpretable behaviors such as sequential wheel climbing, active load redistribution, and crawling-like gaits. 
+
+> D. CONTENT
+
+The remainder of this paper is organized as follows. Sec-tion II presents the ERNEST rover, its sensing and actuation architecture, the principles of the Active Gimbal Suspension, and the control approach used to coordinate the wheels. Section III describes the DARTS simulation environment, the soft-soil terramechanics implementation, and the system identification procedures used to align the models with real-world behavior, facilitating transfer to the physical rover. Section IV details the reinforcement-learning formulation, the policy-consolidation procedure, and the definition of the different terrain classes used for training. Section V reports the behavior of the resulting controller on the physical rover across a variety of obstacles and compares its performance with that of a passive bogie configuration. 
+
+> II. ERNEST
+
+ERNEST is a 75 kg, four-wheeled planetary rover concept equipped with an actively articulated chassis designed to improve mobility on challenging terrain, including obstacles that exceed the capabilities of conventional four- or six-wheeled passive suspension systems. The acronym ERNEST stands for Exploration Rover for Navigating Extreme Sloped Terrain . Its main dimensions are summarized in Table 1.        
+
+> FIGURE 1. The ERNEST rover in the Yuha Desert, CA.
+> Wheelbase 86 cm Wheel track 80 cm Wheel diameter 34 cm Wheel width 13 cm Masthead height from the ground 130 cm Clearance under the bogie 30 cm Clearance under the chassis 42 cm
+> TABLE 1. Main dimensions of ERNEST.
+> A. SYSTEM OVERVIEW
+> 1) Mobility Hardware
+
+ERNEST features ten actuators dedicated to mobility: four wheel drives, four steering actuators located above each wheel assembly, and two actuators for the Active Gimbal Suspension (AGS). All actuators are identical in design, each consisting of a brushless DC motor equipped with a power-on-to-disengage electromagnetic brake, Harmonic Drive re-duction, and two absolute magnetic encoders associated with the input and output stages. The only distinction lies in the gear ratios: the drive and steering actuators use a 50:1 reduction, whereas the AGS actuators use a 160:1 reduction. Although ERNEST is inherently capable of omnidirec-tional motion through its four steering actuators, these are not utilized in this work. Instead, the front and rear wheel pairs remain aligned with their respective axle at all times, and steering is achieved exclusively through the AGS, effectively reducing the number of active mobility actuators to six. ERNEST’s wheels consist of compliant, airless tires com-posed of hundreds of woven coiled steel springs that form a toroidal mesh. These tires are designed to deform to rugged terrain, providing the rover with improved traction and resistance to punctures compared to rigid wheels [38], [39]. Microspikes are riveted into the to the mesh sparsely along the wheel circumference to enhance the wheel’s ability to maintain grip and traction when navigating rocky surfaces or climbing obstacles. 
+
+> 3:
+> FIGURE 2. Components of the ERNEST rover used in this work: (1) stereo cameras; (2) yaw-joint axis; (3) roll-joint axis; (4) meshed wheels; and (5) force–torque sensors.
+
+2) Sensors 
+
+As shown on Fig. 2, force–torque sensors are mounted above each wheel assembly, just under the steering actuators, to provide feedback on wheel–ground interaction forces. Two cameras housed in the masthead provide stereo vision, terrain mapping, and visual–inertial odometry. An inertial measurement unit (IMU) is positioned between them to support this estimation. Illuminators for night driving are suspended from the masthead below the cameras. Although the mast is equipped with two brushed DC motors enabling pan–tilt motion of the masthead, it is kept fixed in this work, oriented straight ahead and 30° downward relative to the chassis horizontal. The sensors employed and the processing pipeline of their associated data products are illustrated in Fig. 3. The rover is also equipped with additional sensors that are not used in this work: a LiDAR unit housed within the masthead, sun sensors on top of the rear mast, two GPS antennas located on either side of that mast, and a second IMU within the chassis. 
+
+3) Avionics 
+
+The embedded computer housed within the chassis is an Intel NUC, a compact high-performance x86 platform based on an Intel Core i7 processor. The actuators are driven by Elmo Platinum Solo Twitter servo drives, also integrated within the chassis to benefit from its forced-air cooling in a positive-pressure enclosure. The onboard computer communicates with the drives over an EtherCAT bus, which additionally interfaces with a set of Beckhoff I/O terminals. These termi-nals support interfacing functions including energizing the clutch shotbolt solenoids, controlling the masthead illumina-tors, reading the temperature sensors installed on the motor windings, and communicating with the independent encoder measuring the relative angle between the bogie and its frame (see Fig. 4). The force–torque sensors are also connected to the main daisy-chained EtherCAT segment through a hub IMU Stereo Cameras FTS Joint Encoders Depth Processing Filtering and Bias/Drift Compensation xVIO Path Tracking Error Elevation Mapping Neural Network Controller Kinematic Wheel Synchronization Desired Path Chassis Pose Depth Image Stereo Images Forces x12 Torques x12 Elevation Map Heading Deviation Lateral Deviation Wheel Velocities x4 Roll Joint Velocity Yaw Joint Velocity Yaw/Roll Joint Positions Forward Velocity Accelerations and Angular Rates Elevation Values x12 Elevation Sampling Attitude Conversion Chassis Roll Chassis Pitch 
+
+> FIGURE 3. Diagram of the perception and control architecture. The sensors are highlighted in yellow. The blue blocks are adapted from prior work.
+
+that distributes the bus to each of the four wheel assemblies in a star topology. Remote access to the onboard computer is provided via a router integrated within the chassis, with Wi-Fi antennas mounted on a dedicated mast at the rear of the rover. 
+
+4) Power 
+
+The rover is powered by custom 82 V, 17.2 A h lithium-ion battery packs installed within the chassis. It can operate continuously for up to two hours with a single pack, or up to four hours with two packs in parallel. The mobility actuators are supplied directly from the 82 V bus, while a power distribution board steps this bus down to regulated 24 V, 19 V, and 12 V rails for the different subsystems operating at those voltage levels. 
+
+B. ACTIVE GIMBAL SUSPENSION 
+
+ERNEST’s suspension consists of a two-degree-of-freedom actively controlled joint assembly connecting the front wheel bogie to the main chassis. As shown in Fig. 2, the two revolute joints are collocated, with intersecting axes, forming a gimbal-like mechanism referred to as the Active Gimbal Suspension . One revolute joint provides yaw motion of the front bogie about a vertical axis relative to the chassis, located near the mast axis, while the second revolute joint enables roll motion about the bogie’s own local longitudinal axis. 
+
+> 4
+
+This combination of joints was chosen for its effective trade-off between mechanical simplicity and functional ca-pability, as demonstrated in previous studies [31], [32], [37]. However, their collocation in ERNEST’s variation of the design is primarily motivated by thermal management considerations, enabling most of the avionics to be housed within a single chassis enclosure. The yaw joint alone enables slip-free steering under ideal kinematic assumptions when the wheel-synchronization control presented in the next section is applied. This joint also allows the rover to reconfigure its wheel positions when negotiating obstacles, thereby effectively serving two functions with a single actuator. The roll joint can either rotate freely or be actively controlled. Coupling between the roll actuator and the bogie is achieved through a clutch mechanism composed of two shotbolt lock units embedded in the bogie arms, as show in Fig. 4. When the pins of these two solenoids are retracted, the bogie rotates freely relative the bogie frame through a set of ball bearings. This configuration minimizes energy consumption when the terrain is benign enough to be tra-versed with a passive suspension that naturally conforms to the ground geometry under gravity. The bogie frame is itself rigidly connected to the output of the roll actuator and can be actively rotated independently of the bogie motion when the clutch is disengaged. Thus, the bogie frame can be rotated by the roll actuator at any time to align its pin holes with the solenoid pins in the bogie arms, as depicted by the transition between Fig. 4a and Fig. 4b. Alignment is achieved by driving the relative angle between the bogie frame and the bogie, as measured by a dedicated absolute encoder, to zero using a velocity-feedback controller with a bounded maximum angular velocity. The controller enables reliable alignment even when the bogie undergoes motion induced by uneven terrain. Once aligned, the solenoids are energized to engage the pins with the bogie-frame inserts, enabling direct transmission of roll-actuator torque to the bogie. When actively applying torque, the roll joint enables the rover to selectively shift the load distribution between the two diagonally opposite pairs of wheels. This can be used to facilitate the traversal of obstacles for which the available adhesion is insufficient, as demonstrated analytically in [37]. This also allows the rover to lift one of its wheels off the ground. The wheel that is lifted for a given direction of rotation of the roll joint depends on the current rover configuration, as determined by the yaw joint position. Thus, with only two joints, the Active Gimbal Suspension allows the rover to lift any of its wheels, using the yaw joint to move its bogie in a configuration that places its center of mass above the three other wheels, while the roll joint provides the lifting torque. 
+
+> (a)
+> (b)
+> FIGURE 4. The clutch mechanism of the Active Gimbal Suspension. (a) Clutch disengaged: the bogie is free to rotate relative to the bogie frame. (b) Clutch engaged: the rotation of the bogie is directly controlled by the roll actuator. (1) Pin hole. (2) Retracted pin of the shotbolt lock unit. (3) Bogie frame. (4) Bogie connected to the bogie frame through a pivot joint supported by ball bearings. (5) Output of the yaw actuator. (6) Output of the roll actuator. (7) Solenoid of the shotbolt lock unit inside the arm of the bogie. (8) Extended pin locked into the pin hole of the bogie frame. (9) Absolute magnetic encoder reporting the relative angle between the bogie and the bogie frame.
+
+C. WHEEL SYNCHRONIZATION 
+
+The velocity of each wheel is computed according to the desired forward velocity of the chassis Vx, the velocities of the yaw and roll joints of the active gimbal suspension, denoted respectively ˙ψ and ˙ϕ, and the current configuration of the rover. Let vix, viy , and viz be the components of the translational velocity of the center of the wheel i expressed in the local frame of the wheel where the y-axis is aligned with its axis of rotation. Given that the steering joints above the wheels are not used here and locked such that each pair of front or rear wheel axles are aligned, the Jacobian matrix for the motion of one wheel i can be expressed as: 
+
+Ji ˙q =
+
+
+
+vix
+
+viy
+
+viz
+
+ , (1) where Ji is made of the following column vectors:         
+
+> 5:
+> Ji=
+> hCiVxCiVyCiVzCiωxCiωyCiωzCi˙ψCi˙ϕ
+> i
+
+. (2) These column vectors each corresponds to a generalized velocity coordinate of ˙q, which consists of: 
+
+˙q = Vx Vy Vz ωx ωy ωz ˙ψ ˙ϕT , (3) with Vx, Vy , and Vz the components of the translational velocity of the chassis in the local frame of the chassis, in which the x-axis coincides with the longitudinal axis of the main body of the rover, orthogonal with the rear wheel axles and pointing forward. ωx, ωy , and ωz are the components of the rotational velocity of the chassis in that same frame, while ˙ψ and ˙ϕ are the velocities of respectively the yaw and roll joints of the active gimbal suspension. Using the column vectors of the Jacobian matrices for each wheel numbered from 1 to 4 and denoted as superscripts in the equations below, we can compose the following system of equations: 
+
+Ax = y, (4) where x is the vector of unknown variables that we are solving for:              
+
+> x=VyVzωzv1
+> xv1
+> zv2
+> xv2
+> zv3
+> xv3
+> zv4
+> xv4
+> z
+> T
+
+.
+
+(5) The matrix A can then be written:                          
+
+> A=
+> 
+> C1
+> VyC1
+> VzC1
+> ωz−I3x2 03x2 03x2 03x2
+> C2
+> VyC2
+> VzC2
+> ωz03x2 −I3x2 03x2 03x2
+> C3
+> VyC3
+> VzC3
+> ωz03x2 03x2 −I3x2 03x2
+> C4
+> VyC4
+> VzC4
+> ωz03x2 03x2 03x2 −I3x2
+> 
+
+,
+
+(6) with: 
+
+I3x2 =
+
+1 00 00 1
+
+ , 03x2 =
+
+0 00 00 0
+
+ . (7) The variables that are known are moved to the right-hand side of the equation such that:          
+
+> y=−
+> 
+> C1
+> Vx
+> C2
+> Vx
+> C3
+> Vx
+> C4
+> Vx
+> Vx−
+> 
+> C1
+> ωx
+> C2
+> ωx
+> C3
+> ωx
+> C4
+> ωx
+> ωx−
+> 
+> C1
+> ωy
+> C2
+> ωy
+> C3
+> ωy
+> C4
+> ωy
+> ωy−
+> 
+> C1˙ψ
+> C2˙ψ
+> C3˙ψ
+> C4˙ψ
+> 
+> ˙ψ−
+> 
+> C1˙ϕ
+> C2˙ϕ
+> C3˙ϕ
+> C4˙ϕ
+> 
+> ˙ϕ.
+
+(8) On the right-hand side of the equation, the lateral wheel ve-locities v1 
+
+> y
+
+, v2 
+
+> y
+
+, v3 
+
+> y
+
+, and v4 
+
+> y
+
+would normally appear. However, to impose a no-side-slip constraint at the wheels, thereby allowing only for tangential motion, these terms are all zero and are therefore omitted from y.To solve this system while minimizing the quadratic sum of the velocities in x, we use the right pseudoinverse of the matrix A:
+
+x = A+y. (9) This yields the tangential velocity components of each wheel. Given the wheel radius r, we can finally deduce the angular velocity of each wheel i as: 
+
+ωiwheel = 1
+
+r sign( vix)
+
+q
+
+vix 
+
+> 2
+
++ viz
+
+> 2
+
+. (10) 
+
+D. PERCEPTION PIPELINE 
+
+The rover employs an onboard stereo perception pipeline to estimate its state and reconstruct local terrain geometry. As shown in Fig. 3, both the estimated rover pose and the terrain elevation map are subsequently used by the control scheme. The rover’s 6-DoF state and associated uncertainty are es-timated at 4 Hz using the stereo–inertial odometry algorithm xVIO described in [40]. xVIO employs a tightly coupled extended Kalman filter (EKF) formulation that fuses high-rate pre-integrated inertial measurements with sparse visual feature tracks from the stereo cameras. This approach pro-vides robust, low-drift state and covariance estimation even in challenging terrain. To perceive the local environment, dense 3D point clouds are generated using the OpenCV stereo block-matching (StereoBM) implementation [41]. Stereo point clouds are fused at 0.5 Hz using the corre-sponding xVIO pose estimates to construct a robot-centric 10 m × 10 m, 2.5D elevation map at 1 cm resolution. This map is generated using the robot-centric Elevation Mapping software package [42]. An example of the resulting elevation map is shown in Fig. 11. Rather than naively overwriting previous measurements, the framework explicitly models depth sensor noise and 6-DoF pose uncertainty, and employs a probabilistic Kalman filter–based update for each grid cell to continuously refine terrain height estimates and their associated variances. 
+
+III. SIMULATION 
+
+A. DARTS 
+
+The Dynamics Algorithms for Real-Time Simulation (DARTS) framework is used to develop a simulated train-ing environment. DARTS is a general multibody dynam-ics simulation framework developed in-house at JPL [43]. DARTS simulations have been developed for numerous mission domains at JPL, including spacecraft Guidance, Navigation, and Control (GNC), Entry-Descent and Landing (EDL), rotorcraft GNC, ground vehicle mobility, and robotic autonomy. DARTS is used in this work because it offers fast, flight validated, O(N ) recursive dynamics formulations [44], proven vehicle mobility models that could be readily ex-tended to the ERNEST platform, and a flexible runtime terrain generation toolkit amenable to domain randomiza-tion [45]. The ERNEST multibody kinematic configuration, mass model (discussed later), and visual/collision mesh geometries are implemented in DARTS. Simulated DC motor and PID controller models are added to the wheel, steer, roll, and yaw joints. Force–Torque Sensor (FTS) models report the inter-body wrench between each steer body and their respective mounting point on the chassis, extracted directly from the DARTS multibody dynamics solver. Joint stops are simulated by applying a stiff spring-damper force. The simulated training environment includes a base terrain represented by a Digital Elevation Model (DEM), generated by sampling a heightmap function: h = f (x, y ). Additional 
+
+> 6FIGURE 5. DARTS training environment. (1) GPU-accelerated path-traced rendering backend. This is used only for visualization in the present work but can readily simulate perception cameras and lidars if needed for follow-on work [46]. (2) Placeable hard collision obstacles. (3) User-generated terrain with dispersed noise. (4) Controllable wheel/steer motors with encoder and Force–Torque Sensor (FTS) models. (5) Controllable ERNEST Active Gimbal Suspension (roll and yaw) with joint stops. (6) Stiff spring-damper contacts with isotropic friction between wheels and collision obstacles. (7) Soft soil terramechanics contacts between wheels and terrain. The terrain does not deform during these contacts.
+
+obstacles can be placed on the terrain. Fig. 5 shows a summary of what is simulated during a typical training run. The present work is among the first uses of DARTS for Reinforcement Learning (RL) training. Unlike some RL-focused simulation platforms, such as Isaac Lab developed by NVIDIA [47], DARTS does not support parallelizable dy-namics that can be leveraged by GPU acceleration. However, multiple simulation processes can be run simultaneously on the CPU. High performance computing (HPC) resources are used to run many simulation processes concurrently. 
+
+B. MASS MODEL 
+
+To ensure that the physical behavior of the rover and the force–torque sensor feedback remain consistent between simulation and real-world deployment, an accurate model of the rover’s three-dimensional mass distribution is required. The rover is modeled as two rigid bodies connected by the Active Gimbal Suspension, which is represented as an ideal two-degree-of-freedom joint. The first body consists of the bogie and the two front wheels, while the second includes the remainder of the chassis, from the mast head to the rear wheels. Owing to the near symmetry of the bogie assembly with respect to the median and transverse planes, the center of mass (CoM) of this body is assumed to lie at the intersection of these two planes. The parameters to be identified are therefore the mass mb and CoM height zb
+
+of the bogie assembly, and the mass mc together with the three-dimensional CoM coordinates (xc, y c, z c) of the main chassis. Under the assumption of zero torque at the roll joint, the system is statically determined, allowing the model to predict the vertical forces at each of the four wheel–ground contact points. 
+
+> FIGURE 6. Examples of rover configurations during the acquisition of load measurements for mass-distribution modeling.
+
+To identify the model parameters, the normal load under each wheel is measured experimentally using the physical rover over a wide range of configurations, spanning vari-ations in chassis roll and pitch angles as well as in the positions of both joints of the Active Gimbal Suspension, as illustrated in Fig. 6. During these measurements, the clutch is disengaged, allowing the bogie to rotate freely about the roll joint axis. The model parameters are then estimated by nonlinear re-gression using the Levenberg–Marquardt algorithm to solve the following least-squares problem: 
+
+argmin 
+
+> mc,m b
+> (xc,y c,z c)
+> zb
+
+X
+
+> poses
+> 4
+
+X
+
+> i=1
+
+
+
+fz,i − ˆfz,i 
+
+2
+
+, (11) where fz,i denotes the measured vertical force at wheel i,and ˆfz,i is the corresponding force predicted by the mass distribution model. The resulting fit achieves a coefficient of determination of R2 = 0 .96 .
+
+C. SOFT TERRAMECHANICS MODEL 
+
+Contact between the rover’s wheels and the terrain is treated using the semi-empirical Bekker-Wong soft soil terrame-chanics model. The implementation in DARTS is adapted from the approach in [48], wherein derivations of the model in this section are provided. Implementing the Bekker-Wong model within a multibody vehicle simulation presents several challenges, primarily because the Bekker-Wong equations are often presented in a manner that is best-suited for simple, single-wheel performance analysis. The approach in [48] addresses some of these challenges, for example, adding a treatment of lateral 
+
+> 7:
+
+shear stress for cornering. DARTS builds on this approach with additional extensions for multibody simulation. For ex-ample in a full-vehicle simulation, additional care is required to correctly determine the sign of various terms when the wheel is allowed move both forwards and backwards or when its motion is influenced by factors beyond wheel-soil interaction alone. Such scenarios occur when a rover mechanism (such as the active gimbal system on ERNEST) moves the wheel assembly, or when external forces like gravity cause the vehicle to slide down a slope. Furthermore, the simulation must robustly handle sce-narios where wheels can be at or near rest. Several terms in the formulation become ill-defined or discontinuous as wheel velocity approaches zero. To mitigate this, DARTS introduces regularization terms to smooth these transitions. This is critical when using adaptive-step numerical integra-tors as they are susceptible to instability or failure when encountering stiff or rapidly changing dynamics. DARTS incorporates several modifications to the equations in [48] to address the above-mentioned complexities, which will be pointed out as they appear. Geometric definitions and sign conventions for a rigid cylindrical wheel of radius r and width b in contact with a soft soil are shown in Fig 7. A reference contact point is selected by taking the point on the wheel penetrating farthest into the terrain, shown as a large black circle in Fig 7. In DARTS the penetration depth h and velocity of the contact point vc,x with respect to the terrain are queried at each timestep prior to evaluating the Bekker-Wong model and can thus be treated as known inputs into the equations. The DARTS implementation accounts for the fact that ERNEST’s wheels are torus-shaped and not cylindrical when determining the location of the reference contact point, however the Bekker-Wong model is still applied assuming a constant wheel width b. The longitudinal velocity of the center of the wheel is vx, and ω is the angular velocity of the wheel. The normal stress and longitudinal shear stress applied to the wheel due to the terrain interaction at an arbitrary radial location θ are σ(θ) and τx(θ), respectively. The radial locations at which the wheel enters and exits the terrain are θf and θr . The angle at which normal stress is maximized is denoted θm.The slip ratio s is calculated as: 
+
+s =
+
+( vc,x  
+
+> vc,x −vx
+
+(1 − e−ϵslip v2 
+
+> x
+
+) (vc,x vx ≤ 0; driving)  
+
+> −vc,x
+> vx
+
+(1 − e−ϵslip v2 
+
+> x
+
+) (vc,x vx > 0; braking) ,
+
+(12) where s is clamped between -1 and 1. This is a modification to the approach in [48] because the distinction between brak-ing and driving is determined by comparing the directions of 
+
+vc,x and vx instead of comparing the magnitudes of rω and 
+
+vx. Braking is taken to be whenever the contact velocity is in the same direction as the longitudinal wheel velocity because the shear stress developed at the contact point will oppose the wheel’s current motion. This formulation holds even in scenarios such as a wheel translating forward while maintain-                
+
+> FIGURE 7. Geometric definitions for a wheel interacting with soft soil. The coordinate system is defined such that it yaws about zwith the wheel but does not rotate about xor yto match the wheel’s tilt or spin. The +x
+> direction is oriented to be the forward direction of the vehicle. That is,
+> vx<0if the wheel moves backward to the left in the figure. Similarly the terrain-relative contact velocty vc,x is negative if moving to the left. A positive wheel angular velocity ωis taken to be clockwise as shown in the figure. Finally, θis taken to be zero at the bottom-most point of the wheel (large black circle in the figure) and is positive counter-clockwise.
+
+ing a large negative rotation rate. As noted previously, such scenarios could occur when the rover’s gimbal system moves the wheel assembly, or when the vehicle to slides down a slope. DARTS also adds a regularization term where ϵslip is a positive constant chosen such that s scales smoothly to 0 as longitudinal motion approaches zero ( vx → 0). The slip ratio is ill-defined and discontinuous in this regime. When implemented without ϵslip regularization the value of s tends to rapidly thrash between ±1 near longitudinal rest. The entry angle θf can be obtained directly from geometry as: 
+
+θf = cos −1 (1 − h/r ). (13) The location of max normal stress and the exit angle can be estimated as: 
+
+θm = trest (a0 + a1s)θf , (14) 
+
+θr = trest (b0 + b1s)θf + ( trest − 1) θf , (15) 
+
+trest = min v2 
+
+> x
+
++ v2
+
+> c,x
+
+ϵ2
+
+> motion
+
+, 1
+
+!
+
+, (16) where a0, a1, b0, b1 are parameters obtained by fitting observations from experimental data. DARTS adds the regu-larization term trest to smoothly scale θr to −θf and θm to 
+
+0 as the wheel approaches full rest ( vx → 0 and vc,x → 0). This ensures the stress distributions are symmetric while the wheel is at rest, preventing net longitudinal forces from being applied. The Bekker-Wong model includes a pressure-sinkage for-mulation to predict normal stresses developed at the wheel’s contact patch based on static sinkage into the soil: 
+
+σ(θ) = rn
+
+ kc
+
+b + kϕ
+
+
+
+(cos θ′ − cos θf )n, (17) 
+
+θ′ =
+
+(
+
+θ (θm ≤ θ ≤ θf )
+
+θf − θ−θr 
+
+> θm−θr
+
+(θf − θm) (θr ≤ θ < θ m) , (18) 
+
+> 8
+
+where kc is the cohesion modulus, kϕ is the friction modulus, and n is the sinkage exponent. The model also includes Janosi and Hanamoto’s traction-slip relation to predict shear stresses developed by a driving or braking wheel: 
+
+τx(θ) = ( c + σ(θ) tan ϕ)(1 − e−| jx(θ)|/k x ), (19) 
+
+τy (θ) = ( c + σ(θ) tan ϕ)(1 − e−| jy (θ)|/k y ) + Fs(θ)
+
+rb , (20) where c is the soil cohesion, ϕ is the soil internal friction angle, and kx, ky are the shear deformation moduli in the x and y directions, respectively. The soil deformations, jx(θ)
+
+and jy (θ) are estimated via: 
+
+jx(θ) = r(θf − θ − (1 − s)(sin θf − sin θ)) , (21) 
+
+jy (θ) = r(1 − s)( θf − θ) tan β, (22) where β = tan −1(vy /|vx|) is the sideslip angle. An approx-imate lateral bulldozing force Fs(θ) is also applied based on the formulation proposed by Hegedus [49] to account for the action of the wheel’s sidewalls pushing through the soil: 
+
+Fs(θ) = Rb(θ) · (r − h(θ) cos θ) , (23) 
+
+Rb(θ) = D1
+
+
+
+ch (θ) + D2
+
+ρh 2(θ)2
+
+
+
+, (24) 
+
+D1 = cot Xc + tan( Xc + ϕ), (25) 
+
+D2 = cot Xc + cot 2 Xc/ cot ϕ, (26) 
+
+Xc = π
+
+4 − ϕ
+
+2 , (27) where ρ is the soil density. In the DARTS implementation the penetration depth h(θ) is estimated by linearly interpolating 
+
+h as a function of θ to be zero at θf and θr .In DARTS the absolute value of jx(θ) and jy (θ) are taken in Eq. 19-20 because the shear stresses are updated as follows: 
+
+τx(θ) → sign (−vc,x ) · min 
+
+ |vc,x |
+
+ϵcontact,x 
+
+, 1
+
+
+
+· τx(θ), (28) 
+
+τy (θ) → sign (−vc,y ) · min 
+
+ |vc,y |
+
+ϵcontact,y 
+
+, 1
+
+
+
+· τy (θ), (29) where the sign( ·) terms apply the correct sign to the final shear stress values according to the requirement that shear stress should always oppose the terrain-relative motion of the wheel at the contact point. The min( ·) terms smoothly scale the shear stresses to zero when the contact velocity magnitude goes below a positive regularization constant 
+
+ϵcontact .Finally, numerically integrating the stress distributions across the contact patch yields the overall normal and tractive forces applied to each wheel: 
+
+Fx = rb 
+
+Z θf
+
+> θr
+
+(τx(θ) cos θ − sign( vx)σ(θ) sin θ)dθ, (30) 
+
+Fy = rb 
+
+Z θf
+
+> θr
+
+(τy (θ)) dθ, (31) 
+
+Fz = rb 
+
+Z θf
+
+> θr
+
+(sign( vx)τx(θ) sin θ + σ(θ) cos θ)dθ. (32) Forming F = [ Fx, F y , F z ] provides the resultant force vector applied to the wheel at the center of the contact patch. The sign( vx) terms correct for the fact that the integration direction of θ will reverse depending on the direction of longitudinal travel. With this correction, the integrals can be set up as though the wheel were moving forward (moving to the right in Fig 7) regardless of if the wheel is traveling backwards. The DARTS implementation of the Bekker-Wong model does not keep track of prior terrain deformation, unlike, for example, the Soil Contact Model (SCM) implementation in Project Chrono [50]. Subsequent wheels passing over the same terrain patch will see the same undeformed terrain as the lead wheel. Further, the Bekker-Wong model does not account for soil dislocation or excavation. One can readily identify scenarios in which the absence of terrain deformation or dislocation simplifies the learning problem for the RL algorithm. For example, the rover cannot dig itself into a rut. Such terrain geometries could, however, be explicitly included in the training set. Conversely, there are scenarios in which the lack of terrain deformation increases task difficulty for the RL algorithm. For example, the rover cannot flatten terrain features, and is therefore required to adapt to the given terrain geometry. This modeling limitation was identified as a significant sim-to-real gap early on in the the study. The terramechanics implementation is intentionally kept simple for the present work. The governing equations can be evaluated at speeds exceeding real time, which is es-sential for RL as large volumes of training data must be generated efficiently. Policies trained in simulation using the Bekker–Wong model exhibited consistent and physically plausible behaviors, transferring effectively to real-world ex-periments, including on loose sand. On this basis, large-scale training with the Bekker–Wong model was deemed sufficient for the present work. Future work should incorporate a subset of training using higher-fidelity terramechanics models that capture soil transport and terrain deformation, with the aim of complementing and refining the behaviors learned under the lower-fidelity Bekker–Wong formulation. A complete list of the terramechanics parameters used in simulation is given in Table 2. We adapt Bekker-Wong terramechanics parameters from existing literature in this work. We employed a two-phase approach to parameter selection. First, to verify the Bekker-Wong model was correctly implemented, we manually tuned dry sand values from [51] to fit experimental drawbar pull data collected in a preliminary testing area of dry, hard-packed sand (Fig 8). The results shown in Fig 8 demonstrate that the model pro-duces physically accurate results when provided with tuned values. Notably, increasing the sinkage exponent n from 1.1 to 1.9 results in a much closer fit, which we hypothesize is                                                                   
+
+> 9:
+> TABLE 2. Bekker-Wong parameter values used in simulation
+> Parameter Description Dry sand
+> [51]
+> M90 Mars simulant
+> [52]
+> ρ(kg m3)Soil density 1600 1520
+> c(P a )Cohesion 1200 †2000
+> ϕ(deg )Internal friction angle 33 .3†35.0
+> n(-) Sinkage exponent 1.9†1.3
+> kc(kN mn+1 )Cohesion modulus 10.3 572.1
+> kϕ(kN mn+2 )Friction modulus 5309.4 4915.3
+> K(m)Shear modulus 0.015 0.0254
+> a0,a1(-) Coefficients for θm0.43, 0.32 0.43 §, 0.32 §
+> b0,b1(-) Coefficients for θr-0.16, 0.0 -0.16 §, 0.0 §
+> ϵslip
+>  ms
+> −2Slip ratio regularization ∗100 100
+> ϵmotion
+>  ms
+> Motion threshold ∗5·10 −55·10 −5
+> ϵcontact
+>  ms
+> Contact velocity threshold ∗0.01 0.01
+> †manually adjusted to match drawbar pull experiments (see Fig 8)
+> ∗values chosen provide reasonable integrator performance
+> §values taken to be same as dry sand due to lack of data
+
+0.0 0.1 0.2 0.3 0.4 0.5 
+
+Slip ratio, s (-) 
+
+0.05 
+
+0.10 
+
+0.15 
+
+0.20 
+
+0.25 
+
+> Drawbar pull coefficient,  Fx/mg  (-)
+
+Experiment 
+
+Simulation, Bekker-Wong (dry sand) 
+
+> FIGURE 8. Drawbar pull comparison between simulation and experiment. The DARTS simulation uses manually-adjusted parameters for dry sand. The experimental values are averaged over three trials.
+
+due to the fact that the Bekker-Wong model is formulated assuming a rigid wheel when in reality ERNEST’s wheels are highly flexible. Next, for the majority of the simulation training, we transitioned to using M90 Mars sand simulant values from [52] to match the primary testing environment. We chose not to tune the M90 parameters to fit experimental data. As mentioned previously, the primary objective of the simulator is to produce physically plausible agent behaviors that transfer to real-world scenarios. Once the model was validated, we decided it was acceptable to to train with unadjusted parameters. 
+
+D. RIGID CONTACT MODEL 
+
+A linear spring–damper contact model with Coulomb friction is used to represent contact with rigid surfaces, such as rocks or steps. Since the friction coefficient depends on the prop-erties of both contacting surfaces, it is randomized during 
+
+> FIGURE 9. Wheel compression experiment used to determined the stiffness of the wheel interactions with rigid surfaces.
+
+training to account for variability in real-world conditions. In contrast, the compliance of the wheels is assumed to dominate that of any encountered rigid obstacle, therefore the stiffness and damping parameters are identified a priori . The stiffness coefficient is determined as 20 kN/m from wheel compression experiments (see Fig. 9), whereas the damping coefficient is estimated as 20 kg/s based on the rebound height observed in wheel drop tests. 
+
+IV. REINFORCEMENT LEARNING FRAMEWORK 
+
+A. TRAINING ALGORITHM 
+
+Conventional planning approaches are challenged by the nature of the continuous wheel-terrain contact and the com-plexity of terramechanics interactions when attempting to plan a physically viable path. Even when using simplifying assumptions about the physics and continuity, at the expense of the solution accuracy, the computation time required for planning jeopardizes the ability to react to deviations from the expected trajectory, whether caused by perception inaccuracies or alterations of the environment. Therefore, we employ reinforcement learning to develop a highly respon-sive controller capable of rapidly determining the continuous control law to apply to the Active Gimbal Suspension based on the challenges encountered by the rover in real time. This controller, which ultimately consists of a unique, small neural network that intrinsically contains all the ”planning intelligence” acquired during offline training, provides con-trol setpoints with very high computational efficiency. To train the neural network controller, we use 1 the Twin Delayed Deep Deterministic Policy Gradient algorithm (TD3) [53], which is itself based on the Deep Deterministic Policy Gradient algorithm (DDPG) [54], augmented with several heuristic techniques designed to improve training stability. Unlike the widely adopted Proximal Policy Op-timization (PPO) [55], this algorithm is off-policy, i.e. the training experience does not need to be generated by the 
+
+> 1
+
+Our implementation of TD3 can be found at https://github.com/ arthur-bouton/MachineLearning. 
+
+> 10
+
+current policy being optimized, which is important here for three reasons. First, it allows the collected experience to be reused mul-tiple times while the neural networks slowly converge. This substantially improves data efficiency, which is particularly desirable when simulations are computationally expensive due to complex physics such as terramechanics. Second, it provides explicit control over the exploration process, i.e. it allows us to determine when to deviate from the current policy by executing a random action, and to choose the associated probability distribution. Consequently, the state–action space can be explored more efficiently, enabling faster discovery of successful behaviors and better avoidance of local optima compared with purely Gaussian exploration. Finally, the off-policy nature of the algorithm makes it possible to aggregate experience generated in independent training instances and subsequently train a new controller from this pooled dataset. This approach ultimately enables the integration of multiple capabilities into a single unified neural network. Indeed, attempting to directly train a neural network policy to solve all obstacle scenarios simultaneously proved intractable, likely due to reduced network plasticity under prolonged concurrent exploration and policy optimiza-tion [56]. Instead, we first train several independent pairs of actor and critic networks, each specialized to solve a specific class of challenges. We then aggregate the most recent million samples of experience produced by each pair and train a newly initialized actor–critic pair solely on this combined dataset. Because this second phase does not re-quire additional simulation rollouts, it is significantly faster. The resulting policy effectively consolidates the capabilities progressively acquired by the specialized networks across the different training scenarios. In both training phases, the actor and critic networks each comprise two hidden layers of 512 fully connected neurons with Rectified Linear Unit (ReLU) activation functions. The actor network takes the state as input to the first layer and outputs the actions through a final layer of three hyperbolic tangent (tanh) neurons that map the outputs to the desired control range. The critic network takes the concatenated state–action vector as input to the first layer, while the action vector is also reintroduced at the second layer. It terminates with a single linear neuron that provides the state–action value estimate. 
+
+> B. OBSERVATIONS AND ACTIONS
+
+The architecture of the actor network, along with its inputs and outputs, is illustrated in Fig. 10. All the inputs are normalized with respect to their maximum expected values before being fed to the neural network. The integration of the neural network within the overall perception and control architecture is summarized in Fig. 3. The action vector comprises the rover forward velocity and the angular velocities of the yaw and roll joints of x512 x512 Heading deviation Lateral deviation 2 inclination angles Yaw joint position Roll joint position 4x3 forces 4x3 torques 12 elevation points Current forward velocity Current yaw joint velocity Current roll joint velocity 
+
+> Yaw joint velocity Roll joint velocity Forward velocity
+> FIGURE 10. Diagram of the actor neural network, along with its inputs and outputs.
+
+the Active Gimbal Suspension. These three components correspond respectively to the variables Vx, ˙ψ, and ˙ϕ used in Section C, in particular in Eq. 8, to determine the required wheel rotational speeds. We use velocity commands as actions because they provide a more immediate interface with the system dynamics, reducing the effective order and nonlinearity seen by the policy and thus facilitating learning. Moreover, velocity limits map naturally to actuator constraints, enabling straightforward enforcement of safety bounds. Including the forward velocity as an action enables the policy to modulate the rover speed during maneuvers, e.g., slowing down when negotiating tight turns to allow the yaw joint of the gimbal to steer the wheels without overshooting the trajectory. However, to prevent reverse motion while the perception system is forward-facing, this velocity is restricted to the range 0 m/s to 0.2 m/s. The yaw and roll joint velocities are bounded by ±20 °/s and ±10 °/s, respectively. Although ERNEST is capable of higher speeds, these limits are conservatively set for testing safety. The observations used by the rover to represent its current state and determine the next action consist of: 
+
+• Heading deviation: the yaw angle between the current orientation of the chassis and the direction of the desired path. 
+
+• Lateral deviation: the signed distance of the chassis from the desired path. 
+
+• Inclination angles: roll and pitch angles of the chassis with respect to gravity. 
+
+• Gimbal joint positions: positions of the yaw and roll joints of the Active Gimbal Suspension. 
+
+> 11 :
+
+• Force–torque measurements: six-axis, pre-processed signals from the four force–torque sensors located above the wheel assemblies. 
+
+• Elevation sampling: terrain elevations measured relative to the chassis at 12 points located in front of and beneath the rover. 
+
+• Current action: the most recently executed action vec-tor, i.e., the currently applied control inputs. Before being used as inputs to the neural networks, the measurements from the force–torque sensors (FTS) undergo three processing steps. First, the data from each of the six axes, sampled at 400 Hz, are filtered using a first-order recursive low-pass filter with a cutoff frequency of 0.5 Hz. Then, when required by the RL controller (i.e., at 2 Hz), calibration biases are subtracted from each axis. Finally, the average value of each axis across the four wheel FTS is also subtracted. Force–torque sensors are prone to measurement drift over time, notably due to temperature variations. This final step therefore mitigates the impact of correlated drifts by focusing on relative differences between wheel FTS measurements rather than on their absolute values. As a result, the bias calibration is primarily needed to ensure consistent offsets between sensors rather than to recover the true absolute force–torque values. The calibration procedure consists of recording the filtered FTS readings when all sensors are expected to measure the same load. In practice, this is achieved by supporting the rover’s chassis with a jack so that the four identical wheel assemblies hang freely, and then storing the resulting measurements as bias values. The jack is used for speed and convenience, although the procedure could also be performed autonomously by ERNEST, since its active gimbal suspen-sion allows it to lift each wheel off the ground sequentially. Force–torque sensors are also inherently noisy. Further-more, these measurements are more likely to deviate from their simulated counterparts than the other state inputs, due to the difficulty of accurately modeling the complex physical interactions between the wheels and the ground. To mitigate over-reliance of the policy on precise FTS readings, Gaussian noise is injected into the corresponding components of both the state and next-state vectors during training. This noise is resampled each time a transition is drawn, so that a single stored transition can be reused multiple times with different noise realizations. The injected noise follows a zero-mean Gaussian distribution with a standard deviation of 10 N for each force component and 2 N m for each torque component. The state vector also includes 12 samples of terrain elevation in front of the wheels. The elevation values are obtained from the elevation map constructed using stereo vision. They are expressed relative to the current chassis position and orientation, such that when the rover is resting with all four wheels on perfectly flat terrain, all sampled values are zero, regardless of the absolute ground altitude or slope. The sampling points are arranged in groups of three 
+
+> (a)
+> (b)
+> (c)
+> FIGURE 11. Onboard elevation maps produced by stereo vision. (a) Elevation map at initialization, before rover motion, in front of a step, illustrating the field of view of the stereo-vision mapping system. (b) Elevation map while approaching sand ripples. (c) Elevation map in a rock field. The blue downward arrows show the (x,y) coordinates at which the terrain elevation relative to the chassis is sampled to compose the observed state of the rover. When a sampling point falls within a map hole caused by occlusion, the elevation is estimated through linear interpolation.
+
+in front of each wheel, aligned along the forward direction, and spaced 20 cm apart, as shown in Fig. 11. This sparse sampling strategy is chosen to promote generalization. The coordinates of the sampling points are defined in the chassis frame. Consequently, the points located in front of the front wheels do not follow the motion of the bogie, as illustrated in Fig. 11b. When a sampling point falls within a region of missing data in the elevation map (e.g., due to occlusions), the elevation value is estimated by linear interpolation along the sampling direction, as shown in Fig. 11b and Fig. 11c. We evaluated whether the policy could perform effectively without elevation inputs, without force–torque sensor (FTS) inputs, or using only vertical force measurements combined      
+
+> 12 020000 40000 60000 80000 100000
+> Episodes
+> 4.0
+> 4.5
+> 5.0
+> 5.5
+> 6.0
+> 6.5
+> 7.0
+> Forward distance traveled (m)
+> No elevation
+> No FTS
+> Elevation + Fz only
+> Elevation + Full FTS FIGURE 12. Comparison of the evolution of performance during training on the same gradually increasing slope to 25° over 10 training instances for each different set of observation inputs. The shaded regions delineate the minimum and maximum performance among the 10 training instances.
+
+with elevation sampling. The results show that combining the full FTS information with elevation inputs yields signif-icantly better performance. Fig. 12 presents a performance comparison across multiple training instances on the same gradually increasing slope, where the complete set of inputs is required to achieve an optimal crawling gait that enables further ascent. When evaluating the controller on the physical rover without including the current action in the state, we ob-served that the system was prone to becoming trapped in limit cycles when interacting with soft soil. To mitigate this behavior, the previous actions were incorporated into the state representation. We investigated the inclusion of longer action histories by augmenting the state with multiple past actions, but found that using only the most recent action, corresponding to the currently applied control inputs, was sufficient to significantly improve performance while preserving generalization. 
+
+C. REWARD 
+
+The reward associated with each simulated transition shapes the critic network through dynamic programming, such that it ultimately estimates the expected cumulative discounted return for any state–action pair. In turn, the policy is updated using the gradient of the critic with respect to the action so as to maximize this return. The reward function therefore directly governs the learned behavior. In this work, it com-prises three terms: (i) a term encouraging forward progress along the desired path while penalizing regression, (ii) a term penalizing lateral deviation from this path, and (iii) a term penalizing the roll joint torque of the Active Gimbal Suspension to limit unnecessary energy consumption. Given the desired path heading angle θd, and (x0, y 0) the coordinates of a point lying on this path, the coefficients of the corresponding line can be written as 
+
+a = − sin( θd), (33) 
+
+b = cos( θd), (34) 
+
+c = −a x 0 − b y 0. (35) The progress along the path between two consecutive time steps is then computed as 
+
+∆s = b xchassis ,t − xchassis ,t −1
+
+ − a ychassis ,t − ychassis ,t −1
+
+,
+
+(36) where (xchassis ,t , y chassis ,t ) denote the horizontal position of the chassis at time t. The lateral deviation from the path is given by 
+
+δ = a x chassis ,t + b y chassis ,t + c. (37) The reward function is finally defined as 
+
+R = ws
+
+∆s
+
+∆t − wδ δ2 − wτ |τϕ|, (38) where ws = 2 , wδ = 0 .1, and wτ = 10 −4 are tunable weights, ∆t = 0 .5 s corresponds to the control period of the reinforcement learning policy, and τϕ is the torque in the roll joint of the active gimbal suspension. 
+
+D. EXPLORATION STRATEGY 
+
+Because an off-policy algorithm is employed, the exploration strategy can be freely defined, i.e., when and from which distribution to sample actions that differ from the policy. In this work, we adopt a custom ε-greedy exploration strategy, represented as a Markov process in Fig. 13, which has been found to be the most effective and was first introduced in [37]. At each decision step, the controller either follows the policy action or samples a random action with equal probability. Random actions are sampled from a uniform distribution spanning the full admissible control range. When a random action is selected, it is either maintained for the next step or the system reverts to the policy, again with equal probability. This mechanism allows a random action to persist over multiple policy steps, enabling its effects to manifest over longer time horizons. It also improves the exploration of the state space by forcing the system to stray further from the trajectory prescribed by the current policy, compared with the more erratic behavior induced by standard 
+
+ε-greedy or Gaussian exploration. 
+
+E. TRAINING SCENARIOS 
+
+Independent policies are first trained on four distinct terrain classes, as illustrated in Fig. 14: rock fields, step obstacles, ripples, and slopes. For the step scenario, each simulation trial runs for 30 s before being reset with a newly generated terrain instance. In the remaining scenarios, a longer trial duration of 60 s is used. If the rover reaches the end of the map, the trial is terminated early and reset. 
+
+> 13 :
+
+Infer controls from the actor neural network 0.5 Pick random controls from a uniform distribution 0.5 0.5 Maintain the previous controls 0.5 0.5 0.5  
+
+> FIGURE 13. Custom ε-greedy exploration strategy used during training, represented as a Markov process. Numbers indicate the probability of each transition at each control timestep.
+
+(a) (b) 
+
+(c) (d) 
+
+> FIGURE 14. The four different scenarios used for training using DARTS simulations: (a) Rock fields. (b) Step obstacles. (c) Ripples. (d) Slopes. The Blue dots show the elevation sampling points that the neural network currently ”sees”. The brown heightmap surface simulates soft Bekker-Wong terramechanics, while the gray obstacles simulate hard contacts with Coulomb friction.
+
+In all cases, the main terrain surface is defined by a heightmap with terramechanical properties. At the beginning of each trial, two octaves of Perlin noise are generated and superimposed onto the base surface to introduce stochastic irregularities. The corresponding spatial periods are 1 m and 0.5 m. The amplitude of the lower-frequency component is defined in the “Ground” section of Table 3, while that of the higher-frequency component is set to half this value. The parameters governing domain randomization for each scenario are summarized in Table 3. 
+
+Parameter Rock field Step Ripples Slope Ground 
+
+Pitch (°) 5 – – –Roll (°) 5 – – –Noise amplitude (m) 0.1 0.5 0.5 0.5
+
+Contacts 
+
+Friction coefficient [0 .5, 0.9] [0 .5, 0.9] – –
+
+Initial rover pose 
+
+Yaw angle (°) 180 45 45 45 
+
+Desired path 
+
+Lateral offset (m) 2 1 1 1
+
+Heading offset (°) – – 20 20 
+
+Rocks/Step 
+
+Density (1/m 2) 0.5 – – –Length (m) [0 .2, 0.4] – – –Width (m) [0 .2, 0.6] – – –Height (m) [0 .2, 0.6] [0 .2, 0.3] – –Roll (°) 20 1 – –Pitch (°) 20 1 – –Yaw (°) 90 20 – –Position (m) – [1 .2, 1.6] – –
+
+Ripples geometry 
+
+Amplitude (m) – – [0 .1, 0.3] –Wavelength (m) – – [0 .6, 1] –Smoothing α – – [0 , 0.2] –
+
+Slope geometry 
+
+Slope angle (°) – – – [15 , 30] 
+
+βstart (1/m) – – – [0 .1, 0.5] 
+
+Length (m) – – – [1 .5, 3] 
+
+βend (1/m) – – – [0 .2, 2]      
+
+> TABLE 3. Randomization parameters for each scenario. If a range is specified, the value at each new trial is drawn from a uniform distribution within these bounds. Otherwise, a single value indicates a maximum bound. βstart and βend are the quadratic coefficients of the parabolic sections of terrain respectively before (concave) and after (convex) the slope.
+
+1) Rock fields 
+
+The base terrain of the rock-field scenario is globally planar, with irregularities introduced through Perlin noise, and is randomly inclined in both roll and pitch by up to 5°. Rigid obstacles (shown in gray in Fig. 14) are superimposed on this surface. These obstacles consist of rectangular parallelepipeds whose centers lie on the terrain surface. Wheel–obstacle interactions follow a stiff spring– damper contact model with Coulomb friction, with the friction coefficient randomly sampled between 0.5 and 0.9 at each trial. The obstacles are generated with an average spatial density ρ ranging from 0 to 0.5 elements per square meter. To randomize their spatial distribution, an instance 
+
+> 14
+
+probability pinstance = 0 .1 is introduced: within each area of size (pinstance )2/ρ , an obstacle is placed with probability 
+
+pinstance , and its position is sampled uniformly within that region. The obstacle dimensions and orientations are ran-domized within the ranges specified in Table 3. In this scenario, the rover is also trained to robustly steer and track the desired path from large initial deviations, with heading errors of up to 180° and lateral offsets of up to 2 m. 
+
+2) Step Obstacles 
+
+The step obstacle consists of a single rectangular paral-lelepiped whose height and orientation are randomized, while its width and length are assumed to be effectively infinite. The position of the step relative to the rover’s initial pose is also randomized, ensuring that the obstacle is encountered at varying times within the policy period. This obstacle is explicitly chosen because it is a canonical yet particularly challenging case, commonly used in the lit-erature to benchmark six-wheeled suspensions, and typically intractable for four-wheeled rovers. 
+
+3) Ripples 
+
+The shape of the ripples is defined by the following equation: 
+
+z(x) = A
+
+2
+
+1 − 2 
+
+> π
+
+cos −1 (1 − α) sin   2πx λ
+
+ 1 − 2 
+
+> π
+
+cos −1(1 − α) + 1 
+
+!
+
+(39) where λ denotes the wavelength and α is a smoothing pa-rameter controlling the ripple shape, ranging from triangular (α = 0 ) to sinusoidal ( α = 1 ), as illustrated in Fig. 15. As in the other scenarios, Perlin noise is subsequently added to introduce irregularities. In this scenario, each terrain instance consists of four consecutive ripples, exposing the rover to the transition from rippled to flat terrain and enabling it to learn to negotiate both the first and final ripples. Each consecutive ripple has distinct geometry, with independently sampled amplitude, wavelength, and smoothing parameter. The desired path requires the rover to traverse the ripples at a random angle of up to 20° relative to the wave direction, while the rover is initialized with a random heading offset of up to 45°. 
+
+4) Slopes 
+
+In this scenario, the rover starts on horizontal ground ahead of a slope that transitions to its nominal incline through a parabolic profile with quadratic coefficient βstart . After a constant-slope section, the terrain transitions back to hor-izontal through a second parabolic profile with quadratic coefficient βend . If the randomly sampled length, defined as the distance between the start of the first parabolic transition and the end of the second, is too short relative to the independently sampled values of βstart and βend , the two 0.0 0.2 0.4 0.6 0.8 1.0   
+
+> x
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> z
+> = 0 (triangular)
+> = 0.01
+> = 0.1
+> = 1 (sinusoidal)
+> FIGURE 15. Function used to define the shape of the ripples, for a wavelength and amplitude of 1. αis a smoothing parameter that determines the shape of the ripple, from triangular wave to sinusoidal.
+
+parabolic profiles connect directly, without an intermediate constant-slope section. The desired path requires the rover to climb at a random angle of up to 20° relative to the slope, while the rover is initialized with a random heading offset of up to 45°. 
+
+F. POLICY CONSOLIDATION 
+
+Once a proficient policy has been obtained for each of the four terrain classes, the most recent one million samples of experience from each training instance are aggregated, and the neural networks used to generate them are discarded. Each sample consists of a transition tuple composed of two observed states, the action applied between them, and the associated reward, corresponding to a simulated transition between two consecutive decision steps. A new set of actor and critic networks is then trained exclusively on this aggregated dataset using the same learn-ing algorithm, but with slightly modified hyperparameters, as detailed in Table 4. Because the dataset already captures near-optimal behaviors for each terrain type, substantially fewer training iterations are required to obtain an effective policy. In addition, the minibatch size is increased fourfold to promote smoothness and consistency of the learned pol-icy across all terrain conditions. The hyperparameters that remain the same across both training phases are listed in Table 5. During the initial training phase, six simulation instances are run in parallel for each scenario, resulting in a total of 24 independent DARTS simulations that continuously collect experience while the policy is updated between trials. This process requires approximately 24 hours on a high-performance computing cluster to obtain a satisfactory policy for every scenario. In contrast, the consolidation phase does not involve further simulation and requires fewer training iterations, reducing its duration to approximately 15 minutes. Although directly training a single policy across all sce-narios simultaneously proved intractable, the actor network                               
+
+> 15 :
+> Training parameter Independent scenarios Consolidation
+> Replay buffer size 1 × 10 64 × 10 6
+> Minibatch size 128 512 Initial learning rate 1 × 10 −5 1 × 10 −3
+> Number of iterations 5 × 10 61 × 10 4
+> TABLE 4. Comparison of hyperparameters used for training in independent scenarios and for the subsequent policy consolidation phase.
+> Training parameter Symbol Value
+> State dimension ns45 Action dimension na3Policy evaluation rate fπ2 Hz Reward discount factor γ0.99 Soft target update factor τ5 × 10 −3
+> Policy update delay d2Target policy regularization noise ϵN(0 ,0.05 2)
+> Bounds of the target policy regularization c0.2
+> TABLE 5. Hyperparameters used in both training phases.
+
+obtained from the aggregated experience yields a unified controller that alone can handle all four terrain types. 
+
+V. RESULTS 
+
+The resulting neural network controller is directly deployed on the physical rover and evaluated on an obstacle course comprising all terrain types represented in the training sce-narios. The same controller operates continuously throughout the experiment and is responsible for maneuvering the rover along the desired path. This path is defined as a sequence of line segments automatically provided to the controller based on a predefined route and the rover’s pose estimated from visual–inertial odometry. The rover has no prior knowledge of the terrain to be traversed. Instead, the local terrain elevation ahead is reconstructed in real time using stereo vision, while the force–torque sensors at each wheel as-sembly provide feedback on wheel–ground interactions. All computations are performed onboard the rover. 
+
+A. ROCK FIELD 
+
+Fig. 16 shows the rover traversing a rock field. We observe that the yaw joint of the Active Gimbal Suspension rotates left and right in response to incoming rocks, helping to sequence the climbing of the wheels one at a time. This is indeed the most effective strategy for a four-wheeled vehicle, which can lift only one wheel at a time. Meanwhile, the roll joint continuously adjusts the bogie angle to conform to the geometry of the rocks, and no wheel is left suspended. This controlled rotation of the bogie assists the wheels in climbing over obstacles by actively shifting the load to the adjacent wheels. We also observe that the controller remains robust to rocks rolling or shifting beneath the rover, owing to the direct force feedback from each wheel assembly.  
+
+> (a) (b)
+> FIGURE 16. The resulting neural-network controller tested over a rock field.
+
+B. BICKLER TRAP 
+
+We arranged the rocks into a continuous row that can be straddled by the rover. This type of obstacle is commonly referred to as a bump , or a Bickler trap , named after the inventor of the rocker–bogie suspension, who identified the particular difficulty such configurations pose for passive suspension systems. Because the obstacle can be straddled, once the front wheels have cleared it, they return to the same elevation as the rear wheels before the latter begin climbing. As a result, the pull generated by the front wheels opposes the ascent of the rear wheels when the obstacle is sufficiently steep. Consequently, the rear wheels fail to surmount the obstacle, and the symmetry of the configuration prevents the front wheels from re-clearing it when reversing, thereby immobilizing the vehicle. Fig. 17 shows the rover attempting to traverse such a bump with the Active Gimbal Suspension disabled and the roll-joint clutch open, effectively resulting in a free bogie suspension. As expected, the front wheels successfully pass the obstacle, whereas the rear wheels do not. Furthermore, when reversing, the front wheels are unable to climb the bump again, leaving the rover trapped. Fig. 18 shows the rover traversing the same bump us-ing the Active Gimbal Suspension and the neural network controller. In this case, the yaw and roll joints actively reconfigure the rover to position one of the rear wheels atop the obstacle. The roll joint then reverses its motion to assist in lifting and clearing the final wheel. Although this obstacle configuration was not explicitly represented in the training scenarios, the learned policy successfully handles it, demonstrating effective generalization. 
+
+C. STEP 
+
+To enable the rover to climb a step obstacle, the controller actuates both joints of the Active Gimbal Suspension such that the wheels clear the obstacle sequentially, as shown in Fig. 19. Isolating each wheel climb allows the roll joint to provide targeted lift assistance by alternating the torque applied to the bogie. Fig. 20 shows negative roll-joint torque assisting the right-front and left-rear wheels, and positive torque assisting the other two wheels as they climb in succession. 
+
+> 16
+
+(a) (b) 
+
+> FIGURE 17. Passive bogie suspension driving over a Bickler trap. (a) The rear wheels cannot overcome the obstacle while driving forwards. (b) Similarly, the front wheels cannot clear the obstacle again when driving backwards, trapping the vehicle.
+
+(a) (b) 
+
+> FIGURE 18. The neural-network controller handling the Bickler trap.
+
+D. RIPPLES 
+
+When operating with a passive suspension, the wheels can rapidly become embedded and entrapped in sand ripples whose wavelength is comparable to the vehicle wheelbase. In this configuration, all wheels simultaneously face an uphill slope, despite the chassis remaining approximately horizontal. The ripples considered in this study are composed of M90, a Mars soil simulant analogous to the material found in Martian dunes and ripples [52]. They have a crest-to-crest spacing of 80 cm and are formed up to the angle of repose, approximately 35°, resulting in a height of about 28 cm. To traverse this terrain, the controller operates the Active Gimbal Suspension to lift and position one of the front wheels beyond the ripple crest. This wheel is then used as an anchor point: the rover pulls itself forward by shifting 
+
+(a) (b)          
+
+> FIGURE 19. The neural-network controller climbing over a wheel-high step. 30
+> 15
+> 0
+> 15
+> 30
+> Positions (deg)
+> Yaw joint position Roll joint position
+> 200
+> 100
+> 0
+> 100
+> 200
+> Torques (N.m)
+> Yaw joint torque Roll joint torque
+> 0510 15 20 25 30
+> Time (s)
+> 30
+> 20
+> 10
+> 0
+> 10
+> Inclinations (deg)
+> Chassis roll Chassis pitch
+> FIGURE 20. Action of the Active Gimbal Suspension while the rover is climbing over the step obstacle. The torque in the joints is estimated from the winding current, the torque constant, and the gearbox efficiency of the actuator. The rotation axis of the yaw joint is pointing downward and the roll-joint axis forward, therefore the positions and torques are negative when moving the right-front wheel backward and downward relative to the chassis.
+
+the load onto the corresponding bogie arm and rotating it backward, thereby propelling the rover and the remaining wheels over the crests. On ripples with periodic and uniform geometry, this behavior may resemble a gait. However, the controller continuously adapts its motion based on the local terrain geometry, the desired path, and the force–torque feedback from each wheel assembly. For instance, if the anchor wheel does not extend sufficiently beyond the crest, the controller may attempt to advance it further before initiating the pull, resulting in a rapid back-and-forth crawling motion, or alternatively reverse the bogie motion completely to engage the opposite wheel as the anchor. 
+
+E. SLOPE 
+
+Fig. 22 shows the rover climbing a 20° slope composed of M90 Mars soil simulant. To mitigate wheel sinkage and enable efficient ascent, the rover adopts a crawling gait in which the load is alternately transferred to the left and right wheels to serve as anchors using the roll joint, while the yaw joint rotation pulls the chassis forward. This gait was first proposed in [31], and its spontaneous emergence as  
+
+> 17 :
+> (a) (b)
+> FIGURE 21. The neural-network controller traversing sand ripples.
+
+the optimal policy on soft slopes under the Bekker–Wong terramechanics model provides a meaningful validation. The action of the Active Gimbal Suspension during this gait, as executed on the physical rover, is shown in Fig. 23, and can be compared to the gait obtained in simulation on a similar slope using the terramechanics modeling in Fig. 24. In both cases, the controller provides a smooth transition from flat ground to the slope. However, the roll-joint position does not closely follow the same trajectory, highlighting the adaptive nature of the controller and the influence of real-time feedback from the actual terrain geometry and wheel– ground interaction forces. The torque applied to the bogie by the controller during the slope ascent can be compared to the theoretical maximum torque that can be applied before inducing wheel lift-off. This limiting torque, shown in Fig. 25, along with the resulting load distribution across the wheels, is computed via linear programming for each configuration on a 20° slope using the mass model of ERNEST derived in Section B. We observe that the controller operates close to this theoretical limit, effectively maximizing the unloading of the advancing wheel. Table 6 presents a performance comparison with a passive suspension. The travel reduction is defined as the difference between the expected and actual travel distances over a given time window, normalized by the expected travel distance. The expected travel distance is obtained by integrating the rover motion under a no-slip assumption. For the learned controller, which exhibits a cyclic gait, the time window considered spans a full gait cycle. The cost of transport is computed from the cumulative electrical energy consumption of all actuators, normalized by the actual travel distance and the rover mass. The electrical energy is obtained by integrating the power, estimated as 
+
+P = I (RI + Kτ , ω ) , (40) where I denotes the winding current, R the winding resis-tance, Kτ the torque constant, and ω the angular velocity. Despite the additional energy consumption introduced by the two actuators of the Active Gimbal Suspension, the improved motion efficiency achieved by the neural network controller on sandy slopes results in a lower overall cost of transport than a passive suspension relying solely on wheel drives.         
+
+> (a) (b)
+> FIGURE 22. The neural-network controller climbing a 20° slope. 30
+> 15
+> 0
+> 15
+> 30
+> Positions (deg)
+> Yaw joint position Roll joint position
+> 150
+> 100
+> 50
+> 0
+> 50
+> 100
+> 150
+> Torques (N.m)
+> Yaw joint torque Roll joint torque
+> 0510 15 20 25
+> Time (s)
+> 0
+> 100
+> 200
+> 300
+> Forces (N)
+> Left-front wheel load
+> Left-rear wheel load
+> Right-front wheel load
+> Right-rear wheel load
+> FIGURE 23. Resulting gait when the physical rover climbs a 20° slope. The torque in the gimbal joints are estimated from the winding current, the torque constant, and the gearbox efficiency of the actuator.
+
+This performance gap further increases on wet sand, as reported in Table 6. The stick–slip interaction between the wheels and the wet sand induces significant vibrations, which prevent the passive suspension from making forward progress, ultimately leading to complete entrapment of the rover. In contrast, the increased cohesion of the wet sand enhances the effectiveness of the crawling gait, thereby also demonstrating the controller’s robustness to soil properties outside the training domain. 
+
+VI. CONCLUSIONS 
+
+This paper presented ERNEST, a four-wheeled planetary rover equipped with a two-degree-of-freedom Active Gimbal Suspension and governed by a neural-network controller        
+
+> 18 30
+> 15
+> 0
+> 15
+> 30
+> Positions (deg)
+> Yaw joint position Roll joint position
+> 150
+> 100
+> 50
+> 0
+> 50
+> 100
+> 150
+> Torques (N.m)
+> Yaw joint torque Roll joint torque
+> 0510 15 20 25
+> Time (s)
+> 0
+> 100
+> 200
+> 300
+> Forces (N)
+> Left-front wheel load
+> Left-rear wheel load
+> Right-front wheel load
+> Right-rear wheel load
+
+FIGURE 24. Resulting gait on a 20° slope in simulation. The vertical forces are evaluated above the wheels, at the locations corresponding to the force–torque sensors on the physical rover, hence the values becoming negative when a wheel is fully unloaded, due to the weight of the wheel assembly itself. 
+
+Performance index Sand Passive bogie RL controller 
+
+Travel reduction (%) Dry 81.9 43.0 Wet 100 30.0 Cost of transport (mW h/(m kg)) Dry 21.3 13.4 Wet ∞ 12.8 
+
+TABLE 6. Performance comparison on a 20° slope. For the passive bogie configuration, the Active Gimbal Suspension is off and the clutch is disengaged so that the bogie is free to rotate. 
+
+trained via reinforcement learning in simulation. By com-bining steering authority, active load transfer, and obstacle-oriented reconfiguration for sequential wheel placement, the Active Gimbal Suspension enables behaviors that approach some of the versatility of legged locomotion while retaining the simplicity and efficiency of wheeled systems. Experi-mental results demonstrate that ERNEST can autonomously negotiate rock fields, bumps, wheel-high steps, sand ripples, and loose slopes. Taken together, these findings indicate that a four-wheeled rover with six actuators can surpass the locomotion capabilities of a six-wheeled passive suspension with ten actuators, provided it is paired with an appropriate controller. This is significant because a four-wheeled archi-tecture offers additional advantages: for a given footprint, it can accommodate larger wheels, reducing susceptibility 30      
+
+> 15
+> 0
+> 15
+> 30
+> Positions (deg)
+> Yaw joint position
+> 150
+> 100
+> 50
+> 0
+> 50
+> 100
+> 150
+> Torques (N.m)
+> Roll joint torque
+> 0510 15 20 25
+> Time (s)
+> 0
+> 100
+> 200
+> 300
+> Forces (N)
+> Left-front wheel load
+> Left-rear wheel load
+> Right-front wheel load
+> Right-rear wheel load
+
+FIGURE 25. Maximum torque and load shift that can theoretically be applied on a 20° slope across the different configurations according to the mass model. The loads are directly the vertical forces between the wheels and the ground. 
+
+(a) (b) 
+
+FIGURE 26. The rover climbing a 20° slope with wet sand. (a) The passive bogie rapidly becomes fully immobilized. (b) The RL controller prevents wheel embedment and enables successful ascent of the slope. 
+
+to sinkage and entrapment in depressions, while enabling a simpler and lighter suspension system. A zero-shot transfer from simulation to the physical rover was achieved through a combination of domain random-ization, replay-time sensor noise injection, and a policy consolidation strategy that merges experience collected by terrain-specialized policies into a single unified neural net-work. This consolidation ensures smooth transitions across heterogeneous environments instead of relying on explicit terrain classification and controller switching. The neural network controller operates on a compact state representation that combines exteroceptive and proprioceptive feedback, including path-tracking variables, sparse terrain elevation 
+
+> 19 :
+
+samples ahead of each wheel, chassis attitude, joint states, and processed force–torque measurements. The resulting policy exhibits physically relevant behaviors that emerge spontaneously, including sequential wheel climbing with coordinated load redistribution and a crawling gait that independently rediscovers a strategy previously proposed analytically. The policy also demonstrates meaningful gen-eralization to situations not explicitly represented during training, including the Bickler trap and soil conditions whose properties depart from those assumed in the terramechanics model. Building on these results, future work will extend the approach to incorporate higher-level planning. Domain ran-domization will first be broadened to cover a wider range of obstacle geometries and their combinations, in order to reduce residual performance gaps on configurations not yet encountered during training. The learned controller will then be combined with a state lattice planner whose heuristic is trained in a supervised manner to reflect the rover’s true mobility capabilities when planning a route toward a target location. Finally, the approach will be evaluated in larger-scale field campaigns conducted in Martian-analog environments. Beyond these immediate extensions, several broader ques-tions deserve further study. First, it is worth investigating whether incorporating higher-fidelity terramechanics mod-els capturing soil transport and terrain deformation into a subset of the training data could complement and refine the behaviors learned under the lower-fidelity Bekker–Wong formulation. Second, improving robustness to perceptually ambiguous terrain, such as discriminating between rigid and soft slopes, may benefit from exploiting temporal sequences of proprioceptive measurements rather than instantaneous observations. More fundamentally, the use of neural-network controllers on planetary rovers also raises the question of for-mal validation for safety-critical deployment, which remains an important open challenge for future missions. 
+
+REFERENCES 
+
+[1] P. Fiorini, “Ground mobility systems for planetary exploration,” in 
+
+Proceedings 2000 ICRA. Millennium Conference. IEEE International Conference on Robotics and Automation. Symposia Proceedings (Cat. No. 00CH37065) , vol. 1. IEEE, 2000, pp. 908–913. [2] A. Seeni, B. Sch¨ afer, and G. Hirzinger, “Robot mobility systems for planetary surface exploration–state-of-the-art and future outlook: a literature survey,” Aerospace Technologies Advancements , vol. 492, pp. 189–208, 2010. [3] L. Bruzzone and G. Quaglia, “Locomotion systems for ground mobile robots in unstructured environments,” Mechanical sciences , vol. 3, no. 2, pp. 49–62, 2012. [4] A. Thoesen and H. Marvi, “Planetary surface mobility and exploration: A review,” Current Robotics Reports , pp. 1–11, 2021. [5] N. A. of Sciences Engineering and Medicine, Origins, Worlds, and Life: A Decadal Strategy for Planetary Science and Astrobiology 2023-2032 . Washington, DC: The National Academies Press, 2023. [Online]. Available: https://nap.nationalacademies.org/catalog/26522/ origins-worlds-and-life-a-decadal-strategy-for-planetary-science [6] D. Bickler, “Roving over Mars,” Mechanical Engineering , vol. 120, no. 04, pp. 74–77, 1998. [7] T. Estier, R. Piguet, R. Eichhorn, and R. Siegwart, “Shrimp, a rover architecture for long range Martian mission,” in Proceedings of the Sixth ESA Workshop on Advanced Space Technologies for Robotics and Automation (ASTRA’2000) , 2000, pp. 5–7. [8] H. Nayar, J. Kim, B. Chamberlain-Simon, K. Carpenter, M. Hans, A. Boettcher, G. Meirion-Griffith, B. Wilcox, and B. Bittner, “Design optimization of a lightweight rocker–bogie rover for ocean worlds applications,” International Journal of Advanced Robotic Systems ,vol. 16, no. 6, p. 1729881419885696, 2019. [9] T. Thueer, A. Krebs, and R. Siegwart, “Comprehensive locomotion performance evaluation of all-terrain robots,” in 2006 IEEE/RSJ inter-national conference on intelligent robots and systems . IEEE, 2006, pp. 4260–4265. [10] R. E. Arvidson, J. W. Ashley, J. Bell, M. Chojnacki, J. Cohen, T. Economou, W. H. Farrand, R. Fergason, I. Fleischer, P. Geissler 
+
+et al. , “Opportunity Mars rover mission: Overview and selected results from purgatory ripple to traverses to endeavour crater,” Journal of Geophysical Research: Planets , vol. 116, no. E7, 2011. [11] K. Sanderson, “Mars rover Spirit (2003-10): NASA commits robot explorer to her final resting place,” Nature , vol. 463, no. 7281, pp. 600–601, 2010. [12] M. Heverly, J. Matthews, J. Lin, D. Fuller, M. Maimone, J. Biesi-adecki, and J. Leichty, “Traverse performance characterization for the Mars Science Laboratory rover,” Journal of Field Robotics , vol. 30, no. 6, pp. 835–846, 2013. [13] N. Patel, R. Slade, and J. Clemmet, “The ExoMars rover locomotion subsystem,” Journal of Terramechanics , vol. 47, no. 4, pp. 227–242, 2010. [14] K. Skonieczny and G. M. D’Eleuterio, “Improving mobile robot step-climbing capabilities with center-of-gravity control,” in International Design Engineering Technical Conferences and Computers and Infor-mation in Engineering Conference , vol. 44106, 2010, pp. 1531–1538. [15] K. D. Iagnemma, A. Rzepniewski, S. Dubowsky, P. Pirjanian, T. L. Huntsberger, and P. S. Schenker, “Mobile robot kinematic reconfigura-bility for rough terrain,” in Sensor Fusion and Decentralized Control in Robotic Systems III , vol. 4196. International Society for Optics and Photonics, 2000, pp. 413–420. [16] D. Wettergreen, S. Moreland, K. Skonieczny, D. Jonak, D. Kohanbash, and J. Teza, “Design and field experimentation of a prototype lunar prospector,” The International Journal of Robotics Research , vol. 29, no. 12, pp. 1550–1564, 2010. [17] J.-C. Fauroux, F. Chapelle, and B. Bouzgarrou, “A new principle for climbing wheeled robots: Serpentine climbing with the open wheel platform,” in 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems . IEEE, 2006, pp. 3405–3410. [18] I. Lepp¨ anen, S. Salmi, and A. Halme, “Workpartner–hut-automations new hybrid walking machine,” in 1st International Conference on Climbing and Walking Robots, Brussels , 1998, pp. 391–394. [19] C. Grand, F. Benamar, F. Plumet, and P. Bidaud, “Stability and traction optimization of a reconfigurable wheel-legged robot,” The International Journal of Robotics Research , vol. 23, no. 10-11, pp. 1041–1058, 2004. [20] B. H. Wilcox, T. Litwin, J. Biesiadecki, J. Matthews, M. Heverly, J. Morrison, J. Townsend, N. Ahmad, A. Sirota, and B. Cooper, “ATHLETE: A cargo handling and manipulation robot for the moon,” 
+
+Journal of Field Robotics , vol. 24, no. 5, pp. 421–434, 2007. [21] W. Reid, F. J. P´ erez-Grau, A. H. G¨ okto˘ gan, and S. Sukkarieh, “Actively articulated suspension for a wheel-on-leg rover operating on a Martian analog surface,” in 2016 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2016, pp. 5596–5602. [22] F. Cordes, F. Kirchner, and A. Babu, “Design and field testing of a rover with an actively articulated suspension system in a Mars analog terrain,” Journal of Field Robotics , vol. 35, no. 7, pp. 1149–1181, 2018. [23] W. Reid, G. Meirion-Griffith, S. Karumanchi, B. Emanuel, B. Chamberlain-Simon, J. Bowkett, and M. Garrett, “Actively articu-lated wheel-on-limb mobility for traversing europa analogue terrain,” in Field and Service Robotics . Springer, 2021, pp. 337–351. [24] M. G. Bekker, “Introduction to terrain-vehicle systems. part i: The terrain. part ii: The vehicle,” Michigan Univ Ann Arbor, Tech. Rep., 1969. [25] G. Andrade, F. Benamar, P. Bidaud, and R. Chatila, “Modeling wheel-sand interaction for optimization of a rolling-peristaltic motion of a Marsokhod robot,” in International Conference on Intelligent Robots and Systems , 1998, pp. 576–581. 
+
+> 20
+
+[26] M. Azkarate, M. Zwick, J. Hidalgo-Carrio, R. Nelen, T. Wiese, P. Poulakis, L. Joudrier, and G. Visentin, “First experimental in-vestigations on wheel-walking for improving triple-bogie rover lo-comotion performances,” Proceedings Advanced Space Technologies for Robotics and Automation (ASTRA). Noordwijk, The Netherlands: European Space Agency , 2015. [27] A. Halme, I. Lepp¨ anen, S. Salmi, and S. Yl¨ onen, “Hybrid locomotion of a wheel-legged machine,” in 3rd Int. Conference on Climbing and Walking Robots (CLAWAR’00) , 2000. [28] F. Benamar, C. Grand, G. Besseron, and F. Plumet, “Performance evaluation of locomotion modes of an hybrid wheel-legged robot for self-adaptation to ground conditions,” in ASTRA’04, 8th ESA Workshop on Advanced Space Technologies for Robotics and Automation , 2004. [29] S. Shrivastava, A. Karsai, Y. O. Aydin, R. Pettinger, W. Bluethmann, R. O. Ambrose, and D. I. Goldman, “Material remodeling and un-conventional gaits facilitate locomotion of a robophysical rover over granular terrain,” Science robotics , vol. 5, no. 42, p. eaba3499, 2020. [30] C. Creager, K. Johnson, M. Plant, S. Moreland, and K. Skonieczny, “Push–pull locomotion for vehicle extrication,” Journal of Terrame-chanics , vol. 57, pp. 71–80, 2015. [31] A. Bouton and Y. Gao, “Crawling locomotion enabled by a novel actuated rover chassis,” in 2022 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, forthcoming, 2022. [32] A. Bouton, W. Reid, T. Brown, A. Daca, M. Sabzehi, and H. Nayar, “Experimental study of alternative rover configurations and mobility modes for planetary exploration,” in 2023 IEEE Aerospace Conference .IEEE, 2023, pp. 1–13. [33] M. Gurram, P. K. Uttam, and S. S. Ohol, “Reinforcement learn-ing for quadrupedal locomotion: Current advancements and future perspectives,” in 2025 9th International Conference on Mechanical Engineering and Robotics Research (ICMERR) . IEEE, 2025, pp. 28–38. [34] D. Hoeller, N. Rudin, D. Sako, and M. Hutter, “Anymal parkour: Learning agile navigation for quadrupedal robots,” Science Robotics ,vol. 9, no. 88, p. eadi7566, 2024. [35] J. Lee, M. Bjelonic, A. Reske, L. Wellhausen, T. Miki, and M. Hutter, “Learning robust autonomous navigation and locomotion for wheeled-legged robots,” Science Robotics , vol. 9, no. 89, p. eadi9641, 2024. [36] T. Miki, J. Lee, J. Hwangbo, L. Wellhausen, V. Koltun, and M. Hutter, “Learning robust perceptive locomotion for quadrupedal robots in the wild,” Science robotics , vol. 7, no. 62, p. eabk2822, 2022. [37] A. Bouton and Y. Gao, “Marcel: Mobile active rover chassis for enhanced locomotion,” Journal of Field Robotics , vol. 40, no. 6, pp. 1504–1524, 2023. [38] V. Asnani, D. Delap, and C. Creager, “The development of wheels for the lunar roving vehicle,” Journal of Terramechanics , vol. 46, no. 3, pp. 89–103, 2009. [39] M. Lu, T. Brown, W. Reid, A. Bouton, and H. Nayar, “Design, assembly, and testing of compliant spring tires for lunar rovers,” in 
+
+AIAA SCITECH 2026 Forum , 2026, p. 0787. [40] J. Delaune, D. S. Bayard, and R. Brockers, “xvio: A range-visual-inertial odometry framework,” arXiv preprint arXiv:2010.06677 , 2020. [41] K. Konolige, “Small vision systems: Hardware and implementation,” 
+
+Robotics Research , pp. 203–212, 1998. [42] P. Fankhauser, M. Bloesch, and M. Hutter, “Probabilistic terrain mapping for mobile robots with uncertain localization,” IEEE Robotics and Automation Letters (RA-L) , vol. 3, no. 4, pp. 3019–3026, 2018. [43] J. Garcia-Bonilla, C. Leake, A. Elmquist, T. D. Hasseler, V. Steyert, A. Gaut, and A. Jain, “Dshell-DARTS: A Reusability-Focused Multi-Mission Aerospace and Robotics Simulation Toolkit,” in 2025 IEEE Aerospace Conference , Mar. 2025, pp. 1–13, iSSN: 2996-2358. [Online]. Available: https://ieeexplore.ieee.org/document/11068690/ [44] A. Jain, Robot and Multibody Dynamics: Analysis and Algorithms .Springer, December 2010. [45] J. Garcia-Bonilla, T. D. Hasseler, and A. Elmland, “Multi-fidelity simulation for lunar and planetary rover missions,” in Proceedings of the IEEE Aerospace Conference , 2026, pp. 1–12, submitted. [46] C. Aiazzi, A. Gaut, A. Young, A. Elmquist, and A. Jain, “Iris: High-fidelity perception sensor modeling for closed-loop planetary simulations,” in AIAA Scitech Forum , San Diego, CA, USA, January 2022. [47] M. Mittal, C. Yu, Q. Yu, J. Liu, N. Rudin, D. Hoeller, J. L. Yuan, R. Singh, Y. Guo, H. Mazhar, A. Mandlekar, B. Babich, G. State, M. Hutter, and A. Garg, “Orbit: A unified simulation framework for interactive robot learning environments,” IEEE Robotics and Automa-tion Letters , vol. 8, no. 6, pp. 3740–3747, 2023. [48] G. Ishigami, A. Miwa, K. Nagatani, and K. Yoshida, “Terramechanics-based model for steering maneuver of planetary exploration rovers on loose soil,” Journal of Field Robotics , vol. 24, no. 3, pp. 233–250, 2007. [Online]. Available: https://onlinelibrary.wiley.com/doi/abs/10. 1002/rob.20187 [49] E. Hegedus, A Simplified Method for the Determination of Bulldozing Resistance , ser. DEPARTMENT OF THE ARMY, ORDNANCE TANK-AUTOMOTIVE COMMAND, LAND LOCOMOTION LABORATORY REPORT NO. 61. U.S. Army Ordnance Tank-Automotive Command, 1960. [Online]. Available: https://books.google.com/books?id=EEZqGwAACAAJ [50] A. Tasora, D. Mangoni, D. Negrut, R. Serban, and P. Jayakumar, “Deformable soil with adaptive level of detail for tracked and wheeled vehicles,” International Journal of Vehicle Performance , vol. 5, pp. 1– 16, 08 2018. [51] Z. Jia, W. Smith, and H. Peng, “Fast analytical models of wheeled locomotion in deformable terrain for mobile robots,” Robotica , vol. 31, 01 2013. [52] H. Oravec, V. Asnani, C. Creager, and S. Moreland, “Geotechnical review of existing Mars soil simulants for surface mobility,” in Earth and Space 2021 , 2021, pp. 157–170. [53] S. Fujimoto, H. Hoof, and D. Meger, “Addressing function approxi-mation error in actor-critic methods,” in International Conference on Machine Learning . PMLR, 2018, pp. 1587–1596. [54] T. P. Lillicrap, J. J. Hunt, A. Pritzel, N. Heess, T. Erez, Y. Tassa, D. Silver, and D. Wierstra, “Continuous control with deep reinforce-ment learning,” arXiv preprint arXiv:1509.02971 , 2015. [55] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, “Proximal policy optimization algorithms,” arXiv preprint arXiv:1707.06347 , 2017. [56] C. Lyle, Z. Zheng, E. Nikishin, B. A. Pires, R. Pascanu, and W. Dab-ney, “Understanding plasticity in neural networks,” in International Conference on Machine Learning . PMLR, 2023, pp. 23 190–23 211.

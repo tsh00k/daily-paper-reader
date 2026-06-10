@@ -1,0 +1,997 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-10T03:55:26.941745+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 28,
+    "deep_cap": 6,
+    "deep_selected": 12,
+    "quick_candidates": 31,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2606.04718v1",
+      "source": "arxiv",
+      "title": "CoRe-MoE: Contrastive Reweighted Mixture of Experts for Multi-Terrain Humanoid Locomotion with Gait Adaptation",
+      "abstract": "Humans primarily rely on walking and running to traverse complex terrains, without resorting to unnecessarily complex motion patterns. Similarly, humanoid robots should achieve smooth transitions between walking and running while maintaining natural and stable locomotion. However, unifying gait transition and multi-terrain adaptation within a single policy remains challenging due to gradient interference and the distribution shift induced by terrain-dependent visual and dynamic variations. Although Mixture-of-Experts (MoE) architectures can alleviate multi-skill interference, naive joint training often fails to yield clear expert specialization, limiting their effectiveness. To address these challenges, we propose CoRe-MoE, a two-stage reinforcement learning framework that decouples gait generation from terrain adaptation. In the first stage, a stable locomotion policy is learned to produce natural walking and running behaviors with smooth transitions. In the second stage, a terrain-aware MoE branch is introduced and trained with a contrastive objective to shape the gating network, enabling it to capture structured terrain representations and promote expert specialization. The final action is obtained via weighted fusion of the base gait policy and the terrain-aware branch, allowing the policy to preserve stable locomotion patterns while adapting to complex terrains. Extensive simulation results demonstrate that the proposed method outperforms baseline approaches in terms of success rate, locomotion stability, and multi-terrain adaptability. Furthermore, zero-shot deployment on a Unitree G1 humanoid robot validates the effectiveness of our framework, achieving robust walking and running across stairs, slopes, steps, obstacles, and unstructured outdoor terrains, while maintaining accurate foothold placement and dynamic stability under external disturbances.",
+      "authors": [
+        "Kailun Huang",
+        "Zikang Xie",
+        "Yanzhe Xie",
+        "Panpan Liao",
+        "Fanghai Zhang",
+        "Yanheng Mai",
+        "Wenhao Xu",
+        "Yunheng Wang",
+        "Renjing Xu",
+        "Haohui Huang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-03T10:51:46+00:00",
+      "link": "https://arxiv.org/pdf/2606.04718v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-terrain humanoid locomotion with gait adaptation",
+      "llm_evidence_cn": "多地形人形机器人运动与步态适应",
+      "llm_evidence": "多地形人形机器人运动与步态适应",
+      "canonical_evidence": "多地形人形机器人运动与步态适应",
+      "llm_tldr_en": "CoRe-MoE uses a contrastive reweighted mixture-of-experts to unify gait transition and multi-terrain adaptation in a single humanoid locomotion policy.",
+      "llm_tldr_cn": "针对多地形人形机器人运动中步态切换和地形适应难以统一的问题，提出对比重加权混合专家（CoRe-MoE）框架。该方法通过对比学习重加权专家输出，实现行走和跑步间的平滑过渡，并在不同地形上保持自然稳定运动。实验显示，该方法在多种复杂地形上达到了优于统一策略和门控MoE的性能，且专家具有明确特化。",
+      "llm_tldr": "针对多地形人形机器人运动中步态切换和地形适应难以统一的问题，提出对比重加权混合专家（CoRe-MoE）框架。该方法通过对比学习重加权专家输出，实现行走和跑步间的平滑过渡，并在不同地形上保持自然稳定运动。实验显示，该方法在多种复杂地形上达到了优于统一策略和门控MoE的性能，且专家具有明确特化。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04829v1",
+      "source": "arxiv",
+      "title": "M3imic: Learning a Versatile Whole-Body Controller for Multimodal Motion Mimicking",
+      "abstract": "Building a general-purpose whole-body controller is essential for enabling diverse motion capabilities in humanoid robots across a wide range of downstream tasks, including locomotion and loco-manipulation. Different tasks rely on distinct motion reference modalities: locomotion primarily depends on coordinated robot joint trajectories, whereas manipulation requires precise end-effector trajectory tracking. Existing methods often overlook the representational mismatch between dense robot joint angles and sparse end-effector poses. To address this, we propose Multi-Modal Mimic (M3imic), a versatile multi-modal whole-body control framework that unifies heterogeneous motion reference modalities, including robot joint angles, human pose trajectories, and end-effector poses, using modality-specific encoders to map them into a shared latent space. Leveraging large-scale reinforcement learning in the simulator, we train a single policy that achieves sim-to-real transfer across multiple motion reference modalities without modality-specific retraining. Extensive simulation and real-world experiments on the Unitree G1 robot are conducted to evaluate the proposed framework. In simulation, the policy achieves a peak success rate of 98.42\\% on an unseen test dataset, demonstrating its exceptional generalization capability. The code is available at https://github.com/Renforce-Dynamics/MultiModalWBC",
+      "authors": [
+        "Zuxing Lu",
+        "Ziang Zheng",
+        "Yao Lyu",
+        "Jingyu Liu",
+        "Feihong Zhang",
+        "Song Lu",
+        "Xin Yuan",
+        "Changyin Sun",
+        "Xingxing Zuo",
+        "Shengbo Eben Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-03T12:52:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.04829v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "versatile whole-body controller for humanoid robots",
+      "llm_evidence_cn": "人形机器人通用全身控制器",
+      "llm_evidence": "人形机器人通用全身控制器",
+      "canonical_evidence": "人形机器人通用全身控制器",
+      "llm_tldr_en": "M3imic proposes a versatile whole-body controller unifying multimodal motion references (joint angles, human poses) for humanoid locomotion and loco-manipulation.",
+      "llm_tldr_cn": "不同任务依赖不同运动参考模态，但现有方法忽略表示不匹配。M3imic提出多模态模仿框架，统一异构参考模态（如机器人关节角、人体姿态），通过一个通用全身控制器实现从行走操作到复杂移动操作。在仿真和真实人形机器人上展示了多样运动能力。",
+      "llm_tldr": "不同任务依赖不同运动参考模态，但现有方法忽略表示不匹配。M3imic提出多模态模仿框架，统一异构参考模态（如机器人关节角、人体姿态），通过一个通用全身控制器实现从行走操作到复杂移动操作。在仿真和真实人形机器人上展示了多样运动能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05160v1",
+      "source": "arxiv",
+      "title": "GRAIL: Generating Humanoid Loco-Manipulation from 3D Assets and Video Priors",
+      "abstract": "Scaling humanoid loco-manipulation requires robot-compatible demonstrations across diverse objects, whole-body motions, and scene geometries, but teleoperation and motion capture are difficult to scale because each collection depends on physical setups, instrumented actors, and robot operation. We present GRAIL, a digital generation pipeline that remains fully virtual until deployment: it composes 3D assets, simulator-ready scenes, and priors from video foundation models (VFMs) to synthesize interactions without rebuilding physical environments or teleoperating the robot. Rather than reconstructing unconstrained in-the-wild videos, GRAIL starts from fully specified 3D configurations in which object geometry, camera parameters, metric scale, environment depth, and a robot-proportioned character are known before video generation and reused during reconstruction. This privileged setup better conditions 4D recovery, allowing model-based object tracking, human motion estimation, and interaction-aware optimization to reconstruct metric 4D human-object interaction (HOI) trajectories with reduced depth ambiguity and morphology mismatch. We retarget the recovered motions to a humanoid robot and train complementary task-general trackers: an object-aware latent adaptor for manipulation and a scene-aware tracker for terrain traversal. GRAIL produces over 20,000 sequences spanning pick-up, object manipulation, sitting, and terrain traversal. Using only GRAIL-generated data, we train egocentric visual policies through a sim-to-real pipeline and deploy them on a Unitree G1 humanoid, achieving 84\\% real-world success on diverse object pick-up and 90\\% success on stair-climbing.",
+      "authors": [
+        "Tianyi Xie",
+        "Haotian Zhang",
+        "Jinhyung Park",
+        "Zi Wang",
+        "Bowen Wen",
+        "Jiefeng Li",
+        "Xueting Li",
+        "Qingwei Ben",
+        "Haoyang Weng",
+        "Yufei Ye",
+        "David Minor",
+        "Tingwu Wang",
+        "Chenfanfu Jiang",
+        "Sanja Fidler",
+        "Jan Kautz",
+        "Linxi Fan",
+        "Yuke Zhu",
+        "Zhengyi Luo",
+        "Umar Iqbal",
+        "Ye Yuan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-03T17:57:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.05160v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid loco-manipulation, whole-body motion generation",
+      "llm_evidence_cn": "人形机器人全身操作与运动生成",
+      "llm_evidence": "人形机器人全身操作与运动生成",
+      "canonical_evidence": "人形机器人全身操作与运动生成",
+      "llm_tldr_en": "GRAIL is a virtual pipeline that generates humanoid loco-manipulation demonstrations from 3D assets and video priors, avoiding physical setups and teleoperation.",
+      "llm_tldr_cn": "针对人形机器人全身操作与运动演示数据难以扩展的问题，提出了GRAIL数字生成流水线。该方法完全虚拟，利用3D资产和视频基础模型先验合成多样交互，无需重建物理环境或遥操作。从指定3D配置出发，生成机器人兼容的全身运动与操作轨迹，解决了数据稀缺瓶颈。",
+      "llm_tldr": "针对人形机器人全身操作与运动演示数据难以扩展的问题，提出了GRAIL数字生成流水线。该方法完全虚拟，利用3D资产和视频基础模型先验合成多样交互，无需重建物理环境或遥操作。从指定3D配置出发，生成机器人兼容的全身运动与操作轨迹，解决了数据稀缺瓶颈。",
+      "llm_tags": [
+        "query:locowbc:composite"
+      ],
+      "matched_query_tag": "query:locowbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找机器人locomotion、WBC的工作, especially work that connects or combines: robot locomotion techniques and algorithms; whole-body control for robots; humanoid robot locomotion and control; legged locomotion planning and control; motion planning for robot locomotion; contact force control in locomotion; methods for whole body control in robot locomotion; recent advances in humanoid walking and whole body control; control strategies for bipedal robot locomotion; WBC framework for legged robot locomotion.",
+      "matched_requirement_id": "req-composite-locowbc",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05687v1",
+      "source": "arxiv",
+      "title": "Accelerating and Scaling MPC-Guided Reinforcement Learning for Humanoid Locomotion and Manipulation",
+      "abstract": "In humanoid motion control, model predictive control (MPC) offers physically grounded prediction and constraint handling, while reinforcement learning (RL) enables robust whole-body skills through large-scale simulation. However, using MPC inside RL often requires time-consuming problem construction or excessive training overhead, making such frameworks difficult to justify in practice. This work studies efficient training-time MPC guidance for humanoid locomotion and manipulation, termed MPC-RL. We introduce a centroidal-dynamics MPC reward formulation that leverages guidance from MPC trajectories in training time. To make this practical in massively parallel RL, we develop $π^n$MPC, a parallel-in-horizon and construction-free batched GPU MPC solver that operates directly on time-varying dynamics to avoid high memory usage and pre-compilation. Through a variety of comparative studies and hardware validations, we have found that MPC-RL achieves superior performance in locomotion and manipulation skills. The code base is available at https://github.com/junhengl/mpc-rl.",
+      "authors": [
+        "Junheng Li",
+        "Liang Wu",
+        "Sergio A. Esteban",
+        "Lizhi Yang",
+        "Ján Drgoňa",
+        "Aaron D. Ames"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-04T04:12:47+00:00",
+      "link": "https://arxiv.org/pdf/2606.05687v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "MPC-guided RL for humanoid locomotion and manipulation",
+      "llm_evidence_cn": "MPC引导的强化学习用于人形机器人运动与操作",
+      "llm_evidence": "MPC引导的强化学习用于人形机器人运动与操作",
+      "canonical_evidence": "MPC引导的强化学习用于人形机器人运动与操作",
+      "llm_tldr_en": "Introduces a centroidal-dynamics MPC reward formulation and parallel-in-horizon MPC (pi^nMPC) to efficiently accelerate RL training for humanoid locomotion and manipulation.",
+      "llm_tldr_cn": "针对MPC与RL结合时构建问题和训练开销大的问题，提出一种质心动力学MPC奖励公式和并行预测优化方法π^nMPC。该方法在训练时利用MPC轨迹引导RL，显著提升人形机器人运动与操作任务的训练效率。大量实验表明，该方法在多种复杂任务上取得了快速且稳健的学习效果。",
+      "llm_tldr": "针对MPC与RL结合时构建问题和训练开销大的问题，提出一种质心动力学MPC奖励公式和并行预测优化方法π^nMPC。该方法在训练时利用MPC轨迹引导RL，显著提升人形机器人运动与操作任务的训练效率。大量实验表明，该方法在多种复杂任务上取得了快速且稳健的学习效果。",
+      "llm_tags": [
+        "query:mpc-wbc:composite"
+      ],
+      "matched_query_tag": "query:mpc-wbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找MPC和locomotion、WBC交叉，或者模仿学习、逆强化学习和locomotion、WBC的交叉方向论文, especially work that connects or combines: Model predictive control for whole body locomotion and walking; Whole body control for locomotion with model predictive control; Imitation learning for legged locomotion and whole body control; Inverse reinforcement learning for locomotion and whole body control; Model predictive control for legged locomotion and walking; Whole body control for legged locomotion and walking; Papers on model predictive control for whole body locomotion; Imitation learning applications in legged locomotion and whole body control; Inverse reinforcement learning for whole body control and locomotion; Intersection of MPC and imitation learning in legged locomotion.",
+      "matched_requirement_id": "req-composite-mpc-wbc",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05880v1",
+      "source": "arxiv",
+      "title": "TAGA: Terrain-aware Active Gaze Learning for Generalizable Agile Humanoid Locomotion",
+      "abstract": "Agile humanoid locomotion across diverse challenging terrain demands both wide perceptual coverage and precise local geometry understanding. Motivated by the way humans selectively look at relevant terrain during locomotion, we introduce TAGA, a Terrain-aware Active Gaze learning framework for Attention-based humanoid control. By fusing vision, proprioception, and motion commands, our framework guides the model to learn anticipatory cues and actively attend to specific areas of the height scan, selectively using these informative regions for the downstream network. This adaptively increases the information density of observations under tight onboard computational constraints, thus enabling fine-grained perceptive locomotion over larger-scale terrains. We find that such gaze behaviors can naturally emerge through reinforcement learning alone, without requiring additional supervision or explicit guidance, significantly improve training efficiency. As a result, the trained policy demonstrates robust and generalizable locomotion in simulation and on hardware, including reliable terrain-aware foothold selection, elevated-platform traversal, competitive sparse-foothold traversal, and the largest reported real-world gap traversal distance of 1.2m among perceptive humanoid locomotion systems, while maintaining stability under severe perceptual disturbances and environmental interference.",
+      "authors": [
+        "Peizhuo Li",
+        "Hongyi Li",
+        "Mingfeng Fan",
+        "Fangzhou Xu",
+        "Shuhao Liao",
+        "Yuxuan Ma",
+        "Zicheng Zeng",
+        "Ze Wang",
+        "Yongbin Jin",
+        "Yuhong Cao",
+        "Hongtao Wang",
+        "Guillaume Sartoretti"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-04T08:52:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.05880v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Terrain-aware active gaze learning for agile humanoid locomotion",
+      "llm_evidence_cn": "地形感知的主动注视学习，用于敏捷人形机器人移动",
+      "llm_evidence": "地形感知的主动注视学习，用于敏捷人形机器人移动",
+      "canonical_evidence": "地形感知的主动注视学习，用于敏捷人形机器人移动",
+      "llm_tldr_en": "TAGA integrates vision, proprioception, and motion commands to learn anticipatory cues, actively attending to relevant terrain regions for fine-grained perceptive humanoid locomotion, improving agility on diverse terrains.",
+      "llm_tldr_cn": "针对人形机器人在复杂地形上的敏捷移动需求，本文提出TAGA框架，融合视觉、本体感觉和运动命令，学习预测性提示并主动选择性地关注高度扫描图中的关键区域。该方法在有限计算资源下提高了感知信息密度，实现了对更大范围地形的精细感知移动。实验表明TAGA在多种挑战性地形上显著提升了移动鲁棒性和敏捷性。",
+      "llm_tldr": "针对人形机器人在复杂地形上的敏捷移动需求，本文提出TAGA框架，融合视觉、本体感觉和运动命令，学习预测性提示并主动选择性地关注高度扫描图中的关键区域。该方法在有限计算资源下提高了感知信息密度，实现了对更大范围地形的精细感知移动。实验表明TAGA在多种挑战性地形上显著提升了移动鲁棒性和敏捷性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.06493v1",
+      "source": "arxiv",
+      "title": "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers",
+      "abstract": "For a humanoid robot to be deployed in the real world, the choice of command space (i.e., the interface between task planning and whole-body control) is crucial. Existing whole-body controllers typically demand dense kinematic or spatial references that planners struggle to synthesize from task semantics. We instead propose a compact, explicit interface that is intuitive, general, modular, and expressive enough for diverse manipulation skills. To this end, we introduce HANDOFF, a single humanoid whole-body controller that follows this interface and is distilled via multi-teacher KL distillation under a context-conditioned gating scheme into a mixture-of-experts student from three complementary specialists: whole-body motion tracking with safety-filtered data, locomotion, and fall-recovery. On the Unitree G1, HANDOFF matches state-of-the-art velocity tracking and offers one of the largest robust manipulation workspaces. We further demonstrate hardware feasibility through multiple natural-language-driven task roll-outs, powered by a VLM-driven agentic planner with no task-specific data or controller fine-tuning.",
+      "authors": [
+        "Lizhi Yang",
+        "Junheng Li",
+        "Nehar Poddar",
+        "Yiling Hou",
+        "Gio Huh",
+        "Robert Griffin",
+        "Georgia Gkioxari",
+        "Aaron Ames"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-04T17:59:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.06493v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "whole-body control for humanoid robots with task-space interface",
+      "llm_evidence_cn": "人形机器人全身控制与任务空间接口",
+      "llm_evidence": "人形机器人全身控制与任务空间接口",
+      "canonical_evidence": "人形机器人全身控制与任务空间接口",
+      "llm_tldr_en": "HANDOFF introduces a compact task-space interface for humanoid whole-body control, distilled from three complementary teachers via KL distillation into a mixture-of-experts student.",
+      "llm_tldr_cn": "针对人形机器人全身控制器对密集参考输入的需求，提出了HANDOFF框架。该控制器采用紧凑显式任务空间接口，通过多教师KL蒸馏从三个互补专家（全身运动跟踪、平衡、操作）中蒸馏出混合专家学生策略。在真实人形机器人上展示了模块化、可泛化的全身控制能力。",
+      "llm_tldr": "针对人形机器人全身控制器对密集参考输入的需求，提出了HANDOFF框架。该控制器采用紧凑显式任务空间接口，通过多教师KL蒸馏从三个互补专家（全身运动跟踪、平衡、操作）中蒸馏出混合专家学生策略。在真实人形机器人上展示了模块化、可泛化的全身控制能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.06493v2",
+      "source": "arxiv",
+      "title": "HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers",
+      "abstract": "For a humanoid robot to be deployed in the real world, the choice of command space (i.e., the interface between task planning and whole-body control) is crucial. Existing whole-body controllers typically demand dense kinematic or spatial references that planners struggle to synthesize from task semantics. We instead propose a compact, explicit interface that is intuitive, general, modular, and expressive enough for diverse loco-manipulation skills. To this end, we introduce HANDOFF, a single humanoid whole-body controller that follows this interface and is distilled via multi-teacher KL distillation under a context-conditioned gating scheme into a mixture-of-experts student from three complementary specialists: whole-body motion tracking with safety-filtered data, locomotion, and fall-recovery. On the Unitree G1, HANDOFF matches state-of-the-art velocity tracking and offers one of the largest robust manipulation workspaces. We further demonstrate hardware feasibility through multiple natural-language-driven task roll-outs, powered by a VLM-driven agentic planner with no task-specific data or controller fine-tuning.",
+      "authors": [
+        "Lizhi Yang",
+        "Junheng Li",
+        "Nehar Poddar",
+        "Yiling Hou",
+        "Gio Huh",
+        "Robert Griffin",
+        "Georgia Gkioxari",
+        "Aaron Ames"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-04T17:59:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.06493v2",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid whole-body control via distilled teachers for loco-manipulation",
+      "llm_evidence_cn": "人形机器人全身控制，通过教师蒸馏实现操作与运动",
+      "llm_evidence": "人形机器人全身控制，通过教师蒸馏实现操作与运动",
+      "canonical_evidence": "人形机器人全身控制，通过教师蒸馏实现操作与运动",
+      "llm_tldr_en": "HANDOFF proposes a compact command space for humanoid whole-body control, using multi-teacher distillation to create a mixture-of-experts student for diverse loco-manipulation.",
+      "llm_tldr_cn": "针对人形机器人全控控制中指令空间复杂且难以从任务语义生成参考的问题，本文提出HANDOFF框架，通过多教师KL蒸馏和上下文条件门控机制，将三个互补专家（全身运动、操作等）融合为混合专家学生模型，实现单一控制器支持多样化操作-运动技能，实验验证了其有效性和泛化能力。",
+      "llm_tldr": "针对人形机器人全控控制中指令空间复杂且难以从任务语义生成参考的问题，本文提出HANDOFF框架，通过多教师KL蒸馏和上下文条件门控机制，将三个互补专家（全身运动、操作等）融合为混合专家学生模型，实现单一控制器支持多样化操作-运动技能，实验验证了其有效性和泛化能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.07083v1",
+      "source": "arxiv",
+      "title": "Predictive Style Matching: Natural and Robust Humanoid Locomotion",
+      "abstract": "Reinforcement learning has become the prevailing approach to humanoid locomotion control: policies transfer reliably from simulation to hardware and recover gracefully from disturbances.   Motion quality, however, still lags behind: task-only rewards often converge to stiff, asymmetric gaits, while motion imitation methods improve appearance but become more sensitive to external disturbances because reference signals can oppose the transient poses needed to regain balance.   We propose Predictive Style Matching, in which an offline predictor maps the robot's lower-body state history and velocity commands to interpretable upper-body joint and gait targets that shape the rewards during training.   Because the targets are state-conditioned rather than time-indexed and the predictor is used only at training time, the deployed controller inherits the proprioceptive interface and inference cost of a task-only RL baseline.   On the Unitree G1, in both simulation and hardware, PSM reduces upper-body style error by roughly an order of magnitude over task-only RL while preserving its fall-recovery rate, whereas the motion-imitation baseline attains the lowest style error but fails to recover from disturbances about five times as often.",
+      "authors": [
+        "Simeon Nedelchev",
+        "Ekaterina Chaikovskaia",
+        "Egor Davydenko",
+        "Eduard Zaliaev",
+        "Roman Gorbachev"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-05T09:21:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.07083v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid locomotion with style matching and RL",
+      "llm_evidence_cn": "用于人形机器人运动的风格匹配与强化学习方法",
+      "llm_evidence": "用于人形机器人运动的风格匹配与强化学习方法",
+      "canonical_evidence": "用于人形机器人运动的风格匹配与强化学习方法",
+      "llm_tldr_en": "Predictive Style Matching improves humanoid locomotion quality by using an offline predictor to shape rewards, achieving natural gaits and robustness to disturbances.",
+      "llm_tldr_cn": "针对现有强化学习方法生成的运动僵硬、不对称的问题，提出预测风格匹配方法：训练离线预测器根据机器人下半身状态和速度指令生成上半身关节和步态目标，用于引导奖励塑造。该方法使得人形机器人既能模仿自然运动风格，又能保持对外部干扰的鲁棒恢复能力，在仿真和硬件上验证了优于纯任务奖励和运动模仿方法的性能。",
+      "llm_tldr": "针对现有强化学习方法生成的运动僵硬、不对称的问题，提出预测风格匹配方法：训练离线预测器根据机器人下半身状态和速度指令生成上半身关节和步态目标，用于引导奖励塑造。该方法使得人形机器人既能模仿自然运动风格，又能保持对外部干扰的鲁棒恢复能力，在仿真和硬件上验证了优于纯任务奖励和运动模仿方法的性能。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08059v1",
+      "source": "arxiv",
+      "title": "Perceptive Behavior Foundation Model: Adapting Human Motion Priors to Robot-Centric Terrain",
+      "abstract": "Humanoid behavior foundation models aim to acquire reusable whole-body control policies from broad human motion priors, enabling a single controller to produce diverse and expressive behaviors. However, existing motion-centric foundation policies largely assume that the reference motion is already physically compatible with the robot's surroundings. This assumption breaks when the demonstrator, operator, and robot inhabit different environments: a human motion may specify the intended behavior, but not the footholds, clearance, body height, or contact timing required by the robot's local terrain. We introduce \\emph{Perceptive Behavior Foundation Model} (Perceptive BFM), a terrain-aware humanoid control framework that grounds human motion priors in robot-centric perception. The model preserves raw kinematic motion references as the behavioral interface, while using local terrain observations to adapt contacts, posture, and timing. To provide scalable terrain supervision, we develop \\emph{terrain-conformal reference synthesis} (TCRS), which converts locomotion-oriented human motion clips into terrain-consistent references through contact-aware foothold construction, foot-geometry-aware swing optimization, support-aware root reconstruction, collision repair, and multi-point inverse kinematics. We then train a blind adapted-reference teacher and transfer its terrain-conformal behavior to a deployed raw-reference student through target-frame action alignment. The student is an identity-gated Transformer tracker whose terrain features enter through residual pathways initialized to preserve the motion-tracking prior and trained to produce local corrections only when needed.",
+      "authors": [
+        "Zifan Wang",
+        "Yizhao Li",
+        "Teli Ma",
+        "Qiang Zhang",
+        "Yudong Fan",
+        "Hao Xu",
+        "Shuo Yang",
+        "Junwei Liang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-06T08:46:44+00:00",
+      "link": "https://arxiv.org/pdf/2606.08059v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "terrain-aware humanoid whole-body control foundation model adapting human motion priors",
+      "llm_evidence_cn": "地形感知的人形机器人全身控制基础模型，适配人类运动先验",
+      "llm_evidence": "地形感知的人形机器人全身控制基础模型，适配人类运动先验",
+      "canonical_evidence": "地形感知的人形机器人全身控制基础模型，适配人类运动先验",
+      "llm_tldr_en": "Perceptive BFM proposes a terrain-aware humanoid control framework that grounds human motion priors to robot-centric terrain, enabling reusable whole-body policies that adapt to local environments.",
+      "llm_tldr_cn": "现有的人形机器人基础模型假设参考运动与环境兼容，但在不同地形下不成立。本文提出感知行为基础模型（Perceptive BFM），将人类运动先验与机器人局部地形结合，通过地形感知调整落脚点、离地间隙等，实现了单一控制器在不同地形下的多样化行为，实验展示了其泛化能力。",
+      "llm_tldr": "现有的人形机器人基础模型假设参考运动与环境兼容，但在不同地形下不成立。本文提出感知行为基础模型（Perceptive BFM），将人类运动先验与机器人局部地形结合，通过地形感知调整落脚点、离地间隙等，实现了单一控制器在不同地形下的多样化行为，实验展示了其泛化能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08278v1",
+      "source": "arxiv",
+      "title": "SIMPLE: Simulation-Based Policy Learning and Evaluation for Humanoid Loco-manipulation",
+      "abstract": "Humanoid foundation models are advancing faster than we can evaluate them. While real-world testing is expensive and difficult to reproduce, existing simulation benchmarks focus primarily on table-top or wheeled robots. A scalable and reproducible benchmark for whole-body humanoid loco-manipulation remains an open problem. To this end, we present SIMPLE, a unified simulation testbed for humanoid policy learning and evaluation. SIMPLE couples the accurate contact-rich dynamics of MuJoCo with the photorealistic rendering of IsaacSim. It provides a large-scale environment comprising 60 diverse whole-body tasks, 50 indoor scenes, and over 1,000 object assets. To facilitate scalable data collection, the framework integrates two data generation pipelines: automated trajectory generation via motion planning and a low-latency VR teleoperation interface. We further integrate and benchmark mainstream humanoid policies at scale in SIMPLE, including lightweight imitation networks, large vision-language-action (VLA) models, and recent world action models (WAMs). Our experiments reveal a strong correlation between policy performance in simulation and the real world. Furthermore, we demonstrate that policies trained on data collected in SIMPLE can be transferred zero-shot to physical humanoid robots under similar settings, providing a robust and reproducible foundation for humanoid robotics research.",
+      "authors": [
+        "Songlin Wei",
+        "Zhenhao Ni",
+        "Jie Liu",
+        "Zhenyu Zhao",
+        "Junjie Ye",
+        "Hongyi Jing",
+        "Junkai Xia",
+        "Xiawei Liu",
+        "Michael Leong",
+        "Liang Heng",
+        "Di Huang",
+        "Yue Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-06T17:55:43+00:00",
+      "link": "https://arxiv.org/pdf/2606.08278v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid whole-body loco-manipulation benchmark",
+      "llm_evidence_cn": "人形机器人全身移动操作基准",
+      "llm_evidence": "人形机器人全身移动操作基准",
+      "canonical_evidence": "人形机器人全身移动操作基准",
+      "llm_tldr_en": "SIMPLE provides a unified simulation testbed for humanoid whole-body policy learning and evaluation, featuring accurate contact-rich dynamics and diverse tasks.",
+      "llm_tldr_cn": "人形机器人基础模型发展迅速但缺乏可扩展的评估基准。SIMPLE构建了统一仿真测试平台，结合MuJoCo的精确接触动力学与IsaacSim的逼真渲染，包含60个全身任务和50个室内场景，支持大规模策略学习与评估。该平台为全身移动操作研究提供了标准化环境。",
+      "llm_tldr": "人形机器人基础模型发展迅速但缺乏可扩展的评估基准。SIMPLE构建了统一仿真测试平台，结合MuJoCo的精确接触动力学与IsaacSim的逼真渲染，包含60个全身任务和50个室内场景，支持大规模策略学习与评估。该平台为全身移动操作研究提供了标准化环境。",
+      "llm_tags": [
+        "query:locowbc:composite"
+      ],
+      "matched_query_tag": "query:locowbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找机器人locomotion、WBC的工作, especially work that connects or combines: robot locomotion techniques and algorithms; whole-body control for robots; humanoid robot locomotion and control; legged locomotion planning and control; motion planning for robot locomotion; contact force control in locomotion; methods for whole body control in robot locomotion; recent advances in humanoid walking and whole body control; control strategies for bipedal robot locomotion; WBC framework for legged robot locomotion.",
+      "matched_requirement_id": "req-composite-locowbc",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08922v1",
+      "source": "arxiv",
+      "title": "PTDL:Multi-Terrain Fall Recovery via Phase-Terrain Decoupled Learning",
+      "abstract": "Humanoid robots can fall on slopes, gravel, and uneven ground in unstructured environments. We target integrated fall recovery and locomotion: rebuilding balance from a fallen state using proprioception alone and resuming velocity-commanded walking at the fall site. Prior methods often stop at quasi-static rise, neglect the post-fall ground-contact phase, or, when trained on mixed terrains without separating recovery and locomotion phases or per-surface constraints, collapse to a single compromise get-up across surfaces. We propose Phase--Terrain Decoupled Learning (PTDL), which decouples training supervision along phase and terrain axes while deploying one proprioceptive policy. On the phase axis, projected-gravity-gated dual motion-prior discriminators and a probe-to-walk transition link post-fall recovery to commanded walking. On the terrain axis, terrain-stratified recovery shaping assigns surface-specific training supervision on flat ground, gravel, and slopes; terrain labels are training-only and withheld from policy observations, enabling implicit post-fall strategy selection at deployment. We validate PTDL on a 29-DoF Unitree G1 across flat ground, gravel, and slopes up to 20 degrees in simulation and on hardware, achieving stable cross-terrain recovery, smooth recovery-to-locomotion transitions, and differentiated post-fall rise behaviors under one deployed policy.",
+      "authors": [
+        "Xiaoyu Xu",
+        "Zhiming Chen",
+        "Yuenan Zhao",
+        "Ran Song",
+        "Wei Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-08T02:01:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.08922v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid fall recovery and locomotion",
+      "llm_evidence_cn": "人形机器人跌倒恢复与行走",
+      "llm_evidence": "人形机器人跌倒恢复与行走",
+      "canonical_evidence": "人形机器人跌倒恢复与行走",
+      "llm_tldr_en": "PTDL proposes phase-terrain decoupled learning for humanoid fall recovery and resumed walking on various terrains using proprioception only.",
+      "llm_tldr_cn": "人形机器人在非结构化地形上跌倒后难以自主恢复并继续行走。现有方法常忽略接触阶段或在不同地形上退化为单一策略。本文提出阶段-地形解耦学习（PTDL），沿阶段和地形两个维度解耦训练监督，使用单一本体感受策略实现多地形跌倒恢复与速度命令行走。通过投影重力门控双运动先验鉴别器，策略能适应不同地面条件。",
+      "llm_tldr": "人形机器人在非结构化地形上跌倒后难以自主恢复并继续行走。现有方法常忽略接触阶段或在不同地形上退化为单一策略。本文提出阶段-地形解耦学习（PTDL），沿阶段和地形两个维度解耦训练监督，使用单一本体感受策略实现多地形跌倒恢复与速度命令行走。通过投影重力门控双运动先验鉴别器，策略能适应不同地面条件。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.09215v1",
+      "source": "arxiv",
+      "title": "MotionWAM: Towards Foundation World Action Models for Real-Time Humanoid Loco-Manipulation",
+      "abstract": "World Action Models (WAMs) couple a video dynamics prior to the policy and have shown encouraging results on tabletop manipulation, but iterative denoising over high-dimensional video-action latents leaves them too slow for real-time humanoid loco-manipulation. The problem is compounded by the dominant hierarchical paradigm, in which a high-level manipulation policy controls only the upper body while a low-level controller tracks coarse base commands -- placing upper and lower body in inconsistent action spaces and reducing the legs to balance-preserving locomotion. We present MotionWAM, a real-time WAM that drives autonomous humanoid loco-manipulation from a single egocentric camera by conditioning the policy on the intermediate denoising features of a video world model. MotionWAM replaces the upper-lower split with a unified motion latent and predicts whole-body motion tokens that jointly cover locomotion, torso motion, height regulation, foot interaction, and hand manipulation in a single action space. A three-stage learning framework progressively adapts the video world model to egocentric visual dynamics and to the target humanoid embodiment. On nine real-world Unitree G1 tasks, MotionWAM runs in real time, substantially outperforms Vision-Language-Action (VLA) baselines fine-tuned on the same demonstrations by over 30% in overall success rate, and executes task-driven foot interaction that decoupled upper-lower policies cannot reach. Our results suggest that video-pretrained WAMs can be lifted from tabletop manipulation to coordinated, human-like whole-body humanoid control.",
+      "authors": [
+        "Jia Zheng",
+        "Teli Ma",
+        "Yudong Fan",
+        "Zifan Wang",
+        "Shuo Yang",
+        "Junwei Liang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-08T08:50:14+00:00",
+      "link": "https://arxiv.org/pdf/2606.09215v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Real-time humanoid loco-manipulation using World Action Model",
+      "llm_evidence_cn": "使用World Action Model实现实时人形机器人移动操作",
+      "llm_evidence": "使用World Action Model实现实时人形机器人移动操作",
+      "canonical_evidence": "使用World Action Model实现实时人形机器人移动操作",
+      "llm_tldr_en": "MotionWAM introduces a real-time World Action Model for humanoid loco-manipulation, conditioning policy on intermediate dynamics features from a single egocentric camera, enabling autonomous and cohesive whole-body control.",
+      "llm_tldr_cn": "针对现有世界动作模型（WAM）因迭代去噪而无法实时运行且上下体动作空间不一致的问题，本文提出MotionWAM，通过策略依赖于从单目摄像机提取的中间动态特征，实现了实时自主的人形机器人移动操作。该方法统一了上下体的动作空间，使机器人能够协调地进行全身移动与操作，并在多种任务上验证了其高效性。",
+      "llm_tldr": "针对现有世界动作模型（WAM）因迭代去噪而无法实时运行且上下体动作空间不一致的问题，本文提出MotionWAM，通过策略依赖于从单目摄像机提取的中间动态特征，实现了实时自主的人形机器人移动操作。该方法统一了上下体的动作空间，使机器人能够协调地进行全身移动与操作，并在多种任务上验证了其高效性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.01851v1",
+      "source": "arxiv",
+      "title": "PHASOR: Phase-Anchored Universal Action Representations for Humanoid Embodiments",
+      "abstract": "Learning a good action embedding space is fundamental to scalable robot policy learning, yet existing methods treat action latents as task-specific intermediates rather than first-class representations. The resulting latents are unstructured, embodiment-specific, and weakly tied to motion semantics, limiting interpretability, controllability, and transferability across robots. We position the action embedding space itself as a first-class design target, with downstream policy quality emerging from representation quality. Exploiting motion's intrinsic periodicity, we factorize it into a phase manifold that captures cyclic structure via FFT-parametric coefficients, together with a pose branch that conditions the manifold on non-periodic configuration detail. Combined with motion-semantic distillation, this factorized structure yields a cross-embodiment motion manifold that is interpretable and embodiment-agnostic by design. Anchoring multiple humanoid robots to a shared human-pretrained manifold then produces a unified action embedding space across diverse platforms, achieving strong cross-embodiment retrieval and consistent gains on downstream robot tasks.",
+      "authors": [
+        "Kihyun Kim",
+        "Chaeyun Kim",
+        "Jongho Shin",
+        "Taeyoun Kwon",
+        "Junghyun Kim",
+        "Mijin Koo",
+        "Haon Park"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-01T08:02:24+00:00",
+      "link": "https://arxiv.org/pdf/2606.01851v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Humanoid action representations using phase manifold for motion semantics",
+      "llm_evidence_cn": "利用相位流形构建人形机器人动作嵌入，增强运动语义",
+      "llm_evidence": "利用相位流形构建人形机器人动作嵌入，增强运动语义",
+      "canonical_evidence": "利用相位流形构建人形机器人动作嵌入，增强运动语义",
+      "llm_tldr_en": "PHASOR introduces phase-anchored universal action representations for humanoid embodiments, factorizing motion into a phase manifold (via FFT-parametric coefficients) and a pose branch, enabling interpretable, transferable, and controllable action spaces.",
+      "llm_tldr_cn": "针对现有动作嵌入空间缺乏结构、任务特定且不具迁移性的问题，本文提出PHASOR，利用运动的周期性，将动作分解为相位流形（通过FFT参数系数）和位姿分支，构建通用且具有语义的动作表示。该方法提升了策略学习的可解释性、可控性和跨机器人迁移能力，为人形机器人运动控制提供了新范式。",
+      "llm_tldr": "针对现有动作嵌入空间缺乏结构、任务特定且不具迁移性的问题，本文提出PHASOR，利用运动的周期性，将动作分解为相位流形（通过FFT参数系数）和位姿分支，构建通用且具有语义的动作表示。该方法提升了策略学习的可解释性、可控性和跨机器人迁移能力，为人形机器人运动控制提供了新范式。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.01951v1",
+      "source": "arxiv",
+      "title": "Co-training with Ego-centric Video and Demonstration for Robot Navigation Task",
+      "abstract": "Vision-language-action (VLA) models are promising for diverse robotic tasks, but their performance heavily depends on large-scale high-quality training data, whose collection on real robots is costly and time-consuming. While prior work has explored augmenting manipulation datasets with egocentric human videos, applying such approaches to mobile robot navigation remains challenging due to viewpoint changes during locomotion. In this paper, we propose a framework that converts egocentric walking videos into datasets for mobile robot imitation learning. The proposed method estimates camera motion from human videos and transforms it into action representations compatible with ground mobile robots. By jointly training a VLA model on human-derived and robot-collected datasets, the model achieves improved language understanding and more robust action generation than training with either data source alone. Experiments on a fruit-search navigation task demonstrate that human egocentric videos provide an effective and scalable data source for mobile robot learning.",
+      "authors": [
+        "Shoya Kuno",
+        "Yumo Ouchi",
+        "Kanata Suzuki"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-01T09:12:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.01951v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "imitation learning for mobile robot navigation from egocentric walking videos",
+      "llm_evidence_cn": "利用第一视角行走视频进行移动机器人导航模仿学习",
+      "llm_evidence": "利用第一视角行走视频进行移动机器人导航模仿学习",
+      "canonical_evidence": "利用第一视角行走视频进行移动机器人导航模仿学习",
+      "llm_tldr_en": "This work converts egocentric walking videos into action datasets for mobile robot imitation learning, co-training a VLA model for navigation.",
+      "llm_tldr_cn": "针对移动机器人导航模仿学习中数据采集昂贵的问题，本文提出将第一视角人类行走视频转化为机器人动作数据集的方法，通过估计相机运动并与地面机器人动作对齐，联合训练VLA模型，在导航任务上取得良好效果。",
+      "llm_tldr": "针对移动机器人导航模仿学习中数据采集昂贵的问题，本文提出将第一视角人类行走视频转化为机器人动作数据集的方法，通过估计相机运动并与地面机器人动作对齐，联合训练VLA模型，在导航任务上取得良好效果。",
+      "llm_tags": [
+        "query:inverse-rl:composite"
+      ],
+      "matched_query_tag": "query:inverse-rl:composite",
+      "matched_query_text": "Papers central to 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。, especially work that connects or combines: imitation learning; inverse reinforcement learning; inverse optimal control; apprenticeship learning; adversarial imitation learning; reward function learning; survey of inverse reinforcement learning methods; inverse optimal control applications in robotics; recent advances in imitation learning and inverse RL; comparison of inverse reinforcement learning algorithms.",
+      "matched_requirement_id": "req-composite-inverse-rl",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.06790v1",
+      "source": "arxiv",
+      "title": "Learning All-Terrain Locomotion for a Planetary Rover with Actively Articulated Suspension",
+      "abstract": "This paper presents ERNEST, a four-wheeled planetary rover concept equipped with a two-degree-of-freedom Active Gimbal Suspension that combines yaw and roll actuation to enable wheel reconfiguration, steering, and active load redistribution. A single neural network controller, trained to track a desired path across challenging terrain, fully unlocks the capabilities of this actuated suspension system for autonomous obstacle negotiation. A reinforcement learning framework is developed using the high-fidelity DARTS simulation engine, which combines rigid-contact dynamics and Bekker-Wong terramechanics, enabling the emergence of locomotion strategies adapted to loose-soil conditions. To obtain a single unified controller across heterogeneous terrains, a policy consolidation strategy merges the experience of terrain-specialized agents into one neural network, eliminating the need for explicit terrain classification and controller switching. The resulting controller operates on a combination of proprioceptive and exteroceptive feedback, including sparse stereo-derived terrain elevation, chassis attitude, joint states, and force-torque measurements. Zero-shot transfer to the physical rover is achieved through domain randomization, sensor noise injection, and model-to-real system identification. Experimental results demonstrate autonomous traversal of rock fields, a bump trap, a wheel-high step, sand ripples, and sandy slopes. On a 20° sandy slope, the learned controller reduces the cost of transport by 37% on dry sand despite the additional actuation, and achieves superior performance on wet sand where the passive suspension becomes completely immobilized.",
+      "authors": [
+        "Arthur Bouton",
+        "Tristan D. Hasseler",
+        "Michael Paton",
+        "Travis Brown",
+        "Jacob Levy",
+        "William Reid",
+        "Joshua Martin",
+        "Hari Nayar"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-06-05T00:20:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.06790v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Learning all-terrain locomotion for planetary rover with active suspension",
+      "llm_evidence_cn": "为行星探测车学习全地形移动策略，使用主动悬挂系统",
+      "llm_evidence": "为行星探测车学习全地形移动策略，使用主动悬挂系统",
+      "canonical_evidence": "为行星探测车学习全地形移动策略，使用主动悬挂系统",
+      "llm_tldr_en": "ERNEST is a planetary rover with Active Gimbal Suspension; a single neural network controller trained via RL in DARTS simulation enables autonomous obstacle negotiation and all-terrain locomotion.",
+      "llm_tldr_cn": "针对行星探测车在松软地形上的移动挑战，本文提出ERNEST概念车，配备双自由度主动悬挂系统。通过强化学习在高保真DARTS仿真中训练单一神经网络控制器，实现了全自主的障碍物规避和全地形移动。实验表明，该方法能够适应松软土壤条件，获得统一的跨地形控制策略。",
+      "llm_tldr": "针对行星探测车在松软地形上的移动挑战，本文提出ERNEST概念车，配备双自由度主动悬挂系统。通过强化学习在高保真DARTS仿真中训练单一神经网络控制器，实现了全自主的障碍物规避和全地形移动。实验表明，该方法能够适应松软土壤条件，获得统一的跨地形控制策略。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.03297v1",
+      "source": "arxiv",
+      "title": "SplitAdapter: Load-Aware Humanoid Loco-Manipulation via Factorized Adaptation",
+      "abstract": "Humanoid loco-manipulation requires stable whole-body control under varying object masses and pickup/placement heights. This becomes particularly challenging in sim-to-real transfer, where object-induced load variation and robot-side dynamics mismatch interact during physical contact. Existing history-based adapters often compress these factors into a single latent representation, which can weaken robustness under heavy-load manipulation. We propose \\textbf{SplitAdapter: Load-Aware Humanoid Loco-Manipulation via Factorized Adaptation}, which freezes a pretrained box manipulation policy and extends it with object/load and dynamics-aware context encoders trained with split world-model objectives, GRL-based cross-adversarial regularization, and hierarchical Feature-wise Linear Modulation (FiLM). In sim-to-sim experiments and real-world deployment, SplitAdapter improves Full-task success over the base policy and world-model FiLM baselines across object masses of $2$, $4$, and $6$ kg and pickup/placement heights of $0$, $30$, and $60$ cm, with the largest improvements under heavy-load conditions.",
+      "authors": [
+        "Jeonguk Kang",
+        "Hanbyel Cho",
+        "Sanghyun Kang",
+        "Donghan Koo"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-02T08:10:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.03297v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "load-aware whole-body control for humanoid loco-manipulation",
+      "llm_evidence_cn": "载重感知的全人控制用于人形机器人移动操作",
+      "llm_evidence": "载重感知的全人控制用于人形机器人移动操作",
+      "canonical_evidence": "载重感知的全人控制用于人形机器人移动操作",
+      "llm_tldr_en": "SplitAdapter extends a pretrained humanoid manipulation policy with factorized context encoders for load and dynamics adaptation, improving robustness in sim-to-real transfer.",
+      "llm_tldr_cn": "针对人形机器人移动操作中负载变化和动力学不匹配问题，提出SplitAdapter：冻结预训练操作策略，附加因子化的负载感知和动力学感知上下文编码器，通过分割世界模型目标、对抗正则化和分层迁移学习训练。实验证明该方法在重载场景下显著优于现有历史适配方法，提高了Sim-to-Real的鲁棒性。",
+      "llm_tldr": "针对人形机器人移动操作中负载变化和动力学不匹配问题，提出SplitAdapter：冻结预训练操作策略，附加因子化的负载感知和动力学感知上下文编码器，通过分割世界模型目标、对抗正则化和分层迁移学习训练。实验证明该方法在重载场景下显著优于现有历史适配方法，提高了Sim-to-Real的鲁棒性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.02677v1",
+      "source": "arxiv",
+      "title": "Motion Planning in Dynamic Environments: A Survey from Classical to Modern Methods",
+      "abstract": "Motion planning in dynamic environments requires robots to continuously adapt their paths in response to environmental changes for safe and uninterrupted navigation. While many surveys have reviewed planning in static settings, systematic reviews focused on dynamic environments remain limited. This paper presents a comprehensive survey of 138 works, primarily published between 2015 and 2025, spanning both classical and learning-based approaches. The motion planning methods are grouped into five categories based on the concepts of sampling, graph search, model predictive control, learning, and additional classical local planning approaches, including velocity obstacles, potential fields and dynamic windows. The learning techniques include supervised learning and reinforcement learning. We also discuss the role of dynamic perception in motion planning, covering techniques for detecting and modeling moving obstacles using cameras, LiDAR, and event-based sensors. The survey analyzes the principles, strengths, and limitations of each method, with particular attention to challenges unique to dynamic environments, such as prediction uncertainty, human-robot interaction, and the freezing robot problem. The survey provides researchers with a structured understanding of motion planning methods in dynamic environments.",
+      "authors": [
+        "Zongyuan Shen",
+        "Yaming Ou",
+        "Shalabh Gupta",
+        "Shancheng Zhao",
+        "Dehua Zhou",
+        "Gao Wang",
+        "Zhongqiang Ren",
+        "Junfeng Fan",
+        "Long Cheng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-01T13:47:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.02677v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "survey of motion planning methods including MPC",
+      "llm_evidence_cn": "包含MPC的运动规划方法综述",
+      "llm_evidence": "包含MPC的运动规划方法综述",
+      "canonical_evidence": "包含MPC的运动规划方法综述",
+      "llm_tldr_en": "A comprehensive survey of motion planning in dynamic environments covering sampling, graph search, MPC, learning, and classic local planning methods.",
+      "llm_tldr_cn": "动态环境中的运动规划要求机器人持续适应环境变化。该综述系统回顾了2015至2025年间138篇相关工作，将方法分为采样、图搜索、模型预测控制、学习以及经典局部规划五类。重点介绍了各类方法在动态场景下的适用性和局限性，为机器人运动规划提供全面参考。",
+      "llm_tldr": "动态环境中的运动规划要求机器人持续适应环境变化。该综述系统回顾了2015至2025年间138篇相关工作，将方法分为采样、图搜索、模型预测控制、学习以及经典局部规划五类。重点介绍了各类方法在动态场景下的适用性和局限性，为机器人运动规划提供全面参考。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "motion planning for robot locomotion",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03476v1",
+      "source": "arxiv",
+      "title": "Human2Humanoid: Physics-Aware Cross-Morphology Motion Retargeting for Humanoid Robots",
+      "abstract": "Retargeting human motion to humanoid robots is critical for teleoperation, imitation learning and human-robot interaction. However, it remains challenging because of substantial morphological discrepancies between humans and robots, including differences in skeletal topology, limb proportions and degrees of freedom, as well as the scarcity of paired motion data. This paper presents Human2Humanoid, an unsupervised motion retargeting framework that transfers human motions to humanoid robot behaviors with high fidelity. To bridge the domain gap under unpaired data, we adopt a CycleGAN-based architecture equipped with a skeleton-aware graph convolutional network to capture topology-dependent motion features. To address cross-domain scale mismatches, we introduce a morphology-invariant end-effector consistency loss that aligns normalized end-effector trajectories to preserve motion semantics across embodiments. To improve physical plausibility and reduce contact artifacts, we impose explicit physics-aware feasibility constraints to encourage reproduction of the contact patterns in the source motion. Experimental results show that the proposed method successfully retargets human motion to the Unitree G1 humanoid robot without paired data, and outperforms existing methods in both downstream controllability and physical feasibility.",
+      "authors": [
+        "Tianchen Huang",
+        "Feiyang Yuan",
+        "Junchi Gu",
+        "Shurui Fang",
+        "Xiaohu Zhang",
+        "Yu Wang",
+        "Wei Gao",
+        "Shiwu Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-02T10:53:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.03476v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "imitation learning via cross-morphology motion retargeting",
+      "llm_evidence_cn": "跨形态运动重定向用于模仿学习",
+      "llm_evidence": "跨形态运动重定向用于模仿学习",
+      "canonical_evidence": "跨形态运动重定向用于模仿学习",
+      "llm_tldr_en": "An unsupervised framework retargets human motions to humanoid robots using CycleGAN and graph networks for imitation learning.",
+      "llm_tldr_cn": "将人类运动迁移到人形机器人面临形态差异和数据稀缺的挑战。本文提出Human2Humanoid无监督重定向框架，采用CycleGAN架构和骨架感知图卷积网络，实现高保真度运动迁移。该方法无需配对数据，解决了跨领域尺度不匹配问题，为模仿学习提供了有效工具。",
+      "llm_tldr": "将人类运动迁移到人形机器人面临形态差异和数据稀缺的挑战。本文提出Human2Humanoid无监督重定向框架，采用CycleGAN架构和骨架感知图卷积网络，实现高保真度运动迁移。该方法无需配对数据，解决了跨领域尺度不匹配问题，为模仿学习提供了有效工具。",
+      "llm_tags": [
+        "query:inverse-rl:composite"
+      ],
+      "matched_query_tag": "query:inverse-rl:composite",
+      "matched_query_text": "Papers central to 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。, especially work that connects or combines: imitation learning; inverse reinforcement learning; inverse optimal control; apprenticeship learning; adversarial imitation learning; reward function learning; survey of inverse reinforcement learning methods; inverse optimal control applications in robotics; recent advances in imitation learning and inverse RL; comparison of inverse reinforcement learning algorithms.",
+      "matched_requirement_id": "req-composite-inverse-rl",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.03985v1",
+      "source": "arxiv",
+      "title": "Humanoid-GPT: Scaling Data and Structure for Zero-Shot Motion Tracking",
+      "abstract": "We introduce Humanoid-GPT, a GPT-style Transformer with causal attention trained on a billion-scale motion corpus for whole-body control. Unlike prior shallow MLP trackers constrained by scarce data and an agility-generalization trade-off, Humanoid-GPT is pre-trained on a 2B-frame retargeted corpus that unifies all major mocap datasets with large-scale in-house recordings. Scaling both data and model capacity yields a single generative Transformer that tracks highly dynamic behaviors while achieving unprecedented zero-shot generalization to unseen motions and control tasks. Extensive experiments and scaling analyses show that our model establishes a new performance frontier, demonstrating robust zero-shot generalization to unseen tasks while simultaneously tracking highly dynamic and complex motions.",
+      "authors": [
+        "Zekun Qi",
+        "Xuchuan Chen",
+        "Dairu Liu",
+        "Chenghuai Lin",
+        "Yunrui Lian",
+        "Sikai Liang",
+        "Zhikai Zhang",
+        "Yu Guan",
+        "Jilong Wang",
+        "Wenyao Zhang",
+        "Xinqiang Yu",
+        "He Wang",
+        "Li Yi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-02T17:59:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.03985v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "large-scale transformer for whole-body motion tracking and control",
+      "llm_evidence_cn": "大规模Transformer用于全身运动跟踪与控制",
+      "llm_evidence": "大规模Transformer用于全身运动跟踪与控制",
+      "canonical_evidence": "大规模Transformer用于全身运动跟踪与控制",
+      "llm_tldr_en": "Humanoid-GPT pre-trains a GPT-style Transformer on a billion-scale motion corpus for whole-body control, achieving zero-shot generalization to unseen motions and tasks.",
+      "llm_tldr_cn": "针对现有MLP跟踪器受限于数据规模和泛化能力的问题，提出Humanoid-GPT：在包含20亿帧的全身运动数据集上预训练GPT风格Transformer。该模型能够零样本泛化到未见过的动态运动和控制任务，在运动跟踪和控制性能上达到新高度，展示了大规模预训练在人形机器人控制中的巨大潜力。",
+      "llm_tldr": "针对现有MLP跟踪器受限于数据规模和泛化能力的问题，提出Humanoid-GPT：在包含20亿帧的全身运动数据集上预训练GPT风格Transformer。该模型能够零样本泛化到未见过的动态运动和控制任务，在运动跟踪和控制性能上达到新高度，展示了大规模预训练在人形机器人控制中的巨大潜力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03536v1",
+      "source": "arxiv",
+      "title": "Bionic Human-Motion Style Transfer for Physically Executable Whole-Body Control of Humanoid Robots",
+      "abstract": "Expressive whole-body motion is important for humanoid robots operating in human environments, where robots are expected to move stably while presenting readable and adjustable body behaviors. However, most expressive motions are still obtained from fixed demonstrations or manually designed scripts, making it difficult to reuse a demonstrated style across different motion contents. Inspired by the way human motion styles convey affective and intentional cues through gait rhythm, posture, arm swing and body sway, this paper proposes a bionic generation-to-control framework for exemplar-driven style transfer on humanoid robots. Given a short human style exemplar and a target content motion, the proposed framework generates a stylized whole-body reference that preserves the intended motion content while transferring the demonstrated style. A physics-aware multi-condition latent diffusion model is developed to fuse style, content and trajectory conditions, and classifier-free guidance is used to adjust the style intensity without retraining. To improve hardware executability, contact-consistency and temporal-smoothness regularization are imposed on decoded motions during training. The generated references are then converted into G1-compatible robot references and executed by a preview-based whole-body tracking policy trained with a cluster-and-distill strategy. Simulation and Unitree G1 experiments show that the proposed method can transfer short human style exemplars to diverse robot motion contents, reduce contact and jitter artifacts compared with animation-oriented style-transfer baselines, and achieve a 96.0% success rate over 125 reported real-robot trials. The results demonstrate the feasibility of using short human motion exemplars as reusable bionic sources for physically executable expressive humanoid motion.",
+      "authors": [
+        "Tianchen Huang",
+        "Mingkuan Zhao",
+        "Yang Gao",
+        "Feiyang Yuan",
+        "Junchi Gu",
+        "Xiaohu Zhang",
+        "Dongdong Zhao",
+        "Shi Yan",
+        "Yu Wang",
+        "Wei Gao",
+        "Shiwu Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-02T11:59:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.03536v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "whole-body control for humanoid robots with style transfer",
+      "llm_evidence_cn": "人形机器人全身控制与风格迁移",
+      "llm_evidence": "人形机器人全身控制与风格迁移",
+      "canonical_evidence": "人形机器人全身控制与风格迁移",
+      "llm_tldr_en": "Proposes a bionic generation-to-control framework for exemplar-driven style transfer on humanoid robots, enabling physically executable whole-body control with expressive styles.",
+      "llm_tldr_cn": "针对人形机器人全身控制中表达性运动难以复用的限制，提出了一种仿生生成-控制框架。给定人类风格示例和目标内容运动，该框架生成符合机器人动力学、可执行的全身控制策略，实现步态、姿态等风格的迁移。该方法提升了人形机器人在人机交互中的自然性和可读性。",
+      "llm_tldr": "针对人形机器人全身控制中表达性运动难以复用的限制，提出了一种仿生生成-控制框架。给定人类风格示例和目标内容运动，该框架生成符合机器人动力学、可执行的全身控制策略，实现步态、姿态等风格的迁移。该方法提升了人形机器人在人机交互中的自然性和可读性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "methods for whole body control in robot locomotion",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.05143v1",
+      "source": "arxiv",
+      "title": "HORIZON: Recoverability-Governed Curriculum for Physical-Domain Scaling",
+      "abstract": "Scaling robust robot policies requires more than broader randomization, because physical-domain experience must remain organized and learnable throughout training. We study when a policy can benefit from harder physics and identify recoverability as a central constraint in on-policy physical-domain scaling. In on-policy training, new dynamics are useful only insofar as they remain close enough to the current policy to generate corrective on-policy data, rather than collapsing rollouts into unrecoverable failures. Using quadruped locomotion as a physically demanding benchmark for embodied generalization, we introduce HORIZON, a checkpointed frontier curriculum that expands physical domains only within the current policy's recoverable boundary. HORIZON uses rollback and boundary refinement to govern each expansion step, turning fixed randomization into a continual process of physical-domain growth. Experiments reveal three regularities of physical-domain expansion. First, direct domain widening is uneven across physical axes and often unlearnable without staged ordering. Second, domain composition is non-monotonic, and adding more domains beyond a compact core can dilute recoverable joint samples and reduce overall robustness. Third, offline distillation of isolated experts cannot substitute for the joint interaction generated by on-policy curriculum. Together, these results frame physical-domain generalization as a continual growth problem for embodied control, with recoverability as the organizing principle for on-policy expansion.",
+      "authors": [
+        "Chenhao Bai",
+        "Liqin Lu",
+        "Kaijun Wang",
+        "Hui Chen",
+        "Jin-Chuan Shi",
+        "Yuyang Liu",
+        "Hao Chen",
+        "Chunhua Shen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-03T17:50:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.05143v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "curriculum learning for quadruped locomotion robustness",
+      "llm_evidence_cn": "四足机器人运动鲁棒性的课程学习",
+      "llm_evidence": "四足机器人运动鲁棒性的课程学习",
+      "canonical_evidence": "四足机器人运动鲁棒性的课程学习",
+      "llm_tldr_en": "A recoverability-governed curriculum enables scalable training of robust quadruped locomotion policies.",
+      "llm_tldr_cn": "强化学习策略的物理域缩放需要可学习的数据组织。本文针对四足机器人运动，提出可恢复性约束的课程学习框架HORIZON，通过检查点边界课程仅扩展当前策略可恢复的物理域。该方法保证了训练数据的可学习性，提升了策略在更广泛物理条件下的鲁棒性。",
+      "llm_tldr": "强化学习策略的物理域缩放需要可学习的数据组织。本文针对四足机器人运动，提出可恢复性约束的课程学习框架HORIZON，通过检查点边界课程仅扩展当前策略可恢复的物理域。该方法保证了训练数据的可学习性，提升了策略在更广泛物理条件下的鲁棒性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "legged locomotion planning and control",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.03834v1",
+      "source": "arxiv",
+      "title": "Let the Dynamics Flow: Stable Flow Matching Dynamical Systems",
+      "abstract": "Flow matching has recently emerged as a powerful approach for imitation learning, enabling scalable, expressive, and multimodal motion policies. However, incorporating formal stability guarantees into these generative models, a prerequisite to ensure safe and generalizable robot behaviors, remains a significant challenge. While modeling robot motions as dynamical systems allows for such stability-based inductive biases, existing frameworks struggle to capture the rich action distributions inherent in complex robotic tasks. This paper introduces Stable Flow Matching Dynamical Systems (SFMDS), a novel framework that bridges the gap between high-capacity generative modeling and formal Lyapunov stability guarantees. SFMDS parametrizes dynamical systems via flow matching while simultaneously constraining the model to a family of stable solutions. We propose two variants: a soft constraint based on a penalty term, and a hard structural constraint embedded directly in the model architecture. We further extend both formulations to Lie groups. Experiments on benchmark datasets, in simulation, and on a humanoid robot show that SFMDS learns stable, scalable, and multimodal dynamical systems in low- and high-dimensional state spaces, enabling safe and expressive robot motion generation.",
+      "authors": [
+        "Rodrigo Pérez-Dattari",
+        "Francisco Leiva",
+        "Andrea Testa",
+        "Leonel Rozo",
+        "Javier Ruiz del Solar",
+        "Noémie Jaquier"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-02T16:17:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.03834v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "flow matching dynamical systems for imitation learning with stability guarantees",
+      "llm_evidence_cn": "基于流匹配的稳定动态系统模仿学习",
+      "llm_evidence": "基于流匹配的稳定动态系统模仿学习",
+      "canonical_evidence": "基于流匹配的稳定动态系统模仿学习",
+      "llm_tldr_en": "SFMDS combines flow matching with Lyapunov stability to create imitation learning policies that are both expressive and formally stable.",
+      "llm_tldr_cn": "现有的流匹配模仿学习方法缺乏稳定性保证，限制其在机器人安全应用。本文提出稳定流匹配动态系统（SFMDS），将流匹配与李雅普诺夫稳定性结合，参数化动态系统，在保持多模态表达能力的同时提供形式化稳定性，实验证明在机器人任务上优于现有方法。",
+      "llm_tldr": "现有的流匹配模仿学习方法缺乏稳定性保证，限制其在机器人安全应用。本文提出稳定流匹配动态系统（SFMDS），将流匹配与李雅普诺夫稳定性结合，参数化动态系统，在保持多模态表达能力的同时提供形式化稳定性，实验证明在机器人任务上优于现有方法。",
+      "llm_tags": [
+        "query:inverse-rl:composite"
+      ],
+      "matched_query_tag": "query:inverse-rl:composite",
+      "matched_query_text": "Papers central to 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。, especially work that connects or combines: imitation learning; inverse reinforcement learning; inverse optimal control; apprenticeship learning; adversarial imitation learning; reward function learning; survey of inverse reinforcement learning methods; inverse optimal control applications in robotics; recent advances in imitation learning and inverse RL; comparison of inverse reinforcement learning algorithms.",
+      "matched_requirement_id": "req-composite-inverse-rl",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.05873v1",
+      "source": "arxiv",
+      "title": "LadderMan: Learning Humanoid Perceptive Ladder Climbing",
+      "abstract": "Humanoid robots hold great promise for operating in human-centered environments, yet ladder climbing remains one of the most challenging tasks due to sparse footholds and handholds, complex whole-body coordination, and sensitivity to perception and control errors. We present \\textbf{LadderMan}, a unified system that enables humanoid robots to robustly climb diverse ladders and perform manipulation under such constrained conditions. Our climbing policy is built on a scalable two-stage learning pipeline, where we use hybrid motion tracking to learn multiple climbing experts from a single reference motion, and distill these experts into a unified depth-based visuomotor climbing policy via hybrid imitation and reinforcement learning. To enable real-world deployment, we leverage vision foundation models to bridge the sim-to-real gap in depth perception. Building on the learned climbing policy, we further train a separate manipulation policy using a dual-agent formulation, allowing stable on-ladder manipulation via teleoperation. Experiments demonstrate that LadderMan achieves robust ladder climbing across a wide range of geometries, successfully transfers to real-world hardware in a zero-shot manner, and supports various manipulation tasks under challenging ladder constraints. Video results are available at https://ladderman-robot.github.io .",
+      "authors": [
+        "Siheng Zhao",
+        "Yuanhang Zhang",
+        "Ziqi Lu",
+        "Pieter Abbeel",
+        "Rocky Duan",
+        "Koushil Sreenath",
+        "Yue Wang",
+        "C. Karen Liu",
+        "Guanya Shi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-04T08:47:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.05873v1",
+      "tags": [
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "humanoid ladder climbing with whole-body coordination",
+      "llm_evidence_cn": "人形机器人爬梯子，涉及全身协调和感知",
+      "llm_evidence": "人形机器人爬梯子，涉及全身协调和感知",
+      "canonical_evidence": "人形机器人爬梯子，涉及全身协调和感知",
+      "llm_tldr_en": "LadderMan enables humanoid robots to climb diverse ladders and manipulate objects using a two-stage learning pipeline with hybrid imitation and reinforcement learning.",
+      "llm_tldr_cn": "针对人形机器人爬梯子中稀疏抓点、全身协调难的问题，提出LadderMan系统：采用两阶段学习流程，先从单一参考动作学习多个爬梯专家，再通过混合模仿和强化学习蒸馏为统一的基于深度视觉的运动策略。实验表明该方法在不同梯子上都能稳健攀爬并执行操作任务，展现了优越的泛化能力。",
+      "llm_tldr": "针对人形机器人爬梯子中稀疏抓点、全身协调难的问题，提出LadderMan系统：采用两阶段学习流程，先从单一参考动作学习多个爬梯专家，再通过混合模仿和强化学习蒸馏为统一的基于深度视觉的运动策略。实验表明该方法在不同梯子上都能稳健攀爬并执行操作任务，展现了优越的泛化能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    }
+  ]
+}

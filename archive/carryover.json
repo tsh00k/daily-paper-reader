@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-10T03:34:34.212116+00:00",
-  "updated_date": "20260512-20260610",
+  "generated_at": "2026-06-10T03:55:26.943321+00:00",
+  "updated_date": "20260601-20260610",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260512-20260610",
+      "updated_date": "20260601-20260610",
       "carryover_days": 9,
       "items": []
     }
