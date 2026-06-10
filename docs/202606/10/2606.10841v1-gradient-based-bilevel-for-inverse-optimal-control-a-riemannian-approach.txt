@@ -1,0 +1,678 @@
+Title: Gradient based Bilevel for Inverse Optimal Control, a Riemannian approach
+
+URL Source: https://arxiv.org/pdf/2606.10841v1
+
+Published Time: Wed, 10 Jun 2026 01:02:25 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Gradient based Bilevel for Inverse Optimal Control, a Riemannian approach 
+
+Ahmed-Manaf Dahmani 1,2, Vincent Bonnet 3, David Daney 1, Franc ¸ois Charpillet 2
+
+Abstract — Inverse Optimal Control (IOC) aims to recover the cost function that explains observed trajectories as solutions of an optimal control problem. Classical IOC formulations rely on bilevel optimization, which repeatedly solves a nested optimal control problem and quickly be-comes computationally prohibitive for realistic systems. Recent projection-based approaches offer a promising al-ternative but suffer from numerical instability when solved with gradient-based methods due to violations of standard constraint qualifications. In this paper, we show that these difficulties stem from the geometric structure of the IOC feasible set. We demon-strate that the set of trajectories satisfying the optimality conditions naturally forms a manifold and reformulate IOC as an optimization problem on this manifold. Based on this insight, we propose a Riemannian Inverse Optimal Control (RIOC) method that projects observed trajectories onto the manifold of optimal solutions while preserving feasibility by construction. Experiments on real human arm trajectories show that the proposed method achieves comparable or better reconstruction accuracy than classical bilevel IOC while reducing computation time by about a factor of four. These results highlight the potential of geometric optimiza-tion methods to improve the scalability and reliability of IOC for robotics and human motion analysis. 
+
+Index Terms — Inverse Optimal Control, Bilevel, Rieman-nian Optimization 
+
+I. I NTRODUCTION 
+
+Inverse Optimal Control (IOC) aims at recovering the cost function that explains observed trajectories as solutions of an optimal control problem. In robotics and human–robot interaction [1], [2], [3], [4], [5], [6] to replicating it from observations, IOC and more recently Inverse Reinforcement Learning (IRL) [7] are widely used to model human motion from demonstrations, with applications ranging from motion prediction to skill transfer. In these settings, observed motions are assumed to reflect consistent trade-offs between task performance and physical or kinematic effort, which can be compactly represented through interpretable cost functions. Classical IOC approaches rely on a bilevel formulation [8], where cost parameters are identified by repeatedly solv-ing a nested optimal control problem while minimizing the discrepancy with observed trajectories. Although principled, bilevel IOC is computationally expensive and difficult to scale to high-dimensional systems. IRL offers a probabilistic  
+
+> 1
+
+INRIA Bordeaux, Universit ´ e de Bordeaux, Talence, France.  
+
+> 2
+
+INRIA Nancy, Universit ´ e de Lorraine, Villers-l ` es-Nancy, France.  
+
+> 3
+
+LAAS-CNRS, Universit ´ e de Toulouse, CNRS, Toulouse, France. 
+
+alternative that alleviates some nested optimization, but its performance strongly depends on the quality of the trajectory-space approximation and often requires extensive sampling around demonstrations [7]. As a result, both IOC and IRL face significant challenges when applied to real-world robotic or human motion data [6]. To address computational limita-tions, several approximate IOC methods have been proposed, including formulations based on Karush–Kuhn–Tucker (KKT) residuals or local linearizations. While these approaches yield solutions consistent with first-order optimality conditions, they do not explicitly enforce proximity to the observed trajectories, which is often the primary objective in practical applications. Recently, a geometric interpretation of IOC and IRL solvers has been introduced, viewing cost identification as a projection problem in trajectory space. This unified perspective led to Projected IOC (PIOC) [9], [10], which formulates cost in-ference as an orthogonal projection onto singularity curves associated with optimality conditions. Although theoretically appealing, PIOC has shown poor numerical reliability when solved using standard gradient-based optimization methods. In this paper, we show that the instability of PIOC originates from systematic constraint violations that make the problem ill-suited for Euclidean optimization. We analyze the under-lying geometric structure of the feasible set and show that it naturally admits a Riemannian manifold formulation. Based on this insight, we propose a new IOC resolution method using Riemannian optimization that enforces feasibility by construction and ensures reliable convergence with first-order solvers. The proposed method, referred to as Riemannian IOC (RIOC), preserves the geometric benefits of projection-based IOC while avoiding the numerical issues of PIOC. We demon-strate on real human motion data that RIOC converges faster than bilevel IOC while maintaining accuracy, providing a scalable and reliable alternative for both IOC and IRL-based learning from demonstrations. In this context, the main contributions of this work are :  
+
+> •
+
+Explaining the unsuitability of gradient based solvers in solving of the PIOC formulation of the IOC;  
+
+> •
+
+Making use of the holistic view of the IOC provided by the PIOC formulation to propose a new Riemannian optimization based IOC method;  
+
+> •
+
+Comparing the performance of the new Riemannian method the Bilevel using real human data. 
+
+> arXiv:2606.10841v1 [cs.RO] 9 Jun 2026
+
+II. B ACKGROUND 
+
+A. Direct Optimal Control 
+
+Direct Optimal Control (DOC) is the application of opti-mization problems to system control. It is widely used in real-world applications such as decision making, path prediction and planning [4], [5], [11]. The DOC problem consists in min-imizing a parameterized cost function C(s, ω ) where s is the trajectory and optimization variable and ω is the cost function parameter. It can be subject to equality constraints g(s) = 0 
+
+and inequality constraints h(s) ≥ 0. The parameterized cost function is often a weighted linear combination of a base of cost functions C(s, ω ) = Pnc 
+
+> k=1
+
+ωkCk(s) with nc the number of considered cost functions. In the general case the DOC is formulated as: 
+
+s∗ = D(ω) = argmin 
+
+> s
+
+C(s, ω ) s. t. g(s) = 0 , h (s) ≥ 0 (1) DOC are often solved using primal-dual methods, such as Interior Point Method (IPM) [12], for their robustness. IPM tries finding an optimal solution s⋆ by solving the a system of equations known as the Karush–Kuhn–Tucker (KKT) con-ditions. Assuming ng the number of equality constraints and 
+
+nh the number of inequality constraints, the KKT conditions are as shown in (2). λ and μ are called the KKT multipliers. 
+
+∃λ⋆ ∈ Rng , ∃μ⋆ ∈ Rnh ,
+
+ 
+
+> ∂C ∂s T
+
+(s⋆)ω + ∂g ∂s T (s⋆)λ⋆ + ∂h ∂s T (s⋆)μ⋆ = 0 (Stationarity) 
+
+g(s∗) = 0 , h(s∗) ≥ 0 (Primal feasibility) 
+
+μ⋆ ≥ 0 (Dual feasibility) 
+
+h(s∗)T μ⋆ = 0 (Complementary slackness) (2) 
+
+IPM solvers handle inequality constraint by adding abarrier function to the cost function F (s) = C(s)T ω −
+
+μtarget 
+
+Pnh 
+
+> i=1
+
+ln (h(s)) . The parameter μtarget controls the pre-cision of the approximation of the solution. The smaller it is the closer the result is to the real solution. The KKT conditions imply that the following error vector E(s⋆, ω, λ ⋆, μ ⋆) must be zero.               
+
+> E(s⋆, ω, λ ⋆, μ ⋆) =
+> 
+> ∂C ∂s T(s⋆)ω+∂g ∂s T(s⋆)λ⋆+∂h ∂s T(s⋆)μ⋆
+> g(s∗)
+> h(s⋆)◦μ⋆−μtarget ∗1nh
+> (3)
+
+Differentiating this system of equations results in a linear system that the change in each variable must verify. Introduc-ing the Lagrangian L = Pnc 
+
+> i=1
+
+ωiC + Png 
+
+> i=1
+
+λig + Pnh 
+
+> i=1
+
+μih
+
+we get:          
+
+> 
+> ∂2L
+> ∂s 2
+> ∂g ∂s T∂h ∂s T∂g ∂s 00
+> diag (μ)∂h ∂s 0h
+> ∆s
+> ∆λ
+> ∆μ
+> =−E(4)
+
+The DOC problem is assumed to respect conditions known as constraint qualifications [13] for (4) to be solvable. IPM solvers assume the Linear Independence Constraint Quali-fication (LICQ) stating that the gradients of the equality constraints and active inequality constraints are linearly inde-pendent near the optimal solution. This is the strongest and most commonly assumed constraint qualifications for non-linear optimization. In practice, IPM solvers like the popular IPOPT[14] intro-duce slack variables and solve an equivalent symmetric linear system to reduce the dimension of search space and improve numerical stability. 
+
+B. Inverse Optimal Control 
+
+The IOC aims to find the value of the weight vector 
+
+ω that best matches the observed trajectory. A commonly used approach is minimizing a distance between the observed trajectory sobs and the result of the DOC as shown in (5). A normalization constraint ∥ω∥p = 1 is added to ensure unique-ness of ω. This method consists of a double optimization loop and is commonly referred to as the Bilevel approach[3], [15].        
+
+> ω∗=I(sobs ) = argmin
+> ω
+> ∥sobs − D (ω)∥2
+> s. t. ω > 0,∥ω∥p= 1
+> (5)
+
+Since there is no clear structure on the solution space of the DOC, this optimization problem is often solved us-ing derivative free methods such as Powell’s method[16] or COBYLA[17]. These methods require numerous DOC calls to approximate the step direction, resulting in a computation-ally slow method. This pushed for a search for faster IOC resolution methods. 
+
+C. Holistic view of IOC   
+
+> Fig. 1. ω1as parameterization of SC and IOC methods as projections
+
+In the search for faster IOC resolution methods, many approximate methods were explored [3], [5], [10]. These methods minimize the KKT conditions. However, minimizing a distance to the observed trajectory presents a useful property in practical settings. The search for a fast resolution method conserving this property has led Colombel et al. [9] to propose a so-called holistic view of the IOC by exploring the structure of the solution space of the DOC. The paper defines the Singu-larity Curve (SC) as the set of trajectories verifying the KKT stationarity condition (2). This set is often a smooth continuous shape as shown in Fig. 1, allowing for the description of DOC as a smooth map from Rnc to SC . Inversely, different resolution methods of the IOC represent different projections on the SC. When a trajectory is already optimal, it lies on the SC and all projections coincide. However, in real-world applications, trajectories are never truly optimal due to system noise and measurement error. In this case the result of the IOC methods would differ. With this perspective in mind, a projection that minimizing a distance to the observation is an orthogonal projection on the SC. Fig. 1 shows an illustration of an orthogonal and SVD based[10]. In an attempt to formulate the IOC problem as a one level optimization problem performing an orthogonal projection on the SC, the stationarity condition (2) is written in matrix form as in (6). The existence of a vector verifying the stationarity equation implies the singularity of the matrix J(s⋆), resulting in the description of SC = {s⋆ ∈ Rm| det (J(s⋆)T J(s⋆)) = 0 }.             
+
+> ∂C ∂s T(s⋆)∂g ∂s T(s⋆)∂h ∂s T(s⋆)
+> |{z }
+> J(s⋆)=
+> 
+> Jω(s⋆)Jλ(s⋆)Jμ(s⋆)
+> ωλμ
+> = 0 (6)
+
+A recent method called the Projected IOC (PIOC) [10] leverage this alternate description of the SC is then formulated as shown in (7). This formulation of the IOC as a one level optimization problem with differentiable constraints should allows in principle for a faster resolution time.       
+
+> IPIOC (sobs ) = argmin
+> s
+> ∥sobs −s∥2s. t. det (J(s)TJ(s)) = 0 (7)
+
+D. Problem statement 
+
+Despite the existence of a formula for the gradient of a determinant, the PIOC cannot be solved using gradient based methods such as IPM because it violates the LICQ. Since the matrix J(s)T J(s) is a positive-definite matrix, 
+
+det (J(s)T J(s)) is always positive. This means that the SC 
+
+represents the set of minimums of det (J(s)T J(s)) . Thus the gradient of the equality constraint is identically zero along the 
+
+SC . ∀s ∈ SC, ∂ det (J(s)T J(s))  
+
+> ∂s
+
+= 0 . Rewriting (4) for the PIOC as in (8) makes clearer the difficulty in computing the step direction for the IPM as the system becomes singular. This LICQ violation makes gradient based solvers unsuitable. Additionally, The PIOC has only been formulated to consider unconstrained DOC problems and needs to be extended to handle real world constrained applications.       
+
+> ∂2L
+> ∂s 2
+> ∂ det (J(s)TJ(s))
+> ∂s T∂ det (J(s)TJ(s))
+> ∂s 0
+> ∆s
+> ∆λ
+> 
+> =−E(8)
+
+III. M ATHEMATICAL JARGON 
+
+A. Riemannian Optimization 
+
+Riemannian optimization[18] is a framework where the search space of the optimization variable is restricted to a Riemannian manifold. The formulation of a constrained Riemannian optimization problem can be seen in (9).         
+
+> s∗= argmin
+> s∈M
+> f(s)s. t. g(s) = 0 , h (s)≥0(9)
+> Manifold [19] :
+
+A manifold is a differentiable geometry that locally resembles a plane. Mathematically, a smooth embedded submanifold M in Rm is a subset of Rm such that for all 
+
+s ∈ M there exists a neighbourhood U ⊂ Rm of s and a differentiable function ρ : U −→ Rm−dim (M) with full rank differential such that M ∩ U = {z ∈ U | ρ(z) = 0 }. This means that M is locally defined by m−dim (M) independent equations.  
+
+> Tangent vector [19] :
+
+A vector v is a tangent vector of a manifold M at s if there exists a differentiable curve c : R −→ M such that c(0) = s and dc dt (t = 0) = v. The set of tangent vectors of M at s is denoted TsM and is a linear space of dimension dim (M). 
+
+> Riemannian metric:
+
+A Riemannian manifold (M, g ) is a manifold M equipped with a Riemannian metric g. A Rie-mannian metric g : s 7 → gs is a smooth map that assigns to each point s ∈ M an inner product on its tangent space denoted gs : TsM × TsM −→ R. This metric allows for the definition of norms and distances on the manifold.  
+
+> Riemannian gradient:
+
+The Riemannian gradient of a func-tion F : M −→ R at s ∈ M is the unique tangent vector 
+
+grad F(s) ∈ TsM such that ∀p ∈ TsM, gs(grad F(s), p ) = lim t−→ 0 F(c(t)) −F (c(0))  
+
+> t
+
+with c(0) = s and c′(0) = p.The Riemannian gradient describes the direction of greatest increase of the function similarly to the Euclidean gradient.  
+
+> Parameterization:
+
+A parameterization is a smooth full-rank map s : Rdim (M) −→ M. Its partial derivatives ∂s ∂γ (γ)
+
+form a tangent basis and induce the metric gs(γ)(u, v ) =
+
+uT ∂s ∂γ (γ)T ∂s ∂γ (γ)v. It enables computing the Riemannian gradient via the chain rule grad F(s(γ)) = ∂F 
+
+> ∂γ
+
+(γ) = 
+
+> ∂s ∂γ
+
+(γ) ∂F 
+
+> ∂s
+
+(s(γ)) . In Riemannian optimization, the problem can be described in terms of the parameters as shown in (10). 
+
+γ∗ = argmin 
+
+> γ∈Rdim (M)
+
+f (s(γ)) s. t. g(s(γ)) = 0 , h (s(γ)) ≥ 0 (10)  
+
+> Transversal intersection:
+
+Transversality describes the angle of intersection between manifolds. It is the opposite of notion of parallelism. The transversal intersection of two submani-folds is also a submanifold[19]. 
+
+B. Determinantal Varieties 
+
+Consider Σrm,n = {M ∈ Mm,n | rank (M ) ≤ r} the set of matrices whose (r+1) -minors are all zero. Since the minors of a matrix are polynomials in matrix coefficient, Σrm,n is defined by a system of polynomial equations and is an algebraic variety by definition. Algebraic varieties are geometries similar to manifolds except that they allow for singular geometry. Examples of singular geometry are self-intersections, cusps and cone singularity. The set Σkm,n is called a determinantal variety [20] of rank r and has singular geometry only where the matrix rank drops, meaning it can be considered a manifold in the neighbourhood of matrices of rank r.
+
+IV. R IEMANNIAN INVERSE OPTIMAL CONTROL 
+
+In search of an alternative method leveraging the gradient based solvers to speed-up the resolution of IOC, we formulate the problem as a Riemannian optimization task of the form (9). The approach consists of performing an orthogonal projection onto the solution set of the KKT conditions. For clarity, we first consider DOC problems like (1) with only equality constraints g(s) = 0 . Inequality constraints h(s) ≥ 0 are addressed separately. 
+
+A. Equality constraints only  
+
+> 1) Formulation:
+
+Recall that the SC defined as in (11) is the set of trajectories s verifying the KKT stationarity condition as in (2). Let G be the set of trajectories verifying the KKT primal feasibility as in (12). The solution space of the KKT conditions is the intersection M = SC ∩ G. Under proper conditions that we will explore, M can be seen as a smooth manifold of dimension nc − 1.               
+
+> SC ={s∈Rm|det (J(s)TJ(s)) = 0 }(11)
+> G={s∈Rm|g(s) = 0 }(12)
+
+This means that the parametrization of of M using the weight vector ω is redundant as it has nc coordinate. However, if we choose to normalize the weight vector using the 1-norm such that Pnc 
+
+> k=1
+
+ωk = 1 , the last coordinate becomes computable from the others. Thus, we choose the parametrization γ of M
+
+such that ∀i < n c, ωi = γi and ωnc = 1 − Pnc−1 
+
+> k=1
+
+γk.Since the aim is to perform an orthogonal projection on 
+
+M, the objective function will be a distance between the observed trajectory and the trajectory resulting from a DOC 
+
+∥sobs − D (γ)∥2. As it is the case for the bilevel, a positivity constraint on ω > 0 is added. Since ω =  γ, 1 − Pnc−1 
+
+> k=1
+
+γk
+
+
+
+the positivity constraint is instead placed on γ as it is the optimization variable. This gives the final definition of the proposed RIOC shown in (13).         
+
+> IRIOC (sobs ) = argmin
+> γ∈Rnc −1
+> ∥sobs − D (γ)∥22
+> s. t. γ≥0,Xnc−1
+> k=1 γk≤1
+> (13)
+
+2) Conditions for Riemannian Inverse Optimal Control: Be-fore using the RIOC, several conditions must be met for 
+
+M = SC ∩ G to be a manifold. We consider conditions that allow for SC and G to be submanifolds and we verify transversality of their intersection during computation.  
+
+> •
+
+Condition 1 - Smoothness : Cost functions and constraints must be twice differentiable. If Riemannian Hessians are computed, they must be three times differentiable. For G a submanifold, it is sufficient for ∂g ∂s (s) = Jλ(s) to be full rank. This is covered by assuming LICQ on the DOC problem in order for it to be solvable using IPM.  
+
+> •
+
+Condition 2 - LICQ : The DOC verifies the LICQ. Providing conditions such that SC is a manifold is more intricate. The strategy is to reason in Mn,m the space of 
+
+m × n matrices with n = nc + ng , t consider once again the transversal intersection of two manifolds. The first geometry to consider in Mn,m is Im (J) = {M ∈ Mn,m |∃ s ∈
+
+Rm, M = J(s)} which is the image of the trajectory space by the operator J(s) defined in (6). In order of Im (J) to be considered a manifold, it is sufficient for the differential of J
+
+to be full rank.  
+
+> •
+
+Condition 3 - Rank of differential : Let j(s) =
+
+ J0(s)T J1(s)T . . . Jn(s)T T with Ji(s) be the i-th column of J(s). Then rank ( ∂j ∂s (s)) = n.The second geometry to consider is the determinantal variety 
+
+Σn−1 
+
+> m,n
+
+. To consider it a submanifold at the intersection, a condition is added to avoid singular geometry.  
+
+> •
+
+Condition 4 - Minimum rank rank (J(s)) ≥ n − 1.Finally, every intersecting manifolds must intersect transver-saly. The transversality constraints are :  
+
+> •
+
+Condition 5 - Transversality 1: Σn−1 and Im (J) intersect transversaly.  
+
+> •
+
+Condition 6 - Transversality 2: SC and G intersect transversaly. 
+
+3) Computing the Riemannian jacobian: When conditions are met, the Riemannian jacobian ∂D 
+
+> ∂γ
+
+exists. This section presents a formula for computing the Riemannian jacobian by solving a linear system. The first step is the KKT conditions shown (14). Condition 1 is assumed. Specifically cost functions and constraints must be differentiable. Condition 4 ensures the uniqueness of ω.   
+
+> (
+> Jω(D(γ)) ω(γ) + Jλ(D(γ)) λ(γ) = 0
+> g(D(γ)) = 0 (14)
+
+Assuming condition 2 is verified, Jλ is non-singular, and λ is unique and can be computed via the formula λ = −J+ 
+
+> λ
+
+Jω ω.By replacing λ with this expression the first equation becomes 
+
+P J ω ω = 0 with P = ( I − JλJ+ 
+
+> λ
+
+) a projector on the null-space of JTλ . Differentiating this equation using the derivative of the pseudo-inverse gives (15). Cost functions and equality constraints need to be twice differentiable as in condition 1.         
+
+> −∂J λ
+> ∂γ k
+> +JλJ+
+> λ
+> ∂J λ
+> ∂γ k
+> J+
+> λ−JλJ+
+> λJ+Tλ
+> ∂J λ
+> ∂γ kT
+> P
+> !
+> Jωω
+> +P ∂J ω
+> ∂γ k
+> ω+P J ω
+> ∂ω ∂γ k
+> = 0
+> (15)
+
+Replacing P J ω ω = 0 into (15) simplifies it to (16). Factor-izing and substituting in λ = −J+ 
+
+> λ
+
+Jω ω gives (17).            
+
+> −P ∂J λ
+> ∂γ k
+> J+
+> λJωω+P ∂J ω
+> ∂γ k
+> ω+P J ω
+> ∂ω ∂γ k
+> = 0 (16)
+> P
+> ∂J λ
+> ∂γ k
+> λ+∂J ω
+> ∂γ k
+> ω
+> 
+> =−P J ω
+> ∂ω ∂γ k
+> (17)
+
+The left-hand side is simplified via chain rule as in (18).           
+
+> ∂J λ
+> ∂γ k
+> λ+∂J ω
+> ∂γ k
+> ω=
+> mX
+> j=1
+> ∂J λ
+> ∂s j
+> λ+∂J ω
+> ∂s j
+> ω
+>   ∂D
+> ∂γ k
+> 
+> j
+> =
+> ncX
+> i=1
+> ωi
+> ∂2Ci
+> ∂s 2+
+> ng
+> X
+> i=1
+> λi
+> ∂2gi
+> ∂s 2
+> !|{z }
+> M
+> ∂D
+> ∂γ k
+> (18)
+
+Substituting in (17) gives the simplified derivative of the system (14) shown in (19). In this case ∂ω ∂γ =
+
+ Inc−1
+
+−1Tnc−1
+
+
+
+.     
+
+> (P M ∂D
+> ∂γ =−P J ω ∂ω ∂γ
+> JTλ∂D
+> ∂γ = 0 (19)
+
+The operator P can be decomposed as P = N N T with 
+
+N containing a basis of the null-space of JTλ as columns. 
+
+N is computed from the SVD Jλ = U SV T such that 
+
+N = Ung :m. Multiplying the first equation by N T we get 
+
+N T M ∂D 
+
+> ∂γ
+
+= −N T Jω B. When conditions 3 and 5 are met, the dimension of the solution space of this equation must match the dimension of the tangent space of SC . Since N T and B are full rank, then rank (−N T Jω B) = rank (Jω ) = nc − 1. This implies rank (N T M ) = m − ng in order for the number of independent solutions to be Dim (SC ) = n − 1 = nc + ng − 1
+
+. Thus rank (N T M ) can be computed to verify conditions 5. The second equation of (19) indicates that ∂D 
+
+> ∂γ
+
+lies in the null-space of JTλ . Meaning that ∂D 
+
+> ∂γ
+
+= N X with X an m −
+
+ng × nc − 1 matrix. This gives (20).        
+
+> NTM(N X ) = −NTJω
+> ∂ω ∂γ (20)
+
+Assuming condition 6, the tangent space of M is nc − 1
+
+dimensional. The dimension of the solution space of (20) must reflect it. Since rank (−N T Jω B) = nc − 1 then N T M N 
+
+must be full rank rank (N T M N ) = m − ng . This rank can be used to verify condition 6. Solving this system gives the final formula for the Riemannian jacobian in (21). In practice, solving (20) is done using linear solvers specialized in symmetric real systems since for better numerical stability.          
+
+> ∂D
+> ∂γ =−N(NTM N )−1NTJω
+> ∂ω ∂γ (21)
+
+If the DOC has no constraints, the KKT conditions simplify to only the stationarity condition. In this case the formula for computing the Riemannian jacobian is ∂D 
+
+> ∂γ
+
+= −M −1Jω B
+
+, and the measure of the transversality for Condition 5 is the invertibility of M . Conditions 2 and 6 are not needed. Fig. 2. Representation of solution sets of optimization with inequality constraint using IPM solvers for different values of μtarget                                                        
+
+> Criterion Symbol Expression Trajectory s(θ, ˙θ, τ )
+> Angular velocity C1
+> PTi=0 ˙θTi˙θidt
+> Angular acceleration C2
+> PTt=0 ¨θTi¨θidt
+> Distance to bar C3
+> PTi=0 (Pxi −Pxtarget )2dt
+> End effector velocity C4
+> PTi=0 ˙PTi˙Pidt
+> End effector acceleration C5
+> PTi=0 ¨PTi¨Pidt
+> Torque C6
+> PTi=0 τTiτidt
+> Power C7
+> PTi=0 ( ˙θi◦τi)T( ˙θi◦τi)dt
+> Initial position
+> gθ0−θinitial
+> Initial velocity ˙θ0
+> Final position Pxfinal −Pxtarget
+> Euler dynamics FDyn (θi+1 ,˙θi+1 , θ i,˙θi, τ i, dt )
+> Joint limits hθi−θmin ,θmax −θi
+> Torque limits τi−τmin ,τmax −τi
+> TABLE I DIRECT OPTIMAL CONTROL FORMULATION
+
+B. Inequality constraints and variable bounds 
+
+DOC problems with inequality constraints can be viewed as separate equality-constrained DOC problems by treating active inequalities as equalities. However, transitions between active and inactive constraints introduce discontinuities in the Riemannian gradient near the transition point. This effect can be observed in the sudden change in the direction of the KKT solution manifold shown in Fig. 2. In practice, IPM solvers avoid this issue by introducing a barrier function 
+
+Fbarrier (s) = − Pnh 
+
+> i=1
+
+μtarget ln hi(s). The KKT multipliers are then computed as μi(s) = μtarget  
+
+> hi(s)
+
+, where μtarget is an optimiza-tion parameter. This formulation creates a smooth transition between solutions with active and inactive constraints (Fig. 2) and allows the Riemannian Jacobian to be computed without explicitly determining the active set, as in (22).      
+
+> (
+> Jω(D(γ)) ω(γ) + Jλ(D(γ)) λ(γ) + ∂F barrier
+> ∂s (D(γ)) = 0
+> g(D(γ)) = 0 (22)
+
+By considering Mμ = M + ∂2Fbarrier  
+
+> ∂s 2
+
+, solving this sys-tem is analogous to (19) as in (23). The first equation is multiplied by μtarget is for numerical stability as computing  
+
+> ∂2Fbarrier
+> ∂s 2
+
+= Pnh
+
+> i=1
+
+( μtarget  
+
+> hi(s)2
+> ∂h i
+> ∂s
+
+(s)T ∂h i 
+
+> ∂s
+
+(s) − μtarget  
+
+> hi(s)
+> ∂2hi
+> ∂s 2
+
+(s)) blows up for small values of μtarget because of the term μtarget  
+
+> hi(s)2
+
+= μ2 
+
+> i
+> μtarget
+
+.Computing μ2 
+
+> target
+> hi(s)2
+
+= ( μtarget  
+
+> hi(s)
+
+)2 = μ2 
+
+> i
+
+is more stable.          
+
+> ∂D
+> ∂γ =−μtarget N(NTμtarget MμN)−1NTJω
+> ∂ω ∂γ (23)
+
+V. A PPLICATION 
+
+To compare RIOC with the bilevel approach, both methods were applied to a well-known human arm pointing task [1], for which the authors kindly provided measurement data. A planar two degrees-of-freedom model was used to represent the human arm (Fig. 3). Table I describes the DOC (Eq. 1) formulated as a constraint multiple shooting problem. The two IOC methods were used to recover the cost weights from five trajectories of a randomly selected subject. Each trajectory started from a different initial position (P1–P5). Trajectory similarity was measured classically using the Root Mean Square Error on the joint angles. 0.4 
+
+-0.6 
+
+0.0 0.6 
+
+> Vertical axis (m)
+
+Horizontal axis (m) 
+
+𝜃 !
+
+> x
+> Y
+
+𝜃 "
+
+P1
+
+P5
+
+P3
+
+P2
+
+P4 
+
+> Fig. 3. Cartesian comparaison betwwen human trajectory, bilevel and RIOC for the 5 initial postures.
+
+Both methods were given a runtime of 3 minutes. The comparison in terms of computation time and accuracy is shown in Fig. 4.a, while the recovered weights are reported in Fig. 4.b. Fig. 3 illustrates the resulting Cartesian motions obtained with the bilevel method, RIOC, and the measured trajectory.Fig. 4.b shows that the proposed method consistently achieves similar or slightly better precision than the bilevel approach while requiring significantly less computation time. On average, the bilevel method requires 100 .2 s±50 .5, whereas the proposed method converges in 26 .7 s ± 23 .9. Fig. 3.a shows that, in most cases, the recovered trajectories closely match the observed ones in Cartesian space for both the bilevel and RIOC. At the joint level the average RMSE was 
+
+4.2 ± 2.2deg and 4.4 ± 2.2deg for RIOC and the bilevel, respectively. The main exception was for trajectory P5, where both methods exhibit noticeable discrepancies 8.7 ± 1.0deg and 19 .9 ± 26 .0deg, likely reflecting limitations in the chosen cost function basis rather than the resolution method. Note that RIOC reduced by 2 the prediction error. Regarding the recovered weights, both methods identify the distance to the bar as the dominant cost function for all trajectories except P1. For P1, the differing and relatively large weight distributions suggest the presence of multiple local minima. In this case, the trajectory reconstructed with the proposed method remains closer to the observed trajectory than the one obtained with the bilevel approach. 10 0          
+
+> 10 -4
+> 10 0
+> 10 -4
+> 10 0
+> 10 -4
+> 10 0
+> 10 -4
+> 10 0
+> 10 -4
+> 10 0
+> 10 -1
+> 10 0
+> 10 -1
+> 10 0
+> 10 -1
+> 10 0
+> 10 -1
+> 10 0
+> 10 -1
+> P1
+> P2
+> P3
+> P4
+> P5
+> 0150 𝜔 !𝜔 "𝜔 #𝜔 $𝜔 %𝜔 &𝜔 '
+> (a) (b) Fig. 4. (a) Area distance to the observed trajectory versus computation time for the bilevel and RIOC. (b) Corresponding recovered weights.
+
+VI. C ONCLUSION 
+
+This work revisits IOC from a geometric perspective. We show that projection-based IOC formulations suffer from nu-merical difficulties because the singularity constraints defining optimal trajectories violate standard constraint qualifications. By analyzing the structure of this solution set, we demonstrate that it naturally forms a manifold under appropriate regularity conditions. Based on this insight, we propose a Riemannian formulation of IOC that performs the trajectory projection directly on this manifold. The resulting RIOC method preserves the advan-tages of projection-based IOC while enabling reliable gradient-based optimization. Experiments on human arm motion data show that the proposed approach achieves comparable or improved reconstruction accuracy while reducing computation time by nearly 4 compared to classical bilevel IOC. More broadly, this work highlights the benefit of exploiting the geometric structure of optimality conditions in inverse problems. Future work will investigate extensions to richer biomechanical models and explore how cost function nor-malization and feature design influence the geometry of the IOC solution space and the interpretability of the recovered costs. Another promising direction concerns the analysis of cost function identifiability. The derivation of the Riemannian Jacobian relies on the KKT system and on the matrix M de-scribing the sensitivity of the optimal trajectory with respect to the cost parameters. This matrix naturally provides information about how variations of the cost weights affect the resulting trajectory. Studying its conditioning or rank properties could therefore reveal redundancies in the cost function basis. Such sensitivity analysis could be used to automatically identify a minimal and well-conditioned subset of cost functions, improving both numerical stability and interpretability of IOC models. 
+
+REFERENCES 
+
+[1] B. Berret, E. Chiovetto, F. Nori, and T. Pozzo, “Evidence for Composite Cost Functions in Arm Movement Planning: An Inverse Optimal Control Approach,” PLOS Computational Biology , 2011. [2] F. Beˇ canovi´ c, V. Bonnet, R. Dumas, K. Jovanovi´ c, and S. Mo-hammed, “Force Sharing Problem During Gait Using Inverse Optimal Control,” IEEE Robotics and Automation Letters ,2023. [3] A. M. Panchea, N. Ramdani, V. Bonnet, and P. Fraisse, “Hu-man Arm Motion Analysis Based on the Inverse Optimization Approach,” Biorob , 2018. [4] J. Mainprice, R. Hayne, and D. Berenson, “Predicting human reaching motion in collaborative tasks using inverse optimal control and iterative re-planning,” 2015. [5] P. Englert, N. A. Vien, and M. Toussaint, “Inverse kkt: Learn-ing cost functions of manipulation tasks from demonstrations,” 
+
+The International Journal of Robotics Research , 2017. [6] J. F.-S. Lin, P. Carreno-Medrano, M. Parsapour, M. Sakr, and D. Kuli´ c, “Objective learning from human demonstrations,” 
+
+Annual Reviews in Control , 2021. [7] C. Finn, S. Levine, and P. Abbeel, “Guided cost learning: Deep inverse optimal control via policy optimization,” Proceedings of The 33rd International Conference on Machine Learning ,2016. [8] A. Panchea, “Inverse optimal control for redundant systems of biological motion,” Theses, Universit´ e d’Orl´ eans, 2015. [9] J. Colombel, D. Daney, and F. Charpillet, “Holistic view of Inverse Optimal Control by introducing projections on singularity curves,” ICRA , 2023. [10] J. Colombel, D. Daney, and F. Charpillet, “On the Reliability of Inverse Optimal Control,” ICRA , 2022. [11] A.-S. Puydupin-Jamin, M. Johnson, and T. Bretl, “A convex approach to inverse optimal control and its application to modeling human locomotion,” ICRA , 2012. [12] F. E. Curtis, O. Schenk, and A. W¨ achter, “An Interior-Point Algorithm for Large-Scale Nonlinear Optimization with Inexact Step Computations,” SIAM Journal on Scientific Com-puting , 2010. [13] J. Nocedal and S. J. Wright, “Theory of constrained optimiza-tion,” Numerical Optimization, Springer New York , 2006. [14] A. W¨ achter, “An Interior Point Algorithm for Large-Scale Nonlinear Optimization with Applications in Process En-gineering,” Ph.D. dissertation, Carnegie Mellon University, 2002. [15] S. Albrecht, M. Leibold, and M. Ulbrich, “A bilevel opti-mization approach to obtain optimal cost functions for human arm movements,” Numerical Algebra, Control & Optimization ,2012. [16] M. J. D. Powell, “An efficient method for finding the min-imum of a function of several variables without calculating derivatives,” The Computer Journal , 1964. [17] M. J. D. Powell, “A Direct Search Optimization Method That Models the Objective and Constraint Functions by Linear Interpolation,” Advances in Optimization and Numerical Anal-ysis , 1994. [18] S. T. Smith, “Optimization Techniques on Riemannian Mani-folds,” arXiv , 2014. [19] J. M. Lee, “Introduction to Smooth Manifolds,” Graduate Texts in Mathematics , 2012. [20] E. Arbarello, M. Cornalba, P. A. Griffiths, and J. Harris, “De-terminantal Varieties,” Geometry of Algebraic Curves , 1985.
