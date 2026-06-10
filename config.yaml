@@ -25,3 +25,157 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: inverse-rl
+      description: 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: imitation learning
+          keyword_cn: 模仿学习
+          query: imitation learning
+        - keyword: inverse reinforcement learning
+          keyword_cn: 逆强化学习
+          query: inverse reinforcement learning
+        - keyword: inverse optimal control
+          keyword_cn: 逆最优控制
+          query: inverse optimal control
+        - keyword: apprenticeship learning
+          keyword_cn: 学徒学习
+          query: apprenticeship learning
+        - keyword: adversarial imitation learning
+          keyword_cn: 对抗模仿学习
+          query: adversarial imitation learning
+        - keyword: reward function learning
+          keyword_cn: 奖励函数学习
+          query: reward function learning
+      intent_queries:
+        - query: survey of inverse reinforcement learning methods
+          query_cn: 逆强化学习方法综述
+          enabled: true
+          source: manual
+          note: ''
+        - query: inverse optimal control applications in robotics
+          query_cn: 逆最优控制在机器人中的应用
+          enabled: true
+          source: manual
+          note: ''
+        - query: recent advances in imitation learning and inverse RL
+          query_cn: 模仿学习和逆强化学习的最新进展
+          enabled: true
+          source: manual
+          note: ''
+        - query: comparison of inverse reinforcement learning algorithms
+          query_cn: 逆强化学习算法比较
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-06-10T03:16:17.222Z'
+    - tag: locoWBC
+      description: 请帮我查找机器人locomotion、WBC的工作
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: robot locomotion
+          keyword_cn: 机器人运动
+          query: robot locomotion techniques and algorithms
+        - keyword: whole-body control
+          keyword_cn: 全身控制
+          query: whole-body control for robots
+        - keyword: humanoid robot control
+          keyword_cn: 人形机器人控制
+          query: humanoid robot locomotion and control
+        - keyword: legged locomotion
+          keyword_cn: 足式机器人运动
+          query: legged locomotion planning and control
+        - keyword: locomotion planning
+          keyword_cn: 运动规划
+          query: motion planning for robot locomotion
+        - keyword: contact force control
+          keyword_cn: 接触力控制
+          query: contact force control in locomotion
+      intent_queries:
+        - query: methods for whole body control in robot locomotion
+          query_cn: ''
+          enabled: true
+          source: manual
+          note: ''
+        - query: recent advances in humanoid walking and whole body control
+          query_cn: ''
+          enabled: true
+          source: manual
+          note: ''
+        - query: control strategies for bipedal robot locomotion
+          query_cn: ''
+          enabled: true
+          source: manual
+          note: ''
+        - query: WBC framework for legged robot locomotion
+          query_cn: ''
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-06-10T03:20:16.650Z'
+    - tag: MPC-WBC
+      description: 请帮我查找MPC和locomotion、WBC交叉，或者模仿学习、逆强化学习和locomotion、WBC的交叉方向论文
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: model predictive control
+          keyword_cn: 模型预测控制
+          query: Model predictive control for whole body locomotion and walking
+        - keyword: whole body control
+          keyword_cn: 全身控制
+          query: Whole body control for locomotion with model predictive control
+        - keyword: imitation learning
+          keyword_cn: 模仿学习
+          query: Imitation learning for legged locomotion and whole body control
+        - keyword: inverse reinforcement learning
+          keyword_cn: 逆强化学习
+          query: Inverse reinforcement learning for locomotion and whole body control
+        - keyword: model predictive control locomotion
+          keyword_cn: 模型预测控制与运动
+          query: Model predictive control for legged locomotion and walking
+        - keyword: whole body control locomotion
+          keyword_cn: 全身控制与运动
+          query: Whole body control for legged locomotion and walking
+      intent_queries:
+        - query: Papers on model predictive control for whole body locomotion
+          query_cn: 模型预测控制用于全身运动的论文
+          enabled: true
+          source: manual
+          note: ''
+        - query: Imitation learning applications in legged locomotion and whole body control
+          query_cn: 模仿学习在腿式运动和全身控制中的应用
+          enabled: true
+          source: manual
+          note: ''
+        - query: Inverse reinforcement learning for whole body control and locomotion
+          query_cn: 逆强化学习用于全身控制和运动
+          enabled: true
+          source: manual
+          note: ''
+        - query: Intersection of MPC and imitation learning in legged locomotion
+          query_cn: MPC与模仿学习在腿式运动中的交叉
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-06-10T03:24:45.035Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
