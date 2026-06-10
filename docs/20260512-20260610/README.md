@@ -1,52 +1,56 @@
 # 日报 · 2026-05-12 ~ 2026-06-10
 
-- 生成时间：2026-06-10 03:50:23 UTC
-- 当次推荐总数：34
-- 精读区：23
+- 生成时间：2026-06-10 10:39:02 UTC
+- 当次推荐总数：38
+- 精读区：27
 - 速读区：11
 
 ## 今日简报（AI）
-1）本期日报聚焦人形机器人运动与操控的强化学习加速及统一运动框架，在34篇论文中精读23篇，高分成果集中涌现。  
-2）最值得关注：MPC引导强化学习加速人形机器人运动与操控（10分）以及基于状态依赖对抗运动先验的统一行走/跑步/恢复方法（9分）。  
-3）建议优先阅读IMU全身遥操作、多技能联合控制以及地形一致参考引导的RL论文（均8分），它们更贴近实际部署与自主导航。
+1) 本期精读逆强化学习与控制经典，两篇满分论文揭示快速收敛与通用稳定器新突破。  
+2) 最值得关注：逆强化学习的理论加速（Fast Rates）与基于控制代价参数化的逆最优通用稳定器（Families of...）——两篇均获10分满分。  
+3) 建议优先精读这两篇10分论文，速读可关注观测缺失量化与流匹配策略的时序先验（WarmPrior）来拓展视角。
 
 ## 精读区
-1. [Accelerating and Scaling MPC-Guided Reinforcement Learning for Humanoid Locomotion and Manipulation](/20260512-20260610/2606.05687v1-accelerating-and-scaling-mpc-guided-reinforcement-learning-for-humanoid-locomotion-and-manipulation) （10.0/10）
-2. [Unified Walking, Running, and Recovery for Humanoids via State-Dependent Adversarial Motion Priors](/20260512-20260610/2605.18611v1-unified-walking-running-and-recovery-for-humanoids-via-state-dependent-adversarial-motion-priors) （9.0/10）
-3. [SUGAR: A Scalable Human-Video-Driven Generalizable Humanoid Loco-Manipulation Learning Framework](/20260512-20260610/2605.20373v1-sugar-a-scalable-human-video-driven-generalizable-humanoid-loco-manipulation-learning-framework) （9.0/10）
-4. [MuGen: Multi-Skill Generative Locomotion Controller for Humanoid Robots](/20260512-20260610/2605.24592v1-mugen-multi-skill-generative-locomotion-controller-for-humanoid-robots) （9.0/10）
-5. [Safety-Critical Whole-Body Control for Humanoid Robots via Input-to-State Safe Control Barrier Functions](/20260512-20260610/2605.25546v1-safety-critical-whole-body-control-for-humanoid-robots-via-input-to-state-safe-control-barrier-functions) （9.0/10）
-6. [ParkourFormer: Integrating Predictive Supervision and Sequence Modeling into Parkour Locomotion](/20260512-20260610/2605.25782v1-parkourformer-integrating-predictive-supervision-and-sequence-modeling-into-parkour-locomotion) （9.0/10）
-7. [ParkourFormer: Integrating Predictive Supervision and Sequence Modeling into Parkour Locomotion](/20260512-20260610/2605.25782v2-parkourformer-integrating-predictive-supervision-and-sequence-modeling-into-parkour-locomotion) （9.0/10）
-8. [Natural Locomotion: Principle and Method](/20260512-20260610/2605.28254v1-natural-locomotion-principle-and-method) （9.0/10）
-9. [SSR: Scaling Surefooted and Symmetric Humanoid Traversal to the Open World](/20260512-20260610/2605.30770v1-ssr-scaling-surefooted-and-symmetric-humanoid-traversal-to-the-open-world) （9.0/10）
-10. [Learning Terrain-Aware Whole-Body Control for Perceptive Legged Loco-Manipulation](/20260512-20260610/2605.31343v1-learning-terrain-aware-whole-body-control-for-perceptive-legged-loco-manipulation) （9.0/10）
-11. [Constrained Whole-Body Tracking for Humanoid Robots](/20260512-20260610/2606.00374v1-constrained-whole-body-tracking-for-humanoid-robots) （9.0/10）
-12. [Global-Local Attention Decomposition for Terrain Encoding in Humanoid Perceptive Locomotion](/20260512-20260610/2606.00637v1-global-local-attention-decomposition-for-terrain-encoding-in-humanoid-perceptive-locomotion) （9.0/10）
-13. [Human2Humanoid: Physics-Aware Cross-Morphology Motion Retargeting for Humanoid Robots](/20260512-20260610/2606.03476v1-human2humanoid-physics-aware-cross-morphology-motion-retargeting-for-humanoid-robots) （9.0/10）
-14. [Bionic Human-Motion Style Transfer for Physically Executable Whole-Body Control of Humanoid Robots](/20260512-20260610/2606.03536v1-bionic-human-motion-style-transfer-for-physically-executable-whole-body-control-of-humanoid-robots) （9.0/10）
-15. [CoRe-MoE: Contrastive Reweighted Mixture of Experts for Multi-Terrain Humanoid Locomotion with Gait Adaptation](/20260512-20260610/2606.04718v1-core-moe-contrastive-reweighted-mixture-of-experts-for-multi-terrain-humanoid-locomotion-with-gait-adaptation) （9.0/10）
-16. [M3imic: Learning a Versatile Whole-Body Controller for Multimodal Motion Mimicking](/20260512-20260610/2606.04829v1-m3imic-learning-a-versatile-whole-body-controller-for-multimodal-motion-mimicking) （9.0/10）
-17. [TAGA: Terrain-aware Active Gaze Learning for Generalizable Agile Humanoid Locomotion](/20260512-20260610/2606.05880v1-taga-terrain-aware-active-gaze-learning-for-generalizable-agile-humanoid-locomotion) （9.0/10）
-18. [HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers](/20260512-20260610/2606.06493v1-handoff-humanoid-agentic-task-space-whole-body-control-via-distilled-complementary-teachers) （9.0/10）
-19. [HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers](/20260512-20260610/2606.06493v2-handoff-humanoid-agentic-task-space-whole-body-control-via-distilled-complementary-teachers) （9.0/10）
-20. [T-GMP: Terrain-conditioned Generative Motion Priors for Versatile and Natural Humanoid Locomotion](/20260512-20260610/2606.06944v1-t-gmp-terrain-conditioned-generative-motion-priors-for-versatile-and-natural-humanoid-locomotion) （9.0/10）
-21. [Predictive Style Matching: Natural and Robust Humanoid Locomotion](/20260512-20260610/2606.07083v1-predictive-style-matching-natural-and-robust-humanoid-locomotion) （9.0/10）
-22. [Shield-Loco: Shielding Locomotion Policies with Predictive Safety Filtering](/20260512-20260610/2606.07193v1-shield-loco-shielding-locomotion-policies-with-predictive-safety-filtering) （9.0/10）
-23. [Mind Your Steps: A General Learning Framework for Accurate Humanoid Foothold Tracking](/20260512-20260610/2606.08253v1-mind-your-steps-a-general-learning-framework-for-accurate-humanoid-foothold-tracking) （9.0/10）
+1. [Fast Rates for Inverse Reinforcement Learning](/20260512-20260610/2605.14599v1-fast-rates-for-inverse-reinforcement-learning) （10.0/10）
+2. [Families of Control-Cost-Parametrized Inverse-Optimal Universal Stabilizers](/20260512-20260610/2606.09047v1-families-of-control-cost-parametrized-inverse-optimal-universal-stabilizers) （10.0/10）
+3. [NavOL: Navigation Policy with Online Imitation Learning](/20260512-20260610/2605.11762v1-navol-navigation-policy-with-online-imitation-learning) （9.0/10）
+4. [Split the Differences, Pool the Rest: Provably Efficient Multi-Objective Imitation](/20260512-20260610/2605.12000v1-split-the-differences-pool-the-rest-provably-efficient-multi-objective-imitation) （9.0/10）
+5. [Split the Differences, Pool the Rest: Provably Efficient Multi-Objective Imitation](/20260512-20260610/2605.12000v2-split-the-differences-pool-the-rest-provably-efficient-multi-objective-imitation) （9.0/10）
+6. [X-Imitator: Spatial-Aware Imitation Learning via Bidirectional Action-Pose Interaction](/20260512-20260610/2605.12162v1-x-imitator-spatial-aware-imitation-learning-via-bidirectional-action-pose-interaction) （9.0/10）
+7. [Morphologically Equivariant Flow Matching for Bimanual Mobile Manipulation](/20260512-20260610/2605.12228v1-morphologically-equivariant-flow-matching-for-bimanual-mobile-manipulation) （9.0/10）
+8. [DSSP: Diffusion State Space Policy with Full-History Encoding](/20260512-20260610/2605.14598v1-dssp-diffusion-state-space-policy-with-full-history-encoding) （9.0/10）
+9. [DSSP: Diffusion State Space Policy with Full-History Encoding](/20260512-20260610/2605.14598v2-dssp-diffusion-state-space-policy-with-full-history-encoding) （9.0/10）
+10. [SkiP: When to Skip and When to Refine for Efficient Robot Manipulation](/20260512-20260610/2605.15536v1-skip-when-to-skip-and-when-to-refine-for-efficient-robot-manipulation) （9.0/10）
+11. [When Dynamics Shift, Robust Task Inference Wins: Offline Imitation Learning with Behavior Foundation Models Revisited](/20260512-20260610/2605.17017v1-when-dynamics-shift-robust-task-inference-wins-offline-imitation-learning-with-behavior-foundation-models-revisited) （9.0/10）
+12. [Instrumentation for Imitation Learning: Enhancing Training Datasets for Clothes Hanger Insertion](/20260512-20260610/2605.23847v1-instrumentation-for-imitation-learning-enhancing-training-datasets-for-clothes-hanger-insertion) （9.0/10）
+13. [On the Generalization Capabilities, Design Choices and Limitations of Keypoint Imitation Learning](/20260512-20260610/2605.26649v1-on-the-generalization-capabilities-design-choices-and-limitations-of-keypoint-imitation-learning) （9.0/10）
+14. [Probabilistic Recurrent Intention Switching Model](/20260512-20260610/2605.26998v1-probabilistic-recurrent-intention-switching-model) （9.0/10）
+15. [Reward Transfer from Inverse Reinforcement Learning: A Coupled Minimax Approach](/20260512-20260610/2605.27834v1-reward-transfer-from-inverse-reinforcement-learning-a-coupled-minimax-approach) （9.0/10）
+16. [Teacher-Student Representational Alignment for Reinforcement Learning-Driven Imitation Learning](/20260512-20260610/2605.28372v1-teacher-student-representational-alignment-for-reinforcement-learning-driven-imitation-learning) （9.0/10）
+17. [Phase-Conditioned Imitation Learning with Autonomous Failure Recovery for Robust Deformable Object Manipulation](/20260512-20260610/2605.29407v1-phase-conditioned-imitation-learning-with-autonomous-failure-recovery-for-robust-deformable-object-manipulation) （9.0/10）
+18. [A Lecture Note on Offline RL and IRL, Part II: Foundations of Inverse Reinforcement Learning and Dynamic Discrete Choice Models](/20260512-20260610/2605.30843v1-a-lecture-note-on-offline-rl-and-irl-part-ii-foundations-of-inverse-reinforcement-learning-and-dynamic-discrete-choice-models) （9.0/10）
+19. [Inverse Reinforcement Learning without an Optimal Demonstrator: A Feasible Reward Set Approach](/20260512-20260610/2605.30903v1-inverse-reinforcement-learning-without-an-optimal-demonstrator-a-feasible-reward-set-approach) （9.0/10）
+20. [Trajectory Planning for Non-Communicating Mobile Robots using Inverse Optimal Control](/20260512-20260610/2605.30906v1-trajectory-planning-for-non-communicating-mobile-robots-using-inverse-optimal-control) （9.0/10）
+21. [Infeasible optimization problems and the hierarchical augmented Lagrangian method in imitation learning](/20260512-20260610/2606.00730v1-infeasible-optimization-problems-and-the-hierarchical-augmented-lagrangian-method-in-imitation-learning) （9.0/10）
+22. [Expanding Spatial and Temporal Context for Robotic Imitation Learning With Scene Graphs](/20260512-20260610/2606.01072v1-expanding-spatial-and-temporal-context-for-robotic-imitation-learning-with-scene-graphs) （9.0/10）
+23. [Training-Free Imitation Learning with Closed-Form Diffusion Policies](/20260512-20260610/2606.01238v1-training-free-imitation-learning-with-closed-form-diffusion-policies) （9.0/10）
+24. [Coherent Off-Policy Improvement of Large Behavior Models with Learned Rewards](/20260512-20260610/2606.02194v1-coherent-off-policy-improvement-of-large-behavior-models-with-learned-rewards) （9.0/10）
+25. [Let the Dynamics Flow: Stable Flow Matching Dynamical Systems](/20260512-20260610/2606.03834v1-let-the-dynamics-flow-stable-flow-matching-dynamical-systems) （9.0/10）
+26. [Instant-Fold: In-Context Imitation Learning for Deformable Object Manipulation](/20260512-20260610/2606.04269v1-instant-fold-in-context-imitation-learning-for-deformable-object-manipulation) （9.0/10）
+27. [SynthICL: Scalable In-context Imitation Learning with Synthetic Data](/20260512-20260610/2606.08154v1-synthicl-scalable-in-context-imitation-learning-with-synthetic-data) （9.0/10）
 
 ## 速读区
-1. [Real-Time Whole-Body Teleoperation of a Humanoid Robot Using IMU-Based Motion Capture with Sim2Sim and Sim2Real Validation](/20260512-20260610/2605.12347v1-real-time-whole-body-teleoperation-of-a-humanoid-robot-using-imu-based-motion-capture-with-sim2sim-and-sim2real-validation) （8.0/10）
-2. [MUJICA: Multi-skill Unified Joint Integration of Control Architecture for Wheeled-Legged Robots](/20260512-20260610/2605.13058v1-mujica-multi-skill-unified-joint-integration-of-control-architecture-for-wheeled-legged-robots) （8.0/10）
-3. [Terrain Consistent Reference-Guided RL for Humanoid Navigation Autonomy](/20260512-20260610/2605.15517v1-terrain-consistent-reference-guided-rl-for-humanoid-navigation-autonomy) （8.0/10）
-4. [HCLM: A Hierarchical Framework for Cooperative Loco-Manipulation with Dual Quadrupeds](/20260512-20260610/2605.17300v1-hclm-a-hierarchical-framework-for-cooperative-loco-manipulation-with-dual-quadrupeds) （8.0/10）
-5. [Robot Squid Game: Quadrupedal Locomotion for Traversing Narrow Tunnels](/20260512-20260610/2605.13665v1-robot-squid-game-quadrupedal-locomotion-for-traversing-narrow-tunnels) （7.0/10）
-6. [Energy-Efficient Quadruped Locomotion with Compliant Feet](/20260512-20260610/2605.14411v1-energy-efficient-quadruped-locomotion-with-compliant-feet) （7.0/10）
-7. [Before the Body Moves: Learning Anticipatory Joint Intent for Language-Conditioned Humanoid Control](/20260512-20260610/2605.14417v1-before-the-body-moves-learning-anticipatory-joint-intent-for-language-conditioned-humanoid-control) （7.0/10）
-8. [Before the Body Moves: Learning Anticipatory Joint Intent for Language-Conditioned Humanoid Control](/20260512-20260610/2605.14417v2-before-the-body-moves-learning-anticipatory-joint-intent-for-language-conditioned-humanoid-control) （7.0/10）
-9. [From a Single Demonstration to a General Policy for Contact-Rich Manipulation](/20260512-20260610/2605.17601v1-from-a-single-demonstration-to-a-general-policy-for-contact-rich-manipulation) （6.0/10）
-10. [Automated design of soft-rigid hybrid robots for dynamic locomotion](/20260512-20260610/2605.29389v1-automated-design-of-soft-rigid-hybrid-robots-for-dynamic-locomotion) （6.0/10）
-11. [Learning Contact Representation for Leg Odometry](/20260512-20260610/2606.05501v1-learning-contact-representation-for-leg-odometry) （6.0/10）
+1. [Quantifying Potential Observation Missingness in Inverse Reinforcement Learning](/20260512-20260610/2605.12831v1-quantifying-potential-observation-missingness-in-inverse-reinforcement-learning) （8.0/10）
+2. [WarmPrior: Straightening Flow-Matching Policies with Temporal Priors](/20260512-20260610/2605.13959v1-warmprior-straightening-flow-matching-policies-with-temporal-priors) （8.0/10）
+3. [Neuro-Inspired Inverse Learning for Planning and Control](/20260512-20260610/2605.24152v1-neuro-inspired-inverse-learning-for-planning-and-control) （8.0/10）
+4. [How to Mitigate the Distribution Shift Problem in Robotics Control: A Robust and Adaptive Approach Based on Offline to Online Imitation Learning](/20260512-20260610/2605.25414v1-how-to-mitigate-the-distribution-shift-problem-in-robotics-control-a-robust-and-adaptive-approach-based-on-offline-to-online-imitation-learning) （8.0/10）
+5. [Learning Kernel-Based MDPs from Episodic Preferential Feedback](/20260512-20260610/2605.23650v1-learning-kernel-based-mdps-from-episodic-preferential-feedback) （7.0/10）
+6. [Learning Kernel-Based MDPs from Episodic Preferential Feedback](/20260512-20260610/2605.23650v2-learning-kernel-based-mdps-from-episodic-preferential-feedback) （7.0/10）
+7. [Decoupled Behavioral Cloning for Scalable Inductive Generalization in RL from Specifications](/20260512-20260610/2606.00838v1-decoupled-behavioral-cloning-for-scalable-inductive-generalization-in-rl-from-specifications) （7.0/10）
+8. [Potential-Guided Flow Matching for Vision-Language-Action Policy Improvement](/20260512-20260610/2606.04968v1-potential-guided-flow-matching-for-vision-language-action-policy-improvement) （7.0/10）
+9. [Multi-Objective and Mixed-Reward Reinforcement Learning via Reward-Decorrelated Policy Optimization](/20260512-20260610/2605.13641v1-multi-objective-and-mixed-reward-reinforcement-learning-via-reward-decorrelated-policy-optimization) （6.0/10）
+10. [ERFSL: An Efficient Reward Function Searcher via Language Models for Custom-Environment Multi-Objective Optimization (Student Abstract)](/20260512-20260610/2605.19259v1-erfsl-an-efficient-reward-function-searcher-via-language-models-for-custom-environment-multi-objective-optimization-student-abstract) （6.0/10）
+11. [Beyond Action Residuals: Real-World Robot Policy Steering via Bottleneck Latent Reinforcement Learning](/20260512-20260610/2605.19919v1-beyond-action-residuals-real-world-robot-policy-steering-via-bottleneck-latent-reinforcement-learning) （6.0/10）
 
 ---
 使用键盘方向键可在日报/论文之间快速切换。

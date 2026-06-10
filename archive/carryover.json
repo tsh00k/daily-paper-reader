@@ -1,12 +1,306 @@
 {
-  "generated_at": "2026-06-10T03:55:26.943321+00:00",
-  "updated_date": "20260601-20260610",
+  "generated_at": "2026-06-10T10:12:36.105078+00:00",
+  "updated_date": "20260512-20260610",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
       "updated_date": "20260601-20260610",
       "carryover_days": 9,
       "items": []
+    },
+    "inverse-rl": {
+      "updated_date": "20260512-20260610",
+      "carryover_days": 9,
+      "items": [
+        {
+          "id": "2606.05152v2",
+          "source": "arxiv",
+          "title": "Reinforcement Learning from Rich Feedback with Distributional DAgger",
+          "abstract": "Reasoning models have advanced rapidly, but the dominant reinforcement learning from verifiable rewards (RLVR) recipe remains surprisingly narrow: sample many responses and reward each with a single bit indicating whether the final answer is correct. Yet many settings provide rich feedback, including execution traces, tool outputs, expert corrections, and model self-evaluations. We study how to use such feedback through a distributional variant of the classic imitation learning algorithm DAgger, where the learner has local access to an expert distribution on states visited by the current policy. This yields a simple forward cross-entropy objective that admits a blackbox expert and whose sequence-level gradient {conduct rich credit assignment by propagating} future expert-student disagreement back to earlier decisions. We show that prior RL with self-distillation objectives based on reverse KL or Jensen-Shannon fail to guarantee monotonic policy improvement: even when the expert has higher reward, their updates may increase probability on worse actions. In contrast, we show that forward cross-entropy admits monotonic policy improvement and enjoys guarantees on regret. We further show that our objective optimizes a lower bound on teacher-weighted likelihood of success, leading to improved Pass@N. Empirically, our approach, DistIL, improves over RLVR and RL with self-distillation baselines across a variety of domains: scientific reasoning, coding, and solving hard mathematical problems.",
+          "authors": [
+            "Rishabh Agrawal",
+            "Jacob Fein-Ashley",
+            "Paria Rashidinejad"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.AI",
+            "cs.CL"
+          ],
+          "published": "2026-06-03T17:54:04+00:00",
+          "link": "https://arxiv.org/pdf/2606.05152v2",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "distributional DAgger for imitation learning from rich feedback",
+          "llm_evidence_cn": "分布化DAgger从丰富反馈中进行模仿学习",
+          "llm_evidence": "分布化DAgger从丰富反馈中进行模仿学习",
+          "canonical_evidence": "分布化DAgger从丰富反馈中进行模仿学习",
+          "llm_tldr_en": "Distributional DAgger extends DAgger to leverage rich feedback signals, achieving efficient imitation learning with a simple cross-entropy objective.",
+          "llm_tldr_cn": "该论文针对现有模仿学习仅使用二元成功信号的问题，提出了分布化DAgger算法，利用执行轨迹、工具输出等丰富反馈进行学习。通过引入专家状态分布，算法仅需简单的前向交叉熵目标，并实现序列级梯度传播。在推理任务上，该方法显著优于仅依赖最终奖励的RL基线。",
+          "llm_tldr": "该论文针对现有模仿学习仅使用二元成功信号的问题，提出了分布化DAgger算法，利用执行轨迹、工具输出等丰富反馈进行学习。通过引入专家状态分布，算法仅需简单的前向交叉熵目标，并实现序列级梯度传播。在推理任务上，该方法显著优于仅依赖最终奖励的RL基线。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.05152v2",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.01072v2",
+          "source": "arxiv",
+          "title": "Expanding Spatial and Temporal Context for Robotic Imitation Learning With Scene Graphs",
+          "abstract": "Imitation learning enables robots to learn how to execute tasks via observation. However, real-world environments like homes and offices are often severely partially observed due to their large spatial scales. In addition, many tasks involve executing a series of subtasks requiring autonomous robots to reason over extended time horizons. To address these challenges, we propose using scene graphs as an explicit and structured memory mechanism in imitation learning. By maintaining a dynamic scene graph that captures object-centric relationships and their evolution over time, our method allows the agent to retain relevant historical context during task execution to efficiently reason over incrementally accrued scene information. Our experiments on simulated mobile manipulation and real-world tabletop manipulation demonstrate that our approach substantially improves policy performance, particularly in settings that demand long-term reasoning and robust generalization under partial observability.",
+          "authors": [
+            "Jianing Qian",
+            "Qinhe Peng",
+            "Emmanuel Panov",
+            "Leonor Fermoselle",
+            "Dinesh Jayaraman",
+            "Bernadette Bucher",
+            "Tarik Kelestemur"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.CV"
+          ],
+          "published": "2026-05-31T07:34:25+00:00",
+          "link": "https://arxiv.org/pdf/2606.01072v2",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "robotic imitation learning with scene graphs for spatial-temporal context",
+          "llm_evidence_cn": "使用场景图扩展机器人模仿学习的时空上下文",
+          "llm_evidence": "使用场景图扩展机器人模仿学习的时空上下文",
+          "canonical_evidence": "使用场景图扩展机器人模仿学习的时空上下文",
+          "llm_tldr_en": "Proposes using dynamic scene graphs as explicit memory in imitation learning to expand spatial and temporal context, enabling reasoning across long horizons and large environments.",
+          "llm_tldr_cn": "本文针对真实环境中机器人模仿学习面临的严重部分可观测和长时任务问题，提出将动态场景图作为显式结构化记忆机制。场景图随时间演化，保留物体关系历史，使智能体能利用增量累积的场景信息进行推理。实验证明该方法在长期任务和大空间环境中显著优于无记忆的模仿学习基线。",
+          "llm_tldr": "本文针对真实环境中机器人模仿学习面临的严重部分可观测和长时任务问题，提出将动态场景图作为显式结构化记忆机制。场景图随时间演化，保留物体关系历史，使智能体能利用增量累积的场景信息进行推理。实验证明该方法在长期任务和大空间环境中显著优于无记忆的模仿学习基线。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.01072v2",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.09381v1",
+          "source": "arxiv",
+          "title": "ReGIL: Retrieval-Guided Imitation Learning from a Single Demonstration",
+          "abstract": "Learning robot manipulation policies with deep neural networks from a single demonstration remains highly challenging, as even small deviations from the demonstrated trajectory can quickly compound into failure, while collecting substantial online interaction data is costly. We propose ReGIL, a retrieval-guided imitation learning framework that treats a single demonstration as an external memory. ReGIL repeatedly queries this static memory throughout training to simultaneously guide exploration, generate the regularization buffer, and construct rewards. Specifically, it computes rewards through local temporal alignment between the current trajectory and the retrieved segment, providing step-wise and informative feedback for policy improvement. We evaluate ReGIL on robotic manipulation tasks from the LIBERO and Meta-World benchmarks under the single demonstration setting. ReGIL outperforms prior baselines in both success rate and training efficiency. In real-robot experiments, using only one demonstration and less than one hour of online training, ReGIL achieves over 75% success rate across three manipulation tasks with randomness in both initial robot pose and target position. These results demonstrate that leveraging the single demonstration as reusable memory can provide more than static supervision for efficient robot learning. More details can be found on our website: https://regil2026.github.io/",
+          "authors": [
+            "Yuying Zhang",
+            "Francesco Verdoja",
+            "Wenyan Yang",
+            "Ville Kyrki"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-08T11:57:17+00:00",
+          "link": "https://arxiv.org/pdf/2606.09381v1",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "retrieval-guided imitation learning from a single demonstration",
+          "llm_evidence_cn": "基于检索的单一示范模仿学习",
+          "llm_evidence": "基于检索的单一示范模仿学习",
+          "canonical_evidence": "基于检索的单一示范模仿学习",
+          "llm_tldr_en": "Proposes ReGIL, a retrieval-guided imitation learning framework that treats a single demonstration as external memory, using temporal alignment to compute rewards and guide exploration.",
+          "llm_tldr_cn": "本文针对单次示范下机器人操作策略学习的挑战，提出ReGIL框架，将单个示范视为外部记忆，在训练过程中反复查询该记忆以引导探索、生成正则化缓存并构建奖励。奖励通过当前轨迹与检索片段之间的局部时间对齐计算，提供细粒度的步骤级反馈。实验显示ReGIL仅用单条示范即可学习鲁棒策略，大幅降低数据需求。",
+          "llm_tldr": "本文针对单次示范下机器人操作策略学习的挑战，提出ReGIL框架，将单个示范视为外部记忆，在训练过程中反复查询该记忆以引导探索、生成正则化缓存并构建奖励。奖励通过当前轨迹与检索片段之间的局部时间对齐计算，提供细粒度的步骤级反馈。实验显示ReGIL仅用单条示范即可学习鲁棒策略，大幅降低数据需求。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.09381v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.01123v1",
+          "source": "arxiv",
+          "title": "From Reward-Free Representations to Preferences: Rethinking Offline Preference-Based Reinforcement Learning",
+          "abstract": "Preference-based reinforcement learning (PbRL) avoids explicit reward engineering by learning from pairwise human preference feedback. Existing offline PbRL methods typically follow a two-stage pipeline, first learning a reward or preference model from labeled preferences and then performing offline RL on unlabeled data. We revisit offline PbRL through the lens of reward-free representation learning (RFRL) from the zero-shot RL literature, and propose a new training framework that first learns latent successor-measure representations from reward-free offline data, followed by contrastive search and fine-tuning using preference data. Through extensive experiments and ablations, we show that our method achieves superior preference efficiency over offline PbRL baselines. This work is the first to connect RFRL with PbRL, highlighting its potential as a feedback-efficient solution. Our code is publicly available at https://github.com/rl-bandits-lab/FB-PbRL.",
+          "authors": [
+            "Jun-Jie Yang",
+            "Chia-Heng Hsu",
+            "Kui-Yuan Chen",
+            "Ping-Chun Hsieh"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG"
+          ],
+          "published": "2026-05-31T09:46:53+00:00",
+          "link": "https://arxiv.org/pdf/2606.01123v1",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Reward function learning from preferences via reward-free representations",
+          "llm_evidence_cn": "通过无奖励表示从偏好中学习奖励函数",
+          "llm_evidence": "通过无奖励表示从偏好中学习奖励函数",
+          "canonical_evidence": "通过无奖励表示从偏好中学习奖励函数",
+          "llm_tldr_en": "Proposes a new offline PbRL framework using reward-free representation learning, learning latent successor-measure representations then fine-tuning with preferences, achieving superior performance.",
+          "llm_tldr_cn": "该论文从无奖励表示学习视角重新审视离线偏好强化学习，提出先学习潜在后继度量表示，再通过对比搜索和偏好数据微调的新框架。该方法避免了显式奖励工程，通过利用无奖励数据的结构提升了样本效率和性能。实验表明在多种基准任务上优于现有离线PbRL方法。",
+          "llm_tldr": "该论文从无奖励表示学习视角重新审视离线偏好强化学习，提出先学习潜在后继度量表示，再通过对比搜索和偏好数据微调的新框架。该方法避免了显式奖励工程，通过利用无奖励数据的结构提升了样本效率和性能。实验表明在多种基准任务上优于现有离线PbRL方法。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "reward function learning",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.01123v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.09758v1",
+          "source": "arxiv",
+          "title": "Difference-Aware Retrieval Policies for Imitation Learning",
+          "abstract": "Parametric imitation learning via behavior cloning can suffer from poor generalization to out-of-distribution states due to compounding errors during deployment. We show that reusing the training data during inference via a semi-parametric retrieval-based imitation learning approach can alleviate this challenge. We present Difference-Aware Retrieval Policies for Imitation Learning (DARP), a semi-parametric retrieval-based imitation learning approach that addresses this limitation by reparameterizing the imitation learning problem in terms of local neighborhood structure rather than direct state-to-action mappings. Instead of learning a global policy, DARP trains a model to predict actions based on $k$-nearest neighbors from expert demonstrations, their corresponding actions, and the relative distance vectors between neighbor states and query states. DARP requires no additional assumptions beyond those made for standard behavior cloning -- it does not require additional data collection, online expert feedback, or task-specific knowledge. We demonstrate consistent performance improvements of 15-46% over standard behavior cloning across diverse domains, including continuous control and robotic manipulation, and across different representations, including high-dimensional visual features. Code and demos are available at https://weirdlabuw.github.io/darp-site/.",
+          "authors": [
+            "Quinn Pfeifer",
+            "Ethan Pronovost",
+            "Paarth Shah",
+            "Khimya Khetarpal",
+            "Siddhartha Srinivasa",
+            "Abhishek Gupta"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI",
+            "cs.LG"
+          ],
+          "published": "2026-06-08T17:18:19+00:00",
+          "link": "https://arxiv.org/pdf/2606.09758v1",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Imitation learning via retrieval-based approach",
+          "llm_evidence_cn": "基于检索的模仿学习方法",
+          "llm_evidence": "基于检索的模仿学习方法",
+          "canonical_evidence": "基于检索的模仿学习方法",
+          "llm_tldr_en": "Presents Difference-Aware Retrieval Policies (DARP) that reformulates imitation learning using k-nearest neighbors from demonstrations, improving generalization over parametric behavioral cloning.",
+          "llm_tldr_cn": "提出DARP，将模仿学习重新参数化为基于局部近邻结构的检索问题，无需学习全局策略，有效缓解行为克隆的复合误差。在模拟与真实机器人任务中展现更好泛化。",
+          "llm_tldr": "提出DARP，将模仿学习重新参数化为基于局部近邻结构的检索问题，无需学习全局策略，有效缓解行为克隆的复合误差。在模拟与真实机器人任务中展现更好泛化。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.09758v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.01098v1",
+          "source": "arxiv",
+          "title": "Implicit Drifting Policy: One-Step Action Generation via Conditional Expert Geometry",
+          "abstract": "Generative action policies based on diffusion or flow matching excel in behavior cloning, yet their iterative sampling is prohibitive for high-frequency robot control. While recent one-step formulations alleviate this latency, they inevitably discard the intermediate trajectory evolution that provides crucial action correction. Directly recovering this mechanism by explicitly estimating a training-time drifting field is mathematically ill-posed due to extreme conditional demonstration sparsity. We introduce Implicit Drifting Policy (IDP), a one-step imitation learning framework that brings the training-time correction of Drifting into policy learning without explicit vector field estimation. IDP extracts a conditional expert geometry from the local variation of observation-similar expert actions, and compares it against a global reference geometry to isolate condition-specific constraints. This local geometric structure adaptively weights a scalar potential objective. Combined with an expert-proximal terminal evaluation, IDP directly enforces manifold constraints on the one-step generator during training. Extensive evaluations across 2D, 3D, and real-world manipulation tasks show IDP effectively maintains adherence to valid action manifolds, improving upon explicit drifting methods and achieving competitive performance with strong one-step baselines.",
+          "authors": [
+            "Zemin Yang",
+            "Yaoyu He",
+            "Yiming Zhong",
+            "Yuhao Zhang",
+            "Xinge Zhu",
+            "Yao Mu",
+            "Qingqiu Huang",
+            "Yuexin Ma"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI"
+          ],
+          "published": "2026-05-31T08:39:57+00:00",
+          "link": "https://arxiv.org/pdf/2606.01098v1",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "One-step imitation learning via implicit drifting",
+          "llm_evidence_cn": "基于隐式漂移的一步模仿学习",
+          "llm_evidence": "基于隐式漂移的一步模仿学习",
+          "canonical_evidence": "基于隐式漂移的一步模仿学习",
+          "llm_tldr_en": "Introduces Implicit Drifting Policy (IDP), a one-step imitation learning framework that implicitly captures training-time correction without explicit vector field estimation, enabling high-frequency robot control.",
+          "llm_tldr_cn": "提出隐式漂移策略IDP，无需显式估计向量场即可还原训练时的纠正机制，实现一步生成动作，满足高频机器人控制需求。",
+          "llm_tldr": "提出隐式漂移策略IDP，无需显式估计向量场即可还原训练时的纠正机制，实现一步生成动作，满足高频机器人控制需求。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.01098v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.03017v1",
+          "source": "arxiv",
+          "title": "ConTraIRL: Factorized Contrastive Abstractions for Transferable IRL",
+          "abstract": "Reward transfer in Inverse Reinforcement Learning (IRL) is unreliable when policies must generalize to unseen combinations of environment dynamics and task goals. We propose Factorized Contrastive Abstractions for Transferable IRL (ConTraIRL), a framework that enables compositional reward transfer by learning decoupled latent representations of these two factors. ConTraIRL uses a dual-encoder architecture that maps observations into separate dynamics and goal latent spaces, trained with a dual contrastive objective. Temporal alignment encourages the dynamics encoder to learn goal-invariant structure, while the goal encoder captures dynamics-invariant features. This factorization supports reward inference under recombined dynamics-goal settings. Experiments on continuous control benchmarks demonstrate effective few-shot transfer to unseen dynamics-goal pairings, improving sample efficiency and reward recovery over transfer IRL baselines.",
+          "authors": [
+            "Yikang Gui",
+            "Bikramjit Banerjee",
+            "Prashant Doshi"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.AI",
+            "cs.RO"
+          ],
+          "published": "2026-06-02T01:47:19+00:00",
+          "link": "https://arxiv.org/pdf/2606.03017v1",
+          "tags": [
+            "keyword:inverse-rl",
+            "query:inverse-rl"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "inverse reinforcement learning method for transferable reward",
+          "llm_evidence_cn": "逆强化学习可迁移奖励方法",
+          "llm_evidence": "逆强化学习可迁移奖励方法",
+          "canonical_evidence": "逆强化学习可迁移奖励方法",
+          "llm_tldr_en": "Proposes ConTraIRL to address reward transfer unreliability in IRL by learning factorized latent representations of dynamics and goals via dual contrastive learning, enabling compositional generalization.",
+          "llm_tldr_cn": "本文针对逆强化学习中奖励迁移在未见过的动力学与目标组合下不可靠的问题，提出分解式对比抽象框架ConTraIRL。该方法采用双编码器架构，通过双重对比学习将观测分解为动力学和目标隐空间，实现奖励的构成性迁移。实验表明在重组场景下有效提升奖励推理的泛化能力，为可迁移逆强化学习提供了新范式。",
+          "llm_tldr": "本文针对逆强化学习中奖励迁移在未见过的动力学与目标组合下不可靠的问题，提出分解式对比抽象框架ConTraIRL。该方法采用双编码器架构，通过双重对比学习将观测分解为动力学和目标隐空间，实现奖励的构成性迁移。实验表明在重组场景下有效提升奖励推理的泛化能力，为可迁移逆强化学习提供了新范式。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "inverse reinforcement learning",
+          "matched_requirement_id": "req-2",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.03017v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }

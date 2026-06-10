@@ -1,0 +1,1106 @@
+Title: Families of Control-Cost-Parametrized Inverse-Optimal Universal Stabilizers
+
+URL Source: https://arxiv.org/pdf/2606.09047v1
+
+Published Time: Tue, 09 Jun 2026 01:44:44 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+Systems & Control Letters 00 (2026) 1–13 
+
+# Systems & Control Letters 
+
+# Families of Control-Cost-Parametrized Inverse-Optimal Universal Stabilizers 
+
+# Miroslav Krsti´ ca, Luke Bhan b, ∗
+
+> a
+
+Department of Mechanical and Aerospace Engineering, University of California San Diego, La Jolla, CA 92093-0411, USA 
+
+> b
+
+Department of Electrical and Computer Engineering, University of California San Diego, La Jolla, CA 92093-0411, USA 
+
+Abstract 
+
+A classical universal stabilization formula o ff ers the practitioner no design freedom: it is a single, parameter-free object. We introduce a cost-parametrized family of stabilizing feedback laws, where (1) the user chooses a function that serves as the running cost on control in an inverse-optimal cost functional, and (2) obtains, through a formula, a nonlinear “expander” of a pre-existing universal controller, which solves an infinite-horizon optimal control problem with a meaningful cost on the state. The cost-to-expander formula is a three-step construction, involving, inter alia, cost di ff erentiation and function inversion—overall, a nonlinear infinite-dimensional operator. The cost-to-expander operator is proven Lipschitz, which enables uniform neural operator approximation of the entire family and supports both o ffl ine performance exploration and online adaptation. Semiglobal practical asymptotic stability and second-order suboptimality bounds are established under the approximation. The operator learning and its use in semiglobal stabilization are illustrated numerically. We call the result ‘half-direct-optimal’ because the paper’s design is less than a general ‘direct optimal’ (HJB-inducing) control, but more than the fully inverse optimal, since the user performs minimization for an arbitrary given cost on control. The dual to the half-direct problem we solve is the problem in which the cost on the state is arbitrary and given. This dual problem is easier and outside of the scope of the paper. 
+
+© 2024 Published by Elsevier Ltd. 
+
+Keywords: Inverse-Optimal Control, Universal stabilization, Neural Operators 
+
+1. Introduction 
+
+Background. Sontag’s formula [1] is a landmark result in non-linear control: given any system admitting a control Lyapunov function, it produces an explicit, globally stabilizing feedback law. In this sense it is universal. Yet from the standpoint of control practice, this universality is of limited utility. The for-mula is a single object. It has no design parameters. The pa-rameters that might exist within the CLF V(x) are a part of a design process separate from the formula itself. The engineer who wishes to shape transient behavior, and is not a master of CLF (re-)design, has not a single knob to turn. The result is the-oretically elegant but the practitioner is justified to be reluctant to take it from the theoretical realm into application. On the opposite end of the spectrum from Sontag’s formula is the regrettably insu ffi ciently-known Curtis–Beard construc-
+
+> ✩
+
+The work of M. Krstic was funded by AFOSR grant FA9550-23-1-0535 and NSF grant ECCS-2151525. The work of L. Bhan is supported by the U.S. Department of Energy (DOE) grant DE-SC0024386. 
+
+> ∗
+
+Corresponding Author 
+
+tion [2, 3], which captures all inverse-optimally stabilizing con-trollers associated with a given CLF, though it does not o ff er a systematic approach for how to choose among the controllers. The Curtis–Beard formula can be viewed as a generalization of Sontag’s baseline. For the setting of our paper, single-input and disturbance-free, ˙ x = f (x) + g(x)u, we rewrite the Curtis–Beard parametrization as 
+
+uCB (x) = uS(x) − ˆπ(x) b(x) = −π(x) b(x) (1) where a = L f V, b = LgV, π0 = a + √a2 + b4
+
+b2 , uS = −π0 b
+
+denotes Sontag’s formula, and the scalar gain adjustment ˆ π(x)is chosen to satisfy ˆπ(x) ≥ ρ(x) − b(x)2
+
+pa(x)2 + ρ(x) b(x)2 + pa(x)2 + b(x)4 , (2) or, equivalently, 
+
+π ≥ a + pa2 + ρ b2
+
+b2 . (3) Thus, relative to the Sontag baseline uS, the designer is given 
+
+two additional functional degrees of freedom ( ρ, ˆπ), both with 1    
+
+> arXiv:2606.09047v1 [eess.SY] 8 Jun 2026 /Systems &Control Letters 00 (2026) 1–13 2
+
+vector arguments and constrained. While this characterization is complete, it yields a design problem that is di ffi cult to inter-pret and tune in practice: the e ff ect of these functions on closed-loop transients and control e ff ort is indirect and not readily pre-dictable. A selection requires extensive simulation across initial conditions and combinations of the design functions. 
+
+This paper’s aim and results. The paper proposes a remedy to both the lack of design freedom’s in Sontag’s formula and the hard-to-use overabundant freedom of the Curtis–Beard for-mula. We introduce a parametrization of a family of stabilizing feedback laws, indexed neither by a finite set of scalar param-eters nor by two state-dependent functions as in Curtis–Beard, but by a single scalar function γ, which serves as the inverse-optimal cost on the control input. Each admissible choice of γ
+
+produces, through a three-step construction — di ff erentiation, an algebraic contraction, and function inversion — a nonlinear expander κ, from which a stabilizing feedback law is assem-bled. The classical Sontag formula emerges as one special case, corresponding to κ(s) = 2s. The half-Sontag formula, stabiliz-ing but not inverse-optimal as the full-Sontag formula, provides a natural nominal law that can be reshaped by varying γ. The practitioner’s workflow is then concrete: select a family of func-tions γ, each encoding a di ff erent preference over control cost, generate the corresponding family of expanders κ, and choose among the resulting controllers on the basis of closed-loop per-formance. The framework is, deliberately, both theoretical and practi-cal in its ambitions. On the theoretical side, we establish that the map γ 7 → κ is Lipschitz on compact subsets of the rele-vant function space, and that the resulting family of controllers can be uniformly approximated by neural operators. On the practical side, this approximation result is not merely an exis-tence statement: it means that a single trained neural operator can serve as a surrogate for the entire parametric family. In real time, the neural operator can enable online controller selec-tion and adaptation. O ffl ine, the neural operator can serve for massive o ffl ine simulation testing of performance of feedback laws within the family, and enable the selection of those con-trollers that provide an adequate tradeo ff between performance and control e ff ort. The goal, in short, is to transform universal control: from an explicit embodiment of an existence result — into an engineering tool, whose usage ”at scale” is facilitated by machine learning. A further property of the family deserves emphasis. All members of the universal formula family are endowed with not just stabilization but also with the property of inverse optimal-ity, not observed as an afterthought, but built into the parametriza-tion from the outset. Every controller in the family minimizes an infinite-horizon cost functional whose control penalty is pre-cisely the function γ the designer selects, with the knowledge of how aggressive or cautious he /she wishes the controller to be. In classical inverse-optimal design, one typically constructs a controller first and then identifies, if possible, a cost functional it minimizes; here the order is reversed, and the control cost comes first. The expander κ and the feedback law are conse-quences. The result is a family in which performance shaping and optimality are not in tension but are two readings of the same object. We refer to this formulation as “half-direct-optimal” since the (possibly non-quadratic) cost function on the control is gen-eral and given upfront, whereas the cost on the state is not gen-eral and, while meaningful, is the consequence of the control design and of the arbitrary cost on control. 
+
+Related literature.. The study of constructing controllers from CLFs is both vast and rich, beginning with the aforementioned Sontag’s formula [1], itself an explicit universal construction of Artstein’s earlier stabilizability result [4]. From here, there are too many extensions to mention, but we briefly highlight a few, including universal formulas for bounded and restricted inputs [5, 6], vectorized CLF’s [7], integral-input-to-state stable (iISS) CLFs [8], and the nonsmooth /discontinuous feedback stabiliza-tion line [9]. More recently, there have been a series of results on safe stabilization [10] and a recent general formula for an arbitrary number of a ffi ne control constraints is given in [11]. Additionally, along a similar thread of thinking is the anal-ysis of stabilizing controllers as inverse-optimal ones. Inverse optimal designs have been long studied dating back to the 1960s [12, 13] with a major advancement in the robust design by Freeman-Kokotovi´ c [14]. Since inverse-optimal design has been extended with local convergence rates [15] as well as multi-ple di ff erent control paradigms such as input-to-state stability [16, 17], discrete time systems [18], stochastic systems [19, 20], adaptive control [21], reinforcement learning [22], delayed sys-tems [23], PDE systems [24], safety filters [25] and more re-cently, for strictly positive systems [26]. The methodology has also been applied across several applications including aircraft tracking [27, 28] and power networks [29]. A third strand of literature relevant to this work is opera-tor learning, which enters here through the approximation of the expander mapping γ 7 → κ. Neural operators, introduced in 1995 in [30] and later developed with modern neural net-work architectures in [31, 32], provide a natural framework for approximating infinite-dimensional maps. Consequently, they have recently been used to replace costly implicit computations in feedback laws across several control settings, including PDE backstepping [33, 34, 35], adaptive control [36], delayed sys-tems [37] optimal control [38, 39], and applications such as tra ffi c flow and oil drilling [40, 41]. 
+
+Paper’s specific contributions. 
+
+• A half-direct-optimal design paradigm for universal sta-bilization. We introduce a family of stabilizing feedback laws in which the practitioner prescribes a single scalar function γ specifying the running cost on the control in-put. The constructed stabilizers are then optimal over an infinite-horizon with control penalty γ and an induced state cost q(x), thereby allowing the aggressiveness of the controller to be shaped a priori through the choice of γ.
+
+• Lipschitzness and learnability of the γ 7 → κ map. We prove that the infinite-dimensional operator mapping from 2/ Systems & Control Letters 00 (2026) 1–13 3
+
+control cost γ to the corresponding expander κ is Lips-chitz on compact subsets of the admissible function space. Further, we invoke this regularity to guarantee arbitrarily accurate neural operator approximations of the expander operator which are needed for the practitioner’s imple-mentation. 
+
+• Stability and quantitative near-optimality under opera-tor approximation. When the expander operator is uni-formly approximated, we show that the resulting learned feedback law preserves semiglobal practical asymptotic stability. We further quantify the resulting suboptimality through a second-order distortion bound on the induced state-cost term and a finite-horizon optimality bound mea-suring the performance gap between the closed-loop tra-jectories of the approximate and exact half-direct-optimal controllers. 
+
+Organization of the paper.. The remainder of the paper is or-ganized as follows. Section 2 introduces the extractor and ex-pander function along with their properties needed for the parametriza-tion design. Section 3 presents the corresponding half-direct-optimal stabilizing feedback framework. Section 4 proves that the mapping from cost into expander function is Lipschitz and establishes a neural operator approximation theorem of this map-ping over compact sets. Section 5 contains the main robustness result when using the learned expander function in the parame-terized stabilizing control law. Section 6 contains the proofs of the main theorem and Section 7 presents a numerical illustra-tion of the design. 
+
+2. Contractor and Expander Functions 
+
+The following lemma introduces the contractor and expander functions and establishes their basic properties, chief among them that Θ < Id and κ > Id on (0 , ∞)—which justify the nomenclature. The three-step construction is illustrated in Fig-ure 1. 
+
+Lemma 1. Let γ : [0 , ∞) → [0 , ∞) be continuous on [0 , ∞),twice continuously di ff erentiable on (0 , ∞), and satisfy γ(0) =
+
+0. Assume that γ′ ∈ K ∞ and that 
+
+γ′′ (s) > 0 for all s > 0. (4) 
+
+Define the contractor function as 
+
+Θ(s) : = s − γ(s)
+
+γ′(s) , s > 0, (5) 
+
+and set Θ(0) : = 0. Let the expander function be given by 
+
+κ := Θ −1. (6) 
+
+Then both Θ and κ belong to class K∞. Additionally, κ is equiv-alently given by the direct mapping from γ as 
+
+κ(s) = (ℓγ )′ ◦ ℓγ 
+
+Id 
+
+!−1
+
+(s) s ≥ 0 , (7) 
+
+where ℓ denotes the Legendre-Fenchel transformation ℓγ (s) =R s 
+
+> 0
+
+(γ′(σ)) −1dσ and Id( s) = s. 
+
+γ
+
+Di ff erentiation 
+
+γ′
+
+Algebraic mapping 
+
+Θ(s) = s − γ(s)
+
+γ′(s)
+
+Inversion 
+
+κ = Θ −1
+
+κ               
+
+> Figure 1. Construction of the nonlinear expander operator K:γ7→κvia di ff erentiation of γ, algebraic operation Θ(s)=s−γ(s)/γ ′(s), and inversion of function.
+
+Proof. Since γ′ ∈ K ∞ and γ(0) = 0, we have 
+
+γ(s) =
+
+Z s
+
+> 0
+
+γ′(σ) dσ, (8) hence γ ∈ K ∞. For every s > 0, strict increase of γ′ gives 
+
+γ(s) =
+
+Z s
+
+> 0
+
+γ′(σ) dσ < s γ′(s), (9) so 0 < Θ(s) < s for all s > 0. (10) Moreover, 
+
+Θ′(s) = γ(s) γ′′ (s)(γ′(s)) 2 > 0 for all s > 0, (11) so Θ is strictly increasing on (0 , ∞), and hence on [0 , ∞) with 
+
+Θ(0) = 0. If Θ were bounded above, there would exist M > 0such that 
+
+s − γ(s)
+
+γ′(s) ≤ M (12) for all large s, that is, 
+
+γ′(s)
+
+γ(s) ≤ 1
+
+s − M (13) for all large s. Integrating (13) yields at most linear growth of γ, contradicting the fact that γ′ ∈ K ∞ is increasing and un-bounded. Hence Θ(s) → ∞ as s → ∞ . Therefore Θ is contin-uous, strictly increasing, positive definite, and unbounded, so 
+
+Θ ∈ K ∞, and by invertibility (6), κ ∈ K ∞. Finally, we verify that (7) implies (5), (6). Let z = κ(s), with κ defined by (7). 3/ Systems & Control Letters 00 (2026) 1–13 4
+
+Then there exists ρ such that ρ =  ℓγ/ Id −1(s) and z = (ℓγ )′(ρ). Since ( ℓγ )′ = (γ′)−1, we have ρ = γ′(z). Therefore 
+
+s = ℓγ (ρ)
+
+ρ = ρz − γ(z)
+
+ρ = z − γ(z)
+
+γ′(z) = Θ (z), (14) that is, Θ(κ(s)) = s. Since Θ is strictly increasing, it follows that κ = Θ −1.
+
+Example 1 (Locally and globally superlinear expander). To illustrate how the user can produce expanders that are not just linear and linear-in-portions functions, but truly nonlinear ex-panders, we give an example. The function γ is chosen to in-duce superlinear behavior both for small and large s. Consider 
+
+γ(s) = s ln(1 + s) + α
+
+ln( e + 1/s)
+
+!
+
+, α > 0 . (15) Its own asymptotics are 
+
+γ(s) ∼ αs
+
+ln(1 /s) (s → 0+), γ(s) ∼ s ln s (s → ∞ ) ,
+
+(16) meaning that not only does γ grow superlinearly for large s but, near 0, it dominates (it is “less flat than”) every power sp with 
+
+p > 1. After computing 
+
+Θ(s) = s −
+
+s ln(1 + s) + α
+
+A(s)
+
+!
+
+ln(1 + s) + s
+
+1 + s + α 1
+
+A(s) + 1(es + 1) A(s)2
+
+! ,
+
+(17) 
+
+Θ(s) = κ−1(s) = s2 B(s)ln(1 + s) + α
+
+A(s) + sB (s)
+
+, (18) 
+
+A(s) : = ln e + 1
+
+s
+
+!
+
+, (19) 
+
+B(s) : = 11 + s + α
+
+(es + 1) A(s)2 , (20) the expander κ satisfies 
+
+κ(s) ∼ s ln(1 /s) (s → 0+), κ(s) ∼ s ln s (s → ∞ ) ,
+
+(21) meaning not only that κ has a superlinear growth at infinity, but also at zero, 
+
+κ′(0 +) = + ∞ . (22) 
+
+△
+
+3. Control-Cost-Parametrized Half-Direct-Optimal Stabiliz-ing Feedback Laws 
+
+Given a CLF and a cost function γ on the control input, the following theorem constructs an explicit stabilizing feedback law that is simultaneously the minimizer of an infinite-horizon cost functional parametrized by γ.
+
+Theorem 1 (General half-direct-optimal stabilizer family) . Con-sider the control–a ffi ne system 
+
+˙x = f (x) + g(x)u , x ∈ Rn (23) 
+
+with a C 1 and proper function V such that V (0) = 0, V (x) > 0
+
+for all x , 0 and satisfying the Control Lyapunov Function (CLF) property LgV(x) = 0, x , 0 =⇒ L f V(x) ≤ − W(x) , (24) 
+
+where W (x) is a continuous, positive definite, and proper func-tion. Define the nominal feedback using the Freeman-Kokotovic minimum-norm formula [14] u0(x) : =
+
+
+
+− max {0, L f V(x) + W(x)}
+
+LgV(x) , LgV(x) , 0,
+
+0, LgV(x) = 0 .
+
+(25) 
+
+Then, for the feedback u∗(x) : = sgn( u0(x)) κ |u0(x)| (26) 
+
+where κ is defined in (6) for a function γ satisfying the condi-tions in Lemma 1, the following results hold: (1) the feedback u ∗(x) is the unique minimizer of the infinite-horizon cost functional J(u) =
+
+Z ∞
+
+> 0
+
+q(x(t)) + r(x(t)) γ(|u(t)|) dt , (27) 
+
+(2) the state cost and control weight are q(x) = max {W(x), −L f V(x)} > 0 (28) 
+
+r(x) = |LgV(x)|
+
+ℓγ 
+
+Id 
+
+!−1 max {0, L f V(x) + W(x)}|LgV(x)|
+
+! > 0 (29) 
+
+for all x , 0 and q (0) = 0, r (0) = + ∞.(3) the minimal value is V (x0),(4) both u ∗(x) and the associated nominal control u 0(x) are globally asymptotically stabilizing, and (5) both u ∗ and u 0 are continuous in x provided ( f, g, V, W)
+
+are such that L f V(x)+W(x) 
+
+> LgV(x)
+
+→ 0 as x → x0 whenever L gV(x0) =
+
+0.Proof. First, define 
+
+σ(x) : = |LgV(x)|
+
+r(x) . (30) By construction of r(x) in (29), one has 
+
+ℓγ  σ(x)
+
+σ(x) = max {0, L f V(x) + W(x)}|LgV(x)| , (31) hence 
+
+r(x)ℓγ  σ(x) − L f V(x) = q(x) > 0 for x , 0. (32) 4/ Systems & Control Letters 00 (2026) 1–13 5                        
+
+> Figure 2. Illustration of the expander from Example 1. The left panel shows the flat γ(s)∼αs
+> ln(1 /s)resulting in the steep κ(s)∼sln(1 /s) as s→0+. The right panel shows γ(s)∼sln sresulting in the superlinear κ(s)∼sln sfor large s.
+
+Define the Hamiltonian 
+
+H(x, u) = L f V(x) + LgV(x) u + q(x) + r(x)γ |u|. (33) The choice of u∗(x) corresponds to the pointwise minimizer of 
+
+H with respect to u. Indeed, for fixed x, the map 
+
+u 7 → LgV(x) u + r(x) γ |u| (34) is strictly convex, and its stationarity condition is 0 = LgV(x) + sgn( u) r(x) γ′ |u|. (35) Thus, with 
+
+|u∗(x)| = (γ′)−1 σ(x) = (ℓγ )′ σ(x), (36) one gets 
+
+u∗(x) = − sgn  LgV(x) (ℓγ )′ σ(x) = sgn( u0(x)) κ |u0(x)|,
+
+(37) where the last equality follows from 
+
+|u0(x)| = max {0, L f V(x) + W(x)}|LgV(x)| = ℓγ (σ(x)) 
+
+σ(x) (38) and (7). Optimality of u∗ follows from the fact that (34) is strictly convex in u and that u∗ satisfies the stationarity condi-tion (35), hence is the pointwise-in-x minimizer of the Hamil-tonian, 
+
+H(x, u) ≥ H(x, u∗(x)) = 0 . (39) Substitution yields ˙V(x) = L f V(x)+LgV(x) u∗(x) = −q(x)−r(x) γ |u∗(x)| < 0 for x , 0.
+
+(40) Thus V is a strict Lyapunov function under u∗, implying global asymptotic stability. For u0, global asymptotic stability holds as well because ˙V(x) =
+
+
+
+− max {W(x), −L f V(x)}, LgV(x) , 0,
+
+L f V(x), LgV(x) = 0. (41) 
+
+Example 2 (Enhancement of convergence rate with expander). 
+
+We return to Example 1. We illustrate the e ff ect of the nonlin-ear expander κ (from Example 1) by considering stabilization of the system ˙ x = u using the nominal controller u0 = −x and the modified controller u∗ = −κ(x), and comparing the result-ing closed-loop dynamics ˙ x = −x and ˙ x = −κ(x) from a com-mon initial condition x0. The trajectories under −κ(x) decay significantly faster across both large and small state regimes, which is quantified by the convergence time to a prescribed level ε ∈ (0 , 1): 
+
+Tlin (x0, ε ) = ln( x0/ε ) , Tκ(x0, ε ) = ln  ln x0 ln(1 /ε ) + O(1) ,
+
+(42) 5/ Systems & Control Letters 00 (2026) 1–13 6
+
+where the latter is obtained from Tκ(x0, ε ) = R x0 
+
+> ε
+
+dξ/κ (ξ), show-ing that the dependence on both the initial condition and the tar-get level is reduced from logarithmic to double-logarithmic or-der. In summary, Tκ(x0, ε ) ≤ 2 ln Tlin (x0, ε )+O(1) as Tlin (x0, ε ) →∞. △
+
+Next, we apply the expander κ to the half-Sontag formula, generalizing it beyond the classical full Sontag formula for κ(s) =
+
+2s and γ(s) = s2. The cost on the state q(x) remains unchanged relative to the inverse optimality of Sontag’s formula, but the cost and weight on control change significantly. 
+
+Corollary 1 (From half-Sontag formula to an expander-parametrized family of universal formulas) . Let uS /2(x) : =
+
+
+
+− L f V(x) + p(L f V(x)) 2 + |LgV(x)|4
+
+2 LgV(x) , LgV(x) , 0,
+
+0, LgV(x) = 0 ,
+
+(43) 
+
+where the C 1, positive definite, proper V (x) satisfies the CLF condition L gV(x) ⇒ L f V(x) < 0 whenever x , 0. Define u∗ 
+
+> κ(S/2)
+
+(x) = sgn  uS /2(x) κ |uS /2(x)|. (44) 
+
+Then all statements of Theorem 1 hold with q(x) = |LgV(x)|4
+
+2 L f V(x) + p(L f V(x)) 2 + |LgV(x)|4 , (45) 
+
+r(x) = |LgV(x)|
+
+ℓγ 
+
+Id 
+
+!−1
+
+L f V(x) + p(L f V(x)) 2 + |LgV(x)|4
+
+2|LgV(x)|
+
+
+
+. (46) 
+
+If, in addition, ( f, g, V) satisfy the small-control property at x =
+
+0, namely, for every ε > 0 there exists δ > 0 such that, whenever 
+
+|x| < δ , there exists u with |u| < ε and L f V(x) + LgV(x) u < 0,then u S /2 and u ∗  
+
+> κ(S/2)
+
+are continuous in x. Proof. The half-Sontag choice corresponds to selecting 
+
+W(x) =
+
+p(L f V(x)) 2 + |LgV(x)|4 − L f V(x)2 , (47) which, substituted into the Freeman-Kokotovic formula (25) re-sults in max {0, L f V + W} = L f V + p(L f V)2 + |LgV|4
+
+2 . (48) Substituting (47) into Theorem 1 yields exactly (43), (45), and (46). Next, we make two remarks. 
+
+State-Cost-Parametrized Half-Direct Optimal Control.. In ad-dition to the control-cost-parametrized half-direct optimal con-trol problem (27) addressed in this paper, one may consider its state-cost-parametrized dual, in which the running cost 
+
+J(u) =
+
+Z ∞
+
+> 0
+
+hq(x(t)) + r(x(t)) u(t)2i dt (49) is prescribed through a nonnegative function q, and a feedback law is sought that is inverse optimal for this cost for some r > 0. Restricting attention to scalar input and feedback laws of the form 
+
+u(x) = −π(x) b(x), b(x) = LgV(x), (50) the problem reduces pointwise to the algebraic mapping (a, b, q) 7 −→ r , (51) where a = L f V, subject to the feasibility condition 
+
+q(x) ≥ max {0, −4a(x)} , (52) and with the induced quantities given explicitly by 
+
+π = 2 a + qb2 > 0 (53) 
+
+r = 12π = b2
+
+4( a + q) > 0. (54) All relations are understood pointwise in the state. The feed-back (50), (53) is of the Freeman-Kokotovic (FK) form but, un-like the original min-norm control which is only pointwise op-timal, (50), (53) doubles the FK formula and is infinite-horizon half-direct optimal. Thus, in the formulation that is dual to the half-direct optimal problem solved in the rest of the paper, the design problem we mention reduces to the selection of a sin-gle function q(x) subject to a simple pointwise-in-x inequality constraint, with the resulting feedback gains obtained by direct algebraic evaluation at each x. While this formulation o ff ers a broader space of admissible control law choices, the design en-tails no operator structure (in addition to o ff ering limited guid-ance on how the chosen function q aff ects closed-loop perfor-mance). For this reason, and in contrast to the “control-side” formulation developed in this paper, which gives rise to design via operator mapping from a scalar function γ to a feedback law, the “state-side” half-direct problem is less interesting and not pursued here. 
+
+HJB PDEs explicitly solved by CLF V (x).. Both of the half-direct optimal control formulations avoid the need to solve the HJB PDE, since the starting CLF V(x) is already the solution, in the case of (27), of the PDE 
+
+L f V(x) − r(x)ℓγ |LgV(x)|
+
+r(x)
+
+!
+
++ q(x) = 0 (55) for a given γ(s), and in the case of (49) of the PDE 
+
+L f V(x) − (LgV(x)) 2
+
+4 r(x) + q(x) = 0 (56) for a given q(x). 6/ Systems & Control Letters 00 (2026) 1–13 7
+
+4. Lipschitzness and Neural Approximation of the Mapping 
+
+γ 7 → κ
+
+For the family of controllers in Theorem 1 to be useful at scale — whether for o ffl ine exploration of the design space or for real-time adaptation — the map γ 7 → κ must be well-behaved as γ varies. We establish that it is Lipschitz, and that this regularity is su ffi cient to guarantee uniform neural operator approximation over compact families of cost functions. 
+
+Lemma 2. Let K = [z, z] ⊂ (0 , ∞) and let G ⊂ C2(K) be compact in C 1(K). Assume that there exist constants μ > 0,M > 0, and m > 0 such that, for every γ ∈ G and every z ∈ K, 
+
+γ(z) ≤ M, (57) 
+
+γ′(z) ≥ μ, (58) 
+
+γ(z) γ′′ (z)(γ′(z)) 2 ≥ m. (59) 
+
+Then the map 
+
+K : γ 7 → κ (60) 
+
+where κ is defined by (7) , or, alternatively, by (6) , (5) , is Lips-chitz from C 1(K) into L ∞(Θ(K)) . More precisely, for any γ1, γ 2 ∈G,
+
+∥κ1 − κ2∥L∞(Θ(K)) ≤ 1
+
+μm ∥γ1 − γ2∥L∞(K) + M
+
+μ ∥γ′ 
+
+> 1
+
+− γ′
+
+> 2
+
+∥L∞(K)
+
+!
+
+(61) 
+
+Proof. For i = 1, 2, let 
+
+Θi(z) = z − γi(z)
+
+γ′ 
+
+> i
+
+(z) , κi = Θ −1 
+
+> i
+
+. (62) By (59), 
+
+Θ′ 
+
+> i
+
+(z) = γi(z) γ′′  
+
+> i
+
+(z)(γ′ 
+
+> i
+
+(z)) 2 ≥ m > 0 for all z ∈ K, (63) so each Θi is strictly increasing on K. Fix s ∈ Θ(K) and set 
+
+zi = κi(s). Then 
+
+Θ1(z1) = Θ 2(z2), (64) and hence 
+
+Θ1(z1) − Θ1(z2) = Θ 2(z2) − Θ1(z2). (65) By the mean value theorem, there exists ξ between z1 and z2
+
+such that 
+
+Θ′
+
+> 1
+
+(ξ)( z1 − z2) = Θ 2(z2) − Θ1(z2). (66) Using (63), 
+
+|z1 − z2| ≤ 1
+
+m ∥Θ1 − Θ2∥L∞(K). (67) Taking the supremum over s ∈ Θ(K) yields 
+
+∥κ1 − κ2∥L∞(Θ(K)) ≤ 1
+
+m ∥Θ1 − Θ2∥L∞(K). (68) From (62), 
+
+Θ1(z) − Θ2(z) = − γ1(z)
+
+γ′
+
+> 1
+
+(z) + γ2(z)
+
+γ′
+
+> 2
+
+(z) . (69) Therefore, 
+
+|Θ1(z) − Θ2(z)| ≤ |γ1(z) − γ2(z)||γ′
+
+> 1
+
+(z)| + |γ2(z)| 1
+
+γ′
+
+> 1
+
+(z) − 1
+
+γ′
+
+> 2
+
+(z) . (70) Using (58) and (57), 
+
+|Θ1(z) − Θ2(z)| ≤ 1
+
+μ |γ1(z) − γ2(z)| + M
+
+μ2 |γ′
+
+> 1
+
+(z) − γ′
+
+> 2
+
+(z)|. (71) Taking the supremum over z ∈ K and combining with (68) yields (61). 
+
+Proposition 1. Let K = [z, z] ⊂ (0 , ∞) and let G ⊂ C2(K)
+
+be compact in C 1(K). Under the assumptions of Lemma 2, for every ε > 0 there exists a neural operator bK such that 
+
+sup 
+
+> γ∈G
+
+∥ bK(γ) − K (γ)∥L∞(Θ(K)) < ε. (72) 
+
+Proof. The conclusion follows from Lemma 2 and a universal approximation theorem for neural operators on compact subsets of C1(K) [31]. 
+
+5. Stability under Approximated Half-Direct-Optimal Feed-back 
+
+Naturally, the half-direct-optimal feedback law then becomes ˆu∗(x) : = sgn( u0(x))ˆ κ(|u0(x)|) , (73) ˆκ(·) = bK(γ)( ·) (74) where ˆ κ is the learned neural approximator. We now aim to answer two questions: What type of stability is achieved under the approximated feedback map and, equally important, is the corresponding law practically inverse optimal? 
+
+Theorem 2 (Stability and half-direct optimality under the neu-ral operator learned controller) . Let the assumptions of Lemma 2 and Theorem 1 hold. Consider the neural operator approxima-tion satisfying Proposition 1 with the approximated feedback law ˆu∗ as in (73) . Then the following hold. 
+
+1. Semiglobal practical asymptotic stability. For every pair R0 > δ > 0, define the level set SR := {x : V(x) ≤ R}
+
+where R := α2(R0) and α2 ∈ K ∞ is such that V (x) ≤
+
+α2(|x|). Then there exist ε∗(R0, δ ) > 0 and βR0,δ ∈ KL 
+
+such that, if the initial condition is constrained to the ball of radius R 0:x(0) ∈ BR0 , BR0 = {x ∈ Rn : |x| ≤ R0} , (75) 
+
+and the approximation bK guaranteed to exist by Propo-sition 1 satisfies the uniform error 
+
+ε ∈ (0 , ε ∗(R0, δ )) , (76) 
+
+then, for all t ≥ 0, the corresponding closed-loop trajec-tory remains in SR and satisfies 
+
+|x(t)| ≤ max βR0,δ (|x(0) |, t), δ (77) 7/ Systems & Control Letters 00 (2026) 1–13 8
+
+2. Induced state-cost perturbation. Let x ∈ S R be any fixed state, q = W denote the nominal state cost from Theo-rem 1, and define the induced state cost associated with 
+
+ˆu∗ by 
+
+ˆq(x) : = −L f V(x) − LgV(x) ˆ u∗(x) − γ  p r(x) |ˆu∗(x)|.
+
+(78) 
+
+Then, ˆq is a second-order perturbation of the nominal state cost q. Namely, there exists C R > 0 such that 
+
+sup 
+
+> x∈S R
+
+q(x) − ˆq(x) ≤ CR ε2. (79) Theorem 2 shows that the learned feedback ˆ u∗ preserves the stabilizing behavior of the nominal half-direct-optimal law on a semiglobal ϵ practical set. Second, it provides insight into the pointwise half-direct-optimality distortion estimate . More precisely, although the control-law error is of order O(ε), for any fixed state, the induced state-cost distortion satisfies q(x) −
+
+ˆq(x) = O(ε2). Note, this distortion is a direct reflection of the Hamiltonian residual error incurred by using the learned control ˆu∗ instead of the minimizer u∗. The proportionality constant CR
+
+depends on both r(x) and the curvature γ′′ , and can become large in regions where the control weight r(x) is high and γ is sharply curved, so choosing a γ with a moderately growing sec-ond derivative keeps CR manageable and ensures the quadratic suppression of the approximation error is genuinely beneficial. Lastly, we note this does not specify the specific di ff erence of the entire trajectory from x0 following ˆ u∗. To do so, one must analyze the finite-horizon optimality gap, since, due to SPAS in Theorem 2, the infinite-horizon cost-function J can be infi-nite. Hence, for the practitioner, we provide the following finite horizon result: 
+
+Proposition 2 (Finite-horizon near-optimality with terminal penalty) .
+
+Fix R ∈ (0 , R∗] and T > 0. Let x ∗(·) and ˆx(·) denote the closed-loop trajectories generated by u ∗ and ˆu∗, respectively, with the same initial condition x 0 ∈ S R. Define JT (u∗; x0) : =
+
+Z T
+
+> 0
+
+q(x∗(t)) + γ  p r(x∗(t)) |u∗(x∗(t)) | dt , (80) 
+
+JT (ˆ u∗; x0) : =
+
+Z T
+
+> 0
+
+q( ˆ x(t)) + γ  p r( ˆ x(t)) |ˆu∗( ˆ x(t)) | dt . (81) 
+
+Then 
+
+JT (ˆ u∗; x0) + V( ˆ x(T ))  − JT (u∗; x0) + V(x∗(T ))  ≤ CR ε2 T.
+
+(82) 
+
+6. Proofs of Theorem 2 and Proposition 2 
+
+6.1. Proof of Theorem 2 Proof. Part (1) Since V and W are continuous, positive defi-nite, and proper, there exist α3, α 4 ∈ K∞ such that 
+
+α3(|x|) ≤ V(x), α4(|x|) ≤ W(x), ∀x ∈ Rn. (83) Further, using Proposition 1, on the set SR, we have 
+
+|ˆu∗(x) − u∗(x)| ≤ ε, ∀x ∈ S R. (84) Since LgV is continuous and SR is compact, define 
+
+MR0 := sup 
+
+> x∈S R
+
+|LgV(x)| < ∞. (85) Along the closed-loop trajectory x(·), adding and subtracting 
+
+LgVu ∗(x), by definition of W, and using V(x) ≤ α2(|X|) yields ˙V(x) = L f V(x) + LgV(x)ˆ u∗(x)
+
+=  L f V(x) + LgV(x)u∗(x) + LgV(x) ˆu∗(x) − u∗(x)
+
+= −W(x) − γ  p r(x) |u∗(x)| + LgV(x) ˆu∗(x) − u∗(x)
+
+≤ − W(x) + |LgV(x)| | ˆu∗(x) − u∗(x)|≤ − W(x) + MR0 ε
+
+≤ − α4(|x|) + MR0 ε
+
+≤ − α4(α−12 (V( ˆ x))) + MR0 ε . (86) By choosing ε∗ such that 
+
+ε∗(R0, δ ) : = 12MR0
+
+min α4(α−12 (α3(δ))) , α 4(R0) . (87) then, whenever ε ∈ (0 , ε ∗) and V(x) ≥ α3(δ), we have ˙V(x) ≤ − α4(α−12 (V(x))) + MR0 ε
+
+≤ − α4(α−12 (V(x))) + 12 α4(α−12 (α3(δ))) 
+
+≤ − 12 α4(α−12 (V(x))) , (88) where the last inequality follows from the monotonicity of α4 ◦
+
+α−12 . Moreover, on the boundary of SR, that is, when V(x) =
+
+α2(R0), we have ˙V(x) ≤ − α4(R0) + MR0 ε< 0. (89) Hence SR is forward invariant. By the comparison lemma and (88), there exists eβ ∈ KL such that 
+
+V(x(t)) ≤ max eβ(V(x(0)) , t), α 3(δ) , ∀t ≥ 0. (90) Using 
+
+V(x(0)) ≤ α2(|x(0) |), α3(|x(t)|) ≤ V(x(t)) , (91) it follows that 
+
+|x(t)| ≤ α−13
+
+max eβ(α2(|x(0) |), t), α 3(δ)  (92) 
+
+= max nα−13
+
+ eβ(α2(|x(0) |), t), δ o. (93) Therefore, defining 
+
+βR0,δ (r, t) : = α−13
+
+ eβ(α2(r), t), (94) 8/ Systems & Control Letters 00 (2026) 1–13 9
+
+we obtain 
+
+|x(t)| ≤ max βR0,δ (|x(0) |, t), δ , ∀t ≥ 0. (95) This completes the result. 
+
+Part (2). Fix x ∈ S R. Since q = W by Theorem 1, and since the Hamiltonian identity H(x, u∗(x)) = 0 yields 
+
+q(x) = −L f V(x) − LgV(x) u∗(x) − γ  p r(x) |u∗(x)|, (96) subtracting (78) gives 
+
+q(x) − ˆq(x) = φx(ˆ u∗(x)) − φx(u∗(x)) , (97) where 
+
+φx(u) : = LgV(x) u + γ  p r(x) |u|. (98) Since u∗(x) minimizes φx, the stationarity condition (35) gives 
+
+φ′
+
+> x
+
+(u∗(x)) = 0. (99) Moreover, φx is C2 and strictly convex. Hence, by Taylor’s theorem, there exists ξ(x) between u∗(x) and ˆ u∗(x) such that 
+
+q(x) − ˆq(x) = 12 r(x) γ′′   p r(x) |ξ(x)|   ˆu∗(x) − u∗(x)2 . (100) Since |ˆu∗(x) − u∗(x)| ≤ ε on SR and SR is compact, we obtain sup 
+
+> x∈S R
+
+|q(x) − ˆq(x)| ≤ CR ε2 , (101) 
+
+CR := sup 
+
+> x∈S R
+
+12 r(x)γ′′  p r(x)|ξ(x)| . (102) 
+
+6.2. Proof of Proposition 2 Proof. For the exact half-direct-optimal controller u∗, Theo-rem 1 gives the dissipation identity ˙V(x∗(t)) = −q(x∗(t)) − γ  p r(x∗(t)) |u∗(x∗(t)) |. (103) Integrating from 0 to T yields 
+
+V(x∗(T )) − V(x0) = −
+
+Z T
+
+> 0
+
+q(x∗(t)) + γ  p r(x∗(t)) |u∗(x∗(t)) | dt ,
+
+(104) that is, 
+
+JT (u∗; x0) + V(x∗(T )) = V(x0). (105) For the learned controller ˆ u∗, the induced dissipation identity gives ˙V( ˆ x(t)) = − ˆq( ˆ x(t)) − γ  p r( ˆ x(t)) |ˆu∗( ˆ x(t)) |. (106) Adding and subtracting q( ˆ x(t)) on the right-hand side, ˙V( ˆ x(t)) = −q( ˆ x(t)) − γ  p r( ˆ x(t)) |ˆu∗( ˆ x(t)) | +  q( ˆ x(t)) − ˆq( ˆ x(t)) .
+
+(107) Integrating from 0 to T gives 
+
+V( ˆ x(T )) − V(x0) = −
+
+Z T
+
+> 0
+
+q( ˆ x(t)) + γ  p r( ˆ x(t)) |ˆu∗( ˆ x(t)) | dt 
+
++
+
+Z T
+
+> 0
+
+ q( ˆ x(t)) − ˆq( ˆ x(t))  dt . (108) Hence, 
+
+JT (ˆ u∗; x0) + V( ˆ x(T )) = V(x0) +
+
+Z T
+
+> 0
+
+ q( ˆ x(t)) − ˆq( ˆ x(t))  dt .
+
+(109) Since ˆ x(0) ∈ S R and SR is forward invariant under ˆ u∗, we have ˆ x(t) ∈ S R for all t ∈ [0 , T ]. Therefore, by (79), 
+
+Z T
+
+> 0
+
+ q( ˆ x(t)) − ˆq( ˆ x(t))  dt ≤
+
+Z T
+
+> 0
+
+CR ε2 dt = CR ε2 T. (110) Thus, 
+
+JT (ˆ u∗; x0) + V( ˆ x(T )) ≤ V(x0) + CR ε2 T. (111) Subtracting the identity for u∗ gives 
+
+JT (ˆ u∗; x0) + V( ˆ x(T ))  − JT (u∗; x0) + V(x∗(T ))  ≤ CR ε2 T.
+
+(112) 
+
+7. Numerical Examples 
+
+7.1. Control Design 
+
+Consider the unicycle dynamics governed by ˙x = v cos( θ) , (113a) ˙y = v sin( θ) , (113b) ˙θ = ω , (113c) where ( x, y) ∈ R2 is the position of the unicycle in Cartesian coordinates, θ ∈ R is the heading angle, v is the forward ve-locity input, and ω is the angular velocity input. In [42, 43], it was shown that, by transforming the unicycle into polar co-ordinates, one can obtain a strict CLF (using the bi-directional backstepping design in [43, Eq. (37), k1 = k2 = k3 = 1]) in the form: 
+
+V(ρ, δ, ϑ ) = ρ2 + δ2 + ϑ + 12 arctan(2 δ)
+
+!2
+
+. (114) where the dynamics in polar coordinates are ˙ρ = −v cos ϑ, (115a) ˙δ = v
+
+ρ sin ϑ, (115b) ˙ϑ = v
+
+ρ sin ϑ − ω. (115c) 9/ Systems & Control Letters 00 (2026) 1–13 10 
+
+Let 
+
+z := ϑ + 12 arctan(2 δ). (116) Then the Lie derivatives are 
+
+Lg1 V(ρ, δ, ϑ ) = −2ρ2 cos ϑ + 2 sin ϑ
+
+"
+
+δ + 1 + 11 + 4δ2
+
+!
+
+z
+
+#
+
+,
+
+(117) 
+
+Lg2 V(ρ, δ, ϑ ) = −2z. (118) Consider the general γ parameterized feedback law, where the physical inputs are given by 
+
+v∗(ρ, δ, φ ) = ρ sgn( −Lg1 V(ρ, δ, φ )) κ(|Lg1 V(ρ, δ, φ )|) , (119) 
+
+ω∗(ρ, δ, φ ) = sgn( −Lg2 V(ρ, δ, φ )) κ(|Lg2 V(ρ, δ, φ )|) . (120) The corresponding infinite-horizon cost is 
+
+J∗ =
+
+Z ∞
+
+> 0
+
+"
+
+q(ρ, δ, ϑ ) + r1(ρ, δ, φ )γ |v|
+
+ρ
+
+!
+
++ r2(ρ, δ, φ )γ(|ω|)
+
+#
+
+dt ,
+
+(121) where 
+
+q(ρ, δ, ϑ ) = (Lg1 V)2 + (Lg2 V)2 , (122) 
+
+r1(ρ, δ, ϑ ) = Lg1 V(ρ, δ, ϑ )
+
+( ℓγ  
+
+> Id
+
+)−1 Lg1 V(ρ, δ, ϑ )  , (123) 
+
+r2(ρ, δ, ϑ ) = Lg2 V(ρ, δ, ϑ )
+
+( ℓγ  
+
+> Id
+
+)−1 Lg2 V(ρ, δ, ϑ )  . (124) Second, as a numerical example, we additional provide the explicit control design for the half-Sontag formula in Corollary 1 where γ(s) = s2 and κ(s) = 2s is given explicitly. Hence, we obtain 
+
+v∗
+
+> s/2
+
+(ρ, δ, ϑ ) = −ρ Lg1 V(ρ, δ, ϑ )
+
+= 2ρ3 cos ϑ − 2ρ sin ϑ
+
+"
+
+δ + 1 + 11 + 4δ2
+
+!
+
+z
+
+#
+
+,
+
+(125) 
+
+ω∗
+
+> s/2
+
+(ρ, δ, ϑ ) = −Lg2 V(ρ, δ, ϑ ) = 2z. (126) The half-Sontag law is inverse optimal for the quadratic cost 
+
+JS/2 =
+
+Z ∞
+
+> 0
+
+q(ρ, δ, φ ) + v
+
+ρ
+
+!2
+
++ ω2
+
+ dt . (127) 
+
+7.2. Learning a neural operator approximation of the expander mapping 
+
+As mentioned in Section 4, computing κ requires inverting 
+
+Θ and hence will require a root-finding step at every point of the closed-loop simulation making deployment expensive. Hence, in the section, we learn an approximation of the expander map 
+
+γ 7 → κ, once o ffl ine, and readily deploy in online capitalizing on the fast inference of neural networks. To do so, consider the γ family in Example 1 and generate 200 input output pairs (γ(·), κ (·)) where α is generated log-uniformly from [10 −4, 10 4]. The pairs for κ are generated numerically on a grid of 1024 points evenly spaced from [0 , 25] via the bisection method to machine precision. For this study, we deploy the Fourier Neural Operator (FNO) [32] which takes the concatenated input [ γ(s), s] ∈ R1024 ×2 to ˆκ(s) ∈ R1024 . It consists of two layers of 32 neurons each with 16 Fourier modes. After training, the model achieves relative mean squared error of 0 .15 on the validation set. At inference, notice that s may not be in our numerical grid of 1024 and hence, between s values, we use a linear interpolation based on the nearest output point of the machine learning model. 
+
+7.3. Illustrative results 
+
+In Figure 3, we present closed-loop trajectories with three controllers: 1. Exact inverse-optimal (u∗): the half-direct-optimal law with κ evaluated by bisection at every time step. 2. FNO approximation (ˆ u∗): the same law with κ replaced by a single FNO forward pass with the aforementioned linear interpolation. 3. Nominal (us/2): the quadratic-cost-optimal law (125)–(126). All three controllers drive the unicycle to the origin. More-over, the exact and FNO trajectories are visually indistinguish-able, confirming that the neural-operator approximation faith-fully replicates the expander mapping in closed loop. As ex-pected, the CLF V decreases monotonically to zero under all three laws, verifying stability. However, notice the inverse-optimal design yields a more aggressive transient requiring both a large control cost, but faster CLF convergence. Moreover, this is reflected in the finite-horizon J∗ as one can see that the ex-act inverse-optimal design is indeed a better minimizer of the induced cost function rather then the learned ˆ u∗.
+
+8. Conclusions 
+
+We have introduced a functional parametrization of half-direct-optimal stabilizing feedback laws through the control cost, for nonlinear control-a ffi ne systems. The parametrization is in-dexed by a user-chosen function γ serving as the control penalty in an infinite-horizon cost functional. From each admissible γ, a nonlinear expander κ is constructed through a three-step proce-dure, and the resulting feedback law is both globally asymptot-ically stabilizing and inverse optimal by design. The cost pre-cedes the controller — in contrast to the reverse, where, with controller-space parametrizations, inverse optimality is recov-ered a posteriori. The classical Sontag formula is recovered as a special case, and the Freeman-Kokotovic minimum-norm for-mula serves as the nominal law that the expander reshapes. The map γ 7 → κ is Lipschitz on compact families of cost functions, and this regularity guarantees uniform approxima-tion of the entire operator by a neural network. Under the learned approximation, semiglobal practical asymptotic stabil-ity is preserved, and the induced suboptimality is second order 10 / Systems & Control Letters 00 (2026) 1–13 11 −0.50 −0.25 0.00 0.25 0.50 0.75 1.00 
+
+x
+
+0.00 
+
+0.25 
+
+0.50 
+
+0.75 
+
+1.00 
+
+> y
+
+# Closed-Loop Trajectories 
+
+u∗
+
+ˆu∗
+
+us/2
+
+0.0 0.5 1.0 1.5 2.0
+
+time [s] 
+
+0
+
+100 
+
+200 
+
+# Control Inputs 
+
+|v∗| + |ω∗|| ˆv∗| + | ˆω∗||vs/2| + |ωs/2|
+
+0.0 0.5 1.0 1.5 2.0
+
+time [s] 
+
+0
+
+5
+
+10 
+
+15 
+
+20 
+
+> V
+
+# Control Lyapunov Function 
+
+u∗
+
+ˆu∗
+
+us/2
+
+0.0 0.5 1.0 1.5 2.0
+
+time [s] 
+
+22.15 
+
+22.16 
+
+22.17 
+
+22.18 
+
+> ∫ t
+> 0 J∗(s) ds  +V (x(t))
+
+# Finite-Horizon Cost: ∫ t
+
+0 J∗(s) ds +V (t)
+
+u∗
+
+ˆu∗
+
+Figure 3. Closed-loop trajectories of the unicycle system (113) from the initial condition ( x, y, θ ) = (1 , 1, π/ 4) under three control laws: the inverse-optimal controller of Example 1 with α = 10 and κ computed to numerical precision at each time step, its neural-operator approximation, and the nominal controller (125), (126). The green arrow indicates the initial heading. 
+
+in the approximation error — a quadratic penalty for a linear approximation tolerance. Taken together, these results reframe a classical existence-theoretic construction as a practical design methodology: the practitioner selects a family of cost functions encoding di ff er-ent preferences over control aggressiveness, and obtains a cor-responding family of certified stabilizing laws from which to choose on the basis of closed-loop performance. Numerical re-sults illustrating the learning and quantification of the neural expander operator, and its deployment in unicycle stabilization simulations, are provided in Section 7. 
+
+Dedication 
+
+This paper is dedicated to Eduardo Sontag on the occasion of his 75th birthday in 2026. 
+
+References 
+
+[1] E. D. Sontag, A ‘universal’ construction of artstein’s theorem on non-linear stabilization, Systems & Control Letters 13 (2) (1989) 117–123. 
+
+doi:https://doi.org/10.1016/0167-6911(89)90028-5 .URL https://www.sciencedirect.com/science/article/pii/ 0167691189900285 
+
+[2] J. Curtis, R. Beard, Satisficing: a new approach to constructive nonlinear control, IEEE Transactions on Automatic Control 49 (7) (2004) 1090– 1102. doi:10.1109/TAC.2004.831176 .[3] J. W. Curtis, R. W. Beard, A complete parameterization of CLF-based input-to-state stabilizing control laws, International Journal of Robust and Nonlinear Control 14 (17) (2004) 1393–1420. arXiv:https: //onlinelibrary.wiley.com/doi/pdf/10.1002/rnc.961 ,
+
+doi:https://doi.org/10.1002/rnc.961 .URL https://onlinelibrary.wiley.com/doi/abs/10.1002/ rnc.961 
+
+[4] Z. Artstein, Stabilization with relaxed controls, Nonlinear Analysis: The-ory, Methods & Applications 7 (11) (1983) 1163–1173. doi:https: //doi.org/10.1016/0362-546X(83)90049-4 .URL https://www.sciencedirect.com/science/article/pii/ 0362546X83900494 
+
+[5] Y. Lin, E. D. Sontag, A universal formula for stabilization with bounded controls, Systems & Control Letters 16 (6) (1991) 393–397. doi:https: //doi.org/10.1016/0167-6911(91)90111-Q .URL https://www.sciencedirect.com/science/article/pii/ 016769119190111Q 
+
+[6] Y. Lin, E. D. Sontag, Control-Lyapunov universal formulas for restricted inputs, Control-Theory and Advanced Technology 10 (4, part 5) (1995) 1981–2004. [7] I. Karafyllis, Z.-P. Jiang, Global stabilization of nonlinear systems based on vector control lyapunov functions, IEEE Transactions on Auto-matic Control 58 (10) (2013) 2550–2562. doi:10.1109/TAC.2013. 2264855 .[8] D. Liberzon, E. D. Sontag, Y. Wang, Universal construction of feedback laws achieving iss and integral-iss disturbance attenuation, Systems & Control Letters 46 (2) (2002) 111–127. doi:https://doi.org/10. 1016/S0167-6911(02)00125-1 .URL https://www.sciencedirect.com/science/article/pii/ S0167691102001251 
+
+[9] F. Clarke, Y. Ledyaev, E. Sontag, A. Subbotin, Asymptotic controllability implies feedback stabilization, IEEE Transactions on Automatic Control 42 (10) (1997) 1394–1407. doi:10.1109/9.633828 .
+
+11 / Systems & Control Letters 00 (2026) 1–13 12 [10] P. Ong, J. Cort´ es, Universal formula for smooth safe stabilization, in: 2019 IEEE 58th Conference on Decision and Control (CDC), 2019, pp. 2373–2378. doi:10.1109/CDC40024.2019.9030225 .[11] P. Mestres, J. Cort´ es, E. D. Sontag, Neural network-based universal formulas for control, https://arxiv.org/abs/2505.24744 (2025). 
+
+arXiv:2505.24744 .[12] R. E. Kalman, When is a linear control system optimal?, Jour-nal of Basic Engineering 86 (1) (1964) 51–60. arXiv:https: //asmedigitalcollection.asme.org/fluidsengineering/ article-pdf/86/1/51/5763755/51_1.pdf , doi:10.1115/1. 3653115 .URL https://doi.org/10.1115/1.3653115 
+
+[13] P. Moylan, B. Anderson, Nonlinear regulator theory and an inverse op-timal control problem, IEEE Transactions on Automatic Control 18 (5) (1973) 460–465. doi:10.1109/TAC.1973.1100365 .[14] R. A. Freeman, P. V. Kokotovic, Inverse optimality in robust stabilization, SIAM Journal on Control and Optimization 34 (4) (1996) 1365–1391. 
+
+arXiv:https://doi.org/10.1137/S0363012993258732 , doi:10. 1137/S0363012993258732 .URL https://doi.org/10.1137/S0363012993258732 
+
+[15] N. Nakamura, H. Nakamura, H. Nishitani, Global inverse optimal con-trol with guaranteed convergence rates of input a ffi ne nonlinear sys-tems, IEEE Transactions on Automatic Control 56 (2) (2011) 358–369. 
+
+doi:10.1109/TAC.2010.2053731 .[16] M. Krstic, Z.-H. Li, Inverse optimal design of input-to-state stabilizing nonlinear controllers, IEEE Transactions on Automatic Control 43 (3) (1998) 336–350. doi:10.1109/9.661589 .[17] K. Lu, Z. Lyu, H. Yu, Inverse optimal design of input-to-state stabiliz-ing homogeneous controllers for nonlinear homogeneous systems, Au-tomatica 185 (2026) 112770. doi:https://doi.org/10.1016/j. automatica.2025.112770 .URL https://www.sciencedirect.com/science/article/pii/ S0005109825006685 
+
+[18] F. Ornelas-Tellez, E. N. Sanchez, A. G. Loukianov, J. J. Rico, Ro-bust inverse optimal control for discrete-time nonlinear system stabiliza-tion, European Journal of Control 20 (1) (2014) 38–44. doi:https: //doi.org/10.1016/j.ejcon.2013.08.001 .URL https://www.sciencedirect.com/science/article/pii/ S0947358013001544 
+
+[19] H. Deng, M. Krsti´ c, Stochastic nonlinear stabilization — ii: Inverse opti-mality, Systems & Control Letters 32 (3) (1997) 151–159. doi:https: //doi.org/10.1016/S0167-6911(97)00067-4 .URL https://www.sciencedirect.com/science/article/pii/ S0167691197000674 
+
+[20] K. Do, Global inverse optimal stabilization of stochastic nonholonomic systems, Systems & Control Letters 75 (2015) 41–55. doi:https: //doi.org/10.1016/j.sysconle.2014.11.003 .URL https://www.sciencedirect.com/science/article/pii/ S0167691114002369 
+
+[21] Z.-H. Li, M. Krsti´ c, Optimal design of adaptive tracking controllers for non-linear systems, Automatica 33 (8) (1997) 1459–1473. doi:https: //doi.org/10.1016/S0005-1098(97)00072-1 .URL https://www.sciencedirect.com/science/article/pii/ S0005109897000721 
+
+[22] K. Dvijotham, E. Todorov, Inverse optimal control with linearly-solvable MDPs, in: Proceedings of the 27th International Conference on Interna-tional Conference on Machine Learning, ICML’10, Omnipress, Madison, WI, USA, 2010, p. 335–342. [23] X. Cai, N. Bekiaris-Liberis, M. Krstic, Input-to-state stability and in-verse optimality of predictor feedback for multi-input linear systems, Au-tomatica 103 (2019) 549–557. doi:https://doi.org/10.1016/j. automatica.2019.02.038 .URL https://www.sciencedirect.com/science/article/pii/ S0005109819300925 
+
+[24] I. Karafyllis, F. Vokos, M. Krstic, A complete inverse optimality study for a tank-liquid system, Systems & Control Letters 207 (2026) 106293. 
+
+doi:https://doi.org/10.1016/j.sysconle.2025.106293 .URL https://www.sciencedirect.com/science/article/pii/ S0167691125002750 
+
+[25] M. Krstic, Inverse optimal safety filters, IEEE Transactions on Automatic Control 69 (1) (2024) 16–31. doi:10.1109/TAC.2023.3278788 .[26] M. Krstic, Contractor-expander and universal inverse optimal posi-tive nonlinear control, https://arxiv.org/abs/2603.02530 (2026). 
+
+arXiv:2603.02530 .[27] W. Luo, Y.-C. Chu, K.-V. Ling, Inverse optimal adaptive control for at-titude tracking of spacecraft, IEEE Transactions on Automatic Control 50 (11) (2005) 1639–1654. doi:10.1109/TAC.2005.858694 .[28] K. Do, Global inverse optimal control of vertical take-o ff and land-ing aircraft, IFAC Journal of Systems and Control 15 (2021) 100132. 
+
+doi:https://doi.org/10.1016/j.ifacsc.2020.100132 .URL https://www.sciencedirect.com/science/article/pii/ S2468601820300328 
+
+[29] T. K. Jouini, Z. Sun, V. Renganathan, V. Hagenmeyer, Input and state constrained inverse optimal control with application to power net-works, IFAC-PapersOnLine 56 (2) (2023) 5451–5456, 22nd IFAC World Congress. doi:https://doi.org/10.1016/j.ifacol.2023.10. 196 .URL https://www.sciencedirect.com/science/article/pii/ S2405896323005475 
+
+[30] T. Chen, H. Chen, Universal approximation to nonlinear operators by neu-ral networks with arbitrary activation functions and its application to dy-namical systems, IEEE transactions on neural networks 6 (4) (1995) 911– 917. [31] L. Lu, P. Jin, G. Pang, Z. Zhang, G. E. Karniadakis, Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators, Nature machine intelligence 3 (3) (2021) 218–229. [32] Z. Li, N. Kovachki, K. Azizzadenesheli, B. Liu, K. Bhattacharya, A. Stu-art, A. Anandkumar, Fourier Neural Operator for Parametric Partial Dif-ferential Equations (May 2021). arXiv:2010.08895 .[33] L. Bhan, Y. Shi, M. Krsti´ c, Neural operators for bypassing gain and con-trol computations in PDE backstepping, IEEE Transactions on Automatic Control 69 (8) (2024) 5310–5325. doi:10.1109/TAC.2023.3347499 .[34] S. Wang, M. Diagne, M. Krstic, Backstepping neural operators for 2x2 hyperbolic PDEs, Automatica 178 (2025) 112351. doi:https://doi. org/10.1016/j.automatica.2025.112351 .URL https://www.sciencedirect.com/science/article/pii/ S0005109825002444 
+
+[35] Y. Zhang, J. Auriol, H. Yu, Operator learning for robust stabilization of linear markov-jumping hyperbolic PDEs, Automatica 185 (2026) 112809. 
+
+doi:https://doi.org/10.1016/j.automatica.2025.112809 .URL https://www.sciencedirect.com/science/article/pii/ S0005109825007083 
+
+[36] M. Lamarque, L. Bhan, Y. Shi, M. Krsti´ c, Adaptive neural-operator back-stepping control of a benchmark hyperbolic PDE, Automatica 177 (2025) 112329. [37] L. Bhan, P. Qin, M. Krsti´ c, Y. Shi, Neural operators for predictor feedback control of nonlinear delay systems, in: N. Ozay, L. Balzano, D. Panagou, A. Abate (Eds.), Proceedings of the 7th Annual Learning for Dynamics & Control Conference, Vol. 283 of Proceedings of Machine Learning Re-search, PMLR, 2025, pp. 179–193. URL https://proceedings.mlr.press/v283/bhan25a.html 
+
+[38] D. Sewell, X. Li, S. Tretiakov, K. Kumar, D. Fridovich-Keil, Neural oper-ators for multi-task control and adaptation, https://arxiv.org/abs/ 2604.03449 (2026). arXiv:2604.03449 .[39] Z. Li, K. Savla, Fno ∠θ: Extended fourier neural operator for learning state and optimal control of distributed parameter systems, https://arxiv. org/abs/2604.05187 (2026). arXiv:2604.05187 .[40] Y. Zhang, R. Zhong, H. Yu, Neural operators for boundary stabiliza-tion of stop-and-go tra ffi c, in: A. Abate, M. Cannon, K. Margellos, A. Papachristodoulou (Eds.), Proceedings of the 6th Annual Learning for Dynamics & Control Conference, Vol. 242 of Proceedings of Machine Learning Research, PMLR, 2024, pp. 554–565. URL https://proceedings.mlr.press/v242/zhang24c.html 
+
+[41] S. Toumi, Neural operators in backstepping control for hyperbolic partial di ff erential equations (PDEs) in rotary drilling systems, Systems & Con-trol Letters 204 (2025) 106191. doi:https://doi.org/10.1016/j. sysconle.2025.106191 .URL https://www.sciencedirect.com/science/article/pii/ S0167691125001732 
+
+[42] V. Todorovski, K. H. Kim, A. Astolfi, M. Krstic, Nonholonomic Robot Parking by Feedback – Part I: Modular Strict CLF Designs, https:// arxiv.org/abs/2511.15119 (2026). arXiv:2511.15119 .
+
+12 / Systems & Control Letters 00 (2026) 1–13 13 [43] K. H. Kim, V. Todorovski, M. Krsti´ c, Nonholonomic Robot Park-ing by Feedback – Part II: Nonmodular, Inverse Optimal, Adaptive, Prescribed /Fixed-Time and Safe Designs, https://arxiv.org/abs/ 2511.15219 (2025). arXiv:2511.15219 .
+
+13

@@ -6,91 +6,136 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-01 ~ 2026-06-10
-- 运行时间：2026-06-10 04:07:55 UTC
+- 最新运行日期：2026-05-12 ~ 2026-06-10
+- 运行时间：2026-06-10 10:39:02 UTC
 - 运行状态：成功
-- 本次总论文数：23
-- 精读区：12
+- 本次总论文数：38
+- 精读区：27
 - 速读区：11
 
 ### 今日简报（AI）
-1) 本期聚焦人形机器人的运动鲁棒性与跨形态迁移，产出2篇9.0分精读和3篇8.0分速读。
-2) 最值得关注《CoRe-MoE》的多地形步态适应方法与《M3imic》的多模态全身动作模仿，两者均显著提升机器人灵活性。
-3) 建议继续探索步态适应与负载感知操作的融合，尝试用对比重加权策略优化复杂环境下的运动规划。
-- 详情：[/20260601-20260610/README](/20260601-20260610/README)
+1. 本期日报聚焦逆强化学习与控制优化，精读27篇中两篇满分。  
+2. 最值得关注：逆强化学习的快速收敛率与控制代价参数化的逆向最优稳定器家族。  
+3. 建议先精读这两篇高分论文，再配合速读中关于观测缺失量化与神经逆学习的文章，构建完整知识框架。
+- 详情：[/20260512-20260610/README](/20260512-20260610/README)
 
 ### 精读区论文标签
-1. [CoRe-MoE: Contrastive Reweighted Mixture of Experts for Multi-Terrain Humanoid Locomotion with Gait Adaptation](/20260601-20260610/2606.04718v1-core-moe-contrastive-reweighted-mixture-of-experts-for-multi-terrain-humanoid-locomotion-with-gait-adaptation)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：多地形人形机器人运动与步态适应
-2. [M3imic: Learning a Versatile Whole-Body Controller for Multimodal Motion Mimicking](/20260601-20260610/2606.04829v1-m3imic-learning-a-versatile-whole-body-controller-for-multimodal-motion-mimicking)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人通用全身控制器
-3. [GRAIL: Generating Humanoid Loco-Manipulation from 3D Assets and Video Priors](/20260601-20260610/2606.05160v1-grail-generating-humanoid-loco-manipulation-from-3d-assets-and-video-priors)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人全身操作与运动生成
-4. [Accelerating and Scaling MPC-Guided Reinforcement Learning for Humanoid Locomotion and Manipulation](/20260601-20260610/2606.05687v1-accelerating-and-scaling-mpc-guided-reinforcement-learning-for-humanoid-locomotion-and-manipulation)  
-   标签：评分：9.0/10、query:mpc-wbc
-   evidence：MPC引导的强化学习用于人形机器人运动与操作
-5. [TAGA: Terrain-aware Active Gaze Learning for Generalizable Agile Humanoid Locomotion](/20260601-20260610/2606.05880v1-taga-terrain-aware-active-gaze-learning-for-generalizable-agile-humanoid-locomotion)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：地形感知的主动注视学习，用于敏捷人形机器人移动
-6. [HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers](/20260601-20260610/2606.06493v1-handoff-humanoid-agentic-task-space-whole-body-control-via-distilled-complementary-teachers)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人全身控制与任务空间接口
-7. [HANDOFF: Humanoid Agentic Task-Space Whole-Body Control via Distilled Complementary Teachers](/20260601-20260610/2606.06493v2-handoff-humanoid-agentic-task-space-whole-body-control-via-distilled-complementary-teachers)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人全身控制，通过教师蒸馏实现操作与运动
-8. [Predictive Style Matching: Natural and Robust Humanoid Locomotion](/20260601-20260610/2606.07083v1-predictive-style-matching-natural-and-robust-humanoid-locomotion)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：用于人形机器人运动的风格匹配与强化学习方法
-9. [Perceptive Behavior Foundation Model: Adapting Human Motion Priors to Robot-Centric Terrain](/20260601-20260610/2606.08059v1-perceptive-behavior-foundation-model-adapting-human-motion-priors-to-robot-centric-terrain)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：地形感知的人形机器人全身控制基础模型，适配人类运动先验
-10. [SIMPLE: Simulation-Based Policy Learning and Evaluation for Humanoid Loco-manipulation](/20260601-20260610/2606.08278v1-simple-simulation-based-policy-learning-and-evaluation-for-humanoid-loco-manipulation)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人全身移动操作基准
-11. [PTDL:Multi-Terrain Fall Recovery via Phase-Terrain Decoupled Learning](/20260601-20260610/2606.08922v1-ptdlmulti-terrain-fall-recovery-via-phase-terrain-decoupled-learning)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人跌倒恢复与行走
-12. [MotionWAM: Towards Foundation World Action Models for Real-Time Humanoid Loco-Manipulation](/20260601-20260610/2606.09215v1-motionwam-towards-foundation-world-action-models-for-real-time-humanoid-loco-manipulation)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：使用World Action Model实现实时人形机器人移动操作
+1. [Fast Rates for Inverse Reinforcement Learning](/20260512-20260610/2605.14599v1-fast-rates-for-inverse-reinforcement-learning)  
+   标签：评分：10.0/10、query:inverse-rl
+   evidence：逆强化学习的快速收敛率理论分析
+2. [Families of Control-Cost-Parametrized Inverse-Optimal Universal Stabilizers](/20260512-20260610/2606.09047v1-families-of-control-cost-parametrized-inverse-optimal-universal-stabilizers)  
+   标签：评分：10.0/10、query:inverse-rl
+   evidence：逆最优控制与成本参数化
+3. [NavOL: Navigation Policy with Online Imitation Learning](/20260512-20260610/2605.11762v1-navol-navigation-policy-with-online-imitation-learning)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：在线模仿学习用于导航
+4. [Split the Differences, Pool the Rest: Provably Efficient Multi-Objective Imitation](/20260512-20260610/2605.12000v1-split-the-differences-pool-the-rest-provably-efficient-multi-objective-imitation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：多目标模仿学习恢复帕累托前沿
+5. [Split the Differences, Pool the Rest: Provably Efficient Multi-Objective Imitation](/20260512-20260610/2605.12000v2-split-the-differences-pool-the-rest-provably-efficient-multi-objective-imitation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：多目标模仿学习恢复帕累托前沿
+6. [X-Imitator: Spatial-Aware Imitation Learning via Bidirectional Action-Pose Interaction](/20260512-20260610/2605.12162v1-x-imitator-spatial-aware-imitation-learning-via-bidirectional-action-pose-interaction)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：用于机器人操作的模仿学习框架
+7. [Morphologically Equivariant Flow Matching for Bimanual Mobile Manipulation](/20260512-20260610/2605.12228v1-morphologically-equivariant-flow-matching-for-bimanual-mobile-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：使用等变流匹配的模仿学习用于双手机器人
+8. [DSSP: Diffusion State Space Policy with Full-History Encoding](/20260512-20260610/2605.14598v1-dssp-diffusion-state-space-policy-with-full-history-encoding)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于扩散模型的模仿学习，利用状态空间模型进行全历史编码
+9. [DSSP: Diffusion State Space Policy with Full-History Encoding](/20260512-20260610/2605.14598v2-dssp-diffusion-state-space-policy-with-full-history-encoding)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于扩散的模仿学习用于机器人操作
+10. [SkiP: When to Skip and When to Refine for Efficient Robot Manipulation](/20260512-20260610/2605.15536v1-skip-when-to-skip-and-when-to-refine-for-efficient-robot-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于动作重标记的模仿学习跳跃策略
+11. [When Dynamics Shift, Robust Task Inference Wins: Offline Imitation Learning with Behavior Foundation Models Revisited](/20260512-20260610/2605.17017v1-when-dynamics-shift-robust-task-inference-wins-offline-imitation-learning-with-behavior-foundation-models-revisited)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于行为基础模型的离线模仿学习，对动力学变化具有鲁棒性
+12. [Instrumentation for Imitation Learning: Enhancing Training Datasets for Clothes Hanger Insertion](/20260512-20260610/2605.23847v1-instrumentation-for-imitation-learning-enhancing-training-datasets-for-clothes-hanger-insertion)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于仪器化传感器数据的模仿学习用于机器人插入任务
+13. [On the Generalization Capabilities, Design Choices and Limitations of Keypoint Imitation Learning](/20260512-20260610/2605.26649v1-on-the-generalization-capabilities-design-choices-and-limitations-of-keypoint-imitation-learning)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：面向机器人操作的关键点模仿学习研究
+14. [Probabilistic Recurrent Intention Switching Model](/20260512-20260610/2605.26998v1-probabilistic-recurrent-intention-switching-model)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：逆强化学习恢复多意图奖励函数
+15. [Reward Transfer from Inverse Reinforcement Learning: A Coupled Minimax Approach](/20260512-20260610/2605.27834v1-reward-transfer-from-inverse-reinforcement-learning-a-coupled-minimax-approach)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：从逆强化学习中进行奖励迁移的耦合极小极大方法
+16. [Teacher-Student Representational Alignment for Reinforcement Learning-Driven Imitation Learning](/20260512-20260610/2605.28372v1-teacher-student-representational-alignment-for-reinforcement-learning-driven-imitation-learning)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：教师学生表征对齐用于RL驱动的模仿学习
+17. [Phase-Conditioned Imitation Learning with Autonomous Failure Recovery for Robust Deformable Object Manipulation](/20260512-20260610/2605.29407v1-phase-conditioned-imitation-learning-with-autonomous-failure-recovery-for-robust-deformable-object-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：相位条件模仿学习用于可变形物体操作
+18. [A Lecture Note on Offline RL and IRL, Part II: Foundations of Inverse Reinforcement Learning and Dynamic Discrete Choice Models](/20260512-20260610/2605.30843v1-a-lecture-note-on-offline-rl-and-irl-part-ii-foundations-of-inverse-reinforcement-learning-and-dynamic-discrete-choice-models)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：逆强化学习基础理论
+19. [Inverse Reinforcement Learning without an Optimal Demonstrator: A Feasible Reward Set Approach](/20260512-20260610/2605.30903v1-inverse-reinforcement-learning-without-an-optimal-demonstrator-a-feasible-reward-set-approach)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：使用可行奖励集处理多个次优演示者的逆强化学习
+20. [Trajectory Planning for Non-Communicating Mobile Robots using Inverse Optimal Control](/20260512-20260610/2605.30906v1-trajectory-planning-for-non-communicating-mobile-robots-using-inverse-optimal-control)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：利用逆最优控制估计目标进行移动机器人轨迹规划
+21. [Infeasible optimization problems and the hierarchical augmented Lagrangian method in imitation learning](/20260512-20260610/2606.00730v1-infeasible-optimization-problems-and-the-hierarchical-augmented-lagrangian-method-in-imitation-learning)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：不可行约束的模仿学习优化
+22. [Expanding Spatial and Temporal Context for Robotic Imitation Learning With Scene Graphs](/20260512-20260610/2606.01072v1-expanding-spatial-and-temporal-context-for-robotic-imitation-learning-with-scene-graphs)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：使用场景图进行机器人模仿学习，扩展时空上下文
+23. [Training-Free Imitation Learning with Closed-Form Diffusion Policies](/20260512-20260610/2606.01238v1-training-free-imitation-learning-with-closed-form-diffusion-policies)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：免训练的扩散策略模仿学习
+24. [Coherent Off-Policy Improvement of Large Behavior Models with Learned Rewards](/20260512-20260610/2606.02194v1-coherent-off-policy-improvement-of-large-behavior-models-with-learned-rewards)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：探索逆强化学习以学习奖励函数来改进大规模行为模型
+25. [Let the Dynamics Flow: Stable Flow Matching Dynamical Systems](/20260512-20260610/2606.03834v1-let-the-dynamics-flow-stable-flow-matching-dynamical-systems)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：通过流匹配模仿专家运动
+26. [Instant-Fold: In-Context Imitation Learning for Deformable Object Manipulation](/20260512-20260610/2606.04269v1-instant-fold-in-context-imitation-learning-for-deformable-object-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：面向可变形物体操作的上下文模仿学习框架
+27. [SynthICL: Scalable In-context Imitation Learning with Synthetic Data](/20260512-20260610/2606.08154v1-synthicl-scalable-in-context-imitation-learning-with-synthetic-data)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：基于合成数据的上下文内模仿学习
 
 ### 速读区论文标签
-1. [PHASOR: Phase-Anchored Universal Action Representations for Humanoid Embodiments](/20260601-20260610/2606.01851v1-phasor-phase-anchored-universal-action-representations-for-humanoid-embodiments)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：利用相位流形构建人形机器人动作嵌入，增强运动语义
-2. [SplitAdapter: Load-Aware Humanoid Loco-Manipulation via Factorized Adaptation](/20260601-20260610/2606.03297v1-splitadapter-load-aware-humanoid-loco-manipulation-via-factorized-adaptation)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：载重感知的全人控制用于人形机器人移动操作
-3. [Human2Humanoid: Physics-Aware Cross-Morphology Motion Retargeting for Humanoid Robots](/20260601-20260610/2606.03476v1-human2humanoid-physics-aware-cross-morphology-motion-retargeting-for-humanoid-robots)  
+1. [Quantifying Potential Observation Missingness in Inverse Reinforcement Learning](/20260512-20260610/2605.12831v1-quantifying-potential-observation-missingness-in-inverse-reinforcement-learning)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：跨形态运动重定向用于模仿学习
-4. [Bionic Human-Motion Style Transfer for Physically Executable Whole-Body Control of Humanoid Robots](/20260601-20260610/2606.03536v1-bionic-human-motion-style-transfer-for-physically-executable-whole-body-control-of-humanoid-robots)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：人形机器人全身控制与风格迁移
-5. [Let the Dynamics Flow: Stable Flow Matching Dynamical Systems](/20260601-20260610/2606.03834v1-let-the-dynamics-flow-stable-flow-matching-dynamical-systems)  
+   evidence：逆强化学习中的观测缺失问题
+2. [WarmPrior: Straightening Flow-Matching Policies with Temporal Priors](/20260512-20260610/2605.13959v1-warmprior-straightening-flow-matching-policies-with-temporal-priors)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：基于流匹配的稳定动态系统模仿学习
-6. [LadderMan: Learning Humanoid Perceptive Ladder Climbing](/20260601-20260610/2606.05873v1-ladderman-learning-humanoid-perceptive-ladder-climbing)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：人形机器人爬梯子，涉及全身协调和感知
-7. [Co-training with Ego-centric Video and Demonstration for Robot Navigation Task](/20260601-20260610/2606.01951v1-co-training-with-ego-centric-video-and-demonstration-for-robot-navigation-task)  
+   evidence：使用时序先验的行为克隆改进模仿学习
+3. [Neuro-Inspired Inverse Learning for Planning and Control](/20260512-20260610/2605.24152v1-neuro-inspired-inverse-learning-for-planning-and-control)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：神经启发逆学习桥接强化学习与最优控制
+4. [How to Mitigate the Distribution Shift Problem in Robotics Control: A Robust and Adaptive Approach Based on Offline to Online Imitation Learning](/20260512-20260610/2605.25414v1-how-to-mitigate-the-distribution-shift-problem-in-robotics-control-a-robust-and-adaptive-approach-based-on-offline-to-online-imitation-learning)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：离线到在线的模仿学习框架解决分布偏移问题
+5. [Learning Kernel-Based MDPs from Episodic Preferential Feedback](/20260512-20260610/2605.23650v1-learning-kernel-based-mdps-from-episodic-preferential-feedback)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：利用第一视角行走视频进行移动机器人导航模仿学习
-8. [Motion Planning in Dynamic Environments: A Survey from Classical to Modern Methods](/20260601-20260610/2606.02677v1-motion-planning-in-dynamic-environments-a-survey-from-classical-to-modern-methods)  
-   标签：评分：7.0/10、query:locowbc
-   evidence：包含MPC的运动规划方法综述
-9. [Humanoid-GPT: Scaling Data and Structure for Zero-Shot Motion Tracking](/20260601-20260610/2606.03985v1-humanoid-gpt-scaling-data-and-structure-for-zero-shot-motion-tracking)  
-   标签：评分：7.0/10、query:locowbc
-   evidence：大规模Transformer用于全身运动跟踪与控制
-10. [HORIZON: Recoverability-Governed Curriculum for Physical-Domain Scaling](/20260601-20260610/2606.05143v1-horizon-recoverability-governed-curriculum-for-physical-domain-scaling)  
-   标签：评分：7.0/10、query:locowbc
-   evidence：四足机器人运动鲁棒性的课程学习
-11. [Learning All-Terrain Locomotion for a Planetary Rover with Actively Articulated Suspension](/20260601-20260610/2606.06790v1-learning-all-terrain-locomotion-for-a-planetary-rover-with-actively-articulated-suspension)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：为行星探测车学习全地形移动策略，使用主动悬挂系统
+   evidence：从偏好反馈中学习奖励函数
+6. [Learning Kernel-Based MDPs from Episodic Preferential Feedback](/20260512-20260610/2605.23650v2-learning-kernel-based-mdps-from-episodic-preferential-feedback)  
+   标签：评分：7.0/10、query:inverse-rl
+   evidence：从偏好反馈中学习奖励函数
+7. [Decoupled Behavioral Cloning for Scalable Inductive Generalization in RL from Specifications](/20260512-20260610/2606.00838v1-decoupled-behavioral-cloning-for-scalable-inductive-generalization-in-rl-from-specifications)  
+   标签：评分：7.0/10、query:inverse-rl
+   evidence：解耦行为克隆用于RL中可扩展的归纳泛化
+8. [Potential-Guided Flow Matching for Vision-Language-Action Policy Improvement](/20260512-20260610/2606.04968v1-potential-guided-flow-matching-for-vision-language-action-policy-improvement)  
+   标签：评分：7.0/10、query:inverse-rl
+   evidence：使用自引导流匹配改进视觉-语言-动作策略，解决行为克隆的局限性
+9. [Multi-Objective and Mixed-Reward Reinforcement Learning via Reward-Decorrelated Policy Optimization](/20260512-20260610/2605.13641v1-multi-objective-and-mixed-reward-reinforcement-learning-via-reward-decorrelated-policy-optimization)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：奖励解相关用于多目标强化学习
+10. [ERFSL: An Efficient Reward Function Searcher via Language Models for Custom-Environment Multi-Objective Optimization (Student Abstract)](/20260512-20260610/2605.19259v1-erfsl-an-efficient-reward-function-searcher-via-language-models-for-custom-environment-multi-objective-optimization-student-abstract)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：利用语言模型搜索奖励函数
+11. [Beyond Action Residuals: Real-World Robot Policy Steering via Bottleneck Latent Reinforcement Learning](/20260512-20260610/2605.19919v1-beyond-action-residuals-real-world-robot-policy-steering-via-bottleneck-latent-reinforcement-learning)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：模仿学习预训练策略的强化学习微调
 
 
 <div class="dpr-home-promo-card">
