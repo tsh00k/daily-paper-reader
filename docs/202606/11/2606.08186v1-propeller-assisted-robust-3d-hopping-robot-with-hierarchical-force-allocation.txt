@@ -1,0 +1,455 @@
+Title: Propeller-Assisted Robust 3D Hopping Robot with Hierarchical Force Allocation
+
+URL Source: https://arxiv.org/pdf/2606.08186v1
+
+Published Time: Tue, 09 Jun 2026 00:51:13 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Propeller-Assisted Robust 3D Hopping Robot with Hierarchical Force Allocation 
+
+Chuhan Zhang 1,2,3, Hongbo Zhang 1, Yanlin Chen 1,4, Yunxi Tang 1,4,Yun-Hui Liu 1, Mingyi Liu 2,3, and Xiangyu Chu 1,4
+
+Abstract — Monopedal hopping robots are conceptually sim-ple but highly dynamic and inherently unstable. Achieving robust 3D hopping is still difficult because ground reaction forces are available only during the short stance phase, while the robot is underactuated in flight. A key unresolved issue is how to improve flight-phase control authority. Propeller assistance provides a promising solution, but it requires careful coordi-nation of leg-generated contact forces and propeller thrusts across stance and flight. This paper presents Pro-OMEGA2, a propeller-assisted 3D monopedal hopping robot with an active 3-RSR parallel leg and a trunk-mounted tri-rotor for auxiliary attitude regulation. To address the force coordination challenge, we propose a Hierarchical Force Allocation (HFA) framework based on a single rigid body (SRB) model. The leg generates the main stance contact wrench, while the tri-rotor provides auxiliary attitude regulation, compensating the residual attitude moment in stance and maintaining attitude during flight. Real-robot experiments in indoor and outdoor scenarios demonstrate sustained 3D hopping, including terrain transitions and impulsive push recovery, validating robustness under unmodeled contact and external disturbances. 
+
+I. INTRODUCTION Robust 3D hopping is still a fundamental challenge in legged robotics, particularly for monopedal systems [1], [2]. Although 3D monopedal hopping has long been demon-strated, reliable hopping in unstructured environments and under strong disturbances is still difficult. Over the past decades, researchers have developed monopedal platforms ranging from series-elastic hoppers for high power density [3] to untethered 3D monopods for field deployment [4], [5] and lightweight 3-RSR (revolute-spherical-revolute) based hoppers [6], [7]. The main difficulty is that leg-generated ground reaction forces are available only during the short stance phase, while the robot is underactuated during the flight phase. In conventional monopedal hopping robots, attitude stabilization and disturbance rejection rely primarily on ground reaction forces generated during the stance phase. Beyond monopedal hopping, prior studies in broader legged and underactuated robotic systems have explored inertial             
+
+> This work was supported in part by the Research Grants Council (RGC) of Hong Kong under Grant 14201725, in part by the Multiscale Medical Robotics Centre, AIR@InnoHK, in part by the InnoHK initiative of the Innovation and Technology Commission of the Hong Kong Special Administrative Region Government via the Hong Kong Centre for Logistics Robotics, and in part by the CUHK T Stone Robotics Institute.
+> 1Department of Mechanical and Automation Engineering, The Chinese University of Hong Kong, Hong Kong SAR. 2Department of Mechanical Engineering, Guangdong Technion–Israel Institute of Technology, China.
+> 3Department of Mechanical Engineering, Technion–Israel Institute of Tech-nology, Haifa, Israel. 4Multiscale Medical Robotics Centre, Hong Kong SAR.
+
+## Propellers OFF 
+
+## Propellers ON    
+
+> 𝟑𝟎°
+> Keeps balance
+> Falls down
+> Fig. 1. Qualitative comparison on a grassy 30 ◦slope. Without propeller assistance the robot becomes unstable; with assistance it remains upright.
+
+appendages to extend attitude control beyond ground contact. Representative examples include tail-assisted stabilization and self-righting [8]–[10], tail-inspired flight-phase orienta-tion control [11], morphable inertial tails for safe landing of falling quadrupeds [12], reaction-wheel-based regulation [13]–[15], and hybrid tail-reaction-wheel designs for spatial reorientation [16]. These inertial appendages can regulate body attitude during flight or falling phases, but they also have practical drawbacks, including potential collisions be-tween the body and appendages in tail-based designs, added mass and inertia in reaction-wheel systems, and limited direct contribution to stance force generation. Propeller assistance offers an alternative route for im-proving monopedal hopping. In monopedal systems, rotor-assisted platforms have demonstrated aerial attitude regu-lation, perturbation recovery, and terrestrial hopping [17]– [20]. Beyond monopods, the bipedal robot LEONARDO resolves leg-rotor coordination through a joint nonlinear model predictive controller (NMPC) over the full hybrid dynamics [21]. These results suggest that propeller assis-tance is promising for robust 3D hopping. However, existing propeller-assisted hopping studies do not explicitly resolve how leg-generated contact forces and propeller thrusts should be coordinated across stance and flight to stabilize body attitude without compromising the leg’s primary locomotion role. In contrast to a tightly coupled joint optimization such as [21], we pursue a lightweight hierarchical allocation 
+
+> arXiv:2606.08186v1 [cs.RO] 6 Jun 2026
+
+that keeps the leg primary and uses the tri-rotor only for residual attitude compensation, better suited to the limited onboard computation of a small hopping robot. To address this issue, we develop Pro-OMEGA2, a 3D hopping robot that combines an active 3-RSR parallel leg with a trunk-mounted tri-rotor unit. Pro-OMEGA2 extends our group’s earlier planar propeller-assisted hopper, Pro-OMEGA [20], to fully spatial 3D operation, where roll, pitch, and horizontal motion are strongly coupled. The leg remains the primary locomotion actuator, while the tri-rotor provides auxiliary attitude regulation and residual attitude compensation. On this platform, we formulate a Hierarchical Force Allocation (HFA) framework based on a single rigid body (SRB) model that computes a desired centroidal wrench from geometric attitude regulation and an energy-compensated vertical push model, and then allocates it under phase-dependent contact and actuation limits. The leg generates the main stance contact wrench, while the tri-rotor provides auxiliary attitude regulation, compensating the residual atti-tude moment in stance and maintaining attitude during flight. Extensive real-robot experiments, including outdoor terrain transitions and impulsive push recovery, demonstrate robust 3D hopping under severe disturbances. Fig. 1 qualitatively illustrates the benefit of propeller assistance on a grassy slope. The primary contributions of this work are the Pro-OMEGA2 hardware platform and the proposed SRB-based HFA framework validated on it. Specifically, we contribute: 1) A hybrid 3D hopping platform, Pro-OMEGA2, which combines an active 3-RSR parallel leg with a trunk-mounted tri-rotor. 2) An SRB-based HFA controller that allocates feasible stance contact forces and propeller thrusts and uses the tri-rotor as an on-demand residual attitude compensator across contact transitions. 3) Real-robot validation in indoor and outdoor experi-ments, including terrain transitions and impulsive push recovery, demonstrating robust 3D hopping under se-vere perturbations. II. SYSTEM AND MODELING 
+
+A. Mechanical Design 
+
+As shown in Fig. 2, the Pro-OMEGA2 platform consists of three main structural modules: a 3-RSR parallel leg for ground locomotion, a central computational hub that houses the heavier onboard components, and a tri-rotor platform for aerial attitude control. The leg module is a 3-RSR spatial parallel mechanism that provides fast omnidirectional leg placement. Specifically, it consists of three identical parallel chains, each comprising an upper link and a lower link. The upper links are attached to the base and are independently driven by three leg motors at the revolute hip joints. Each upper link is connected to its corresponding lower link through a spherical knee joint, and the three lower links connect to the foot link through distal revolute joints that meet at a common point. Driven by the three leg motors, the mechanism enables 3-DoF translational motion of the foot for 3D hopping. The computational hub is located near the center of the robot and connects the parallel leg to the aerial platform. The batteries and electronic components are packaged inside this hub in a compact layout below the hip level. This arrangement lowers the center of mass and helps reduce rotational inertia. The tri-rotor platform is mounted above the computational hub in a Y-shaped layout and consists of three propulsion modules. This three-rotor configuration is chosen for its hardware simplicity and low cost, which also helps minimize the upper-body mass. Differential thrust from the three rotors provides roll and pitch control throughout the gait cycle. In the implemented controller, the tri-rotor is used primarily for auxiliary attitude regulation and residual attitude compensa-tion, while the leg remains the main actuator for hopping and horizontal motion. The total thrust-to-weight ratio is kept below unity so that locomotion remains primarily legged rather than aerial. 
+
+B. Electronic System Architecture 
+
+As shown in Fig. 3, the electronic system is organized around a two-layer control architecture. A high-level con-troller running on an external PC executes the hopping state machine, state estimation, and HFA logic, and communicates with the onboard Raspberry Pi via LCM over Ethernet. The Raspberry Pi implements the hardware interface layer: it sends torque commands to the three leg motors via CAN and exchanges thrust commands and Inertial Measurement Unit (IMU) measurements with a VeloxF7 flight controller via MSP. The flight controller generates PWM signals to the Electronic Speed Controllers (ESCs) that drive the three propeller motors. The measured round-trip latency of the LCM-over-Ethernet link is about 0.2 ms on average and below 0.5 ms for 99% of cycles, well within the 2 ms control period of the 500 Hz loop, so it does not noticeably affect the closed loop. 
+
+C. SRB Dynamics and Actuation Mapping 
+
+The 3-RSR parallel mechanism exhibits highly non-linear kinematics. However, the leg weighs about 0.35 kg, only 
+
+9.2% of the 3.75 kg total, so its moving mass is small and the dominant dynamics can be reasonably captured by an SRB model [22]. The tri-rotor assembly is rigidly attached to the trunk and moves with it, so the leg is the only mass that moves relative to the body; its small mass fraction keeps the centroidal inertia variation between the extended stance and retracted flight configurations limited. As illustrated in Fig. 4, this abstraction decouples high-level locomotion control from low-level joint non-linearities. We therefore model the body dynamics at the centroidal wrench level and explicitly describe the kinematic/force mappings that connect the SRB wrench to the 3-RSR leg torques and tri-rotor thrusts. 𝑋 𝑟  𝑌 𝑟 
+
+𝑍 𝑟 
+
+Tri -Rotor Platform 
+
+Computational Hub 
+
+3-RSR Parallel Mechanism  
+
+> 𝑋 𝑟 𝑌 𝑟
+> 𝑍 𝑟
+
+Hip joint 
+
+Upper link 
+
+Knee 
+
+Lower link 
+
+Foot 
+
+Propeller 
+
+Arm 
+
+Thrust Fig. 2. Hardware architecture of Pro-OMEGA2. Left: CAD-based decomposition of the tri-rotor, computational hub, and 3-RSR leg. Right: assembled platform with the same modules highlighted. Raspberry Pi    
+
+> Flight Controller
+> IMU
+> CAN HAT
+> Power Board
+> 24/5V
+> ESC Propeller
+> Motor
+> Leg Motor
+> Battery
+> User Input
+> PC
+> 24V
+> 24V
+> 5V
+> USB
+> Ethernet
+> SPI
+> CAN PWM
+> MSP
+> 5V
+> Fig. 3. Electronic architecture
+
+1) SRB Wrench Dynamics: To facilitate modeling, we define a body-fixed frame {B} at the CoM and a world frame 
+
+{W }. Their vertical axes are denoted by Zb and Zw in Fig. 4, where Zw defines the world vertical and gravity acts along 
+
+−Zw. The rotation matrix RW B ∈ SO(3) (abbreviated as R)maps vectors from {B} to {W }. Let e3 = [0 , 0, 1] ⊤ denote the unit z-axis of {B}. Let p, v, a ∈ R3 be the position, velocity, and acceleration of the CoM in the world frame. The net wrench (force Fnet and moment τnet ) acting on the CoM is generated by the ground reaction force fc and the three propeller thrusts ti:
+
+Fnet 
+
+τnet 
+
+
+
+=
+
+ fc
+
+rc × fc
+
+
+
++
+
+> 3
+
+X
+
+> i=1
+
+ dt
+
+ri × dt
+
+
+
+ti, (1) where dt = Re 3 is the rotor thrust direction expressed in the world frame, and rc, ri ∈ R3 are the moment arms from the CoM to the contact point and rotor i, respectively, expressed in the world frame. The system dynamics are then governed by the Newton-Euler equations: 
+
+ma = Fnet + mg, (2) 
+
+˙ω = I−1(R⊤τnet − ω × Iω ), (3) where m is the total mass, g is the gravity vector, ω is the body angular velocity, and I ∈ R3×3 is the centroidal inertia  
+
+> Fig. 4. SRB abstraction with actuation from the stance contact and three propellers.
+
+tensor. For control synthesis, the objective is to determine a desired wrench [F ⊤
+
+> des
+
+, τ ⊤
+
+> des
+
+]⊤ to stabilize the dynamics in Eqs. (2) and (3), and subsequently allocate this wrench to 
+
+fc and ti via Eq. (1) [23]. The detailed phase-dependent allocation strategy is presented in Section III. 
+
+2) Leg Kinematics and Force-to-Torque Mapping: The hopping dynamics exhibit two distinct phases. During the flight phase, the 3-RSR leg is unloaded and is used to place the foot for the next touchdown. Denoting the foot position in the body frame by pf oot and the leg joint coordinates by 
+
+q = [ q1, q 2, q 3]⊤ ∈ R3, the desired touchdown target is first converted to joint coordinates through the inverse kinematics of the 3-RSR mechanism. Around the resulting configuration, the differential kinematics are described by 
+
+˙pf oot = J(q) ˙ q, (4) where J ∈ R3×3 is the leg Jacobian matrix in the body frame. During the stance phase, the ground reaction force on the body is fc ∈ R3 in the world frame. The equal-and-opposite force transmitted through the leg is therefore 
+
+fleg = −R⊤fc in the body frame, and the corresponding motor torques are 
+
+τm = J⊤fleg = −J⊤R⊤fc, (5) which follows from the 3-RSR force-transmission structure. The motor torques satisfy ∥τm∥∞ ≤ τmax , where τmax is Robot           
+
+> Phase Machine
+> 𝒔𝒕𝒂𝒏𝒄𝒆 /𝒇𝒍𝒊𝒈𝒉𝒕
+> SRB Wrench
+> and Foot Placement
+> Phase states Hierarchical Force
+> Allocation (HFA)
+> Desired wrench
+> Foot target
+> Robot Kinematic and Geometry
+> State Estimation
+> Robot state p,𝑣 ,𝑅 ,𝜔
+> Foot position
+> Propeller position 𝐽 ,𝑟 !,𝑀 "
+
+PC 500Hz            
+
+> User Input
+> User cmd 𝑣 #$
+> %&' ,ℎ%&'
+> 𝜏 ,𝑡
+> Encoders 𝑞 ,𝑑𝑞
+> IMU 𝑞𝑢𝑎𝑡 ,𝑔𝑦𝑟𝑜 ,𝑎𝑐𝑐
+> 𝑞 ,𝑑𝑞
+
+Fig. 5. Implemented 500 Hz PC-side control architecture of the proposed system, from user commands and onboard feedback to leg-torque and tri-rotor-thrust commands. TABLE I PHYSICAL PARAMETERS , THRESHOLDS , LIMITS , AND HIGH -LEVEL GAINS USED IN ALL EXPERIMENTS 
+
+Parameter Value 
+
+Physical and phase parameters 
+
+Total Mass m 3.75 kg Nominal Leg Length l0 0.464 m Desired Apex CoM Height hdes 0.664 m Touchdown Threshold ∆td 0.020 m 
+
+Actuator and contact limits 
+
+Max Torque τmax (per motor) 20.0 Nm Max Thrust tmax (per rotor) 10.0 N Max Total Thrust Ratio Tmax /mg 0.82 Baseline Thrust Ratio ρ 0.02 Friction Coefficient μ 0.4 
+
+Stance-phase gains 
+
+Vertical height gain kz 1100 Vertical damping gain bz 20 Energy feedback gain kE 12 Attitude gains Kroll,pitch R 100 Attitude damping gains Kroll,pitch ω 1Max roll/pitch moment τ stance rp ,max 30.0 Nm 
+
+Flight-phase gains 
+
+Attitude gains Kroll,pitch R 60 Attitude damping gains Kroll,pitch ω 40 Max roll/pitch moment τ flight rp ,max 25.0 Nm Foot-placement gains kv , k r 0.16, 0.14 
+
+the per-motor torque limit. The tri-rotor unit provides persistent attitude control throughout both phases. The three propellers are arranged in a Y-shaped layout, with individual thrusts ti ∈ [0 , t max ] col-lected as t = [ t1, t 2, t 3]⊤, where tmax is the per-rotor thrust limit. For robust attitude control, we maintain a nonzero nominal collective thrust Tbase = ρmg , where ρ denotes the baseline thrust ratio. This keeps the propellers spinning away from the near-zero thrust regime, reducing spin-up delays and helping maintain roll/pitch control through differential thrust. We distribute the bias as t = Tbase  
+
+> 3
+
+13 + δt, where 
+
+13 = [1 , 1, 1] ⊤ and δt = [ δt 1, δt 2, δt 3]⊤.III. CONTROL SYNTHESIS Fig. 5 summarizes the implemented PC-side control ar-chitecture. The control architecture follows a hierarchical structure: an event-driven state machine schedules the hybrid contact phases, a template-level planner generates desired centroidal trajectories, and a two-stage SRB-based alloca-tor computes the commanded contact forces and propeller Stance Phase Flight Phase  
+
+> Touchdown Compression
+> 𝐹 !,#
+> 𝐹 !,$
+> 𝐹 !
+> Friction cone
+> Liftoff
+
+Fig. 6. Hopping cycle with touchdown and liftoff events. In stance, the leg contacts the ground; in flight, the tri-rotor stabilizes attitude. 
+
+thrusts. The main physical parameters, phase thresholds, actuator limits, and high-level controller gains used in all experiments are summarized in Table I. 
+
+A. Phase Detection and Vertical Height Control 
+
+As illustrated in Fig. 6, the controller detects the stance phase and the flight phase using a finite state machine driven by the leg length l = ∥pf oot ∥: touchdown is detected when 
+
+l ≤ l0 − ∆td , and liftoff is detected when l ≥ l0, where l0
+
+is the nominal leg length and ∆td is a hysteresis threshold for touchdown; its value is listed in Table I. During the stance phase, the vertical controller injects energy to reach a target apex CoM height hdes while absorb-ing the landing impact. Here hdes denotes the desired apex CoM height measured along the world vertical. We regulate the vertical motion using CoM height and vertical velocity feedback, and we add an energy compensation term based on the CoM height. The target energy corresponding to the desired apex height is defined as Edes = mgh des .The instantaneous vertical energy Esys is evaluated as 
+
+Esys = 12 m ˙p2 
+
+> z
+
++ mg p z , (6) where pz and ˙pz are the CoM vertical position and veloc-ity estimated from encoder and IMU measurements during stance. At each touchdown, pz is re-anchored geometrically from the measured leg configuration and body orientation rather than integrated over time, so the estimate does not drift across hops. The commanded vertical contact force is then formulated as 
+
+f des c,z = max 
+
+
+
+0, k z (hdes − pz ) − bz ˙pz + kE (Edes − Esys )
+
+
+
+= max 
+
+
+
+0, (kz + kE mg )( hdes − pz )
+
+− bz ˙pz − 12 kE m ˙p2
+
+> z
+
+
+
+,
+
+(7) where kz and bz are the vertical height and damping gains and kE is the energy feedback gain. The second line follows from substituting Eq. (6) and clarifies the role of the energy term: rather than acting as an independent loop, it augments the effective height stiffness from kz to kz + kE mg and adds a quadratic penalty − 12 kE m ˙p2 
+
+> z
+
+on the vertical kinetic energy. This kinetic-energy penalty is the genuinely new contribution of the energy term, modulating the vertical force during push-off and compensating for energy dissipated at impact. 
+
+B. Centroidal Wrench and Flight Foot Placement 
+
+To stabilize the spatial orientation against asymmetric dis-turbances, we first formulate a desired body-frame centroidal moment τ des b using an SO(3) PD control law [24]. Defining the orientation error as eR = 12 (R⊤
+
+> des
+
+R−R⊤Rdes )∨, where 
+
+(·)∨ denotes the vee map, the desired body-frame moment is: 
+
+τ des b = −KReR + Kω (ωdes − ω), (8) where Rdes is constructed from the desired roll and pitch together with the current yaw, so yaw remains uncontrolled, and ωdes = 0. The allocator uses the corresponding world-frame moment τ des = Rτ des b . Here KR and Kω are diagonal with nonzero roll/pitch gains; the phase-dependent values are listed in Table I. The commanded roll/pitch moment is saturated by τ stance rp ,max in stance and by τ flight rp ,max 
+
+in flight, as listed in Table I. While the tri-rotor continuously regulates attitude, the underactuated horizontal motion is regulated at the stride level via a Raibert-style foot-placement policy. Let vxy 
+
+and vdes xy denote the estimated and desired horizontal CoM velocities expressed in a body-aligned horizontal frame. Fol-lowing a modified Raibert-style touchdown-placement rule, we compute the desired horizontal touchdown offset in the same frame as: 
+
+rdes td,xy = kv vxy − kr vdes xy . (9) Here, the term kv vxy provides velocity feedback for stabiliz-ing the horizontal limit cycle, while the term −kr vdes xy biases the touchdown offset according to the commanded horizontal motion. Let rdes td,xy = [ xdes td , y des td ]⊤. If ∥rdes td,xy ∥2 > l 0, the horizontal target is clipped to the reachable disk before forming the full 3D foot-placement target in the body frame, 
+
+pdes f oot =
+
+
+
+xdes td 
+
+ydes td 
+
+−
+
+q
+
+l20 − (xdes td )2 − (ydes td )2
+
+ ,
+
+which is then tracked by the 3-RSR leg during the flight phase. Here the touchdown target is coordinated with an SRB-based centroidal controller and the aerial attitude action of the tri-rotor. 
+
+C. Hierarchical Force Allocation 
+
+The desired centroidal wrench, parameterized by f des c,z and 
+
+τ des , must be mapped to the physical actuators. Reflecting the leg-primary, tri-rotor-auxiliary role asymmetry, we re-solve the leg wrench first and assign only the residual attitude moment to the propellers. This hierarchy enforces the leg-first priority by construction, so the propellers can only add to, never substitute for, the leg’s contact action, avoiding the actuator trade-offs and contact-transition chattering of a tightly coupled joint optimization. 
+
+1) Leg Force Mapping and Saturation in the Stance Phase: Given the leg’s role in generating stance contact forces, our allocation scheme prioritizes the 3-RSR mecha-nism. Importantly, the high-level moment τ des is not sent directly to the leg motors. Instead, we set f cmd c,z = f des c,z 
+
+and compute the horizontal contact force f cmd c,xy by solving a leg-priority constrained least-squares that tracks the desired roll/pitch moment while enforcing friction and motor-torque limits: 
+
+f cmd c,xy = arg min 
+
+> fxy
+
+(rc × fc)rp − (τ des )rp 
+
+> 22
+
+s.t. fc = [ f ⊤ 
+
+> xy
+
+, f des c,z ]⊤,
+
+∥fxy ∥2 ≤ μf des c,z ,
+
+∥J⊤(q)( −R⊤fc)∥∞ ≤ τmax ,
+
+(10) where (·)rp extracts the roll and pitch components, and μ is the friction coefficient. This yields the feasible stance force 
+
+f cmd c = [( f cmd c,xy )⊤, f des c,z ]⊤, which is then mapped to leg motor torques through Eq. (5). 
+
+2) Propeller Residual Compensation in the Stance Phase: 
+
+However, under uneven terrain and external disturbances, the leg may not fully realize the restorative moment required within a single stance interval because the admissible stance force is limited by friction and motor-torque constraints. The residual attitude correction is therefore handled by the propellers. The propellers act strictly as an on-demand residual com-pensator. After the leg-side allocation produces a feasible stance force f cmd c , the corresponding stance moment allo-cated to the leg is 
+
+τ alloc leg = rc × f cmd c , (11) which is not an independent PD command, but the moment actually assigned to the leg by the feasible contact-force allocation. The propeller command then compensates only the residual part left after this feasible leg allocation: 
+
+τ cmd res = τ des − τ alloc leg . (12) Thus, the first layer defines the desired net body moment 
+
+τ des , while the second layer lets the leg realize as much of that demand as possible within its feasible region and assigns only the unallocated residual part to the tri-rotor. A nonzero baseline collective thrust Tbase is maintained so that the propellers remain responsive while generating the residual roll and pitch torque. Given τ cmd res , the thrust deviations are b)
+
+a)
+
+c)
+
+d)
+
+e)
+
+f)
+
+g)
+
+𝒁 𝒘 
+
+𝒀 𝒘 Fig. 7. Indoor stable 3D hopping over a representative 9.4 s window with 17 consecutive hops. The vertical green dotted lines mark the time instants corresponding to the key frames in (a). (a) Photo sequence on flat indoor ground. (b) Horizontal contact forces fx, f y . (c) Propeller thrusts t1,2,3. (d) Leg length l; dashed line: l0. (e) Roll ϕ and pitch θ. (f) and (g) Horizontal velocity tracking, with measured velocity (solid) and commanded velocity vdes x , v des y
+
+> (black dashed).
+
+obtained from 
+
+δtcmd = arg min  
+
+> δt
+
+(Mtδt)rp − (τ cmd res )rp 
+
+> 22
+
+s.t. − Tbase  
+
+> 3
+
+≤ δt i ≤ tmax − Tbase  
+
+> 3
+
+,
+
+1⊤ 
+
+> 3
+
+δt ≤ Tmax − Tbase ,
+
+(13) where Mt = [ r1 ×dt r2 ×dt r3 ×dt] ∈ R3×3 is the world-frame tri-rotor moment map, Tmax is the total available thrust limit of the tri-rotor, and the final thrust command is tcmd = 
+
+> Tbase
+> 3
+
+13 + δtcmd .
+
+3) Aerial Attitude Regulation in the Flight Phase: Upon liftoff, the contact wrench vanishes ( fc = 0). The tri-rotor then becomes the primary attitude actuator and tracks the roll and pitch components of τ des while maintaining the baseline collective thrust Tbase . Meanwhile, the leg tracks the foot-placement target for the next touchdown. This provides continuous attitude authority in the air and helps ensure that the robot returns to stance with a favorable body orientation. IV. EXPERIMENTAL VALIDATION The experiments evaluate the proposed HFA framework in three scenarios: indoor velocity tracking, outdoor hop-ping across an uneven grass-to-wood transition, and push recovery under impulsive disturbances. These tests probe phase-dependent coordination of the leg and propellers, robustness to unmodeled contact variation, and recovery from severe attitude and horizontal-velocity perturbations. In particular, Fig. 7 provides the clearest quantitative view of the phase-dependent coordination between leg contact action and propeller assistance within repeated hopping cycles. All experiments use identical controller parameters listed in Table I and the same hardware/software stack described in Section II, with velocity commands published via a handheld gamepad. 
+
+A. Indoor Stable 3D Hopping 
+
+Figure 7 shows a representative 9.4 s window of in-door hopping under piecewise forward and lateral veloc-ity commands. In particular, the lateral command con-tains two acceleration-and-stop segments, with peak com-manded speeds of approximately 1.6 m/s and 0.94 m/s. The leg reaches a peak stance compression of approximately 
+
+67 .3 mm relative to the nominal length l0, indicating sta-ble vertical energy regulation, while the body attitude re-mains bounded throughout the sequence (roll approximately 
+
+[−15 .8◦, 3.1◦], pitch [−3.3◦, 5.6◦]) despite repeated impacts and command reversals. Figure 7(b) and (c) show the phase-dependent action of HFA: commanded horizontal contact forces occur primarily during stance, whereas propeller thrust modulation increases after liftoff. The horizontal velocity traces in Fig. 7(f) and (g) b)
+
+c)
+
+d)
+
+Wood Grass 
+
+a)
+
+𝒁 𝒘 
+
+𝒀 𝒘 𝑿 𝒘 Fig. 8. Stable 3D hopping on uneven outdoor terrain over a representative 13 s window with 23 consecutive hops. (a) Photo sequence across the grass-to-wood transition. (b) Attitude ϕ, θ ; blue shading indicates stance. (c) and (d) Horizontal velocity tracking. a) Push 
+
+b)
+
+c)
+
+d) 
+
+> Time (s)
+
+# Push 
+
+e)
+
+𝒁 𝒘 
+
+𝒀 𝒘 𝑿 𝒘           
+
+> Fig. 9. Push recovery during outdoor hopping in a representative 9.6s trial with 17 hops and two pushes. (a) First push at approximately t=1 .5s. (b) Attitude ϕ, θ ; blue shading indicates stance. (c) and (d) Horizontal velocity tracking. (e) Second push at approximately t=4 .9s, approximately along
+> +x.
+
+are consistent with the Raibert-style foot-placement policy in Eq. (9), showing stride-to-stride recovery of horizontal motion without destabilizing the vertical limit cycle. 
+
+B. Outdoor Hopping 
+
+As shown in Fig. 8, the robot hops outdoors across a grass-to-wood transition under light wind. The plotted interval is a representative 13 s window containing 23 consecutive hops, while the robot continues hopping beyond the displayed segment. Without terrain perception, contact-timing adapta-tion, or gain retuning, the robot maintains bounded attitude motion throughout the transition. In particular, the roll and pitch traces remain within approximately [−7.7◦, 2.2◦] and 
+
+[−2.2◦, 2.8◦], with standard deviations of σϕ=2 .1◦ and 
+
+σθ =1 .0◦, respectively. The attitude deviations increase only moderately after uneven impacts and decay again within 1 to 2 hops, while the horizontal velocity remains close to the commanded references. These observations indicate that the phase-dependent HFA structure tolerates substantial unmod-eled variations in contact compliance and terrain transition without requiring controller retuning. This outdoor behavior is also consistent with Fig. 1, which illustrates the benefit of propeller assistance on grassy terrain. 
+
+C. Push Recovery 
+
+To evaluate disturbance recovery, we applied two im-pulsive pushes during outdoor hopping (Fig. 9). The first push (key frame at approximately t=1 .5 s in Fig. 9(a)), applied downward on a rotor arm, induces a pronounced attitude disturbance; the propellers recover roll/pitch during the subsequent flight phase and return the robot to a stable hopping cycle within 1 to 2 hops (Fig. 9(b)), consistent with the residual compensation mechanism in Eq. (12). The second push (key frame at approximately t=4 .9 s in Fig. 9(e)), applied laterally to the main body approximately along the +x direction, produces a horizontal velocity spike of approximately 1.4 m/s in vx (Fig. 9(c) and (d)); the Raibert-style foot-placement policy dissipates the injected momentum and restores velocity tracking within three hops without destabilizing the vertical motion. Together, these tests demonstrate that the controller distributes recovery across components with distinct roles: residual attitude com-pensation by the propellers and stride-level horizontal recov-ery by foot placement. V. CONCLUSION AND FUTURE WORK This paper presented Pro-OMEGA2, a propeller-assisted 3D hopping robot that integrates an active 3-RSR parallel leg and a trunk-mounted tri-rotor unit. We proposed an SRB-based HFA framework that preserves leg-generated stance contact forces as the primary locomo-tion action while using the tri-rotor for auxiliary attitude regulation, including residual attitude compensation in stance and continuous roll/pitch control during flight. Real-robot experiments demonstrate sustained indoor and outdoor 3D hopping, including abrupt start and stop velocity commands, grass-to-wood terrain transitions, and impulsive push re-covery. Future work will move beyond phase-decoupled allocation toward predictive coupled control by integrating SRB-based MPC with QP-based wrench allocation. We also plan to incorporate full-order dynamics and learning-based models to better capture contact uncertainty and the coupling between the leg and propellers. REFERENCES [1] M. H. Raibert, H. B. Brown Jr, and M. Chepponis, “Experiments in balance with a 3d one-legged hopping machine,” The International Journal of Robotics Research , vol. 3, no. 2, pp. 75–92, 1984. [2] M. H. Raibert, Legged robots that balance . MIT press, 1986. [3] D. W. Haldane, M. M. Plecnik, J. K. Yim, and R. S. Fearing, “Robotic vertical jumping agility via series-elastic power modulation,” Science Robotics , vol. 1, no. 1, p. eaag2048, 2016. [4] Z. Batts, J. Kim, and K. Yamane, “Untethered one-legged hopping in 3d using linear elastic actuator in parallel (leap),” in International Symposium on Experimental Robotics . Springer, 2016, pp. 103–112. [5] S. Kalouche, “Goat: A legged robot with 3d agility and virtual com-pliance,” in 2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2017, pp. 4110–4117. [6] X. Chu, F. Y. Wong, C. Y. Fan, H. Zhang, Y. Chen, and K. S. Au, “Omega: open-source and multi-mode hopping platform for educa-tional and groundwork aims,” IEEE Robotics and Automation Letters ,2025. [7] C. I. Fan, X. Chu, F. F. Wong, F. Shi, and K. S. Au, “Sigma: a minimalistic 3d hopping robot with parallel 3-rsr mechanism for safeguarding humanitarian demining,” in 2024 IEEE International Symposium on Safety Security Rescue Robotics (SSRR) . IEEE, 2024, pp. 104–109. [8] T. Libby, T. Y. Moore, E. Chang-Siu, D. Li, D. J. Cohen, A. Jusufi, and R. J. Full, “Tail-assisted pitch control in lizards, robots and dinosaurs,” 
+
+Nature , vol. 481, no. 7380, pp. 181–184, 2012. [9] E. Chang-Siu, T. Libby, M. Tomizuka, and R. J. Full, “A lizard-inspired active tail enables rapid maneuvers and dynamic stabilization in a terrestrial robot,” in 2011 IEEE/RSJ international conference on intelligent robots and systems . IEEE, 2011, pp. 1887–1894. [10] A. M. Johnson, T. Libby, E. Chang-Siu, M. Tomizuka, R. J. Full, and D. E. Koditschek, “Tail assisted dynamic self righting,” in Adaptive mobile robotics . World Scientific, 2012, pp. 611–620. [11] X. Chu, C. H. D. Lo, C. Ma, and K. W. S. Au, “Null-space-avoidance-based orientation control framework for underactuated, tail-inspired robotic systems in flight phase,” IEEE Robotics and Automation Letters , vol. 4, no. 4, pp. 3916–3923, 2019. [12] Y. Tang, J. An, X. Chu, S. Wang, C. Y. Wong, and K. S. Au, “Towards safe landing of falling quadruped robots using a 3-dof morphable inertial tail,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2023, pp. 1141–1147. [13] K. Machairas and E. Papadopoulos, “On quadruped attitude dynamics and control using reaction wheels and tails,” in 2015 European Control Conference (ECC) . IEEE, 2015, pp. 753–758. [14] C.-Y. Lee, S. Yang, B. Bokser, and Z. Manchester, “Enhanced balance for legged robots using reaction wheels,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2023, pp. 9980–9987. [15] A. Anzai, T. Doi, K. Hashida, X. Chen, L. Han, and K. Hashimoto, “Monopod robot prototype with reaction wheel for hopping and posture stabilisation,” International Journal of Mechatronics and Au-tomation , vol. 8, no. 4, pp. 163–174, 2021. [16] X. Chu, S. Wang, R. Ng, C. Y. Fan, J. An, and K. S. Au, “Combining tail and reaction wheel for underactuated spatial reorientation in robot falling with quadratic programming,” IEEE Robotics and Automation Letters , vol. 8, no. 11, pp. 7783–7790, 2023. [17] B. Zhu, J. Xu, A. Charway, and D. Salda˜ na, “Pogodrone: Design, model, and control of a jumping quadrotor,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE, 2022, pp. 2031–2037. [18] S. Bai, Q. Pan, R. Ding, H. Jia, Z. Yang, and P. Chirarattananon, “An agile monopedal hopping quadcopter with synergistic hybrid locomotion,” Science robotics , vol. 9, no. 89, p. eadi8912, 2024. [19] Y. Wang, J. Kang, Z. Chen, and X. Xiong, “Terrestrial locomotion of pogox: From hardware design to energy shaping and step-to-step dynamics based control,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 3419–3425. [20] Y. Chen, Z. Chen, Y. Tang, K. W. Samuel Au, and X. Chu, “Appending propellers to leg for enhancing robustness of hopping locomotion,” in 
+
+Climbing and Walking Robots Conference . Springer, 2025, pp. 162– 173. [21] K. Kim, P. Spieler, E.-S. Lupu, A. Ramezani, and S.-J. Chung, “A bipedal walking robot that can fly, slackline, and skateboard,” Science Robotics , vol. 6, no. 59, p. eabf8136, 2021. [22] J. Di Carlo, P. M. Wensing, B. Katz, G. Bledt, and S. Kim, “Dynamic locomotion in the mit cheetah 3 through convex model-predictive control,” in 2018 IEEE/RSJ international conference on intelligent robots and systems (IROS) . IEEE, 2018, pp. 1–9. [23] D. Pucci, S. Traversaro, and F. Nori, “Momentum control of an underactuated flying humanoid robot,” IEEE Robotics and Automation Letters , vol. 3, no. 1, pp. 195–202, 2017. [24] T. Lee, M. Leok, and N. H. McClamroch, “Geometric tracking control of a quadrotor uav on se (3),” in 49th IEEE conference on decision and control (CDC) . IEEE, 2010, pp. 5420–5425.
