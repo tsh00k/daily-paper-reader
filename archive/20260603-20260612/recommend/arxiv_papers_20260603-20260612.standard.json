@@ -1,0 +1,420 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-12T07:10:05.424227+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.12365v1",
+      "source": "arxiv",
+      "title": "Ambient Diffusion Policy: Imitation Learning from Suboptimal Data in Robotics",
+      "abstract": "We propose Ambient Diffusion Policy, a simple and principled method for imitation learning from suboptimal data in robotics. High-quality, task-specific robot data is expensive and time-consuming to collect, while suboptimal datasets with lower-quality or out-of-distribution demonstrations are abundant. Existing methods that co-train on both data sources in robotics often fail to separate the meaningful and the harmful features in the suboptimal samples. In contrast, our method extracts only the useful features by introducing a new axis to co-training in robotics: noise-dependent data usage. Ambient Diffusion Policy restricts the contribution of suboptimal data during training to only the high and low diffusion times. To rigorously justify our approach, we first observe that robot action data exhibits a spectral power law. This induces two important properties on the optimal Diffusion Policy that we exploit: a global-to-local hierarchy and locality. We theoretically formalize this discussion using a simplified model. Our experiments validate Ambient Diffusion Policy on four types of suboptimal action data (noisy trajectories, sim-to-real gap, task mismatch, and large-scale data mixtures) across six tasks. The results show that it effectively learns from arbitrary sources of suboptimal data. Notably, it outperforms existing co-training baselines by up to 33% when scaled to Open X-Embodiment - a large dataset with heterogeneous data quality and unstructured distribution shifts. Overall, Ambient Diffusion Policy increases the utility of suboptimal demonstrations and expands the set of usable data sources in robotics.",
+      "authors": [
+        "Adam Wei",
+        "Nicholas Pfaff",
+        "Thomas Cohn",
+        "Arif Kerem Dayı",
+        "Constantinos Daskalakis",
+        "Giannis Daras",
+        "Russ Tedrake"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-10T17:34:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.12365v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Proposes imitation learning from suboptimal robotics data",
+      "llm_evidence_cn": "提出从次优机器人数据中进行模仿学习",
+      "llm_evidence": "提出从次优机器人数据中进行模仿学习",
+      "canonical_evidence": "提出从次优机器人数据中进行模仿学习",
+      "llm_tldr_en": "Introduces Ambient Diffusion Policy, a method that selectively uses suboptimal data only at high and low diffusion times for robust imitation learning in robotics.",
+      "llm_tldr_cn": "该论文针对机器人模仿学习中高质量数据昂贵而次优数据丰富的问题，提出环境扩散策略，通过噪声依赖的数据使用机制，在训练中仅利用次优数据的高扩散和低扩散时间步，从而提取有用特征避免有害特征。实验证明该方法能有效从次优数据中学习，提升了数据利用效率。",
+      "llm_tldr": "该论文针对机器人模仿学习中高质量数据昂贵而次优数据丰富的问题，提出环境扩散策略，通过噪声依赖的数据使用机制，在训练中仅利用次优数据的高扩散和低扩散时间步，从而提取有用特征避免有害特征。实验证明该方法能有效从次优数据中学习，提升了数据利用效率。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.05152v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning from Rich Feedback with Distributional DAgger",
+      "abstract": "Reasoning models have advanced rapidly, but the dominant reinforcement learning from verifiable rewards (RLVR) recipe remains surprisingly narrow: sample many responses and reward each with a single bit indicating whether the final answer is correct. Yet many settings provide rich feedback, including execution traces, tool outputs, expert corrections, and model self-evaluations. We study how to use such feedback through a distributional variant of the classic imitation learning algorithm DAgger, where the learner has local access to an expert distribution on states visited by the current policy. This yields a simple forward cross-entropy objective that admits a blackbox expert and whose sequence-level gradient {conduct rich credit assignment by propagating} future expert-student disagreement back to earlier decisions. We show that prior RL with self-distillation objectives based on reverse KL or Jensen-Shannon fail to guarantee monotonic policy improvement: even when the expert has higher reward, their updates may increase probability on worse actions. In contrast, we show that forward cross-entropy admits monotonic policy improvement and enjoys guarantees on regret. We further show that our objective optimizes a lower bound on teacher-weighted likelihood of success, leading to improved Pass@N. Empirically, our approach, DistIL, improves over RLVR and RL with self-distillation baselines across a variety of domains: scientific reasoning, coding, and solving hard mathematical problems.",
+      "authors": [
+        "Rishabh Agrawal",
+        "Jacob Fein-Ashley",
+        "Paria Rashidinejad"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-06-03T17:54:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.05152v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "distributional DAgger for imitation learning",
+      "llm_evidence_cn": "分布DAgger模仿学习方法",
+      "llm_evidence": "分布DAgger模仿学习方法",
+      "canonical_evidence": "分布DAgger模仿学习方法",
+      "llm_tldr_en": "Proposes distributional DAgger that leverages rich feedback for imitation learning in reasoning models.",
+      "llm_tldr_cn": "针对推理模型的模仿学习，提出Distributional DAgger方法，利用执行轨迹等丰富反馈信号，通过局部专家分布优化策略，实现序列级梯度信用分配，显著提升反馈利用效率。",
+      "llm_tldr": "针对推理模型的模仿学习，提出Distributional DAgger方法，利用执行轨迹等丰富反馈信号，通过局部专家分布优化策略，实现序列级梯度信用分配，显著提升反馈利用效率。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08881v1",
+      "source": "arxiv",
+      "title": "Benchmarking Vision-Language-Action Models on SO-101: Failure and Recovery Analysis",
+      "abstract": "Vision-Language-Action (VLA) models have demonstrated strong generalization in robotic manipulation, yet existing evaluations are primarily conducted in simulation or on expensive robotic platforms, leaving their robustness on affordable real-world robots largely unexplored. We present a standardized real-world benchmark for evaluating representative VLA and imitation learning policies on the low-cost SO-101 robotic platform. The benchmark comprises four representative manipulation tasks together with unified evaluation protocols, enabling systematic comparison under embodiment uncertainty. Using real-world teleoperated demonstrations, we fine-tune and evaluate $π_{0.5}$, SmolVLA, Wall-X, and ACT directly on the physical platform. Beyond conventional task success rates, the benchmark incorporates a structured failure taxonomy, semantic- and execution-level failure decomposition, and recovery-aware evaluation metrics to characterize policy robustness. Experimental results show that stronger pretrained VLA policies generally outperform the imitation learning baseline, although performance remains highly task-dependent under low-cost robotic deployment conditions. Execution instability emerges as the dominant failure source, while recovery capability varies substantially across architectures. These results highlight the importance of failure and recovery analysis beyond binary task success and establish SO-101 as a practical benchmark for evaluating embodied AI systems under realistic low-cost robotic deployment conditions.",
+      "authors": [
+        "Yi Yu",
+        "Xinchuan Qiu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-07T23:39:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.08881v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for imitation learning policies",
+      "llm_evidence_cn": "模仿学习策略的基准测试",
+      "llm_evidence": "模仿学习策略的基准测试",
+      "canonical_evidence": "模仿学习策略的基准测试",
+      "llm_tldr_en": "SO-101 benchmark evaluates VLA and imitation learning policies on real low-cost robot, revealing failure modes and recovery capabilities.",
+      "llm_tldr_cn": "该论文提出了一个标准化真实世界基准SO-101，用于评估视觉-语言-动作（VLA）模型和模仿学习策略。在低成本的SO-101机器人平台上，对π0.5、SmolVLA、Wall-X和ACT等模型进行了细调与评估，分析了在体现不确定性下的故障和恢复行为。该工作为低成本机器人上模仿学习的鲁棒性研究提供了重要基准。",
+      "llm_tldr": "该论文提出了一个标准化真实世界基准SO-101，用于评估视觉-语言-动作（VLA）模型和模仿学习策略。在低成本的SO-101机器人平台上，对π0.5、SmolVLA、Wall-X和ACT等模型进行了细调与评估，分析了在体现不确定性下的故障和恢复行为。该工作为低成本机器人上模仿学习的鲁棒性研究提供了重要基准。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.09615v1",
+      "source": "arxiv",
+      "title": "DexPIE: Stable Dexterous Policy Improvement from Real-World Experience",
+      "abstract": "Dexterous manipulation presents substantial challenges for imitation learning due to its high-dimensional action space and complex contact-rich dynamics. Policies trained purely from demonstrations often suffer from compounding errors during deployment and require large amounts of expert data to achieve reliable performance. To move beyond the limitations of demonstration data, in this work, we propose DexPIE, a post-training framework for dexterous policy improvement from experience collected through real-world deployment. First, DexPIE enables effective exploration coverage through a dexterous-hand-adapted intervention system and multi-stage DAgger-style data collection across initial and intermediate task stages, providing reliable supervision for accurate policy evaluation. To reduce temporal noise between post-training rollouts and demonstration data, we introduce asynchronous inference in the relative action space, which better aligns rollout data with demonstrated behavior and allows the critic to learn a value function induced by a more consistent underlying policy. Finally, DexPIE improves the policy through conditioning on a continuous optimality indicator, allowing the policy to leverage the quality of data in a more fine-grained manner. Across three challenging real-world dexterous manipulation tasks, DexPIE achieves a 37% improvement in success rate over the demonstration-based reference policy, outperforming all baseline methods and demonstrating stronger robustness. The source code and dataset will be made publicly available.",
+      "authors": [
+        "Ruizhe Liao",
+        "Wenrui Chen",
+        "Liangji Zeng",
+        "Haoran Lin",
+        "Fan Yang",
+        "Kailun Yang",
+        "Yaonan Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-06-08T15:21:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.09615v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "imitation learning framework for dexterous manipulation",
+      "llm_evidence_cn": "灵巧操作的模仿学习框架",
+      "llm_evidence": "灵巧操作的模仿学习框架",
+      "canonical_evidence": "灵巧操作的模仿学习框架",
+      "llm_tldr_en": "Proposes DexPIE, a post-training framework that improves dexterous policies via real-world experience using DAgger-style data collection, overcoming limitations of pure imitation from demonstrations.",
+      "llm_tldr_cn": "纯演示训练的灵巧操作策略在部署时容易出现误差累积，且需要大量专家数据。本文提出DexPIE框架，通过真实世界部署经验进行后训练改进，采用多阶段DAgger式数据收集和干预系统，实现了高效的策略提升。实验证明该方法显著减少了误差累积，提高了灵巧操作的成功率和鲁棒性。",
+      "llm_tldr": "纯演示训练的灵巧操作策略在部署时容易出现误差累积，且需要大量专家数据。本文提出DexPIE框架，通过真实世界部署经验进行后训练改进，采用多阶段DAgger式数据收集和干预系统，实现了高效的策略提升。实验证明该方法显著减少了误差累积，提高了灵巧操作的成功率和鲁棒性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.10614v1",
+      "source": "arxiv",
+      "title": "Dexterous Point Policy: Learning Point-based Dexterous Hand Policies from Human Demonstrations",
+      "abstract": "Robotic foundation models pre-trained on human demonstration videos have shown promise, but a significant embodiment gap remains when the resulting policies are deployed on real robots. A common remedy is to fine-tune these models on robot-specific demonstrations. However, robot data collection can be prohibitively expensive and time-consuming, which is particularly acute in dexterous manipulation, e.g., teleoperating a multi-fingered hand for even a single atomic task can take days. To address this, we introduce Dexterous Point Policy, a framework that learns dexterous manipulation policies directly from human videos and requires no robot demonstrations. Our core insight is that a unified 3D keypoint representation can bridge human and robot embodiments when used for both observations and actions. Specifically, we extract 3D keypoints of task-relevant objects and human hands from raw videos, and train an autoregressive transformer over these keypoints. We observe that at the keypoint level, specifically the wrist and fingertips, human and robot behaviors closely align, enabling direct policy transfer. On a suite of real-robot tasks spanning pick-and-place and tool use, Dexterous Point Policy attains 75.0% success, whereas a state-of-the-art VLA baseline reaches only 1.0%. Furthermore, our method generalizes strongly to unseen scenarios, including multi-object environments and novel object categories.",
+      "authors": [
+        "Beomjun Kim",
+        "Seong Hyeon Park",
+        "Seunghoon Sim",
+        "Seungjun Moon",
+        "Sanghyeok Lee",
+        "Jinwoo Shin"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-09T09:13:36+00:00",
+      "link": "https://arxiv.org/pdf/2606.10614v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns dexterous policies from human demonstrations",
+      "llm_evidence_cn": "从人类演示学习灵巧策略",
+      "llm_evidence": "从人类演示学习灵巧策略",
+      "canonical_evidence": "从人类演示学习灵巧策略",
+      "llm_tldr_en": "Framework learning dexterous manipulation policies directly from human videos using unified 3D keypoint representation, requiring no robot demonstrations.",
+      "llm_tldr_cn": "本文针对灵巧操作中机器人数据采集成本高的问题，提出了一个从人类视频直接学习灵巧操作策略的框架，利用统一的3D关键点表示桥接人与机器人的形态差异，在无需机器人演示的情况下实现了有效的策略学习。",
+      "llm_tldr": "本文针对灵巧操作中机器人数据采集成本高的问题，提出了一个从人类视频直接学习灵巧操作策略的框架，利用统一的3D关键点表示桥接人与机器人的形态差异，在无需机器人演示的情况下实现了有效的策略学习。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.10614v1"
+    },
+    {
+      "id": "2606.10825v1",
+      "source": "arxiv",
+      "title": "MODIP: Efficient Model-Based Optimization for Diffusion Policies",
+      "abstract": "Diffusion policies (DPs) have emerged as expressive policy representations for robot learning, often used with imitation learning methods such as behavioral cloning (BC). However, while their success has largely been confined to BC, direct reinforcement learning (RL) fine-tuning remains challenging because actions are generated through a multi-step denoising process. In this work, we propose MODIP, a framework for the offline-to-online fine-tuning of DPs. Rather than directly applying RL to the DPs, MODIP leverages a world model (WM) to guide policy adaptation and keeps the simplicity and stability of BC. We utilize model predictive control (MPC) to generate high-quality trajectories within the WM, and use them as supervised targets for fine-tuning the DP. To make MPC planning efficient, MODIP uses a terminal state value instead of a policy-dependent state-action value, reducing inference time. Additionally, MODIP trains critics with policy-independent TD targets, reducing training time. Experiments on D4RL (MuJoCo, Kitchen) and RoboMimic tasks show that MODIP improves diffusion policies beyond BC, and is competitive with or outperforms diffusion policy RL fine-tuning methods and strong model-based baselines such as TD-MPC2.",
+      "authors": [
+        "Zakariae El Asri",
+        "Philippe Gratias-Quiquandon",
+        "Nicolas Thome",
+        "Olivier Sigaud"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-09T13:09:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.10825v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "imitation learning with diffusion policies and model predictive control",
+      "llm_evidence_cn": "模仿学习与扩散策略结合模型预测控制",
+      "llm_evidence": "模仿学习与扩散策略结合模型预测控制",
+      "canonical_evidence": "模仿学习与扩散策略结合模型预测控制",
+      "llm_tldr_en": "MODIP fine-tunes diffusion policies using world model and MPC for trajectory generation, keeping stability of behavioral cloning while enabling RL-like improvement.",
+      "llm_tldr_cn": "扩散策略在模仿学习中表现优异，但直接强化学习微调困难。MODIP提出利用世界模型进行模型预测控制生成高质量轨迹，作为监督目标微调扩散策略，既保持了行为克隆的稳定性，又实现了类似强化学习的性能提升。在机器人操作基准上，MODIP显著优于仅行为克隆的扩散策略，为离线到在线微调提供了高效方案。",
+      "llm_tldr": "扩散策略在模仿学习中表现优异，但直接强化学习微调困难。MODIP提出利用世界模型进行模型预测控制生成高质量轨迹，作为监督目标微调扩散策略，既保持了行为克隆的稳定性，又实现了类似强化学习的性能提升。在机器人操作基准上，MODIP显著优于仅行为克隆的扩散策略，为离线到在线微调提供了高效方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.11087v1",
+      "source": "arxiv",
+      "title": "Test-Time Gradient Guidance of Flow Policies in Reinforcement Learning",
+      "abstract": "Expressive continuous control policies, such as diffusion and flow models, form the backbone of recent advances in scaling imitation learning for simulated and real robot control. While they are known to scale stably in the supervised imitation learning setting, incorporating them into reinforcement learning (RL) pipelines for policy improvement has proven more difficult. It often requires specialized training objectives or backpropagating through denoising processes, which cause well-known issues with stability and affect scalability. In this paper we study the question of whether simple policy improvement schemes at test time alone, leaving stable supervised policy training intact, can be a competitive alternative which sidesteps these issues. To this end, we propose QGF (Q-Guided Flow), an RL algorithm that performs policy optimization entirely at test time. QGF works by pre-training both a reference flow policy (via a standard behavioral cloning objective) and a value function critic and, at test time, using the value gradient to guide the reference policy to generate higher-value actions without any additional policy learning. Empirically, QGF outperforms prior test-time RL methods on single-task and goal-conditioned offline RL benchmarks with high-dimensional action spaces, and is competitive with state-of-the-art training-time algorithms while being much cheaper to run. Moreover, it exhibits favorable scaling with model size by avoiding the instability of actor-critic training, offering a practical and effective alternative RL algorithm with expressive policies.",
+      "authors": [
+        "Zhiyuan Zhou",
+        "Andy Peng",
+        "Charles Xu",
+        "Qiyang Li",
+        "Tobias Springenberg",
+        "Kevin Frans",
+        "Sergey Levine"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-09T16:45:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.11087v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "test-time gradient guidance for flow policies in imitation learning",
+      "llm_evidence_cn": "测试时梯度引导流策略用于模仿学习",
+      "llm_evidence": "测试时梯度引导流策略用于模仿学习",
+      "canonical_evidence": "测试时梯度引导流策略用于模仿学习",
+      "llm_tldr_en": "Studies simple test-time policy improvement schemes for flow policies in RL, leaving supervised imitation training intact, showing competitive alternative to backprop-through-denoising methods.",
+      "llm_tldr_cn": "该论文研究在测试时对基于流策略的强化学习进行简单策略改进，避免训练时通过去噪反向传播的稳定性问题。提出仅使用测试时梯度引导，保持监督模仿学习训练不变。在连续控制任务中，该方法在性能上可与需要复杂训练目标的替代方案竞争，同时更稳定。为流策略的RL融合提供了轻量级方案。",
+      "llm_tldr": "该论文研究在测试时对基于流策略的强化学习进行简单策略改进，避免训练时通过去噪反向传播的稳定性问题。提出仅使用测试时梯度引导，保持监督模仿学习训练不变。在连续控制任务中，该方法在性能上可与需要复杂训练目标的替代方案竞争，同时更稳定。为流策略的RL融合提供了轻量级方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.08107v1",
+      "source": "arxiv",
+      "title": "Ego-Pi: VLA Fine-Tuning for Ego-Centric Human and Robot Data",
+      "abstract": "Robotics faces a fundamental challenge of data scarcity. Unlike language or vision research, there is no internet-scale dataset for robotic manipulation. A promising path forward is to leverage egocentric human data, which can be collected more easily, with greater breadth, and at a larger scale. Towards this end, we investigate key design choices for learning across human and humanoid embodiments equipped with dexterous five-finger hands, using the $π_{0.5}$ model as a foundation. Our results show that human data enables robots to learn new task semantics and compose existing skills into novel behaviors without corresponding robot data. The paper website is here: https://egopipaper.github.io/",
+      "authors": [
+        "Ji Woong Kim",
+        "Ke Wang",
+        "Zipeng Fu",
+        "Sirui Chen",
+        "Cong Zhao",
+        "Jeff Lai",
+        "Chelsea Finn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-06T11:14:21+00:00",
+      "link": "https://arxiv.org/pdf/2606.08107v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning from human demonstrations for robot tasks",
+      "llm_evidence_cn": "从人类示范中学习机器人任务",
+      "llm_evidence": "从人类示范中学习机器人任务",
+      "canonical_evidence": "从人类示范中学习机器人任务",
+      "llm_tldr_en": "Ego-Pi fine-tunes a VLA model on egocentric human data to enable robots to learn task semantics and compose skills without corresponding robot data.",
+      "llm_tldr_cn": "本文针对机器人操作数据稀缺的问题，提出利用自我中心人类数据微调视觉-语言-动作(VLA)模型。通过在不同人形机器人上实验，表明人类数据能帮助机器人学习新任务语义并组合已有技能，而无需对应的机器人数据。该方法为缓解机器人数据匮乏提供了有效途径。",
+      "llm_tldr": "本文针对机器人操作数据稀缺的问题，提出利用自我中心人类数据微调视觉-语言-动作(VLA)模型。通过在不同人形机器人上实验，表明人类数据能帮助机器人学习新任务语义并组合已有技能，而无需对应的机器人数据。该方法为缓解机器人数据匮乏提供了有效途径。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.06123v1",
+      "source": "arxiv",
+      "title": "Adaptive state-action abstractions via rate-distortion",
+      "abstract": "When learning to walk, infants seem to address a coarse version of the problem first - stay upright, reach the caregiver - and refine it only when further practice at that resolution stops paying off. Reinforcement learning offers multiple techniques for building simple versions of complex tasks, but lacks general principles for how to dynamically adjust the granularity of these abstractions during learning. This paper proposes one such principle: refine the abstraction as soon as the learning error within it becomes comparable to the error induced by the abstraction itself. Here, we investigate one way of formalising this principle via a performance certificate that decomposes value error into two terms: a learning error bound captured by a Bellman residual, and an abstraction error bound given by a bisimulation metric. The resulting switching strategy is implemented by soft state-action abstractions built from rate-distortion principles, whose resolution along state and action axes can be continuously adjusted. We validate this construction in a range of tabular settings, showing that near-optimal performance can be achieved under substantial lossy compression of state and action information.",
+      "authors": [
+        "Fernando E. Rosas"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-06-04T13:10:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.06123v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learning to walk, abstraction refinement for locomotion",
+      "llm_evidence_cn": "学习行走，运动中的抽象细化",
+      "llm_evidence": "学习行走，运动中的抽象细化",
+      "canonical_evidence": "学习行走，运动中的抽象细化",
+      "llm_tldr_en": "Proposes a rate-distortion principle to adaptively refine state-action abstractions in RL for locomotion, with a performance certificate decomposing error.",
+      "llm_tldr_cn": "该论文受婴儿学步启发，提出一种基于率失真理论的自适应状态-动作抽象细化原则。在强化学习框架中，通过性能证书将值误差分解为学习误差和抽象误差，动态调整抽象粒度。在运动控制任务中展示了该方法能有效提升学习效率。虽未直接解决具体控制算法，但为运动学习提供了通用原则。",
+      "llm_tldr": "该论文受婴儿学步启发，提出一种基于率失真理论的自适应状态-动作抽象细化原则。在强化学习框架中，通过性能证书将值误差分解为学习误差和抽象误差，动态调整抽象粒度。在运动控制任务中展示了该方法能有效提升学习效率。虽未直接解决具体控制算法，但为运动学习提供了通用原则。",
+      "llm_tags": [
+        "query:locowbc:composite"
+      ],
+      "matched_query_tag": "query:locowbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找机器人locomotion、WBC的工作, especially work that connects or combines: robot locomotion techniques and algorithms; whole-body control for robots; humanoid robot locomotion and control; legged locomotion planning and control; motion planning for robot locomotion; contact force control in locomotion; methods for whole body control in robot locomotion; recent advances in humanoid walking and whole body control; control strategies for bipedal robot locomotion; WBC framework for legged robot locomotion.",
+      "matched_requirement_id": "req-composite-locowbc",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11982v1",
+      "source": "arxiv",
+      "title": "PAWS: Preference Learning with Advantage-Weighted Segments",
+      "abstract": "Preference-based reinforcement learning (PbRL) learns policies from human trajectory-level comparisons, avoiding explicit reward design and expert demonstrations. Existing methods typically train utility functions on trajectory or segment-level preferences while relying on per-step utility estimates during policy optimization. This training and inference mismatch induces a distribution shift that severely degrades temporal credit assignment and limits policy learning. We analyze this issue and propose PAWS, a segment-based preference learning method that performs policy updates directly using segment-level advantage functions. By aligning utility training with policy optimization, PAWS preserves trajectory-level preference information and avoids unreliable per-step learning signals. Experiments on simulated robotic manipulation and locomotion tasks demonstrate that PAWS consistently outperforms existing PbRL approaches, highlighting the importance of distribution-consistent preference learning.",
+      "authors": [
+        "Aleksandar Taranovic",
+        "Onur Celik",
+        "Niklas Freymuth",
+        "Ge Li",
+        "Serge Thilges",
+        "Huy Le",
+        "Tai Hoang",
+        "Rania Rayyes",
+        "Gerhard Neumann"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-10T12:00:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.11982v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "query:inverse-rl"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "preference learning for reward function learning",
+      "llm_evidence_cn": "用于奖励函数学习的偏好学习方法",
+      "llm_evidence": "用于奖励函数学习的偏好学习方法",
+      "canonical_evidence": "用于奖励函数学习的偏好学习方法",
+      "llm_tldr_en": "PAWS performs policy updates using segment-level advantage functions for preference-based RL, avoiding per-step utility mismatch.",
+      "llm_tldr_cn": "现有基于偏好的强化学习在训练时使用片段级偏好，但在策略优化时依赖单步效用估计，导致分布偏移和时序信用分配问题。本文提出PAWS，直接使用片段级的优势函数进行策略更新，保持偏好信息与优化目标一致。实验证明该方法在多个基准任务上优于现有方法，为偏好学习中的奖励函数建模提供了更有效的解决方案。",
+      "llm_tldr": "现有基于偏好的强化学习在训练时使用片段级偏好，但在策略优化时依赖单步效用估计，导致分布偏移和时序信用分配问题。本文提出PAWS，直接使用片段级的优势函数进行策略更新，保持偏好信息与优化目标一致。实验证明该方法在多个基准任务上优于现有方法，为偏好学习中的奖励函数建模提供了更有效的解决方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

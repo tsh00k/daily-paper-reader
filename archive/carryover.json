@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-11T22:19:00.611582+00:00",
-  "updated_date": "20260611",
+  "generated_at": "2026-06-12T07:10:05.425227+00:00",
+  "updated_date": "20260603-20260612",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
@@ -9,104 +9,9 @@
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260611",
+      "updated_date": "20260603-20260612",
       "carryover_days": 9,
-      "items": [
-        {
-          "id": "2606.10614v1",
-          "source": "arxiv",
-          "title": "Dexterous Point Policy: Learning Point-based Dexterous Hand Policies from Human Demonstrations",
-          "abstract": "Robotic foundation models pre-trained on human demonstration videos have shown promise, but a significant embodiment gap remains when the resulting policies are deployed on real robots. A common remedy is to fine-tune these models on robot-specific demonstrations. However, robot data collection can be prohibitively expensive and time-consuming, which is particularly acute in dexterous manipulation, e.g., teleoperating a multi-fingered hand for even a single atomic task can take days. To address this, we introduce Dexterous Point Policy, a framework that learns dexterous manipulation policies directly from human videos and requires no robot demonstrations. Our core insight is that a unified 3D keypoint representation can bridge human and robot embodiments when used for both observations and actions. Specifically, we extract 3D keypoints of task-relevant objects and human hands from raw videos, and train an autoregressive transformer over these keypoints. We observe that at the keypoint level, specifically the wrist and fingertips, human and robot behaviors closely align, enabling direct policy transfer. On a suite of real-robot tasks spanning pick-and-place and tool use, Dexterous Point Policy attains 75.0% success, whereas a state-of-the-art VLA baseline reaches only 1.0%. Furthermore, our method generalizes strongly to unseen scenarios, including multi-object environments and novel object categories.",
-          "authors": [
-            "Beomjun Kim",
-            "Seong Hyeon Park",
-            "Seunghoon Sim",
-            "Seungjun Moon",
-            "Sanghyeok Lee",
-            "Jinwoo Shin"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.CV",
-            "cs.LG"
-          ],
-          "published": "2026-06-09T09:13:36+00:00",
-          "link": "https://arxiv.org/pdf/2606.10614v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "learns dexterous policies from human demonstrations",
-          "llm_evidence_cn": "从人类演示学习灵巧策略",
-          "llm_evidence": "从人类演示学习灵巧策略",
-          "canonical_evidence": "从人类演示学习灵巧策略",
-          "llm_tldr_en": "Framework learning dexterous manipulation policies directly from human videos using unified 3D keypoint representation, requiring no robot demonstrations.",
-          "llm_tldr_cn": "本文针对灵巧操作中机器人数据采集成本高的问题，提出了一个从人类视频直接学习灵巧操作策略的框架，利用统一的3D关键点表示桥接人与机器人的形态差异，在无需机器人演示的情况下实现了有效的策略学习。",
-          "llm_tldr": "本文针对灵巧操作中机器人数据采集成本高的问题，提出了一个从人类视频直接学习灵巧操作策略的框架，利用统一的3D关键点表示桥接人与机器人的形态差异，在无需机器人演示的情况下实现了有效的策略学习。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.10614v1",
-          "carry_days": 2
-        },
-        {
-          "id": "2606.12365v1",
-          "source": "arxiv",
-          "title": "Ambient Diffusion Policy: Imitation Learning from Suboptimal Data in Robotics",
-          "abstract": "We propose Ambient Diffusion Policy, a simple and principled method for imitation learning from suboptimal data in robotics. High-quality, task-specific robot data is expensive and time-consuming to collect, while suboptimal datasets with lower-quality or out-of-distribution demonstrations are abundant. Existing methods that co-train on both data sources in robotics often fail to separate the meaningful and the harmful features in the suboptimal samples. In contrast, our method extracts only the useful features by introducing a new axis to co-training in robotics: noise-dependent data usage. Ambient Diffusion Policy restricts the contribution of suboptimal data during training to only the high and low diffusion times. To rigorously justify our approach, we first observe that robot action data exhibits a spectral power law. This induces two important properties on the optimal Diffusion Policy that we exploit: a global-to-local hierarchy and locality. We theoretically formalize this discussion using a simplified model. Our experiments validate Ambient Diffusion Policy on four types of suboptimal action data (noisy trajectories, sim-to-real gap, task mismatch, and large-scale data mixtures) across six tasks. The results show that it effectively learns from arbitrary sources of suboptimal data. Notably, it outperforms existing co-training baselines by up to 33% when scaled to Open X-Embodiment - a large dataset with heterogeneous data quality and unstructured distribution shifts. Overall, Ambient Diffusion Policy increases the utility of suboptimal demonstrations and expands the set of usable data sources in robotics.",
-          "authors": [
-            "Adam Wei",
-            "Nicholas Pfaff",
-            "Thomas Cohn",
-            "Arif Kerem Dayı",
-            "Constantinos Daskalakis",
-            "Giannis Daras",
-            "Russ Tedrake"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.AI"
-          ],
-          "published": "2026-06-10T17:34:12+00:00",
-          "link": "https://arxiv.org/pdf/2606.12365v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "imitation learning from suboptimal data via diffusion policy",
-          "llm_evidence_cn": "利用扩散策略从次优数据中进行模仿学习",
-          "llm_evidence": "利用扩散策略从次优数据中进行模仿学习",
-          "canonical_evidence": "利用扩散策略从次优数据中进行模仿学习",
-          "llm_tldr_en": "Ambient Diffusion Policy introduces noise-dependent data usage to extract useful features from suboptimal demonstrations for imitation learning in robotics.",
-          "llm_tldr_cn": "针对机器人模仿学习中高质量数据昂贵而次优数据丰富但难以有效利用的问题，提出环境扩散策略。该方法根据扩散时间步控制次优数据的贡献，仅在高和低噪声阶段利用它们。理论分析和实验表明，该方法能有效提取有益特征，在多个任务上超越现有方法，降低了高质量数据需求。",
-          "llm_tldr": "针对机器人模仿学习中高质量数据昂贵而次优数据丰富但难以有效利用的问题，提出环境扩散策略。该方法根据扩散时间步控制次优数据的贡献，仅在高和低噪声阶段利用它们。理论分析和实验表明，该方法能有效提取有益特征，在多个任务上超越现有方法，降低了高质量数据需求。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.12365v1",
-          "carry_days": 1
-        }
-      ]
+      "items": []
     },
     "MPC-WBC": {
       "updated_date": "20260611",
