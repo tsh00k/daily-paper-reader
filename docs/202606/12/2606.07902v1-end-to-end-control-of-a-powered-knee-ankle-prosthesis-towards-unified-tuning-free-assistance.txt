@@ -1,0 +1,200 @@
+Title: End-to-End Control of a Powered Knee-Ankle Prosthesis Towards Unified, Tuning-Free Assistance
+
+URL Source: https://arxiv.org/pdf/2606.07902v1
+
+Published Time: Tue, 09 Jun 2026 00:22:11 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+> 1
+
+# End-to-End Control of a Powered Knee-Ankle Prosthesis Towards Unified, Tuning-Free Assistance 
+
+John Shim, Christoph P. O. Nuesslein, Sixu Zhou, Hanjun Kim, Kinsey Herrin, and Aaron J. Young, Senior Member, IEEE 
+
+Abstract —Powered prostheses conventionally rely on impedance controllers that require extensive manual tuning and explicit mode classification. In this work, we present real-time deployment of an end-to-end prosthesis controller that estimates continuous actuator signals from onboard sensors, eliminating the need for intent classifiers and subject-specific tuning. Temporal Convolutional Networks were trained on a multi-terrain dataset from 18 individuals with transfemoral amputation and deployed in real time across five locomotion modes. Four participants (three able-bodied, one with transfemoral amputation) ambulated across level ground, ramp ascent and descent, and stair ascent and descent. During level walking, the deployed controller reproduced the training-data scaling of peak ankle torque with walking speed (deployed 0.85 Nm/kg per m/s, p = 0.001 ; training 
+
+0.96 Nm/kg per m/s, 95% CI [0 .42 , 1.50] , p = 0.002 ), after excluding one outlier traced to atypical prosthesis loading. During ramp ascent, the controller scaled knee pre-flexion with grade (deployed 2.92 ◦/deg, p = 0 .027 ; training 3.30 ◦/deg, 95% CI [1 .83 , 4.77] , p < 0.001 ). During ramp descent, the controller increased resistive knee torque relative to level walking (deployed 
+
++0 .16 Nm/kg, p < 0.001 ; training +0 .16 Nm/kg, p = 0 .008 ). Seamless stair transitions were generated for both intact- and prosthetic-side-leading sequences in ascent and descent, despite the training data containing only one limb-leading sequence. These results provide initial evidence towards end-to-end control that can provide unified, mode-adaptive prosthetic assistance without subject-specific tuning. 
+
+Index Terms —Powered prosthesis, deep learning, end-to-end control. 
+
+# INDIVIDUALS with transfemoral (TF) amputation (i.e., above-knee) routinely encounter limitations in functional mobility, exhibiting reduced walking speed, elevated metabolic cost, and degraded gait symmetry [1], [2]. These deficits are exacerbated by passive prostheses, which cannot deliver net positive joint work, leading users to compensate by over-loading their intact joints. This further elevates the risk of osteoarthritis and chronic joint pain [3]. Powered prostheses have the potential to close these functional gaps through actuated knee and ankle assistance, which has been shown to enable step-over-step stair ascent [4] and improved self-
+
+This work was supported by the DoD CDMRP under Award #W81XWH2211091 and in part by the NIH Health Director New Inno-vator under Award #DP2-HD111709. (Corresponding author: John Shim.) This work involved human subjects in its research. Approval of all ethical and experimental procedures and protocols was granted by Georgia Tech’s Institutional Review Board under Protocol H21117. J. Shim, C. P. O. Nuesslein, S. Zhou, and A. J. Young are with the Woodruff School of Mechanical Engineering and the Institute for Robotics and Intelligent Machines, Georgia Institute of Technology, Atlanta, GA 30332-0405 USA (e-mail: jshim77@gatech.edu). H. Kim and K. Herrin are with the Woodruff School of Mechanical Engineering, Georgia Institute of Technology, Atlanta, GA 30332-0405 USA. 
+
+selected walking speed [5]. Realizing the benefits of powered assistance requires coor-dinated control. This process is conventionally implemented through a hierarchical framework [6]: a high-level con-troller infers user intent from sensor signals (e.g., locomotion mode [7] and gait speed [8]), a mid-level controller computes desired joint torques, typically via impedance control paired with a finite state machine (FSM) [9], [10], and a low-level controller realizes actuator commands. This paradigm faces two key scalability limitations despite its efficacy. First, impedance controllers require extensive tuning; accommodat-ing varied locomotion modes and terrain conditions (e.g., stair heights or ramp slopes) can take trained clinicians up to five hours per user [9], making deployment prohibitively costly. Second, because impedance parameters are defined over a discrete set of locomotion modes, intent misclassification may trigger abrupt transitions in assistance. Individuals with lower-limb amputation take 3,000–4,000 steps daily [11]; even a 99% accurate classifier yields 30–40 misclassifications per day, each of which can destabilize users and increase fall risk [12]. To improve deployment scalability, recent work has ad-dressed these limitations from two angles. To reduce tuning effort, modern optimizers have been utilized to automati-cally derive impedance parameters. Wen et al. [13] and Best 
+
+et al. [14] leveraged online reinforcement learning and convex optimization, respectively. Best’s work also partially addressed the discrete control paradigm by unifying ramp and walking conditions, though stair remained separate. The second angle pushes this idea further, pursuing fully unified control that replaces mode-specific behaviors with a single classification-free controller. Sullivan et al. [15] realized this through a motion-primitive framework that handles transitions without a mode classifier. These advances ease tuning or unify control individually; however, each remains constrained to predefined locomotion modes or requires controller-specific expertise for personalization, leaving scalable deployment unresolved. Deep learning-based control offers a promising path to address both challenges. By generating actions directly from sensor data, it collapses the high- and mid-level hierarchy and removes the need for mode classification and FSMs [16]. In the prosthesis domain, Kim et al. [17] demonstrated this paradigm by training a deep neural network to predict expert-tuned impedance parameters in real time, enabling ambulation across five locomotion modes without explicit intent classification. However, predicting impedance parameters constrains what the network can learn. Training targets remain tied to impedance formulations, and the discrete nature of cer-
+
+> arXiv:2606.07902v1 [cs.RO] 5 Jun 2026
+
+2Joint Torque tJoint Angle Load Cell Thigh IMU Shank IMU Foot IMU Stance Swing Torque Estimator ReLU ReLU ReLU ReLU ReLU Ankle Knee TCN Prediction >BW% 10tTorque (Nm/Kg) Joint Angle (deg) Kinematic Controller Axial Load Cell Force 
+
+> Trajectory Estimator ReLU Residual Block (Dilation Rate: 1) ReLU Residual Block (Dilation Rate: 2) ReLU Residual Block (Dilation Rate: 3) ReLU Residual Block (Dilation Rate: 4) ReLU Residual Block (Dilation Rate: 5)
+
+Fig. 1. Proposed end-to-end control framework. A deep neural network maps onboard sensor measurements—joint encoders (position, velocity), IMU (3-axis acceleration, angular velocity), and load cell (3-axis force, moment)—to continuous joint torque and trajectory estimates in real time. The control mode is governed by the axial load cell reading exceeding a fraction of body weight. The shaded region indicates trajectory prediction. 
+
+tain parameters—such as the knee equilibrium angle being non-zero only during stairs [9]—implicitly encodes mode-dependent behaviors that reintroduce misclassification risks. To bridge this gap, this study evaluated a fully end-to-end controller driven by continuous estimates of actuator signals. Our earlier work demonstrated a Temporal Convolutional Network (TCN) capable of estimating adaptive joint torque by inferring environmental context from onboard sensor signals [18]. However, this approach was restricted to stance-phase and was not validated online. Building on this work, the present study extends the framework to include swing-phase control by training a TCN to predict forward joint position trajectories. We evaluated the real-time deployment of this combined framework across a variety of ambulation tasks. Our first hypothesis was that a TCN trained end-to-end on continuous actuator signals preserves the assistance-scaling relationships present in its training data across environmental conditions. Our second hypothesis was that the controller produces joint behaviors that differ significantly across loco-motion modes despite receiving no explicit mode label. 
+
+A. Prosthesis Dataset 
+
+A multi-terrain locomotion dataset was compiled from prior experiments involving the OSL under real-time impedance control [4], [7], [10], [19], [20]. Data from 18 individuals with TF amputation ( 82 .0 ± 16 kg, 1.75 ± 0.11 m, 12R/6L) were collected, spanning level walking (LW, 0.4–0.9 m/s), ramp ascent (RA) and ramp descent (RD, 7.8–12 .4◦), and stair ascent (SA) and stair descent (SD, 10.2–17.8 cm), totaling 29,727 stance and 29,339 swing steps (Fig. 2(b)). I. M ETHODS 
+
+A. Hardware 
+
+The first- and second-generation Open-Source Leg (OSL) [21], [22] were used to collect the locomotion dataset, with real-time evaluation on the second-generation device for its expanded ankle range of motion (30 ◦ to 60 ◦). Onboard sensors (Fig. 2(a)) include motor encoders (Dephy, Maynard, MA), a 6-axis load cell (M3564F, Sunrise Instruments, Foot IMU Knee Encoder Shank IMU Ankle Encoder Jetson Orin Nano Loadcell Thigh IMU 
+
+(a) Training Dataset RA 4,273 steps (2,709 stance + 1,564 swing )1,887 steps (867 stance + 1,020 swing )4,548 steps (2,921 stance + 1,627 swing )LW RD SA SD 46,267 steps (22,115 stance + 24,152 swing )78.3 % 7.2 % 7.7 % 3.2 % 3.5 % 2,091 steps (1,115 stance + 976 swing )(b) 
+
+Fig. 2. (a) Onboard sensor configuration of the Open-Source Leg. (b) Training data distribution by locomotion mode, with stride counts shown for stance and swing dataset. 
+
+Canton, MI), and three 6-axis IMUs: one integrated within the ankle module (MPU9250, TDK InvenSense, San Jose, CA) and two mounted on the thigh socket and foot plate (3DMGX5-25, HBK World, Nærum, Denmark). All sensors were resampled to 100 Hz and synchronized through ROS2. Real-time inference ran on a Jetson Orin Nano (NVIDIA, Santa Clara, CA) mounted at the knee. 
+
+B. Network Architecture and Training 
+
+A TCN [23] was implemented with separate networks for stance and swing phases. Both networks used kernel size k =4, depth L = 5 , and 64 filters per layer, yielding 1.87 s of effective history (Fig. 1). Hyperparameters were taken from our earlier work [18]. 3
+
+The stance model input comprised 28 Z-score normalized sensor channels; the swing model augmented this with a sagittal-plane thigh tilt angle from the thigh IMU. The stance model predicted knee and ankle torques with a 40 ms temporal lead to compensate for sensor and control latency, with torque labels normalized by body weight. The swing model predicted a 300 ms horizon of future joint positions, where the upper bound was set by the self-selected swing-phase duration of individuals with TF amputation walking with passive prosthe-ses (520–570 ms [24]) and constrained below by the accuracy degradation observed at longer horizons (Fig. 3). The training protocol used Adam with mean squared error (MSE) loss and early stopping (patience of three epochs). To address mode imbalance, locomotion modes were resampled each epoch to a fixed distribution (60% LW, 10% per remain-ing mode). Performance was evaluated via leave-one-subject-out cross-validation. 
+
+C. Torque and Kinematic Control 
+
+A state machine governed transitions between stance and swing using axial load cell readings, with thresholds set at 25% body weight (BW) for swing initiation and 15% BW for stance entry. During stance, the actuator’s embedded closed-loop current controller executed commanded torques, with two supplemen-tary damping terms added for safety: 
+
+τcmd = τT CN + τdamp + τwall (1) where the damping torque 
+
+τdamp = max 
+
+
+
+τmax , min(0 , B d ˙θ)
+
+
+
+(2) provides a resistive extension torque proportional to joint angular velocity ˙θ (Bd = 5 Nm/rad/s, capped at τmax = 10% 
+
+BW) to prevent knee buckling, and τwall is a one-sided viscous damper activating during knee extension to prevent terminal impact (gain and boundary angle adjusted to user anthropometry). During swing, closed-loop position feedback with velocity feedforward tracked trajectory estimates. At each inference step, a third-order polynomial was fit to the TCN-predicted horizon ˆp1:30 via constrained least-squares. Previous com-mands (p0, v 0) were anchored during optimization for C1
+
+continuity. Position and velocity were evaluated at each control loop ∆t = 0 .01 s to generate the swing command. 
+
+D. Experimental Protocol 
+
+Controller evaluation was conducted on the OSL with three able-bodied (AB) participants ( 28 ± 5 years, 81 .5 ± 7.5 kg, 
+
+1.75 ± 0.01 m) and one TF participant (21 years, 65.7 kg, 1.65 m, left-side amputation). AB participants mounted the prosthesis on the right side via a bypass adapter (iWalk3.0, iWALKFree, Long Beach, CA). The study was approved by the Georgia Institute of Technology Institutional Review Board under Protocol H21117 and all participants provided written informed consent before participating. Level and ramp walking were evaluated on an instrumented split-belt treadmill (BERTEC, Columbus, OH). To assess speed adaptation, participants walked at 0.4 to 0.8 m/s in 0.1 m/s increments for one minute per condition. Ramp performance was assessed at 0.4 m/s across four inclines ( 7.8◦,
+
+9.2◦, 10 .8◦, 12 .4◦) in both ascent and descent. Transition behavior was evaluated on an instrumented ter-rain park with a five-step staircase (12.7 cm rise per step). Participants completed a circuit of level walking, ascent to the top platform with the intact side leading, turn-in-place, descent with the prosthetic side leading, and return to level walking. 
+
+E. Sensor Feature Attribution 
+
+Integrated Gradients (IG) [25] were applied to attribute the controller’s predictions back to its sensor inputs along a path-integrated gradient. For a target output f (x) and input x ∈
+
+RC×T (C = 28 channels, T = 187 time steps), IG attributes each input feature (c, t ) relative to a baseline x′ as 
+
+IG c,t (x) = ( xc,t − x′
+
+> c,t
+
+)
+
+Z 10
+
+∂f (x′ + α(x − x′)) 
+
+∂x c,t 
+
+dα, (3) approximated via a 100-step midpoint Riemann sum along the straight-line path from x′ to x. The baseline x′ was set to the cross-subject mean sensor reading during quiet standing. Per-channel attributions were obtained by summing along the time dimension, 
+
+IG c(x) = 
+
+> T
+
+X
+
+> t=1
+
+IG c,t (x), (4) and averaged across trials to summarize per-feature contribu-tions to a given prediction target. 
+
+F. Statistical Analysis 
+
+Stride-level linear mixed-effects models (LMMs) with sub-ject random effects were used to test trends across continuous predictors (walking speed, ramp grade). Denominator degrees of freedom ( df ) for fixed-effect tests were determined using the Satterthwaite approximation to account for the correlated stride-level observations. To test whether the TCN reproduced the training-data scal-ing pattern during LW, peak ankle torque was modeled as peak torque ∼ speed + ( speed | subject ), fit independently to the training and deployed data; fixed-effect estimates and 
+
+95% CIs were compared side-by-side. Two ramp mode contrasts were tested, chosen for biome-chanical features that differ across modes in the training data [9], [10], [19]: (i) LW vs. RA at knee stance pre-flexion; (ii) LW vs. RD at knee peak torque. Each contrast was modeled as outcome ∼ mode + ( mode | subject ), pooling across ramp grades, with LW data restricted to 0.4 m/s to match the ramp-trial speed. For within-mode grade scaling, we first fit outcome ∼ grade + ( grade | subject ) to the training data. Where the grade effect was significant, the same model was fit to the deployed data, and fixed-effect estimates and 
+
+95% CIs were compared side-by-side. Tests used α = 0 .05 in MATLAB 2025b. 4Swing Model Performance Ankle — R2 vs horizon Knee — R2 vs horizon LW RA RD SD SA 0 50 100 150 200 250 300 00.2 0.4 0.6 0.8 1.0 0 50 100 150 200 250 300 00.2 0.4 0.6 0.8 1.0 Predicted Horizon (ms) Predicted Horizon (ms) R2R2                                        
+
+> Fig. 3. Offline swing-phase trajectory estimation R² across prediction horizons for the ankle (left) and knee (right). TABLE I OFFLINE STANCE TORQUE ESTIMATION R2BY MODE
+> LW SA SD RA RD Knee 0.53 ±0.21 0.56 ±0.18 0.48 ±0.23 0.58 ±0.22 0.47 ±0.19
+> Ankle 0.47 ±0.18 0.49 ±0.15 0.59 ±0.16 0.37 ±0.16 0.43 ±0.20
+
+II. R ESULTS 
+
+A. Torque and Position Estimation Performance 
+
+Offline stance-phase torque was estimated with broadly comparable accuracy across modes ( R2 = 0 .47 –0.58 at the knee, 0.37 –0.59 at the ankle; Table I). Swing-phase trajec-tory R2 decreased with prediction horizon across all modes (Fig. 3), with the knee maintaining a higher R2 than the ankle across all modes and horizons. 
+
+B. Level Walking Adaptation 
+
+The training data exhibited a significant positive scaling of peak ankle torque with walking speed ( β = 0 .96 Nm/kg per m/s, 95% CI [0 .42 , 1.50] , df = 15 .0, p = 0 .002 ). The deployed model recovered a positive but non-significant slope (β = 0 .52 Nm/kg per m/s, 95% CI [−0.29 , 1.33] , df = 3 .0,
+
+p = 0.076 ), with high inter-subject variability driven by AB02 ( β = −0.47 ) precluding significance. A sensitivity analysis excluding AB02 sharpened the deployed estimate to 
+
+β = 0 .85 Nm/kg per m/s (95% CI [0 .63 , 1.07] , df = 3 .1,
+
+p = 0 .001 ), with its CI fully contained within the training CI, indicating consistent scaling between the deployed controller and its demonstrations. Fig. 4(a) shows the subject-averaged scaling trend alongside the training-data mean at each speed. 
+
+C. Outlier Diagnosis via Feature Attribution 
+
+To diagnose the source of AB02’s inverted scaling pattern, IG was applied to examine the input feature attributions. Across all 20 LW trials (4 participants × 5 walking speeds), the model’s predicted peak ankle torque rose by an average of 0.714 Nm/kg above its resting-state baseline prediction. IG attributed ∼72% of this increase to the sagittal-plane load cell moment ( My , mean signed IG = 0 .51 Nm/kg), followed by the ankle joint angle (mean signed IG = 0.26 Nm/kg); all other features contributed less than 0.10 Nm/kg in abso-lute magnitude (Fig. 4(b)). The measured peak My across participants mirrored the peak ankle torque scaling pattern (Fig. 4(c)). Zeroing My during offline inference reduced the mean predicted peak ankle torque by 76% (Fig. 4(d)), equivalent to the IG-attributed share. 
+
+D. Ramp Adaptation 
+
+Knee pre-flexion was significantly higher in RA than LW (βRA-LW = 5 .03 ◦, 95% CI [1 .25 , 8.81] , df = 5 .0, p = 0 .019 ). Within-RA, the training data showed positive grade scaling (βslope = 3.30 ◦/deg, 95% CI [1 .83 , 4.77] , df = 7.5, p <
+
+0.001 ), and the deployed model produced grade scaling in the same direction ( βslope = 2 .92 ◦/deg, 95% CI [0 .53 , 5.30] ,
+
+df = 4 .0, p = 0 .027 ), corresponding to a 13 .4◦ increase across the 7.8–12 .4◦ tested range. The deployed fixed-effect estimate fell within the training CI. Additionally, the deployed pre-flexion magnitudes were biased lower than the training reference at each grade (Fig. 5(a)). For descent, within-RD grade scaling in the training data was not significant ( βslope = 0 .014 Nm/kg/deg, df = 9 .8,
+
+p = 0 .097 ), so the deployed within-RD scaling test was omit-ted; performance was instead assessed at the mode level. The training data exhibited a significant mode difference in peak knee torque ( βRD-LW = 0 .164 Nm/kg, 95% CI [0 .051 , 0.277] ,
+
+df = 12 .7, p = 0 .008 ), which the deployed model reproduced (βRD-LW = 0 .162 Nm/kg, 95% CI [0 .137 , 0.187] , df = 4 .3,
+
+p < 0.001 ; Fig. 5(b)). 
+
+E. Stair Transition 
+
+Fig. 6 illustrates transition behavior for TF01 during stair ambulation. As the participant entered SA swing phase, the knee maintained flexion while the ankle dorsiflexed. Upon heel contact, an extension torque was applied at the knee, contributing to push-off. During SD, knee extension torque was generated as the user flexed the knee through stance. The accompanying supplementary video further shows that this transition behavior was preserved even when the leading limb was reversed from the sequence present in training data. III. D ISCUSSION 
+
+This study evaluated the real-time performance of a powered knee-ankle prosthesis driven by continuous torque and trajec-tory estimates produced by TCNs. The system was evaluated against two hypotheses: that the controller (i) reproduces the assistance scaling patterns present in its training data and (ii) detects environmental context shifts and generates distinguishable joint behaviors across locomotion modes. A consistent scaling pattern was observed between real-time peak ankle plantarflexion torque and the corresponding training-data trend across walking speeds (Fig. 4(a)), support-ing our first hypothesis. The deployed slope closely tracked the training scaling, indicating that the controller inferred a continuous speed context from raw sensor data and modulated assistance accordingly, without subject-specific tuning or ex-plicit speed estimation. It is notable that this scaling relation-ship held for the able-bodied participants despite the bypass-adapter configuration being absent from training, suggesting that the learned mapping generalized to unseen users. Perturbation analysis revealed that this speed-adapted as-sistance is mediated by My . Integrated gradients flagged My5(a) Peak Stance Ankle Torque AB01 AB02 AB03 TF01 (c) Peak Load Cell Sagittal Moment (d) Real-Time vs Perturbed Real-time mean -0.1 00.1 0.2 0.3 0.4 0.5 momentY ankle theta momentZ thigh gyroY shank accelX ankle thetadot thigh accelX foot gyroY thigh accelZ shank gyroZ (b) Integrated Gradient Attribution Real-time mean Training Data AB02 AB03 TF01 Real-time mean AB01 Attribution score Walking Speed (m/s) Peak Ankle Torque (Nm/Kg) Peak Sagittal Moment (Nm/Kg) Walking Speed (m/s) Walking Speed (m/s) Peak Ankle Torque (Nm/Kg) 
+
+Fig. 4. (a) Peak stance ankle torque across walking speeds, with subject-level data points and the subject-averaged real-time mean and training-data mean overlaid. (b) Integrated gradient attribution scores for the 10 highest-attributed input channels driving predicted peak ankle torque during LW. (c) Weight normalized peak load cell sagittal moment across walking speeds, with the subject-averaged mean overlaid. (d) Real-time peak ankle torque compared against offline inference with the sagittal load cell moment zeroed (subject-averaged means). AB01 AB02 AB03 TF01 Real-time mean Training Data      
+
+> Ramp magnitude (deg) 7.8 9.2 10.8 12.4 0510 15 20 25 30
+> Peak knee pre-flexion (deg) (a) 5$ Knee Pre-)Oexion ν YV 6Oope
+> Training Data Real-time 00.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4
+> Peak Knee Torque (Nm/Kg)
+> **(b) RD: Model Estimated Marginal Means
+
+Fig. 5. Ramp adaptation results. (a) Peak knee pre-flexion vs. ramp grade during ramp ascent. Each colored marker denotes one participant’s mean peak knee pre-flexion across strides at a given grade. Black denotes the real-time mean across participants; gray denotes the training-data mean across participants at each ramp-grade. (b) Model-estimated marginal means of peak resistive knee torque during LW (blue) and RD (gray) for the training data (left) and real-time deployment (right). Error bars indicate 95% confidence intervals. Asterisks denote statistical significance ( p < 0.05 ) between two modes. 
+
+as a dominant contributor to the model’s torque commands (Fig. 4(b)) and targeted My perturbations confirmed its causal role in ankle torque generation (Fig. 4(d)). Mechanistically, 
+
+My captures axial loading transmitted through the prosthesis and grows with ground reaction force, which scales with walk-ing speed [26]. This makes My a biomechanically informative speed cue. AB02’s inverted slope provided a direct test of this mechanism: their unfamiliarity with the bypass adapter pro-duced atypical My loading, and the scaling behavior inverted in proportion. This convergence is notable given that the TCN had no architectural priors encoding biomechanical structure, suggesting deep-learning controllers can develop physically interpretable input dependencies. The controller produced mode-distinct joint behaviors across ramp conditions (Fig. 5), supporting our second hypoth-esis. During ascent, knee pre-flexion was elevated relative to LW and scaled positively with grade, with the deployed slope falling within the training CI — indicating that the controller recognized grade and modulated assistance similar to the scaling pattern observed during training. The deployed pre-flexion magnitudes, however, were systematically biased lower than the training reference at each grade, with the offset largest at shallow grades and shrinking as grade steepened (Fig. 5(a)). We interpret this offset as a consequence of training-data imbalance: LW strides outnumber ramp strides (Fig. 2(b)). Under MSE optimization, the regressor’s prediction collapses toward the conditional mean of the training targets, which is dominated by LW. This bias is amplified at shallow grades, where ramp sensor signatures overlap with those of LW. A more balanced training distribution, or explicit grade-related input, would likely narrow the magnitude gap. For descent, the deployed knee torque contrast against LW closely matched the training-data contrast (Fig. 5(b)), demonstrating that the con-troller replicated the descent assistance shown in the training data. Stair ambulation provided the strongest demonstration of these capabilities. The training data included stair sequences led only by one limb, yet the deployed controller produced stair transitions bilaterally — when leading with either the intact-side or the prosthetic-side limb — generalizing beyond what it had been shown. The transition cue in both cases was the user’s residual thigh lift, captured by the thigh IMU as they prepared to step onto a stair. This indicates that the controller learned to interpret user intent directly from onboard mechanical sensors, without requiring vision, depth cameras, or other anticipatory environmental sensing. Critically, the transition unfolded continuously rather than via discrete mode switching, demonstrating that complex gait transitions can be produced continuously with deep learning. Several limitations should be acknowledged. First, the con-troller’s behavior reflects the assistance patterns embedded in its training data, which were generated by hand-tuned con-trollers. Its performance is therefore bounded by demonstration quality: imbalances or inconsistencies in the demonstrations propagate into the deployed controller, as observed in the RA magnitude offset. Future work would benefit from training on more uniform demonstrations that more closely approximate able-bodied biomechanics, providing a higher ceiling for the controller to learn from. A second limitation arises from the closed-loop deployment paradigm. The TCNs directly command torque and position 6HS: LW TO: LW HS: LW-to-SA TO: LW-to-SA HS: SA TO: SA HS: SA-to-LW TO: SA-to-LW HS: LW TO: LW HS: LW-to-SD TO: LW-to-SD HS: SD TO: SD HS: SD-to-LW TO: SD-to-LW Knee Torque (Nm/kg) Ankle Torque (Nm/kg) Joint Kinematics and Kinetics During Stair Ambulation Transitions 
+
+Gait Phase Knee Angle ( deg) Ankle Angle ( deg) Training Data R eference 
+
+τ θ τ θ τ θ τ θτ θ τ θ τ θ τ θτ θ τ θ τ θ τ θτ θ τ θ τ θ τ θ
+
+Fig. 6. Terrain transition behavior for TF01 across full stair circuits. Shaded regions mark swing phases throughout (indicating joint angles, light lines); unshaded regions mark stance phases (estimated joint torque, dark lines). Vertical dashed lines indicate toe-off (TO) events labeled along the x-axis. (Top) Level-walking to stair-ascent and back. (Bottom) Level-walking to stair-descent and back. Knee (green) and ankle (blue) traces are plotted with torque on the left y-axis and angle on the right y-axis per subplot. The reference line is the mean torque and position trajectories from the training dataset for the corresponding stair condition. 
+
+without an underlying stabilizing structure, such as impedance equilibrium angle, leaving the system susceptible to input distribution shift: the controller’s own outputs progressively reshape its sensor inputs [27], and atypical user behavior (e.g., AB02’s inverted speed scaling) can drive inputs outside the training distribution. Future work could investigate techniques like scheduled sampling [27], which exposes the model to its own closed-loop behavior during training, addressing this distributional drift. Finally, the small sample (N=4) limits the generalization of these findings. The results should be viewed as preliminary, pending replication in more individuals with transfemoral amputation. IV. C ONCLUSION 
+
+This study demonstrated real-time end-to-end control of a powered knee-ankle prosthesis across five locomotion modes. The controller adapted to walking speed, distinguished modes, and generalized stair transitions to unseen limb-leading con-ditions. Integrated gradients showed the model converged on biomechanically interpretable input dependencies without architectural priors, demonstrating that end-to-end deep con-trollers can produce both functional and interpretable assis-tance. Ultimately, these preliminary results represent a promis-ing step towards a unified, tuning-free prosthesis controller that could improve deployment scalability. ACKNOWLEDGEMENT 
+
+The authors would like to thank Chase Sun for mechatronics support, and Caesar Guo and the Prosthesis Vertically Inte-grated Project (VIP) members for assistance with experiments. REFERENCES [1] J. M. van Velzen, C. A. M. van Bennekom, W. Polomski, J. R. Slootman, L. H. V. van der Woude, and H. Houdijk, “Physical capacity and walking ability after lower limb amputation: a systematic review,” Clinical Rehabilitation , vol. 20, no. 11, pp. 999–1016, Nov. 2006. [2] R. L. Bona, N. A. Gomenuka, J. L. L. Storniolo, A. Bonezi, and C. M. Biancardi, “Self-selected walking speed in individuals with transfemoral amputation: recovery, economy and rehabilitation index,” European Journal of Physiotherapy , vol. 22, no. 3, pp. 133–140, May 2020. [3] R. Gailey, “Review of secondary physical conditions associated with lower-limb amputation and long-term prosthesis use,” Journal of Reha-bilitation Research and Development , vol. 45, no. 1, pp. 15–30, Dec. 2008. [4] J. Camargo, K. Bhakta, K. Herrin, and A. Young, “Biomechanical evaluation of stair ambulation using impedance control on an active prosthesis,” Journal of Biomechanical Engineering , vol. 145, no. 2, p. 021007, Feb. 2023. [5] H. M. Herr and A. M. Grabowski, “Bionic ankle–foot prosthesis normalizes walking gait for persons with leg amputation,” Proceedings of the Royal Society B: Biological Sciences , vol. 279, no. 1728, pp. 457–464, Jul. 2011. [6] F. Sup, A. Bohara, and M. Goldfarb, “Design and control of a pow-ered transfemoral prosthesis,” The International Journal of Robotics Research , vol. 27, no. 2, pp. 263–273, Feb. 2008. [7] K. Bhakta et al. , “Continuous-context, user-independent, real-time intent recognition for powered lower-limb prostheses,” Journal of Biomechan-ical Engineering , vol. 147, no. 2, p. 021009, Feb. 2025. [8] H. Kim, D. Lee, J. Y. Maldonado-Contreras, S. Zhou, K. R. Herrin, and A. J. Young, “Mode-unified intent estimation of a robotic prosthesis using deep learning,” IEEE Robotics and Automation Letters , vol. 10, no. 4, pp. 3206–3213, Apr. 2025. [9] A. M. Simon, K. A. Ingraham, N. P. Fey, S. B. Finucane, R. D. Lipschutz, A. J. Young, and L. J. Hargrove, “Configuring a Powered Knee and Ankle Prosthesis for Transfemoral Amputees within Five Specific Ambulation Modes,” vol. 9, no. 6, p. e99387. [10] K. Bhakta, J. Camargo, P. Kunapuli, L. Childers, and A. Young, “Impedance control strategies for enhancing sloped and level walking ca-pabilities for individuals with transfemoral amputation using a powered 7
+
+multi-joint prosthesis,” Military Medicine , vol. 185, no. Supplement 1, pp. 490–499, Jan. 2020. [11] M. Halsne, M. Czerniecki, and B. J. Hafner, “Physical activity in indi-viduals with lower extremity amputations: a narrative review,” Physical Therapy Reviews , 2017. [12] F. Zhang, M. Liu, and H. Huang, “Effects of locomotion mode recog-nition errors on volitional control of powered above-knee prostheses,” 
+
+IEEE Transactions on Neural Systems and Rehabilitation Engineering ,vol. 23, no. 1, pp. 64–72, Jan. 2015. [13] Y. Wen, J. Si, A. Brandt, X. Gao, and H. H. Huang, “Online rein-forcement learning control for the personalization of a robotic knee prosthesis,” IEEE Transactions on Cybernetics , vol. 50, no. 6, pp. 2346– 2356, Jun. 2020. [14] T. K. Best, C. G. Welker, E. J. Rouse, and R. D. Gregg, “Data-driven variable impedance control of a powered knee–ankle prosthesis for adaptive speed and incline walking,” IEEE Transactions on Robotics ,vol. 39, no. 3, pp. 2151–2169, Jun. 2023. [15] L. M. Sullivan, M. Cowan, L. Gabert, and T. Lenzi, “Unified control of a powered knee-ankle prosthesis enables walking, stairs, transitions, and other daily ambulation activities,” IEEE Transactions on Neural Systems and Rehabilitation Engineering , vol. 33, pp. 3024–3039, 2025. [16] D. D. Molinaro, K. L. Scherpereel, E. B. Schonhaut, G. Evangelopoulos, M. K. Shepherd, and A. J. Young, “Task-agnostic exoskeleton control via biological joint moment estimation,” Nature , vol. 635, no. 8038, pp. 337–344, Nov. 2024. [17] M. Kim, A. M. Simon, and L. J. Hargrove, “Seamless and intuitive control of a powered prosthetic leg using deep neural network for transfemoral amputees,” Wearable Technologies , vol. 3, p. e24, 2022. [18] C. P. O. Nuesslein and A. J. Young, “A deep learning framework for end-to-end control of powered prostheses,” IEEE Robotics and Automation Letters , vol. 9, no. 5, pp. 3988–3994, May 2024. [19] S. Zhou, S. Kestur, J. Maldonado, K. Herrin, N. Fey, and A. Young, “Comparing the biomechanical response of users of an open-source powered knee and ankle prosthesis versus a passive prosthesis during ramp and stair ambulation,” Journal of Biomechanics , vol. 186, p. 112732, Jun. 2025. [20] J. Maldonado-Contreras et al. , “Real-time adaptation of deep learning walking speed estimators enables biomimetic assistance modulation in an open-source bionic leg,” IEEE Transactions on Medical Robotics and Bionics , pp. 1–1, 2025. [21] A. F. Azocar, L. M. Mooney, J.-F. Duval, A. M. Simon, L. J. Hargrove, and E. J. Rouse, “Design and clinical implementation of an open-source bionic leg,” Nature Biomedical Engineering , vol. 4, no. 10, pp. 941–953, Oct. 2020. [22] T. K. Best, G. C. Thomas, S. R. Ayyappan, R. D. Gregg, and E. J. Rouse, “A compensated open-loop impedance controller evaluated on the second-generation Open-Source Leg prosthesis,” IEEE/ASME Trans-actions on Mechatronics , pp. 1–13, 2024. [23] S. Bai, J. Z. Kolter, and V. Koltun, “An empirical evaluation of generic convolutional and recurrent networks for sequence modeling,” arXiv preprint arXiv:1803.01271 , Apr. 2018. [24] S. M. H. J. Jaegers, J. H. Arendzen, and H. J. de Jongh, “Prosthetic gait of unilateral transfemoral amputees: A kinematic study,” Archives of Physical Medicine and Rehabilitation , vol. 76, no. 8, pp. 736–743, Aug. 1995. [25] M. Sundararajan, A. Taly, and Q. Yan, “Axiomatic attribution for deep networks,” in Proceedings of the 34th International Conference on Machine Learning - Volume 70 , ser. ICML’17, pp. 3319–3328. [26] J. Nilsson and A. Thorstensson, “Ground reaction forces at different speeds of human walking and running,” vol. 136, no. 2, pp. 217–227. [27] S. Bengio, O. Vinyals, N. Jaitly, and N. Shazeer, “Scheduled sampling for sequence prediction with recurrent Neural networks,” in Proceedings of the 29th International Conference on Neural Information Processing Systems - Volume 1 , ser. NIPS’15, vol. 1, pp. 1171–1179.
