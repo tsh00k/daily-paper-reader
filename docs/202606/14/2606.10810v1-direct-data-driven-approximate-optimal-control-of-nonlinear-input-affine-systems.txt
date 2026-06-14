@@ -1,0 +1,448 @@
+Title: Direct Data-Driven Approximate Optimal Control of Nonlinear Input-Affine Systems
+
+URL Source: https://arxiv.org/pdf/2606.10810v1
+
+Published Time: Wed, 10 Jun 2026 01:00:17 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Direct Data-Driven Approximate Optimal Control of Nonlinear Input-Affine Systems ⋆
+
+B. Nortmann ∗ T. Mylvaganam ∗∗ ∗ Urban Energy Systems Laboratory, Swiss Federal Laboratories for Materials Science and Technology, D¨ ubendorf, Switzerland (e-mail: benita.nortmann@empa.ch).  
+
+> ∗∗
+
+Department of Aeronautics, Imperial College London, London, UK (e-mail: tmylvaganam@imperial.ac.uk) 
+
+Abstract: In this paper, we combine a data-driven system representation with a framework to systematically construct (approximate) solutions to nonlinear optimal control problems. By immersing the unknown dynamics into an extended state space, solutions are characterised via purely data-dependent algebraic conditions. This allows us to design dynamic state-feedback controllers with local stability and performance guarantees for unknown nonlinear, input-affine systems directly using data, without explicitly identifying the dynamics. 
+
+Keywords: Data-based control, optimal control, stability of nonlinear systems 
+
+1. INTRODUCTION The problem of designing controllers directly from mea-sured data has been receiving increasing attention in re-cent years. A framework to design state-feedback con-trollers for linear time-invariant (LTI) systems, which utilises Willems’ Fundamental Lemma (see Willems et al. (2005)) to represent the closed-loop system directly using data has been introduced in De Persis and Tesi (2020). Various approaches have been presented to extend the ideas to classes of nonlinear systems. For more details and the relation to nonlinear system identification, see De Persis and Tesi (2023); Monshizadeh et al. (2025) and references therein. The main focus has so far been on data-driven stabilisation of nonlinear systems. Optimal control has been considered for bilinear systems (Yuan and Cort´ es (2022)) and for discrete input-affine systems via online linearisation (Dai et al. (2025)). Data-based (approximate) solutions to optimal control problems using different ap-proaches to parametrise unknown nonlinear dynamics have been proposed in Yu et al. (2022), Prag et al. (2022) and references therein. Even in the model-based case, solving infinite-horizon non-linear optimal control problems is generally challenging. The solution is characterised via the Hamilton-Jacobi-Bellmann (HJB) equation (Liberzon (2011)). With the exception of certain special cases, closed-form solutions of this nonlinear partial differential equation (PDE) are not available and numerical solutions are computation-ally expensive to obtain. For optimal control problems involving nonlinear, input-affine systems, Sassano et al. (2018) presents a framework to construct (approximate) solutions without involving the explicit solution of any PDE. Namely, via an immersion of the nonlinear dynamics   
+
+> ⋆The work of B. Nortmann is supported as part of NCCR Automa-tion, a National Centre of Competence in Research, funded by the Swiss National Science Foundation (grant number 51NF40 225155).
+
+into an extended state-space, approximate solutions are constructed systematically, based solely on algebraic ma-trix conditions, with any matrix satisfying these conditions referred to as an algebraic P solution. Moreover, the level of approximation is quantifiable and, thus, also minimis-able. More details about the framework and its relation to alternative methods for nonlinear optimal control can be found in Sassano et al. (2021) and references therein. In this work, we combine the discussed line of direct data-driven control with the aforementioned “framework of algebraic P solutions”. This allows us to determine (approximate) solutions to nonlinear optimal control prob-lems involving unknown input-affine systems directly using measured data. The algebraic P solutions framework has been extended to other control problems involving PDEs, including classes of stochastic control problems (Gong et al. (2025), L2-disturbance attenuation (Sassano and Astolfi (2012)), and differential games (Mylvaganam et al. (2015)). Hence, the presented approach lays the founda-tions for the direct data-driven solution of a wide class of nonlinear control problems. The paper is organised as follows. The considered problems are defined in Section 2. A data-driven system representa-tion is introduced in Section 3. Section 4 proposes control design methods via purely data-dependent algebraic con-ditions. The results are demonstrated via an example in Section 5. Concluding remarks are provided in Section 6. 
+
+Notation. The sets of real numbers and nonnegative real numbers are denoted by R, and R≥0. Given a mapping V :
+
+Rn → R and a vector x ∈ R, Vx denotes the column vector containing the partial derivatives of V with respect to each element of x, and JV (x) denotes the Jacobian matrix of 
+
+V with respect to x. A mapping f : Rn → Rm is called smooth if it has derivatives of all orders, and f is called analytic if it is smooth and the Taylor series expansion around every point x0 equals f (x) in a neighbourhood of 
+
+> arXiv:2606.10810v1 [math.OC] 9 Jun 2026
+
+x0. Given a matrix A, its transpose is denoted by A⊤, and its Moore–Penrose inverse by A†. Given a square matrix 
+
+B, B ≻ 0 ( B  0) denotes that B is positive definite (positive semidefinite) and B−1 denotes its inverse. The 
+
+n × n identity matrix is denoted by In.2. PROBLEM FORMULATION Consider the input-affine dynamical system ˙x = f (x) + g(x)u, (1) where x ∈ Rn is the state and u ∈ Rm is the control input, and let x(0) = x0.
+
+Assumption 1. The mapping f : Rn → Rn is analytic and such that f (0) = 0 , and the mapping g : Rn → Rn×m
+
+is smooth. 
+
+A consequence of Assumption 1 is that there exist matrix-valued mappings F : Rn → Rn×n such that f (x) = F (x)x.We focus on designing state-feedback control strategies for the action u. The solution to various nonlinear feedback control problems, such as stabilisation and optimal control, involve the solution of PDEs, see e.g. Slotine and Li (1991); Liberzon (2011). In what follows we build on the results in Sassano et al. (2018), which utilise algebraic conditions and system immersion – resulting in dynamic feedback controllers – to circumvent the need to solve PDEs. Hence, we consider (dynamic) control laws of the form 
+
+u = ˜h(x, ξ ), (2a) ˙ξ = α(x, ξ ), (2b) where ξ ∈ Rν , ˜h(0 , 0) = 0, α(0 , 0) = 0, and ˜h : Rn ×
+
+Rν → Rm and α : Rn × Rν → Rν are smooth mappings. The variable ξ is referred to as the dynamic extension ,and its initial condition ξ(0) = ξ0 can be seen as a design parameter. We consider the following control problems. 
+
+2.1 Stabilisation 
+
+Consider system (1) and the problem of designing a feed-back law of the form (2), which stabilises the equilibrium at the origin. More precisely, this involves designing functions ˜h and α, such that the zero equilibrium of the resulting extended closed-loop system 
+
+[ ˙x
+
+˙ξ
+
+]
+
+=
+
+[f (x) + g(x)˜h(x, ξ )
+
+α(x, ξ )
+
+]
+
+(3) is locally asymptotically stable (LAS). Via standard Lya-punov arguments, (3) is LAS if there exists a smooth function V : Rn × Rν → R and a neighbourhood N
+
+containing the origin of ( x, ξ ), such that V (0 , 0) = 0 and 
+
+
+
+V (x, ξ ) > 0,
+
+˙V (x, ξ ) = [V ⊤ 
+
+> x
+
+V ⊤
+
+> ξ
+
+] [f (x) + g(x)˜h(x, ξ )
+
+α(x, ξ )
+
+]
+
+< 0, (4) for all ( x, ξ ) ∈ N \ { 0}. This gives the PDE condition 
+
+V ⊤ 
+
+> x
+
+(f (x) + g(x)˜h(x, ξ )) + V ⊤ 
+
+> ξ
+
+α(x, ξ ) + ˜ q(x, ξ ) = 0 , (5) where ˜ q : Rn × Rν → R≥0 is a positive definite function 1 .                
+
+> 1That is, ˜ q(0 ,0) = 0 and ˜ q(x, ξ )>0, ∀x6= 0 ∈Rnand ∀ξ6= 0 ∈Rν.
+
+2.2 Approximate optimal control 
+
+Consider system (1) and the cost functional 
+
+J(x0, u ) = 1
+
+2
+
+∫ ∞
+
+> 0
+
+(q(x) + u⊤u) dt, (6) with q : Rn → R≥0 a smooth mapping. 
+
+Assumption 2. The function q is positive-definite, and there exists a function C : Rn → Rμ×n such that q(x) = 
+
+x⊤C(x)⊤ C(x)x, for all x.
+
+The “classical” infinite-horizon optimal control problem consists in designing a stabilising static feedback law 
+
+u = h(x), which minimises the cost (6), subject to the dynamics (1). A solution can be found by solving the HJB PDE, see e.g. Liberzon (2011). With the aim of instead designing a dynamic feedback law towards optimising (6), we consider the following auxiliary problem (which allows for potentially dynamic feedback control strategies), see also Sassano et al. (2021). Let B ⊂ Rn × Rν be an open set containing the origin. Consider the augmented cost functional ˜J(x0, ξ 0, u ) = 1
+
+2
+
+∫ ∞
+
+> 0
+
+(q(x) + Υ( x, ξ ) + u⊤u) dt. (7) where Υ : Rn × Rν → R is such that Υ(0 , 0) = 0 and Υ( x, ξ ) ≥ 0, for all ( x, ξ ) ∈ B. We then consider the (auxiliary) problem of designing a feedback law of the form (2), such that the zero equilibrium of the resulting closed-loop system (3) is LAS with region of attraction containing 
+
+B, and such that ˜J(x0, ξ 0, u ⋆) ≤ ˜J(x0, ξ 0, ˜u), (8) for all ˜ u(x, ξ ) of the form (2) and for all ( x0, ξ 0) ∈ B . Let Ψ( x, ξ, V x, V ξ ) = 1
+
+2 (q(x) + Υ( x, ξ )) + 1
+
+2 ˜h(x, ξ )⊤ ˜h(x, ξ )+ [V ⊤ 
+
+> x
+
+V ⊤
+
+> ξ
+
+] [f (x) + g(x)˜h(x, ξ )
+
+α(x, ξ )
+
+]
+
+, (9) where V : Rn × Rν → R≥0 is a continuously differentiable positive-definite function. Via the Dynamic Programming principle (Bellman (1957)), (7) is minimised subject to the dynamics (1), (2b), by u⋆ = arg min ˜h(x,ξ )Ψ( x, ξ, V x, V ξ )satisfying 0 = min 
+
+> ˜h(x,ξ )
+
+Ψ( x, ξ, V x, V ξ ). (10) The control law u⋆ corresponds to the “classical” solution of an auxiliary, local optimal control problem defined by the augmented cost (7) and the extended dynamics (1), (2b) in the region B. It further constitutes (see, e.g. 
+
+Sassano et al. (2018, 2021)) an approximate solution of the original optimal control problem (defined by (1), (6)), with two sources of approximation. Firstly, we are searching for a local solution in the region B of the (extended) state space ( x, ξ ). Secondly, the solution is with respect to the modified (augmented) cost (7), which features an additional running cost term Υ( x, ξ ) depending on the system state x as well as the dynamic extension ξ.In this paper, we revisit the control problems defined above for the case in which the system dynamics (1) are unknown, and propose a solution directly using measured input-state data. 3. DATA-DRIVEN SYSTEM REPRESENTATION In the remainder of this paper, we consider unknown input-affine systems. Let the following assumptions hold. 
+
+Assumption 3. The system dynamics are of the form (1) .The mappings f (x) and g(x), while unknown, are such that Assumption 1 holds. 
+
+Assumption 4. Libraries of basis functions Vf and Vg,such that the unknown mappings f (x) and g(x) can be rep-resented (exactly) as a linear combination of the elements of Vf and Vg , respectively, are known. 
+
+Using Assumptions 3 and 4, (1) can be written as ˙x = F (x)x + g(x)u, (11) = ˜F Z (x)x + GΞ( x)u, (12) where Z(x) ∈ Rℓ×n and Ξ( x) ∈ Rp×m are matrices of known basis functions, and where the entries of Z(x)x
+
+and Ξ( x) are elements of Vf and Vg, respectively. Further, assume the following time-series data is available. 
+
+Assumption 5. Data of the state response xd and its rate of change ˙xd to a known exploring input ud can be collected at time instances [t0, . . . , t T −1].
+
+Assumption 5 allows us to form the data matrices 
+
+X+ = [ ˙ xd(t0) . . . ˙xd(tT −1)] , (13a) 
+
+X− = [ xd(t0) . . . x d(tT −1)] , (13b) 
+
+U = [ ud(t0) . . . u d(tT −1)] . (13c) Consider also the matrices 
+
+Z = [ Z(xd(t0)) xd(t0) . . . Z (xd(tT −1)) xd(tT −1)] , (14a) 
+
+U = [Ξ( xd(t0)) ud(t0) . . . Ξ( xd(tT −1)) udtT −1)] , (14b) which can be assembled from the data and the known matrices of basis functions Z(x) and Ξ( x). Note then that 
+
+X+ = ˜F Z + GU = [ ˜F G ] [ZU
+
+]
+
+. (15) Consider the special case in which the feedback law (2) reduces to a static feedback law of the form 
+
+u = h(x) = H(x)x. (16) System (1) in closed loop with (16) evolves according to the dynamics ˙x = f (x) + g(x)h(x) = ( F (x) + g(x)H(x)) x. (17) 
+
+Lemma 1. Let Assumptions 3, 4 and 5 hold, and consider the matrices (13) , (14) . If rank 
+
+([ ZU
+
+]) 
+
+= ℓ + p, (18) 
+
+then the “closed-loop dynamics matrix” (F (x) + g(x)H(x)) 
+
+can equivalently be represented using data as 
+
+(F (x) + g(x)H(x)) = X+ ˜G(x), (19) 
+
+and the control matrix H(x), can be represented as 
+
+H(x) = Ξ( x)†U ˜G(x), (20) 
+
+where ˜G(x) ∈ RT ×n satisfies Z(x) = Z ˜G(x).Proof. Note that (F (x) + g(x)H(x)) = [ ˜F G ] [ Z(x)Ξ( x)H(x)
+
+]
+
+. (21) If (18) holds, then there exists ˜G(x) satisfying 
+
+[ Z(x)Ξ( x)H(x)
+
+]
+
+=
+
+[ZU
+
+]
+
+˜G(x). (22) Combining (22) with (21) and using (15) gives (19). Finally, (20) follows from the lower block row in (22). 
+
+In Section 4, we utilise this data-driven representation of the closed-loop system under static state-feedback to design dynamic state-feedback strategies for the control problems introduced in Section 2. 
+
+Remark 1. The data-driven system representation in Lemma 1 is inspired by the system representation for LTI systems introduced in De Persis and Tesi (2020). If the input map g(x) does not depend on the state x, i.e. 
+
+g(x) = G and Ξ( x) = Im, the representation in Lemma 1 is very similar to the representation introduced in Guo et al. (2020), which like several related works (e.g. Guo et al. (2023); Liu and Guo (2024, 2025); Dai et al. (2025)) focuses on input-affine systems with constant input map. General input maps are considered in De Persis et al. (2023) and Str¨ asser et al. (2025) where the dynamics are lifted into a form with constant input map by adding an integrator to include the controller dynamics and using the Koopman operator, respectively, and in Guo et al. (2022); Madeira and Correia (2024); Chen et al. (2025) in the context of robust sum of squares methods for polynomial systems, which admit an alternative system representation via a bound on unknown disturbances. 
+
+Remark 2. The control matrix H(x) in (20) depends on the pseudoinverse of the matrix of basis functions Ξ( x).If p < m , Ξ( x)† is a right inverse. In general, there may be infinite matrices H(x)† such that the lower block row in (22) holds. If Ξ( x) is square and invertible Ξ( x)† =Ξ( x)−1. For general p > m, (20) is the least squares solution of the lower block row in (22) , and may hence not satisfy the condition exactly. Note, however, that Ξ( x) is chosen by the designer. Hence, we can pick a suitable Ξ( x)
+
+and Ξ( x)† such that (20) is uniquely defined. The main constraint for the choice of dimension p is the size of the library of basis functions Vg and hence the information we have about the function g(x). In addition to the special case 
+
+Ξ( x) = Im mentioned in Remark 1, Ξ( x) can for example generally be chosen to be invertible if the functions in g(x) are known exactly up to a scaling factor. 
+
+4. DATA-DRIVEN CONTROL VIA ALGEBRAIC P
+
+SOLUTIONS In this section, we combine the notion of algebraic P
+
+solutions (Sassano et al. (2018)) with the data-driven system representation in Section 3 to solve the problems defined in Section 2 for unknown input-affine systems. 
+
+4.1 Stabilisation 
+
+Recall the stabilisation problem introduced in Section 2.1. Finding a function V : Rn × Rν → R≥0 which satisfies the PDE (5) is generally challenging. Inspired by Sassano et al. (2018), consider the Lyapunov function candidate 
+
+V (x, ξ ) = 1
+
+2 x⊤P (ξ)x + 1
+
+2 (x − ξ)⊤R(x − ξ), (23) for ξ ∈ Rn, where R = R⊤ ≻ 0 is a known constant matrix, which acts as a tuning parameter, and P : Rn → Rn × Rn
+
+is a matrix-valued mapping (to be designed), such that 
+
+P (ξ) = P (ξ)⊤ ≻ 0, for all ξ in a neighbourhood containing the origin. Then, the first condition in (4) holds and 
+
+Vx = P (ξ)x + R(x − ξ), (24) 
+
+Vξ = 1
+
+2 Jx⊤P (ξ)(ξ)x − R(x − ξ). (25) 
+
+Lemma 2. Let Assumptions 3, 4 and 5 hold and let 
+
+Y (x) ∈ RT ×n, ˜P (x) = ˜P (x)⊤ ≻ 0 ∈ Rn×n be a solution of the feasibility problem 
+
+X+Y (x) + Y (x)⊤ X⊤ 
+
+> +
+
+≺ 0, (26) 
+
+Z(x) ˜P (x) = ZY (x). (27) 
+
+Then, for sufficiently large κ, the controller (2) with 
+
+˜h(x, ξ ) = H(x)x = Ξ( x)†UY (x)P (x)x, (28a) 
+
+α(x, ξ ) = −κV ξ , (28b) 
+
+where P (x) = ˜P (x)−1, is such that the zero equilibrium of 
+
+(3) is LAS. Proof. Since ˜P (·) ≻ 0, the function V (x, ξ ) in (23), with 
+
+P (·) as given in the statement, is positive definite by construction. Then, the result in (Sassano et al., 2018, Proposition 2.3) entails (via the main result in Anstreicher and Wright (2000)) that there exists κ⋆ > 0 such that (4) holds in a neighbourhood N containing the origin of (3) with ˜h = H(x)x and α as in (28) for any κ > κ ⋆, provided that the matrix-valued mapping P (x) satisfies 
+
+P (x) ( F (x) + g(x)H(x)) + ( F (x) + g(x)H(x)) ⊤ P (x) ≺ 0.
+
+(29) Via a congruence transformation with P (x)−1, using Lemma 1 and introducing the change of variable Y (x) = ˜G(x) ˜P (x), (29) gives (26). Note that (19) relies on condi-tion (22), which holds true if (27) is satisfied and by the choice of u as in (28). 
+
+Lemma 2 utilises the analysis result in (Sassano et al., 2018, Proposition 2.3) to design stabilising static state-feedback controllers directly using data. Next we show how the dynamic extension (2b) can be used more “actively” to design dynamic feedback controllers from data. 
+
+Lemma 3. Let Assumptions 3, 4 and 5 hold and let 
+
+Y (x) ∈ RT ×n, ˜P (x) = ˜P (x)⊤ ≻ 0 ∈ Rn×n be a solution of the feasibility problem (26) , (27) . Then, for sufficiently large κ, the controller (2) with 
+
+˜h(x, ξ ) = Ξ( x)†UY (x) ( P (ξ)x + R(x − ξ)) , (30a) 
+
+α(x, ξ ) = −κV ξ, (30b) 
+
+where P (x) = ˜P (x)−1, is such that the zero equilibrium of 
+
+(3) is LAS. Proof. Let Φ : Rn × Rn → Rn×n be a continuous mapping such that P (ξ)x = P (x)x − Φ( x, ξ )( x − ξ). Then (30a) can equivalently be written as ˜h(x, ξ ) = Ξ( x)†UY (x) ( P (x)x + ( R − Φ( x, ξ ))( x − ξ)) .
+
+(31) Note that the first term in (31) is equal to H(x)x in (28a). Using this reformulation, recalling Lemma 1 and following analogous arguments to (Sassano et al., 2018, Proposition 2.3 and Theorem 3.1) and Lemma 2, it can be shown that if (30) is such that P (x), Y (x) satisfy (26), (27) there exists a κ⋆ > 0 such that (4) holds in a neighbourhood N
+
+containing the origin of (3) for any κ > κ ⋆.
+
+Remark 3. Direct data-driven stabilisation of nonlinear systems has been intensively studied in recent years, see De Persis and Tesi (2023) for an overview. Similar conditions to Lemma 2 have for example been presented in Guo et al. (2020) using sum of squares arguments. The two alternative results presented in this section illustrate the approach which will allow us to design approximately optimal controllers directly using data in Section 4.2. However, the data-driven dynamic state-feedback design in Lemma 3 is interesting in its own right, as it introduces the tunable parameters κ, R and ξ0, which can be designed to shape the behaviour of the resulting closed-loop system and the region of attraction of the zero equilibrium. 4.2 Approximate optimal control 
+
+Recall the approximate optimal control problem intro-duced in Section 2.2. Solving (10) is generally challenging. Inspired by Sassano et al. (2018) and using Lemma 1 we provide a solution via purely data-dependent algebraic conditions for the unknown system (1). 
+
+Theorem 1. Let Assumptions 2, 3, 4 and 5 hold and let 
+
+Y (x) ∈ RT ×n, ˜P (x) = ˜P (x)⊤ ≻ 0 ∈ Rn×n be a solution of the feasibility problem 
+
+X+Y (x) + Y (x)⊤X⊤ 
+
+> +
+
+(Ξ( x)† UY (x)) ⊤ ˜P (x)C(x)⊤
+
+Ξ( x)†UY (x) −Im 0
+
+C(x) ˜P (x) 0 −Iμ
+
+ ≺ 0,
+
+(32) 
+
+and (27) . Then, there exists a constant κ⋆ and an open set B, such that for all κ > κ ⋆ and all (x, ξ ) ∈ B , (10) 
+
+holds with ˜h(x, ξ ) and α(x, ξ ) as defined in (30) , where 
+
+P (x) = ˜P (x)−1, and with the function V given by (23) ,for some Υ( x, ξ ) > 0. Hence, the the controller given by 
+
+(2) , (30) solves the auxiliary, local optimal control problem defined in Section 2.2. Proof. By Lemma 1, the change of variable Y (x) =˜G(x) ˜P (x), and a congruence transformation with P (x)−1,(32), (27) are such that 
+
+C(x)⊤C(x) + H(x)⊤H(x) + P (x) ( F (x) + g(x)H(x)) + ( F (x) + g(x)H(x)) ⊤ P (x) ≺ 0, (33) for H(x) as defined in (28a). Using (31) and arguments analogous to (Sassano et al., 2018, Theorem 3.1), there exists κ⋆ such that 
+
+− 1
+
+2 Υ( x, ξ ) := 1
+
+2 q(x) + 1
+
+2 ˜h(x, ξ )⊤ ˜h(x, ξ )+ V ⊤ 
+
+> x
+
+(f (x) + g(x)˜h(x, ξ )) − κV ⊤ 
+
+> ξ
+
+Vξ < 0, (34) for all κ > κ ⋆ and ( x, ξ ) ∈ B , via the main result in Anstreicher and Wright (2000). Finally, consider V as in (23) as a candidate Lyapunov function. Then, ˙V = V ⊤ 
+
+> x
+
+(f (x) + g(x)˜h(x, ξ )) − κV ⊤ 
+
+> ξ
+
+Vξ ≤ − 1
+
+2 Υ( x, ξ ) < 0,
+
+by construction. Hence, the zero equilibrium of system (3) with ˜h, α as in (30), is LAS. Remark 4. The strict inequalities (26) and (32) could be replaced with nonstrict inequalities subject to the additional constraint that the matrices on the left hand side of (26) 
+
+and (32) evaluated at x = 0 are positive definite, which is in line with the definition of algebraic P solutions in Sassano et al. (2018), and may lead to potentially less conservative solutions with larger region of attraction of the zero equilibrium of the closed-loop system. Proving lo-cal asymptotic stability then involves LaSalle’s invariance principle and zero-state detectability, see Sassano et al. (2021) and references therein for more details. For ease of exposition, we instead consider strict inequalities. 
+
+Remark 5. The result of Theorem 1 provides a method to design data-driven dynamic state-feedback controllers which are exact solutions of the auxiliary, local problem defined in Section 2.2 and hence approximate solutions of the “classical” optimal control problem defined by (1) , (6) ,with guaranteed stability and performance (locally). The additional cost arising from the presence of the dynamic extension (30b) can be minimised via a suitable initial-isation, i.e. choosing ξ0 ∈ arg min ξ V (x0, ξ ), for a given initial condition x0 of system (1) . Additionally, by allowing the gain κ to vary, i.e. allowing the dynamic extension to evolve according to dynamics of the form ˙ξ = −κ(x, ξ )Vξ ,the additional running cost term Υ( x, ξ ) can be minimised. More precisely, if κ(x, ξ ) is chosen as in (Sassano et al., 2018, Theorem 3.2), Υ( x, ξ ) → 0 apart from on a certain sub-manifold which can be rendered arbitrarily small and in which Υ( x, ξ ) is bounded. Note that the model-based conditions in (Sassano et al., 2018, Theorem 3.2) can be parametrised using data using Lemma 1. 
+
+Remark 6. While we consider the noise-free case, i.e. 
+
+system (1) and data (13) are not affected by noise, the underlying approach extends to other control problems in-volving the solution of PDEs, including L2-disturbance attenuation (Sassano and Astolfi (2012)). An important question in data-driven control is how to represent un-known systems based on noisy data. Considering process noise, several system representation approaches have been proposed, see e.g. De Persis and Tesi (2023). We expect that these can be applied to derive alternative data-driven algebraic conditions for the problems considered herein. Considering measurement noise, if the type of system dy-namics is known, the approach to treat measurement noise similarly to process noise introduced in De Persis and Tesi (2020) extends without difficulties to nonlinear systems (De Persis and Tesi (2023)). Like many related results ( e.g. Guo et al. (2022); Madeira and Correia (2024)), our results depend on measurements of ˙x, which are often un-available in practice and might have to be approximated via filters. Hence, the samples ˙xd are most likely to be affected by measurement noise. While a system representation as in Guo et al. (2022) can be used instead, note that the presented methods have an inherent degree of robustness as demonstrated in the example in Section 5. This is due to the construction based on the Lyapunov function (23) .
+
+5. EXAMPLE Consider the controlled van der Pol oscillator, i.e. (1) with 
+
+f (x) = 
+
+[ x2
+
+−x1 + (1 − x21)x2
+
+]
+
+, g(x) = 
+
+[01
+
+]
+
+,
+
+and the cost (6) with q(x) = 1 .25 x21 + 2 x22 + 6 x21x22. Note that f , g, and q satisfy Assumptions 1 and 2 and that the equilibrium at the origin of the open-loop system ˙ x = f (x)is unstable. For this simple example, we can determine a closed-form solution to the “classical” optimal control problem (1), (6), (using model knowledge) by solving the corresponding HJB PDE (see e.g. Liberzon (2011)). More precisely, the static feedback law u∗ = −0.5x1 − 3x2 is the optimal control input with value function V (x) = 2 x21 +0.5x1x2 + 1 .5x22 + 0 .125 x41. Let f and g be unknown and let Assumption 5 hold. Consider the libraries of basis functions Vf = Vg = V, with V containing monomials up to order two. The system can be written in the form (12). We choose 
+
+Z(x) = 
+
+[x1x2 01 −10 1
+
+]
+
+, Ξ( x) = [1] .
+
+We excite the system by choosing ud = 10 cos(20 t) starting from x0 = [0 .1 0 .5] ⊤ and collect T = ℓ + p = 4 data sam-ples xd and ˙ xd with a sampling time of ∆ = 0 .01s to form the matrices (13), (14). A solution to the data-driven fea-sibility problem (32), (27) is computed using SOSTOOLS (Papachristodoulou et al. (2022)). The tunable parameters are chosen as R = In, κ = 2 and ξ0 = [0 .1 0 .1] ⊤. Figure 1 shows the time histories of the control input, the dynamic extension and the state of the resulting closed-loop system starting from x0 = [0 .1 0 .1] ⊤ for three different controllers. That is, udd (x, ξ ) obtained using the result of Theorem 1, 
+
+unoisy  
+
+> dd
+
+(x, ξ ) obtained using the result of Theorem 1 with the entries of X+ computed via a finite-difference ap-proximation, i.e. ˙ xd(tk) = ( xd(tk+1 ) − xd(tk )) /∆ for k =0, . . . , T − 1, and u∗(x) defined above. The corresponding costs (rounded to two decimal places) are J(x0, u ∗) = 0 .04, 
+
+J(x0, ξ 0, u dd ) = 0 .06, and J(x0, ξ 0, u noisy  
+
+> dd
+
+) = 0 .27. Despite not explicitly accounting for noisy derivative measure-ments, the controller unoisy  
+
+> dd
+
+(x, ξ ) designed using Theorem 1 with noise-corrupted X+ stabilises the zero equilibrium of the resulting closed-loop system. However, it results in a higher cost. Using noise-free measurements, the controller 
+
+udd (x, ξ ) designed using Theorem 1 stabilises the zero equilibrium of the resulting closed-loop system and results in an only slightly higher cost than the known solution to the “classical problem” u⋆(x). 6. CONCLUSION We consider the problem of designing approximately op-timal controllers for optimal control problems involving nonlinear, input-affine systems with unknown dynamics directly using data. First, we introduce a direct data-driven system representation that is amenable to our prob-lem formulation. This is then utilised in the context of a framework to systematically construct locally stabilising controllers and approximate solutions to optimal control problems via system immersion and algebraic conditions. The presented methods do not require the explicit solution of any nonlinear PDE, but solutions are instead charac-terised via purely data-dependent algebraic conditions. We comment on the sources of approximation and the effect of noisy measurements on the solution. The efficacy of the results is illustrated via a numerical example. 0 2 4 6 8 10                     
+
+> 00.05 0.1
+> 0246810
+> -0.2 -0.1 00.1
+> 0246810
+> 00.05 0.1
+> 0246810
+> -0.05 00.05 0.1
+> 0246810
+> -2 -1 0
+
+Fig. 1. Time-histories of the state, dynamic extension and input for the Van der Pol example with u = udd (x, ξ )(green), u = unoisy  
+
+> dd
+
+(x, ξ ) (blue), u = u∗(x) (black). REFERENCES Anstreicher, K.M. and Wright, M.H. (2000). A note on the augmented Hessian when the reduced Hessian is semidefinite. SIAM Journal on Optimization , 11(1), 243–253. Bellman, R. (1957). Dynamic Programming . Princeton University Press. Chen, H., Bisoffi, A., and De Persis, C. (2025). Data-driven input-to-state stabilization of polynomial sys-tems. SIAM Journal on Control and Optimization ,63(6), 3915–3940. Dai, X., De Persis, C., and Monshizadeh, N. (2025). On-line adaptation of data-driven controllers for unknown nonlinear systems. International Journal of Robust and Nonlinear Control .De Persis, C. and Tesi, P. (2023). Learning controllers for nonlinear systems from data. Annual Reviews in Control , 56, 100915. De Persis, C., Rotulo, M., and Tesi, P. (2023). Learn-ing controllers from data via approximate nonlinearity cancellation. IEEE Transactions on Automatic Control ,68(10), 6082–6097. De Persis, C. and Tesi, P. (2020). Formulas for data-driven control: Stabilization, optimality, and robustness. IEEE Transactions on Automatic Control , 65(3), 909–924. Gong, Z., Mylvaganam, T., and Scarciotti, G. (2025). Constructive approximate solutions to classes of state-feedback control problems for stochastic nonlinear sys-tems. Automatica , 177, 112280. Guo, M., De Persis, C., and Tesi, P. (2020). Learning control for polynomial systems using sum of squares relaxations. In IEEE Conference on Decision and Control , 2436–2441. Guo, M., De Persis, C., and Tesi, P. (2022). Data-driven stabilization of nonlinear polynomial systems with noisy data. IEEE Transactions on Automatic Control , 67(8), 4210–4217. Guo, M., De Persis, C., and Tesi, P. (2023). Learning control of second-order systems via nonlinearity cancel-lation. In IEEE Conference on Decision and Control ,3055–3060. Liberzon, D. (2011). Calculus of variations and optimal control theory: a concise introduction . Princeton Uni-versity Press. Liu, Y. and Guo, M. (2024). Data-driven stabilization of non-zero equilibrium for polynomial systems. In IEEE Conference on Decision and Control , 1128–1133. Liu, Y. and Guo, M. (2025). Data-driven output regulation of nonlinear systems via incremental passivity. In 
+
+European Control Conference , 2740–2745. Madeira, D.d.S. and Correia, W.B. (2024). Data-driven saturated state feedback design for polynomial systems using noisy data. IEEE Transactions on Automatic Control , 69(11), 7932–7939. Monshizadeh, N., De Persis, C., and Tesi, P. (2025). Aversatile framework for data-driven control of nonlinear systems. IEEE Transactions on Automatic Control , 1–8. Mylvaganam, T., Sassano, M., and Astolfi, A. (2015). Con-structive ǫ-nash equilibria for nonzero-sum differential games. IEEE Transactions on Automatic Control , 60(4), 950–965. Papachristodoulou, A., Anderson, J., Valmor-bida, G., Prajna, S., Seiler, P., and Parrilo, P.A. (2022). SOSTOOLS: Sum of squares optimization toolbox for MATLAB . Available 
+
+https://github.com/oxfordcontrol/SOSTOOLS .Prag, K., Woolway, M., and Celik, T. (2022). Toward data-driven optimal control: A systematic review of the landscape. IEEE Access , 10, 32190–32212. Sassano, M., Mylvaganam, T., and Astolfi, A. (2021). Infinite-horizon optimal control problems for nonlinear systems. In IEEE Conference on Decision and Control ,1721–1741. Sassano, M. and Astolfi, A. (2012). Dynamic approximate solutions of the HJ inequality and of the HJB equation for input-affine nonlinear systems. IEEE Transactions on Automatic Control , 57(10), 2490–2503. Sassano, M., Mylvaganam, T., and Astolfi, A. (2018). An algebraic approach to dynamic optimisation of nonlinear systems: a survey and some new results. Journal of Control and Decision , 6(1), 1–29. Slotine, J.J.E. and Li, W. (1991). Applied nonlinear control , volume 199. Prentice hall Englewood Cliffs, NJ. Str¨ asser, R., Schaller, M., Worthmann, K., Berberich, J., and Allg¨ ower, F. (2025). Koopman-based feedback design with stability guarantees. IEEE Transactions on Automatic Control , 70(1), 355–370. Willems, J.C., Rapisarda, P., Markovsky, I., and Moor, B.L.D. (2005). A note on persistency of excitation. 
+
+Systems & Control Letters , 54(4), 325–329. Yu, H., Moyalan, J., Vaidya, U., and Chen, Y. (2022). Data-driven optimal control of nonlinear dynamics un-der safety constraints. IEEE Control Systems Letters ,6, 2240–2245. Yuan, Z. and Cort´ es, J. (2022). Data-driven optimal control of bilinear systems. IEEE Control Systems Letters , 6, 2479–2484.
