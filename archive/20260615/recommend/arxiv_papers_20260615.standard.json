@@ -1,0 +1,543 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T23:03:17.453612+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 3,
+    "deep_divecandidates": 5,
+    "deep_cap": 8,
+    "deep_selected": 5,
+    "quick_candidates": 7,
+    "quick_skim_target": 13,
+    "quick_selected": 7
+  },
+  "deep_dive": [
+    {
+      "id": "2606.14551v1",
+      "source": "arxiv",
+      "title": "TRACE: Trajectory-Routed Causal Memory for Delayed-Evidence Visuomotor Imitation",
+      "abstract": "Robots under autonomous operation may require decisions based on evidence that is no longer visible. We study \\emph{delayed-evidence} tasks, where an early cue disappears before a later decision point, so visually similar observations can require different actions. In these settings, the current observation is not a sufficient state for control. We introduce TRAjectory-routed Causal Evidence (TRACE), a memory framework for visuomotor imitation policies. TRACE stores task-relevant visual and robot-state evidence, such as object identity, target choice, or route-dependent state, in a fixed-size latent memory that remains bounded over long episodes. Instead of indexing memory by raw time or manually provided task labels, TRACE uses \\emph{path signatures}: compact, order-sensitive features of the executed robot-state trajectory. These signatures do not store the visual cue itself; rather, they provide trajectory-conditioned keys for writing and retrieving the evidence stored when the cue was visible. When the robot later reaches an ambiguous observation, the policy conditions on TRACE memory to recover the missing context and choose the correct branch. TRACE attaches through lightweight adapters to policies, without changing the policy backbone, action head, or imitation objective. Across real-world long-horizon manipulation tasks with visually ambiguous branch points, TRACE improves branch selection and task success over alternative baselines, including short-history and recurrent memory. Project page: https://jeong-zju.github.io/trace",
+      "authors": [
+        "Zihao Li",
+        "Ranpeng Qiu",
+        "Yincong Chen",
+        "Guoqiang Ren",
+        "Weiming Zhi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T15:30:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.14551v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "memory framework for visuomotor imitation policies",
+      "llm_evidence_cn": "用于视觉运动模仿策略的记忆框架",
+      "llm_evidence": "用于视觉运动模仿策略的记忆框架",
+      "canonical_evidence": "用于视觉运动模仿策略的记忆框架",
+      "llm_tldr_en": "TRACE introduces a trajectory-routed causal memory for visuomotor imitation policies, enabling robots to recall task-relevant evidence after it disappears from view, improving performance in delayed-evidence tasks.",
+      "llm_tldr_cn": "本文针对机器人需要在早期线索消失后仍做出正确决策的延迟证据任务，提出了TRACE记忆框架。该方法通过路径相似度索引存储任务相关的视觉和状态信息，以固定大小的潜在记忆支持长程决策。实验表明，TRACE使模仿策略能有效回忆早期线索，在多种延迟证据场景中显著优于无记忆基线，为部分可观测环境下的机器人学习提供了实用的记忆方案。",
+      "llm_tldr": "本文针对机器人需要在早期线索消失后仍做出正确决策的延迟证据任务，提出了TRACE记忆框架。该方法通过路径相似度索引存储任务相关的视觉和状态信息，以固定大小的潜在记忆支持长程决策。实验表明，TRACE使模仿策略能有效回忆早期线索，在多种延迟证据场景中显著优于无记忆基线，为部分可观测环境下的机器人学习提供了实用的记忆方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14617v1",
+      "source": "arxiv",
+      "title": "Whole-Body Impedance Model Predictive Control for Safe Physical Human--Robot Interaction on Floating-Base Platforms",
+      "abstract": "Floating-base robots must balance under rigid contact constraints while interacting safely with humans. Existing whole-body control~(WBC) frameworks allocate the full joint space to locomotion or rely on fixed-gain impedance feedback that accumulates steady-state error under sustained physical human--robot interaction~(pHRI) forces. This paper extends the authors' fixed-base two-layer Impedance MPC to floating-base platforms through a three-level architecture: a centroidal MPC plans contact forces over a 500\\,ms horizon; a priority-driven WBC layer resolves balance into joint torques through contact-consistent null-space projection; and the residual null space is governed by a receding-horizon quadratic program~(QP) that predicts and rejects pHRI disturbances using a Kalman-augmented state. A contact-consistent feedback linearization reduces the arm end-effector plant to a double integrator with a \\emph{constant} state matrix within each contact mode, enabling offline precomputation of the QP cost and ${\\geq}1$\\,kHz operation. A covariance-inflation protocol preserves the disturbance estimate across contact-mode switches, guaranteeing zero steady-state error under bounded constant pHRI loads, and an Impedance Equivalence Theorem shows the infinite-horizon limit recovers a classical task-space impedance law whose effective mass, damping, and stiffness adapt to posture and contact configuration. Simulations on a 17-DOF biped and the Unitree G1 humanoid validate the design.",
+      "authors": [
+        "Yongyan Cao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-12T16:41:20+00:00",
+      "link": "https://arxiv.org/pdf/2606.14617v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "whole-body impedance MPC for floating-base locomotion",
+      "llm_evidence_cn": "浮动基座全身阻抗模型预测控制",
+      "llm_evidence": "浮动基座全身阻抗模型预测控制",
+      "canonical_evidence": "浮动基座全身阻抗模型预测控制",
+      "llm_tldr_en": "Whole-Body Impedance MPC for floating-base robots combines centroidal MPC, priority-driven WBC, and receding-horizon QP for safe pHRI.",
+      "llm_tldr_cn": "浮动基座机器人在与人交互时需要兼顾平衡和安全。该工作提出三层架构：质心MPC规划接触力，优先级WBC解算平衡力矩，剩余零空间通过滚动时域二次规划实现阻抗控制。在仿真和实物平台上验证了在交互力作用下保持稳定且能主动顺应。",
+      "llm_tldr": "浮动基座机器人在与人交互时需要兼顾平衡和安全。该工作提出三层架构：质心MPC规划接触力，优先级WBC解算平衡力矩，剩余零空间通过滚动时域二次规划实现阻抗控制。在仿真和实物平台上验证了在交互力作用下保持稳定且能主动顺应。",
+      "llm_tags": [
+        "query:mpc-wbc"
+      ],
+      "matched_query_tag": "query:mpc-wbc",
+      "matched_query_text": "Model predictive control for whole body locomotion and walking",
+      "matched_requirement_id": "req-21",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08881v2",
+      "source": "arxiv",
+      "title": "Benchmarking Vision-Language-Action Models on SO-101: Failure and Recovery Analysis",
+      "abstract": "Vision-Language-Action (VLA) models have demonstrated strong generalization in robotic manipulation, yet existing evaluations are primarily conducted in simulation or on expensive robotic platforms, leaving their robustness on affordable real-world robots largely unexplored. We present a standardized real-world benchmark for evaluating representative VLA and imitation learning policies on the low-cost SO-101 robotic platform. The benchmark comprises four representative manipulation tasks together with unified evaluation protocols, enabling systematic comparison under embodiment uncertainty. Using real-world teleoperated demonstrations, we fine-tune and evaluate $π_{0.5}$, SmolVLA, Wall-X, and ACT directly on the physical platform. Beyond conventional task success rates, the benchmark incorporates a structured failure taxonomy, semantic- and execution-level failure decomposition, and recovery-aware evaluation metrics to characterize policy robustness. Experimental results show that stronger pretrained VLA policies generally outperform the imitation learning baseline, although performance remains highly task-dependent under low-cost robotic deployment conditions. Execution instability emerges as the dominant failure source, while recovery capability varies substantially across architectures. These results highlight the importance of failure and recovery analysis beyond binary task success and establish SO-101 as a practical benchmark for evaluating embodied AI systems under realistic low-cost robotic deployment conditions.",
+      "authors": [
+        "Yi Yu",
+        "Xinchuan Qiu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-07T23:39:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.08881v2",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for evaluating imitation learning policies",
+      "llm_evidence_cn": "评估模仿学习策略的基准",
+      "llm_evidence": "评估模仿学习策略的基准",
+      "canonical_evidence": "评估模仿学习策略的基准",
+      "llm_tldr_en": "Presents a real-world benchmark for evaluating VLA and imitation learning policies on low-cost robots, enabling systematic comparison under embodiment uncertainty.",
+      "llm_tldr_cn": "现有VLA和模仿学习评估多在仿真或昂贵机器人上进行，缺乏低成本和真实世界的统一基准。本文提出了SO-101平台上的标准化基准，包含四种操作任务，用于评估π0.5、SmolVLA等模仿学习策略。通过真实遥操作演示微调，并在物理机器人上直接评估，揭示了不同策略在泛化和鲁棒性上的差异。该工作为低成本机器人上模仿学习的可重复评估提供了重要工具。",
+      "llm_tldr": "现有VLA和模仿学习评估多在仿真或昂贵机器人上进行，缺乏低成本和真实世界的统一基准。本文提出了SO-101平台上的标准化基准，包含四种操作任务，用于评估π0.5、SmolVLA等模仿学习策略。通过真实遥操作演示微调，并在物理机器人上直接评估，揭示了不同策略在泛化和鲁棒性上的差异。该工作为低成本机器人上模仿学习的可重复评估提供了重要工具。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14270v1",
+      "source": "arxiv",
+      "title": "Robust Fall Recovery for Armless Bipedal-Wheeled Robots Via Force-Guided Learning",
+      "abstract": "Fall recovery is critical for autonomous legged locomotion. Existing methods have demonstrated that some legged robots, such as humanoids and quadrupeds, are capable of fall recovery from diverse postures by utilizing arms or coordinating multi-legs to generate support forces. Without arms or other legs to provide supportive assistance, a bipedal-wheeled robot must rely solely on the actuation of its legs, making recovery particularly difficult. To address this, we introduce FTSR (Force-guided Teacher-student framework with Stage-wise Rewards). The force-guided method constructs an external auxiliary force during simulation training that correlates directly with the robot's real-time height, explicitly formulating this force as an optimizable constraint. Through constrained reinforcement learning, the policy is guided toward reducing force dependency gradually and increasing the body height, developing internal recovery strategies despite having no arms for support. Height-progressive stage-Wise rewards progressively structure posture stabilization during recovery and transition to sustained locomotion, integrated with teacher-student architecture distilling privileged knowledge of force effects and recovery dynamics. After simulation training, the policy is deployed on a physical armless bipedal-wheeled robot and extensively evaluated. Experiments confirm robust and reliable fall recovery under diverse challenging conditions, demonstrating strong environmental adaptability and motion robustness, while maintaining full post-recovery motion capability. The framework also generalizes effectively to a high-DOF humanoid, confirming its practical generalizability. The project page is available at https://2350575870.github.io/force-guided.github.io/",
+      "authors": [
+        "Haidong Hou",
+        "Zhangguo Yu",
+        "Tao Han",
+        "Hengbo Qi",
+        "Khaleel Ghazal",
+        "Yu Zhang",
+        "Yidong Du",
+        "Xuechao Chen",
+        "Fei Meng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T08:51:51+00:00",
+      "link": "https://arxiv.org/pdf/2606.14270v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "fall recovery for bipedal-wheeled robots using force-guided learning",
+      "llm_evidence_cn": "基于力引导学习的双臂缺失双轮机器人跌倒恢复",
+      "llm_evidence": "基于力引导学习的双臂缺失双轮机器人跌倒恢复",
+      "canonical_evidence": "基于力引导学习的双臂缺失双轮机器人跌倒恢复",
+      "llm_tldr_en": "FTSR uses teacher-student force-guided learning with stage-wise rewards to enable fall recovery for armless bipedal-wheeled robots, a legged locomotion challenge.",
+      "llm_tldr_cn": "本文针对无臂双轮机器人在跌倒后难以仅靠腿部恢复的问题，提出力引导式师生框架FTSR。该方法通过在仿真训练中构造与高度相关的外力辅助，并设计阶段奖励，使机器人学会自主站立。实验证明了该策略的有效性，为双足轮式机器人的鲁棒运动提供了新思路。",
+      "llm_tldr": "本文针对无臂双轮机器人在跌倒后难以仅靠腿部恢复的问题，提出力引导式师生框架FTSR。该方法通过在仿真训练中构造与高度相关的外力辅助，并设计阶段奖励，使机器人学会自主站立。实验证明了该策略的有效性，为双足轮式机器人的鲁棒运动提供了新思路。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "control strategies for bipedal robot locomotion",
+      "matched_requirement_id": "req-19",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.14535v1",
+      "source": "arxiv",
+      "title": "Spatially Conditioned Diffusion Policy: Learning Precise and Robust Manipulation with a Single RGB Camera",
+      "abstract": "Recent visual imitation learning systems have widely adopted multi-camera setups with wrist-mounted cameras as the de facto standard. However, manipulation from a single global view remains challenging, as the policy should capture fine-grained interaction details and identify task-relevant regions without local wrist views. To address this challenge, we present Spatially Conditioned Diffusion Policy (SCDP), a diffusion-based visuomotor policy that achieves precise and robust manipulation in a single-camera setting. Our key idea is that end-effector trajectories can serve as visual attention anchors that reflect task-relevant regions. Building on this idea, SCDP consists of two key components: (i) a visual encoder that produces multi-scale feature maps to capture both broader context and fine-grained visual features, and (ii) a spatial conditioning module that samples point-wise features along intermediate end-effector trajectories in the diffusion loop. Extensive simulation experiments show that SCDP consistently outperforms strong single-view baselines and achieves performance comparable to multi-camera baselines. Real-world experiments further demonstrate precise manipulation and robustness to visual distractors, highlighting the potential of single-camera imitation learning.",
+      "authors": [
+        "Seoyoon Kim",
+        "Kanghyun Kim",
+        "Dongwoo Ko",
+        "Yeong Jin Heo",
+        "Min Jun Kim"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T15:12:03+00:00",
+      "link": "https://arxiv.org/pdf/2606.14535v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "diffusion-based visuomotor policy for precise manipulation from single camera, a form of imitation learning",
+      "llm_evidence_cn": "基于扩散的视觉运动策略，单相机实现精准操作，是模仿学习的一种形式",
+      "llm_evidence": "基于扩散的视觉运动策略，单相机实现精准操作，是模仿学习的一种形式",
+      "canonical_evidence": "基于扩散的视觉运动策略，单相机实现精准操作，是模仿学习的一种形式",
+      "llm_tldr_en": "Proposes Spatially Conditioned Diffusion Policy (SCDP) for precise manipulation from a single RGB camera, using end-effector trajectories as visual attention anchors.",
+      "llm_tldr_cn": "现有视觉模仿学习系统通常依赖多相机（含腕部相机）来捕获精细操作细节，但单相机全局视角难以聚焦任务相关区域。该论文提出SCDP，利用端到端轨迹作为视觉注意力锚点，引导扩散策略关注关键区域，从而在仅用单台全局相机的情况下实现精准操作。在多种精细操作任务上，SCDP达到了与多相机系统相当甚至更优的性能，大幅降低了硬件成本。",
+      "llm_tldr": "现有视觉模仿学习系统通常依赖多相机（含腕部相机）来捕获精细操作细节，但单相机全局视角难以聚焦任务相关区域。该论文提出SCDP，利用端到端轨迹作为视觉注意力锚点，引导扩散策略关注关键区域，从而在仅用单台全局相机的情况下实现精准操作。在多种精细操作任务上，SCDP达到了与多相机系统相当甚至更优的性能，大幅降低了硬件成本。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.10025v1",
+      "source": "arxiv",
+      "title": "GHOST: Hierarchical Sub-Goal Policies for Generalizing Robot Manipulation",
+      "abstract": "We present GHOST, a framework for learning visuomotor manipulation policies that generalize beyond the training distribution. GHOST factorizes control into (i) a high-level policy that predicts the next sub-goal as a distribution over 3D end-effector poses from multi-view RGB-D observations, and (ii) a low-level goal-conditioned controller that executes embodiment-specific actions. To condition image-based policies on 3D goals, we introduce a simple spatial interface that projects predicted goals into the image plane and represents them as end-effector heatmaps. Across a suite of manipulation tasks, this hierarchical factorization consistently improves performance and robustness compared to a flat Diffusion Policy.   Further, we show that this hierarchical interface also makes it easy to incorporate human demonstrations without relying on (noisy) action retargeting. As sub-goals are largely embodiment-agnostic, we train the high-level policy on human video to specify how learned skills should be applied and composed, while keeping the low-level policy trained purely on robot data. This hierarchy enables adaptation to novel objects and task variations using a small number of human demonstrations.",
+      "authors": [
+        "Sriram Krishna",
+        "Ben Eisner",
+        "Haotian Zhan",
+        "Ying Yuan",
+        "Haoyu Zhen",
+        "Chuang Gan",
+        "Shubham Tulsiani",
+        "David Held"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-08T18:08:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.10025v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hierarchical imitation learning for manipulation generalization",
+      "llm_evidence_cn": "用于操作泛化的分层模仿学习",
+      "llm_evidence": "用于操作泛化的分层模仿学习",
+      "canonical_evidence": "用于操作泛化的分层模仿学习",
+      "llm_tldr_en": "GHOST uses a hierarchical policy with sub-goal prediction and goal-conditioned controller for robot manipulation, achieving better generalization than flat Diffusion Policy.",
+      "llm_tldr_cn": "现有行为克隆策略因训练分布限制泛化能力差。本文提出GHOST，将控制分解为高层子目标预测和低层目标条件控制，高层从多视角RGB-D预测末端执行器三维位姿分布，低层执行具体动作，并引入空间接口将三维目标投影到图像平面。在多个操作任务上，GHOST一致优于扁平扩散策略，尤其在分布外场景下鲁棒性更强。该工作验证了分层模仿学习框架在机器人操作泛化中的有效性。",
+      "llm_tldr": "现有行为克隆策略因训练分布限制泛化能力差。本文提出GHOST，将控制分解为高层子目标预测和低层目标条件控制，高层从多视角RGB-D预测末端执行器三维位姿分布，低层执行具体动作，并引入空间接口将三维目标投影到图像平面。在多个操作任务上，GHOST一致优于扁平扩散策略，尤其在分布外场景下鲁棒性更强。该工作验证了分层模仿学习框架在机器人操作泛化中的有效性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.10495v1",
+      "source": "arxiv",
+      "title": "Act on What You See: Unlocking Safe Social Navigation in Vision-Language-Action Models",
+      "abstract": "Safe social navigation requires robots to distinguish people from ordinary obstacles and to react before danger becomes imminent. We show that pretrained Vision-Language-Action (VLA) models already encode pedestrian-object distinctions and future collision signals in their internal representations, but behavior cloning fails to translate these signals into socially appropriate actions. To address this mismatch, we propose SALSA, a two-stage annotation-free post-training framework: (1) social behavioral alignment bridges intermediate-layer social features to the action head and trains on counterfactual human-object scene pairs to break visual saliency shortcuts; (2) temporal safety alignment provides automatically generated future-risk supervision to enable anticipatory collision avoidance. On SCAND and real-world deployment, SALSA reduces near-collisions by 86.4% and improves social counterfactual accuracy from 53% to 93%, demonstrating that safer social navigation can be achieved by teaching VLA policies to act on representations they already possess. These results show that pretrained VLA policies can be adapted for safer social navigation by better aligning their latent representations with action generation.",
+      "authors": [
+        "Qingzi Wang",
+        "Xiyang Wu",
+        "Guangyao Shi",
+        "Dianwei Chen",
+        "Xianfeng Yang",
+        "Dinesh Manocha"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-09T07:18:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.10495v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "behavior cloning failure and post-training framework",
+      "llm_evidence_cn": "行为克隆失败及后训练框架",
+      "llm_evidence": "行为克隆失败及后训练框架",
+      "canonical_evidence": "行为克隆失败及后训练框架",
+      "llm_tldr_en": "SALSA addresses behavior cloning's failure to translate social signals into actions in VLA models by two-stage annotation-free post-training: social behavioral alignment and temporal safety alignment.",
+      "llm_tldr_cn": "预训练的视觉-语言-动作模型虽然内部编码了行人识别和碰撞信号，但行为克隆未能将其转化为社交适当动作。SALSA通过两阶段无标注后训练（社交行为对齐和时间安全对齐）解锁了安全社交导航能力，在仿真和真实场景中显著减少了碰撞。",
+      "llm_tldr": "预训练的视觉-语言-动作模型虽然内部编码了行人识别和碰撞信号，但行为克隆未能将其转化为社交适当动作。SALSA通过两阶段无标注后训练（社交行为对齐和时间安全对齐）解锁了安全社交导航能力，在仿真和真实场景中显著减少了碰撞。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14160v1",
+      "source": "arxiv",
+      "title": "GAIT: Legged Robot Proprioceptive State Estimation with Attention over Inertial-Leg Tokens",
+      "abstract": "In this paper, we propose a method that applies Inertial-Leg (IL) tokenization to an attention-based network for proprioceptive state estimation in legged robots. Unlike existing learning-based state estimators that concatenate all sensor measurements into a single flat vector, the proposed architecture represents inertial measurements and leg-wise measurements as individual tokens and uses an attention mechanism to learn the relative importance of each measurement.This design allows the network to reweight each measurement according to the current contact condition, reflecting the fact that the reliability of forward kinematic measurements depends on whether the corresponding foot is in contact. Unlike conventional contact-aided estimators, however, the proposed method learns this behavior without relying on an explicit contact estimator or on explicit measurement updates based on a stationary contact assumption. To validate the proposed method, we conducted experiments on a Unitree Go1 robot, including debris terrain not modeled in simulation and gait patterns not seen during training. Experimental results show that the proposed method achieves better estimation performance than existing learning-based state estimators under unseen gait patterns and also improves performance over contact-aided model-based methods.",
+      "authors": [
+        "Young-Rang Seo",
+        "Hajun Kim",
+        "Sangmin Kim",
+        "Dongyun Kang",
+        "Hae-Won Park"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T06:34:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.14160v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "legged robot state estimation using attention, supports locomotion control",
+      "llm_evidence_cn": "使用注意力机制的腿式机器人状态估计，支持运动控制",
+      "llm_evidence": "使用注意力机制的腿式机器人状态估计，支持运动控制",
+      "canonical_evidence": "使用注意力机制的腿式机器人状态估计，支持运动控制",
+      "llm_tldr_en": "Proposes GAIT, an attention-based network using Inertial-Leg tokenization for proprioceptive state estimation in legged robots, improving accuracy under varying contact conditions.",
+      "llm_tldr_cn": "针对腿式机器人状态估计中不同传感器可靠性随接触条件变化的问题，该论文提出GAIT方法，将惯性测量和腿部测量分别编码为独立令牌，通过注意力机制动态加权，使网络能根据脚部接触状态调整各测量值的信任度。实验证明，该方法在多种地形和运动状态下优于传统接触辅助估计器，提升了状态估计的鲁棒性。",
+      "llm_tldr": "针对腿式机器人状态估计中不同传感器可靠性随接触条件变化的问题，该论文提出GAIT方法，将惯性测量和腿部测量分别编码为独立令牌，通过注意力机制动态加权，使网络能根据脚部接触状态调整各测量值的信任度。实验证明，该方法在多种地形和运动状态下优于传统接触辅助估计器，提升了状态估计的鲁棒性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14218v1",
+      "source": "arxiv",
+      "title": "Universal Manipulation Exoskeleton: Learning Compliant Whole-body Policies with Real-time Torque Feedback",
+      "abstract": "For robots to work safely in household environments, they need to be compliant and react to torque and force feedback during contact. However, the majority of existing data collection pipelines still lack the ability to capture force and torque data for learning active compliant policies. In this paper, we present Universal Manipulation Exoskeleton (UME), an upper-limb exoskeleton that provides real-time haptic torque feedback while recording whole-arm configurations and joint torque signals for teleoperation. With transparent torque feedback, human operators can even unsheathe kinematically constrained objects while blindfolded. UME is low-cost, lightweight, and portable. Equipped with an embedded IMU, it enables teleoperation for mobile manipulation. With our proposed universal retargeting algorithm, UME can teleoperate a range of robots, including the 7DoF OpenArm, 7DoF Franka, and 6DoF X-ARM. We demonstrate that this combination of capabilities enables learning bimanual, whole-body, and active compliant policies that operate effectively in highly constrained spaces. The learned robust autonomous policies achieve high success rates across a variety of tasks, including long-horizon mobile manipulation, force-mediated box flipping, visually occluded box pushing, and space-constrained tabletop manipulation. Videos, code, and additional information can be found at https://ume-exo.github.io.",
+      "authors": [
+        "Litian Liang",
+        "Jingxi Xu",
+        "Xinda Qi",
+        "Yujun Cai",
+        "Houzhu Ding",
+        "Luqi Wang",
+        "Zhixin Sun",
+        "Jyh-Herng Chow",
+        "Ming Yang",
+        "Mark Cutkosky"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-12T07:57:13+00:00",
+      "link": "https://arxiv.org/pdf/2606.14218v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "exoskeleton for learning compliant whole-body policies with torque feedback",
+      "llm_evidence_cn": "用于学习顺从全身策略的力矩反馈外骨骼",
+      "llm_evidence": "用于学习顺从全身策略的力矩反馈外骨骼",
+      "canonical_evidence": "用于学习顺从全身策略的力矩反馈外骨骼",
+      "llm_tldr_en": "UME exoskeleton collects whole-arm joint torque data through haptic feedback, enabling learning of compliant whole-body policies for safe robot interaction.",
+      "llm_tldr_cn": "机器人需要力反馈实现顺从控制，但现有数据收集缺乏力信息。本文提出通用操作外骨骼（UME），提供实时触觉力矩反馈并记录关节力矩信号。通过透明反馈，操作员可遥控完成复杂接触任务。采集的数据可用于学习主动顺从策略。该工作为全身控制的力觉学习提供了低成本、易用的数据平台。但与腿式 locomotion 无直接关联。",
+      "llm_tldr": "机器人需要力反馈实现顺从控制，但现有数据收集缺乏力信息。本文提出通用操作外骨骼（UME），提供实时触觉力矩反馈并记录关节力矩信号。通过透明反馈，操作员可遥控完成复杂接触任务。采集的数据可用于学习主动顺从策略。该工作为全身控制的力觉学习提供了低成本、易用的数据平台。但与腿式 locomotion 无直接关联。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14267v1",
+      "source": "arxiv",
+      "title": "FloVerse: Floor Plan-Guided Multi-Modal Navigation",
+      "abstract": "Floor plans encapsulate compact spatial priors, enabling agents to navigate unseen scenes more efficiently. While prior work has explored floor plan-guided navigation, it has focused mainly on PointNav and a limited set of environments. To bridge this gap, we introduce FloVerse, a new task for floor plan-guided embodied navigation that unifies PointNav, ObjectNav, and ImageNav. To support FloVerse, we assemble FloVerse-1.6K, a large-scale dataset of 1.6K scenes from HM3D and Gibson 4+, paired with corresponding floor plans, comprising 240K expert trajectories and 12M RGBD frames. We further propose ThreeDiff, a two-stage imitation learning policy comprising a planner, a diffusion-based multimodal goal-reasoning module trained via masked-modality modeling, and a refiner, a depth-based trajectory-refinement module for safe execution. Extensive experiments demonstrate that (1) floor-plan priors improve navigation performance across all goal modalities, and (2) ThreeDiff implicitly captures spatial information from floor plans. These results underscore the effectiveness of spatial priors and validate our proposed unified approach for floor plan-guided embodied navigation.",
+      "authors": [
+        "Weiqi Huang",
+        "Shuangyi Dong",
+        "Jiaxin Li",
+        "Yifei Guo",
+        "Zan Wang",
+        "Wei Liang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T08:49:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.14267v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses imitation learning policy (ThreeDiff)",
+      "llm_evidence_cn": "使用模仿学习策略（ThreeDiff）",
+      "llm_evidence": "使用模仿学习策略（ThreeDiff）",
+      "canonical_evidence": "使用模仿学习策略（ThreeDiff）",
+      "llm_tldr_en": "FloVerse introduces floor plan-guided navigation with a two-stage imitation learning policy ThreeDiff combining planner, diffusion goal-reasoning, and refiner, achieving unified PointNav, ObjectNav, and ImageNav.",
+      "llm_tldr_cn": "针对现有导航任务局限于特定类型且依赖地图的问题，FloVerse提出了统一多种导航任务（点导航、物体导航、图像导航）的框架，并构建包含24万专家轨迹的大规模数据集。其核心方法ThreeDiff采用两阶段模仿学习策略：先由规划器生成候选路径，再通过扩散模型进行多模态目标推理，最后用精炼器优化路径。实验表明该方法在多种场景下均优于基线，为多模态导航提供了通用解决方案。",
+      "llm_tldr": "针对现有导航任务局限于特定类型且依赖地图的问题，FloVerse提出了统一多种导航任务（点导航、物体导航、图像导航）的框架，并构建包含24万专家轨迹的大规模数据集。其核心方法ThreeDiff采用两阶段模仿学习策略：先由规划器生成候选路径，再通过扩散模型进行多模态目标推理，最后用精炼器优化路径。实验表明该方法在多种场景下均优于基线，为多模态导航提供了通用解决方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14433v1",
+      "source": "arxiv",
+      "title": "Kine2Go: Kinematic dataset for the Unitree Go2 robot with diverse gaits and motions",
+      "abstract": "The recent popularity of robotics, combined with the steadily decreasing cost of robotic hardware, has lowered the entry barrier to robotics research and enabled rapid advancements in the field. One of the primary examples is the Unitree Go2 quadruped robot, which is often used by researchers in the areas of locomotion, navigation, control, and others. Many researchers use the Go2 robot in combination with techniques like imitation learning, reinforcement learning, and behavioral cloning to allow machine learning systems to take full control of the robot. At the same time, many of those techniques require demonstration data consisting of the robot's kinematics information and actions applied to the motors. Obtaining such data is difficult, requires building complex pipelines, and can take significant time. To aid in those kinds of efforts, we present Kine2Go - a dataset with 800 diverse gait kinematics trajectory motion data for the Unitree Go2 robot, derived from 40 distinct policies. Our pipeline accepts data from various quadruped morphologies and translates them to a Go2-compatible format. Then we use Reinforcement Learning to train policies following a given motion, and finally we gather data from those policies, which grants robust, perturbed kinematic data with corresponding motor-level actions.",
+      "authors": [
+        "Władysław Pałucki",
+        "Paweł Siwak",
+        "Krzysztof Ciebiera",
+        "Marek Cygan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T13:13:53+00:00",
+      "link": "https://arxiv.org/pdf/2606.14433v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "kinematic locomotion dataset for quadruped robot",
+      "llm_evidence_cn": "四足机器人运动学数据集",
+      "llm_evidence": "四足机器人运动学数据集",
+      "canonical_evidence": "四足机器人运动学数据集",
+      "llm_tldr_en": "Kine2Go provides a kinematic dataset for the Unitree Go2 quadruped robot with diverse gaits and motions, supporting locomotion, imitation learning, and reinforcement learning research.",
+      "llm_tldr_cn": "机器人运动学演示数据的获取困难限制了模仿学习等方法的应用。Kine2Go数据集包含Unitree Go2四足机器人多种步态和运动模式的运动学与动作数据，可直接用于训练和评估运动控制算法，降低了足式运动研究的数据门槛。",
+      "llm_tldr": "机器人运动学演示数据的获取困难限制了模仿学习等方法的应用。Kine2Go数据集包含Unitree Go2四足机器人多种步态和运动模式的运动学与动作数据，可直接用于训练和评估运动控制算法，降低了足式运动研究的数据门槛。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.14665v1",
+      "source": "arxiv",
+      "title": "EgoGuide: Egocentric Guidance for Efficient Robot-Free Demonstration Collection and Learning",
+      "abstract": "Robot learning from real-world demonstrations is currently constrained by data scaling. Universal Manipulation Interface (UMI) provides an efficient robot-free data collection interface, yet current UMI-style pipelines often collect redundant demonstrations and lack global scene context. To improve data efficiency, we present EgoGuide, a collection interface that records synchronized wrist and head/egocentric observations and couples them with online visual-geometric data quality guidance. We also introduce a Gated Egocentric Residual Policy for robust learning from a viewpoint-varying egocentric camera, allowing head/egocentric context to correct ambiguous local observations while preserving stable wrist-view control. Real-world experiments show that EgoGuide reduces the required number of data episodes and improves data efficiency. The residual policy further improves robustness under visual occlusion. Project Page: https://silicx.github.io/EgoGuide",
+      "authors": [
+        "Yue Xu",
+        "Mingtao Nie",
+        "Tianle Li",
+        "Hong Li",
+        "Yibo Luo",
+        "Siyuan Huang",
+        "Yong-Lu Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-12T17:36:23+00:00",
+      "link": "https://arxiv.org/pdf/2606.14665v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "efficient demonstration collection for imitation learning",
+      "llm_evidence_cn": "高效的模仿学习演示收集",
+      "llm_evidence": "高效的模仿学习演示收集",
+      "canonical_evidence": "高效的模仿学习演示收集",
+      "llm_tldr_en": "EgoGuide is an efficient robot-free demonstration collection interface that uses egocentric guidance and a gated residual policy to improve data efficiency and robustness to viewpoint changes.",
+      "llm_tldr_cn": "本文针对机器人演示收集中的数据效率问题，提出EgoGuide界面。该方法同步记录腕部和头部自我中心观测，并在线提供视觉-几何质量引导以过滤冗余数据。同时提出门控自我中心残差策略，利用头部视角信息纠正局部歧义。真实世界实验表明，EgoGuide显著提升了演示数据的利用效率，学习到的策略对视角变化具有鲁棒性，为大规模机器人学习数据收集提供了有效工具。",
+      "llm_tldr": "本文针对机器人演示收集中的数据效率问题，提出EgoGuide界面。该方法同步记录腕部和头部自我中心观测，并在线提供视觉-几何质量引导以过滤冗余数据。同时提出门控自我中心残差策略，利用头部视角信息纠正局部歧义。真实世界实验表明，EgoGuide显著提升了演示数据的利用效率，学习到的策略对视角变化具有鲁棒性，为大规模机器人学习数据收集提供了有效工具。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+Title: Universal Manipulation Exoskeleton: Learning Compliant Whole-body Policies with Real-time Torque Feedback
+
+URL Source: https://arxiv.org/pdf/2606.14218v1
+
+Published Time: Mon, 15 Jun 2026 00:42:49 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# Universal Manipulation Exoskeleton: Learning Compliant Whole-body Policies with Real-time Torque Feedback 
+
+Litian Liang *,1 Jingxi Xu *,1,2 Xinda Qi 1 Yujun Cai 1 Houzhu Ding 1 Luqi Wang 1
+
+Zhixin Sun 1 Jyh-Herng Chow 1 Ming Yang 1 Mark Cutkosky 21Ant Group 2Stanford University 
+
+> *
+
+Equal contribution 
+
+https://ume-exo.github.io/ (a) Real-time transparent 
+
+> torque feedback
+> (c) Teleoperating
+> mobile manipulation
+> (d) Learned compliant
+> whole-body policy
+> (b) Universal
+> retargeting
+
+# 🤓 7DoF Franka 6DoF X-ARM Force-mediated Space-constrained Whole-body Visually occluded 
+
+Fig 1: Overview of Universal Manipulation Exoskeleton. (a) UME provides transparent haptic torque feedback in real time, enabling the operator to teleoperate a bimanual robot to unsheathe a sword while blindfolded. (b) Our universal retargeting algorithm enables intuitive teleoperation across a range of robotic arms, including OpenArm (7-DoF), Franka (7-DoF), and X-ARM (6-DoF). (c) UME is portable and incorporates embedded IMU sensors that allow the user to simultaneously control the mobile base, enabling mobile manipulation teleoperation. (d) The robot learns whole-body compliant behaviors for highly force-mediated and extremely constrained-space tasks. 
+
+Abstract: For robots to work safely in household environments, they need to be compliant and react to torque and force feedback during contact. However, the majority of existing data collection pipelines still lack the ability to capture force and torque data for learning active compliant policies. In this paper, we present Universal Manipulation Exoskeleton (UME), an upper-limb exoskeleton that provides real-time haptic torque feedback while recording whole-arm configurations and joint torque signals for teleoperation. With transparent torque feedback, human operators can even unsheathe kinematically constrained objects while blindfolded. UME is low-cost, lightweight, and portable. Equipped with an embedded IMU, it enables teleoperation for mobile manipulation. With our proposed universal retargeting algorithm, UME can teleoperate a range of robots, including the 7DoF OpenArm, 7DoF Franka, and 6DoF X-ARM. We demonstrate that this combination of capabilities enables learning bimanual, whole-body, and active compliant policies that operate effectively in highly constrained spaces. The learned robust autonomous policies achieve high success rates across a variety of tasks, including long-horizon mobile manipulation, force-mediated box flipping, visually occluded box pushing, and space-constrained tabletop manipulation. 
+
+Keywords: Haptic torque feedback, exoskeleton, compliant whole-body manipulation 
+
+## 1 Introduction and Related Work 
+
+Industrial robots have advanced tremendously over the past few decades, becoming precise, fast, and rigid; however, if you get in their way, their strength and rigidity can pose serious safety risks. With the growing interest in collaborative, household robots, active compliance is becoming increasingly important, as these systems must sense and adapt to physical interactions rather than execute rigid motions. Nonetheless, much of the recent work on vision-language-action (VLA) models [ 1, 2, 3, 4, 5, 6] and world models for robotics [ 7,
+
+> arXiv:2606.14218v1 [cs.RO] 12 Jun 2026
+
+8, 9, 10 ] does not emphasize compliance, largely due to the lack of force and torque data. While recent efforts have begun incorporating force and tactile information into robotic foundation models [ 11 ] and adaptive data collection pipelines [ 12 ], learning compliant whole-body manipulation at scale remains an open challenge. Teleoperation is an important paradigm for collecting human demonstrations for learning active compliant policies. However, systems such as ALOHA [13, 14] and GELLO [15] do not expose joint torque data during data collection. This leads to two key limitations. First, without torque data, robots cannot learn active compliant behaviors. Second, the lack of torque sensing prevents propagating resistance back to the leader arm, meaning that operators cannot feel the forces experienced by the follower arm. This absence of real-time haptic torque feedback limits both intuitiveness and safety, especially in force-intensive tasks. For example, in non-prehensile manipulation where a robot leverages environmental contact (e.g., using wall resistance to flip a box, shown in Fig. 1(d)), the absence of feedback may cause users to inadvertently overdrive the leader arm, which can become unsafe when the resistance on the follower arm suddenly disappears. In addition, these systems typically provide control only at the end-effector level, without direct control over the whole-arm configuration. However, whole-arm coordination can be critical for executing tasks in highly constrained spaces. Another paradigm is hand-held data collection, such as UMI-style grippers [ 16 , 17 , 18 ], which do provide direct force and torque feedback to the user during data collection, arising naturally from in-the-wild physical interactions. However, despite this implicit haptic feedback, the UMI-style paradigm typically records only end-effector poses and thus relies on inverse kinematics (IK) to enforce collision constraints at inference time. While this design promotes cross-embodiment generalization, it does not handle cluttered or highly constrained environments well. In addition, because the camera is often mounted on the gripper, the resulting observations may have limited coverage of the global scene geometry, which is critical for reliable collision avoidance, though recent works such as HoMMI [19] mitigate this issue using head-mounted cameras. To address some aforementioned challenges, we present UME ( Universal Manipulation Exoskeleton). The key design principle of UME is to enable the teleoperator to directly feel, in real time, the resistance sensed by the robot. This bidirectional interaction provides a more intuitive teleoperation experience. Moreover, the recorded joint-level torque signals can be leveraged to train compliant whole-body and bimanual policies, especially in highly space-constrained environments. Humans naturally regulate interaction forces during contact-rich manipulation. When retrieving a bottle from the back of a cluttered refrigerator, incidental contact with surrounding objects is common. Rather than strictly avoiding these contacts, humans adaptively modulate force to accomplish the task safely. Traditionally, robotic systems are designed to avoid contact; in contrast, our approach exploits torque feedback to learn behaviors that deliberately utilize contact. With the haptic torque feedback, it naturally captures human strategies for active compliance; with the recorded whole-arm joint torques and positions, it enables policies to implicitly encode aspects of motion planning from visual inputs and learn such contact-rich behavior. Recent advances in low-reduction, high-torque-density actuators are making it feasible to build a low-cost, lightweight, portable exoskeleton capable of delivering transparent haptic torque feedback. Compared to the Dynamixel [ 20 ] actuators used in prior works [ 15 , 21 ], which typically rely on multi-stage planetary gearboxes with high gear ratios, we instead adopt quasi-direct-drive motors with substantially lower reduction ratios (such as Damiao [ 22 ] and Unitree [ 23 ]). UME is also equipped with an onboard inertial measurement unit (IMU), enabling teleoperation of dual-arm mobile manipulators for whole-body tasks in dynamic environments. In summary, UME is an upper-limb teleoperation exoskeleton with the following capabilities. • Cap1. Real-time haptic torque feedback. UME provides real-time haptic torque feedback to the teleoperator, allowing them to feel the transparent resistance sensed by the robot. • Cap2. Universal whole-arm configuration capture. UME records whole-arm configuration, and with our proposed retargeting algorithm, it can universally teleoperate a range of robots. • Cap3. Portability for mobile manipulation. UME is low-cost, lightweight, and portable. The embedded IMU sensor enables the teleoperation of mobile manipulation tasks. To the best of our knowledge, we are the first to demonstrate that this combination of capabilities enables the learning of whole-body, bimanual, and active compliant policies, which significantly improve success rates 2on highly force-mediated tasks and tasks performed in tightly constrained spaces. For extended related work on teleoperated and in-the-wild data collection, and learning active compliant behaviors, see Appendix A. 
+
+## 2 Method 
+
+We made several key design choices to achieve transparent haptic torque feedback. UME closely matches the human arm kinematic structure, improving wearing comfort and enabling universal teleoperation across robot arms with different DoFs (degrees of freedom). To support mobile manipulation teleoperation, we additionally use a low-cost IMU to control the mobile base through the operator’s upper-body orientation. 
+
+2.1 Coaxial Actuator Configuration 3-DoF Shoulder  
+
+> (Glenohumeral Joint)
+> 1-DoF Elbow
+> (Humeroulnar Joint)
+> 3-DoF Wrist
+> (Radiocarpal Joint)
+> OpenArm
+> J1, J2, J3
+> OpenArm
+> J4
+> OpenArm
+> J5, J6, J7
+> Exoskeleton
+> J1, J2, J3
+> Exoskeleton
+> J4
+> Exoskeleton
+> J5, J6, J7
+
+Human  Robotic Arm Exoskeleton      
+
+> (c) Universal retargeting with sub-manipulators and virtual joints.
+> (a) Human wearing
+> UME exoskeleton
+> 2
+> J5
+> J6 J7
+> J5 J6
+> J7
+> J5
+> J6
+> J7
+> Right arm Neutral configuration Top-down grasp Palm-up hold
+> (b) Coaxial actuator configuration
+
+Fig 2: UME mechanical design. 
+
+Our exoskeleton prioritizes comfort for the human arm. The human arm follows a 3-1-3 structure [ 24 , 25 ]. The first three DoFs correspond to the shoulder (glenohumeral) joint, a ball-and-socket joint with three rotational DoFs: flexion/extension, abduction/adduction, and internal/external rotation. The elbow (humeroulnar) joint is a hinge joint with one DoF: flexion/extension. The final three DoFs correspond to the wrist (radiocarpal) joint, which provides flexion/extension, radial/ulnar deviation, and pronation/supination. Inspired by Zimmermann et al. [26, 27], we arranged the actuators in a coaxial configuration, where the center axes of joints J1, J2, and J3 intersect at the center of the human’s shoulder ball joint. This ensures that, regardless of how the joint angles of J1, J2, and J3 change, their axes always intersect, even as the angles between the axes dynamically vary (shown in Fig. 2(b)). Joint J4 corresponds to the human elbow joint. Finally, joints J5, J6, and J7 are arranged in another coaxial configuration, whose axes intersect at the center of the human wrist ball joint. Unlike other isomorphic leader-follower teleoperation systems that often have structural links blocking human movements, our special mechanical design replicates the full range of motion (RoM) of the human wrist and the majority of the shoulder (see Fig. 9 in Appendix E.3 for a visualization of UME RoM). 
+
+2.2 Universal Retargeting 
+
+Our retargeting framework is robot-agnostic. We use the OpenArm system [22, 28] as an example to demonstrate its efficacy (Fig. 2(c)). Inspired by the decoupling philosophies in Macro-Mini manipulator architectures [ 29 ], we decompose the kinematic chain of both the exoskeleton (UME) and the follower robot into three sub-manipulators: a virtual 3-DoF spherical shoulder joint, a 1-DoF elbow joint, and a virtual 3-DoF spherical wrist joint. Motion and haptic torques are retargeted independently across these sub-structures, maximizing system stability, predictability, and intuitiveness. 3Position and Velocity Feedforward. In the feedforward process, joint states from the UME exoskeleton are mapped to control targets for the follower arm. We group the first three joints q exo shoulder =[ q exo  
+
+> 1
+
+, q exo  
+
+> 2
+
+, q exo  
+
+> 3
+
+]T
+
+into a virtual spherical joint. Its orientation, represented using a rotation matrix, is computed with forward kinematics: R exo shoulder =fFK (q exo shoulder ), where R exo shoulder ∈SO (3) . The target joint values for the follower arm’s shoulder are subsequently solved via inverse kinematics: q robot shoulder = fIK (R exo shoulder ). Because the elbow is a 1-DoF revolute joint, its position is directly mirrored: q robot elbow =q exo elbow . The virtual spherical wrist orientation is retargeted in the same way, using the wrist sub-manipulator’s corresponding joints. For velocity feedforward, joint velocity targets are mapped using the respective sub-manipulator Jacobians 
+
+J ∈ R3×n for ball-joint rotation. Taking the shoulder as an example, the virtual angular velocity of the shoulder ball joint ωshoulder is obtained via: ωshoulder = J exo shoulder ˙q exo shoulder . The commanded joint velocities for the follower robot are then computed using the pseudo-inverse of the follower’s shoulder Jacobian: ˙q robot shoulder =  J robot shoulder 
+
+†ωshoulder , where J† = ( JT J)−1JT . For a non-redundant, 3-DoF shoulder sub-manipulator ( J ∈R3×3), the pseudo-inverse can be simplified to the standard matrix inverse J† =J−1.By decoupling the arm into isolated sub-manipulators, our retargeting architecture avoids the kinematic singularities that typically plague 6D end-effector task-space control [ 30 ]. Because computations for each sub-manipulator remain isolated, their respective Jacobian inverses do not interfere with each other. This isolation significantly enhances tracking stability and provides predictable, intuitive control near complex kinematic boundaries in constrained space. 
+
+Haptic Torque Feedback. Given the measured joint torques of the follower shoulder τ robot shoulder , the spatial rotational moment Fshoulder is solved using the transpose of the dynamically consistent Jacobian inverse [ 30 ]: 
+
+Fshoulder =  ¯J robot shoulder 
+
+T τ robot shoulder ,
+
+where J ∈R3×n is the shoulder Jacobian for ball-joint rotation, ¯J =A−1JT (JA −1JT )−1 is its dynamically consistent inverse, and A denotes the joint-space inertia matrix of the follower shoulder. For a non-redundant, 3-DoF shoulder, J ∈ R3×3, the dynamically consistent inverse simplifies to the standard matrix inverse, 
+
+¯J =J−1. The exoskeleton shoulder feedback torque is then computed via: 
+
+τ exo shoulder =  J exo shoulder 
+
+T Fshoulder .
+
+This formulation is applied symmetrically to the wrist, while the elbow torque is directly mapped: 
+
+τ exo elbow = τ robot elbow . Finally, to maximize the interaction torque transparency, we compute the exoskeleton’s whole-arm commanded torque with Coriolis, centrifugal, gravity, and friction compensation. See Appendix C for full implementation details about the control and retargeting algorithms. 
+
+2.3 Portable Mobile Manipulation Teleoperation 
+
+To minimize cost for UME, we use IMU for exoskeleton orientation detection and mobile base control. We compute the gravity-compensation torque based on the exoskeleton’s orientation relative to gravity. Simultaneously, we linearly map the 3-dimensional Euler angle representation of the IMU to the mobile base velocity vector [ ˙ x, ˙y, ˙θ] to control the movement of the mobile base. We choose IMU ( ∼$9) for its low cost, while more expensive alternatives like VR headsets ( ∼$300) could serve as a drop-in replacement. Our mobile robot base is an upgraded version of Tidybot++ [ 31 , 32 ], and achieves better compliance and more accurate odometry through a lower reduction ratio and backlash, while remaining kinematically holonomic. For details on breakdown costs and how we build an entire in-house mobile manipulator, see Appendix E.4. 
+
+2.4 Learning Autonomous Whole-body Active Compliant Policies 
+
+We use Action Chunking with Transformers (ACT) [ 13 ] for learning whole-body compliant robot policies. Details on the model parameters and training process can be found in Appendix D. We use the same input-output parameterization for image and robot joint proprioception as the original ACT algorithm. However, in order to incorporate the torque modality for learning active compliant behaviors, we process torque data in the same way as joint positions, and then append their embeddings together to further extend the image embeddings from the ResNet18 [33] backbone. The final embeddings are then fed into the transformer encoder and decoder networks [34] to get the desired joint positions. The desired positions encode joint compliance information to determine the robotic arm’s output torque. 4(1) (a) Box pushing. (1) Initial robot configuration and target black box to push. (2) The robot moves forward and raises its right    
+
+> arm without colliding with the table or clamps. (3)(4)(5) It pushes the box to the end until no gap remains.
+> Box to Push Gap to Close
+> Box to Flip
+> GPU to Pick
+> (c) GPU picking. (1) The robot moves forward and raises its right arm without colliding with the table. (2) It moves right until
+> making first contact with the desktop. (3) Its arm slides forward while remaining compliant and maintaining contact with the
+> desktop under constant force. (4) It picks up the GPU from between the two desktops. (5) It retracts with the GPU without
+> collision and places it on the desk.
+> (b) Box flipping. (1)(2) Same as box pushing. (3)(4)(5) It flips the box while maintaining constant contact force.
+
+(2) (3) (4) (5) (1) (2) (3) (4) (5) (1) (2) (3) (4) (5) (1) (2) (3) (4) (5)  
+
+> (d) Fridge drink retrieval. (1) The robot initially faces the table and does not observe a drink can. (2) It turns around and
+> opens the fridge door. (3) It retrieves a drink can from the side holder of the fridge door. (4) It transports the can while
+> supporting its bottom with the other hand. (5) It places the can on the table.
+> Box Flipped
+
+Fig 3: Task description. We provide autonomous task execution videos of all four tasks at https://ume-exo.github.io. 
+
+## 3 Experiments 
+
+We study UME’s ability to collect data that enables successful learning of autonomous, compliant, bimanual, and whole-body robot policies (video demonstrations can be found at https://ume-exo.github.io). To study UME’s performance on mobile manipulation tasks, we built an in-house dual-arm mobile manipulator (see Appendix E.4 for details). Our tasks are specifically designed to demonstrate the contributions of the three capabilities introduced in Sec. 1, briefly reiterated here: Cap1. real-time haptic torque feedback, Cap2. universal whole-arm configuration capture, and Cap3. portability for mobile manipulation. In particular, we study four tasks: (1) box pushing, (2) box flipping, (3) GPU picking, and (4) fridge drink retrieval. Task definitions can be found in their respective subsections, and snapshots of the robot autonomously performing each task are shown in Fig. 3. These tasks span a range of difficulties, summarized below. • Ch1. Highly force-mediated . Tasks such as box flipping and box pushing require the learned policy to effectively and consistently regulate the interaction forces applied to the environment. This challenge demonstrates the importance of Cap1. • Ch2. Tightly space-constrained . Tasks such as GPU picking are designed to operate in highly constrained spaces where contact is unavoidable [ 35 , 36 , 37 ], so the policy must constantly react to force/torque infor-mation to achieve active compliant behavior. The policy also needs to implicitly learn collision avoidance from whole-arm-configuration demonstrations. This demonstrates the importance of Cap1 and Cap2. • Ch3. Requiring mobile manipulation . Tasks such as fridge drink retrieval require long-horizon whole-body control. In fact, all four tasks require a certain level of base movement. This challenge demonstrates the importance of Cap3. We compare UME (ours) against the two baselines below across all four tasks over 20 trials. 5• No-torque. To ablate the importance of real-time interaction torque, we train a baseline policy on the same dataset without including the torque modality to compute the proprioception embedding. • UMI. To ablate the importance of the whole-arm configuration, we trained a baseline policy using only the end-effector 6D pose in the same dataset as the ground-truth actions. We trained with the same network input-output parameterization as UMI [16], namely: input image, relative end-effector pose, and inter-end-effector pose, and output the next chunk of relative end-effector pose, without including torque data. We implemented a whole-body IK solver to convert end-effector poses into joint positions. 
+
+3.1 Autonomous Policy: Box Pushing Box Pushing Box Flipping GPU Picking Fridge Drink Retrieval             
+
+> No-torque 0.50 00.75 0.90
+> UMI 0.40 000
+> UME (Ours) 0.90 0.85 0.95 0.95
+
+Table 1: UME and baselines task success rate. 
+
+Task Push a target box into the space between two desktop PCs until it reaches the very end, leaving no gap between the box and any hidden objects behind it (Fig. 3(a)). This task is inspired by how humans clean tabletops by shuffling objects all the way against the wall. 
+
+Challenges This task is highly force-mediated (Ch1). The hidden objects behind the large target box are not visually observable, so the robot must rely entirely on torque information to determine whether any space remains. The number, location, and size of gaps created by these hidden objects are arbitrary and unknown, so simply memorizing a stopping location based on visual input or joint values will not work. In addition, the robot must move its base in order to push the box all the way to the end (Ch3). 
+
+Performance We collected 26 demonstrations, and UME achieves a success rate of 0.9 (18/20). 
+
+Ablations Removing the torque modality severely reduces the No-torque baseline success rate to 0.5. 
+
+No-torque often fails to push the target box to close all gaps between the hidden objects (Fig. 4(a)). During data collection, the human demonstrator relies entirely on instantaneous torque feedback, continuing to apply pressure until a high torque indicates that no gaps remain. Without access to the torque information, No-torque 
+
+prematurely stops midway while pushing the box. Moreover, without torque feedback, it is very easy for the demonstrator to overdrive the box and crash any fragile objects behind it. This task thus highlights the critical importance of real-time haptic feedback both for human demonstration and for policy learning. 
+
+UMI struggles for similar reasons due to the lack of torque information, and it also learns to stop midway. It can sometimes succeed when there is only a small gap behind the box to close. In addition, UMI also suffers from collisions with the environment, leaving its performance at 0.4, slightly worse than No-torque .
+
+3.2 Autonomous Policy: Box Flipping Task Push a box against a vertically fixed surface to flip the box upright (Fig. 3(b)). 
+
+Challenges This task is highly force-mediated (Ch1). To successfully flip the box upright, the robot must maintain a constant pressing force against the box to prevent it from falling. In particular, the robot must distinguish between two critical states that appear visually identical but require different actions based on joint torque readings (Fig. 4(b)). In the first state, the gripper is in contact with the box, but the applied pressing force is insufficient, so the expected action is to continue increasing the end-effector force. In the second state, sufficient contact force (consequently, friction) has been established, and the expected action is to initiate the flipping motion. Successful completion of the task requires interleaving between these two state-action pairs, which can only be reliably distinguished through torque sensing. In addition, similar to box pushing, we clutter the tabletop with realistic computer parts to make collision avoidance necessary (Ch2). At the beginning of the task, the robot starts very close to the table and must raise its arm from below the tabletop while avoiding contact with the table and surrounding objects. 
+
+Performance With 40 demonstrations in the training dataset, UME achieves a success rate of 0.85 (17/20). 
+
+Ablations Without torque information, both No-torque and UMI are unable to complete the task (0 success rate), as neither can distinguish between the two aforementioned states. In the majority of failure cases, the arm attempts a flipping motion without actually flipping the box because the pressing force is insufficient to generate enough friction for the box to move. In other cases, the box slips midway through the flipping motion. See our website for videos of representative failure cases. 6(a) Box pushing  
+
+> Success : pushed all the way Failure : gaps remained
+
+✅ ❌
+
+(b) Box flipping 
+
+(c) GPU picking     
+
+> UMI cannot enter the
+> space due to collision .
+> UMI enters the
+> space but gets stuck .
+
+(d) Fridge drink retrieval     
+
+> UMI collides with the
+> drink holder.
+> UME avoids collision while
+> raising the arm.
+> State 1:
+> Insufficient pressing force
+> Expected action:
+> Continue pushing
+> Expected action:
+> Flip the box
+> Contact location
+> Pressing force
+> State 2:
+> Sufficient pressing force
+> Contact location
+> Pressing force
+
+❌❌ ❌✅Fig 4: Ablations and representative failure cases of baselines. 
+
+3.3 Autonomous Policy: GPU Picking Task The robot must reach between two desktops to pick up a GPU card located at the back of the constrained space, and retrieve it to a location outside the enclosure (Fig. 3(c)). 
+
+Challenges This task happens in an extremely constrained space (Ch2), with only ∼5mm clearance after the gripper is inserted between the desktops. It also requires base movement (Ch3) to reach the end of the space. To complete this task, the robot must first move its arm from underneath the desk to above the tabletop while avoiding collisions, and then fully straighten the arm, which is the only configuration that can reach the back of the constrained space. Even a slight bend in the arm would cause it to collide with one of the desktops. This again demonstrates the importance of recording and learning from whole-arm configurations (Cap2). In such a tightly constrained environment, contact is almost unavoidable. As a result, the policy must leverage torque feedback to compliantly slide along one side of the desktop while gradually reaching toward the back. It must continuously regulate the contact force between the gripper and the desktop (Ch1) to prevent excessive scratching of the glass surface. In the video on our website, the gripper can even be heard gliding along the desktop’s glass surface. Finally, at the end of the retrieval phase, the gripper must carry the GPU out of the constrained space and place it on the desk while still avoiding collisions with the opposite desktop. 
+
+Performance With 42 demonstrations, UME achieves a high success rate of 0.95 (19/20). 
+
+Ablations By learning from whole-arm configurations and torque information, UME learns to embrace contact and continuously regulate the contact force with the desktop while sliding along the glass surface, successfully handling all the challenges. Without the torque modality, No-torque still learns to straighten the arm, but it sometimes applies excessive force to the side surface of the desktop, preventing further forward motion or scratching the desktop surface. In contrast, UMI is unable to complete the task at all. When learning only from end-effector poses, it is extremely difficult for the policy to avoid collisions. As shown in Fig. 4(c), 
+
+UMI consistently bends its arm either before or after entering the constrained space, leading to collisions. 
+
+3.4 Autonomous Policy: Fridge Drink Retrieval Task The robot initially faces the table and checks whether a drink can is present. If no drink is detected, the robot turns around, opens the fridge door, picks up a drink from the side holder of the door, transports it while using the other gripper to support the bottom of the can, and places it on the table (Fig. 3(d)). If the drink is removed afterward, the robot repeats the same procedure, ensuring that a drink can is always available on the table. Note that the can is unopened and full, not empty. 
+
+Challenges This task requires full coordination between mobile movement and bimanual control (Ch3), with one arm holding the fridge door while the other grasps the drink. This task also has the longest horizon 7among all evaluated tasks (lasting ∼1 min 30 sec). Moreover, the task is force-mediated (Ch1), as torque feedback is important for successfully opening and holding the heavy fridge door. 
+
+Performance The training dataset contains 157 demonstrations, and our policy achieves a success rate of 0.95 (19/20). The policy is highly robust to external disturbances. First, if the drink is removed after being placed on the table, the robot always turns around and retrieves another drink. Second, if the drink is taken away during transport, the robot drops its arms midway through the episode, returns to the fridge, and resumes the task from there. See our website for video demonstrations. 
+
+Ablations Since the fridge drink retrieval task is long-horizon, we further break down the success rate into multiple stages (see Appendix B Table 2). No-torque also achieves a high overall success rate of 0.90, although it occasionally fails to apply sufficient torque to open the door or collides with the environment when retrieving. While UMI also fails once to open the fridge door due to insufficient gripping force, it never successfully grasps and lifts the drink out of the side holder. This is primarily caused by collisions with the environment, either from the wrist-mounted camera or the gripper itself (shown in Fig. 4(d)). In comparison, our policy consistently maneuvers around the holder to avoid collisions and forms a stable grasp on the drink. 
+
+3.5 Data Collection Throughput and Universal Teleoperation UME w/o   
+
+> Torque
+> UME Human
+> 20
+> 28
+> 6
+> DPM
+> Box Flipping
+> UME w/o
+> Torque
+> UME Human
+> Box Flipping
+> DPM
+> 20
+> 28
+> 6
+
+Fig 5: Demonstrations per minute (DPM) over multiple users. 
+
+Data Collection Throughput. UME’s haptic torque feedback improves user experience, resulting in higher data collection throughput. To demonstrate this, we average the number of demonstrations per minute (DPM) over different users using 3 different methods: 1) UME without torque feedback, 2) UME, and 3) human demonstrations (see Fig. 11 in Appendix F). We measure the data collection throughput on the box flipping task (results shown in Fig. 5). Note that the reset time between each episode is also included in the one-minute period. On this highly force-mediated task, UME achieves a 3.3 × improvement over the baseline without torque, operating at 71% of human speed. 
+
+Universal Teleoperation. To demonstrate UME’s cross-embodiment generality, we use it to teleoperate bimanual X-ARMs [ 38 ] in the real world and Franka [ 39 ]arms in simulation. We successfully teleoperate the X-ARMs to pick up a block, transfer it between arms, and place it into a cup (see Fig. 7 in Appendix C.2). Demonstrations are available on our website: https://ume-exo.github.io. 
+
+## 4 Conclusion 
+
+We present Universal Manipulation Exoskeleton (UME), a low-cost, lightweight, and portable exoskeleton that captures whole-arm configuration while providing real-time haptic torque feedback for teleoperation. Through careful kinematic design—including coaxial actuator configurations and backdrivable high-torque actuators—UME enables intuitive control across a range of robot arms with different DoFs. With our universal retargeting algorithm and an onboard IMU, UME supports robot-agnostic whole-body mobile manipulation. These capabilities enable robust end-to-end learning of highly force-mediated, visually occluded, space-constrained, and long-horizon manipulation tasks directly from human demonstrations. 
+
+## 5 Limitations and Future Work 
+
+While UME demonstrates strong performance across a range of tasks, several limitations remain. First, the exoskeleton links are built with PLA plastic, resulting in higher weight and lower payload compared to more expensive alternatives. Future work could develop a lighter, production-grade version that remains low-cost. Second, currently the links have fixed dimensions. A new version with adjustable link lengths could improve accessibility and ergonomics. Finally, due to delays in Franka arm delivery, we only demonstrate Franka teleoperation in simulation. We plan to evaluate the system on real Franka arms once they arrive, and expect similar or improved performance given Franka’s more accurate joint torque sensing. 8Acknowledgments 
+
+This work is supported by Ant Group. We would like to thank Hao Li and Tian-Ao (Teo) Ren from the Stanford BDML Lab for insightful discussions on the mechanical design of UME. We are grateful to Yifan Hou, Zhanyi Sun, and Professor Shuran Song from the Stanford REAL Lab for valuable discussions on autonomous robot experiment design and future applications. We are grateful to Mikael Jorda for feedback on the design of the retargeting algorithm. We would also like to thank Xiangpeng Miao from Damiao Technology for actuator suggestions and support, Heng Le from Ufactory X-ARM for assistance with the robotic arms, and Haoxing Guo from Hexfellow Robotics for support with the power caster module. 
+
+## References 
+
+[1] K. Black, N. Brown, D. Driess, A. Esmail, M. Equi, C. Finn, N. Fusai, L. Groom, K. Hausman, B. Ichter, S. Jakubczak, T. Jones, L. Ke, S. Levine, et al. π0: A vision-language-action flow model for general robot control. arXiv preprint arXiv:2410.24164 , 2024. URL https://arxiv.org/abs/2410.24164. [2] K. Black, N. Brown, D. Driess, A. Esmail, M. Equi, C. Finn, N. Fusai, L. Groom, K. Hausman, B. Ichter, S. Jakubczak, T. Jones, L. Ke, S. Levine, et al. π0.5: a vision-language-action model with open-world generalization. arXiv preprint arXiv:2504.16054 , 2025. URL https://arxiv.org/abs/2504.16054. [3] P. I. Research. π0.6: a vla that learns from experience. Technical report, Physical Intelligence, 2025. URL https://www.pi.website/download/pistar06.pdf. [4] K. Black, D. Driess, K. Hausman, B. Ichter, S. Levine, et al. π0.7: a steerable generalist robotic foundation model with emergent capabilities. arXiv preprint arXiv:2604.15483 , 2026. URL https: //arxiv.org/abs/2604.15483. [5] J. Barreiros, A. Beaulieu, A. Bhat, R. Cory, E. Cousineau, H. Dai, C.-H. Fang, K. Hashimoto, M. Z. Irshad, M. Itkina, et al. A careful examination of large behavior models for multitask dexterous manipulation. Science Robotics , 11(113):eaea6201, 2026. [6] W. Wu, F. Lu, Y. Wang, S. Yang, S. Liu, F. Wang, Q. Zhu, H. Sun, Y. Wang, S. Ma, et al. A pragmatic vla foundation model. arXiv preprint arXiv:2601.18692 , 2026. [7] Y. Wang, R. Syed, F. Wu, M. Zhang, A. Onol, J. Barreiros, H. Nayyeri, T. Dear, H. Zhang, and Y. Li. Interactive world simulator for robot policy training and evaluation. arXiv preprint arXiv:2603.08546 ,2026. [8] J. Bruce, M. Dennis, A. Edwards, J. Parker-Holder, Y. Shi, E. Laskin, S. Mitchell, O. Ahlgren, M. Azar, A. Azua, et al. Genie: Generative interactive environments. In International Conference on Machine Learning (ICML) , 2024. URL https://arxiv.org/abs/2402.15391. [9] B. Chen, T. Zhang, H. Geng, K. Song, C. Zhang, P. Li, W. T. Freeman, J. Malik, P. Abbeel, R. Tedrake, et al. Large video planner enables generalizable robot control. arXiv preprint arXiv:2512.15840 , 2025. [10] H. Li, L. Sun, Y. Hu, D. Ta, J. Barry, G. Konidaris, and J. Fu. Novaflow: Zero-shot manipulation via actionable flow from generated videos. arXiv preprint arXiv:2510.08568 , 2025. [11] W. Xie and N. Correll. Towards forceful robotic foundation models: a literature survey. arXiv preprint arXiv:2504.11827 , 2025. [12] X. Xu, Y. Hou, Z. Liu, and S. Song. Compliant residual dagger: Improving real-world contact-rich manipulation with human corrections. Advances in Neural Information Processing Systems , 38: 139559–139581, 2026. [13] T. Z. Zhao, V. Kumar, S. Levine, and C. Finn. Learning fine-grained bimanual manipulation with low-cost hardware. Robotics: Science and Systems (RSS) , 2023. doi:10.48550/arXiv.2304.13705. 9[14] Z. Fu, T. Z. Zhao, and C. Finn. Mobile aloha: Learning bimanual mobile manipulation with low-cost whole-body teleoperation. arXiv preprint arXiv:2401.02117 , 2024. doi:10.48550/arXiv.2401.02117. [15] P. Wu, Y. Shentu, Z. Yi, X. Lin, and P. Abbeel. Gello: A general, low-cost, and intuitive teleoperation framework for robot manipulators. In 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pages 12156–12163, 2024. doi:10.1109/IROS58592.2024.10801581. [16] C. Chi, Z. Xu, C. Pan, E. Cousineau, B. Burchfiel, S. Feng, R. Tedrake, and S. Song. Universal manipulation interface: In-the-wild robot teaching without in-the-wild robots. In Proceedings of Robotics: Science and Systems (RSS) , 2024. doi:10.48550/arXiv.2402.10329. [17] M. Xu, H. Zhang, Y. Hou, Z. Xu, L. Fan, M. Veloso, and S. Song. Dexumi: Using human hand as the universal manipulation interface for dexterous manipulation. In Proceedings of The 8th Conference on Robot Learning (CoRL) , 2025. URL https://dex-umi.github.io/. [18] H. Choi, Y. Hou, C. Pan, S. Hong, A. Patel, X. Xu, M. R. Cutkosky, and S. Song. In-the-wild compliant manipulation with umi-ft, 2026. URL https://arxiv.org/abs/2601.09988. [19] X. Xu, J. Park, H. Zhang, E. Cousineau, A. Bhat, J. Barreiros, D. Wang, and S. Song. Hommi: Learning whole-body mobile manipulation from human demonstrations. arXiv preprint arXiv:2603.03243 , 2026. [20] ROBOTIS. Dynamixel smart servo actuator. https://www.robotis.us/dynamixel/, 2024. Accessed: 2026-05-19. [21] J. Aldaco, T. Armstrong, R. Baruch, J. Bingham, S. Chan, K. Draper, D. Dwibedi, C. Finn, P. Florence, S. Goodrich, et al. Aloha 2: An enhanced low-cost hardware for bimanual teleoperation. arXiv preprint arXiv:2405.02292 , 2024. [22] Damiao Technology. Damiao technology. https://www.damiao.com, 2026. Accessed: 2026-05-19. [23] Unitree Robotics. Unitree robotics. https://www.unitree.com/, 2026. Accessed: 2026-05-19. [24] J. C. Perry, J. Rosen, and S. Burns. Upper-limb powered exoskeleton design. IEEE/ASME transactions on mechatronics , 12(4):408–417, 2007. [25] R. A. Gopura and K. Kiguchi. Mechanical designs of active upper-limb exoskeleton robots: State-of-the-art and design difficulties. In 2009 IEEE international conference on rehabilitation robotics , pages 178–187. IEEE, 2009. [26] Y. Zimmermann, A. Forino, R. Riener, and M. Hutter. ANYexo: A versatile and dynamic upper-limb rehabilitation robot. IEEE Robotics and Automation Letters , 2019. doi:10.1109/LRA.2019.2926958. [27] Y. Zimmermann, M. Sommerhalder, P. Wolf, R. Riener, and M. Hutter. ANYexo 2.0: A fully actuated upper-limb exoskeleton for manipulation and joint-oriented training in all stages of rehabilitation. IEEE Transactions on Robotics , 39(3):2131–2150, 2023. doi:10.1109/TRO.2022.3226890. [28] Enactic, Inc. OpenArm: A fully open-source humanoid robot arm for physical AI research. https: //openarm.dev/, 2025. Accessed: 2025-05-11. [29] O. Khatib. Reduced effective inertia in macro-/mini-manipulator systems. In The Fifth International Symposium on Robotics Research , page 279–284, Cambridge, MA, USA, 1991. MIT Press. ISBN 0262132532. [30] O. Khatib. A unified approach for motion and force control of robot manipulators: The operational space formulation. IEEE Journal of Robotics and Automation , 3(1):43–53, 1987. [31] R. Holmberg and O. Khatib. Development and control of a holonomic mobile robot for mobile manipulation tasks. The International Journal of Robotics Research , 19(11):1066–1074, 2000. 10 [32] J. Wu, W. Chong, R. Holmberg, A. Prasad, Y. Gao, O. Khatib, S. Song, S. Rusinkiewicz, and J. Bohg. Tidybot++: An open-source holonomic mobile manipulator for robot learning, 2024. URL https://arxiv.org/abs/2412.10447. [33] K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition , pages 770–778, 2016. [34] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. u. Kaiser, and I. Polosukhin. Attention is all you need. In Advances in Neural Information Processing Systems , pages 5998–6008, 2017. [35] R. Thomasson, A. Bernardini, H. Li, C. Xing, A. Hajj-Ahmad, and M. Cutkosky. Slim: A symmetric, low-inertia manipulator for constrained, contact-rich spaces. IEEE Robotics and Automation Letters ,2025. [36] D. Brouwer, J. Citron, H. Nolte, J. Bohg, and M. Cutkosky. Gentle object retraction in dense clutter using multimodal force sensing and imitation learning. IEEE Robotics and Automation Letters , 11(2): 1578–1585, 2025. [37] R. Thomasson, E. Roberge, M. R. Cutkosky, and J.-P. Roberge. Going in blind: Object motion classification using distributed tactile sensing for safe reaching in clutter. In 2022 IEEE/RSJ international conference on intelligent robots and systems (IROS) , pages 1440–1446. IEEE, 2022. [38] Ufactory. Ufactory. https://www.ufactory.us/, 2026. Accessed: 2026-05-19. [39] Franka Robotics. Franka robotics. https://franka.de/, 2026. Accessed: 2026-05-19. [40] K. Darvish, L. Penco, J. Ramos, R. Cisneros, J. Pratt, E. Yoshida, S. Ivaldi, and D. Pucci. Teleoperation of humanoid robots: A survey. IEEE Transactions on Robotics , 39(3):1706–1727, 2023. [41] L. Peternel and A. Ajoudani. After a decade of teleimpedance: A survey. IEEE Transactions on Human-Machine Systems , 53(2):401–416, 2022. [42] Z. Fu, T. Z. Zhao, and C. Finn. Mobile aloha: Learning bimanual mobile manipulation using low-cost whole-body teleoperation. In 8th Annual Conference on Robot Learning , 2024. [43] J. J. Liu, Y. Li, K. Shaw, T. Tao, R. Salakhutdinov, and D. Pathak. Factr: Force-attending curriculum training for contact-rich policy learning. arXiv preprint arXiv:2502.17432 , 2025. [44] T. Nef, M. Guidali, and R. Riener. ARMin III – arm therapy exoskeleton with an ergonomic shoulder actuation. Applied Bionics and Biomechanics , 6(2):127–142, 2009. doi:10.1080/11762320902840179. [45] V. Klamroth-Marganska, J. Blanco, K. Campen, A. Curt, V. Dietz, T. Ettlin, M. Felder, B. Fellinghauer, M. Guidali, A. Kollmar, A. Luft, T. Nef, C. Schuster-Amft, W. Stahel, and R. Riener. Three-dimensional, task-specific robot therapy of the arm after stroke: a multicentre, parallel-group randomised trial. The Lancet Neurology , 13(2):159–166, 2014. doi:10.1016/S1474-4422(13)70305-3. [46] B. Kim and A. D. Deshpande. An upper-body rehabilitation exoskeleton Harmony with an anatomical shoulder mechanism: Design, modeling, control, and performance evaluation. The International Journal of Robotics Research , 36(4):414–435, 2017. doi:10.1177/0278364917706743. [47] Y. Mao and S. K. Agrawal. Design of a cable-driven arm exoskeleton (CAREX) for neural rehabilitation. 
+
+IEEE Transactions on Robotics , 28(4):922–931, 2012. doi:10.1109/TRO.2012.2189496. [48] M. Bergamasco and H. Herr. Human–robot augmentation. In Springer handbook of robotics , pages 1875–1906. Springer, 2016. [49] Q. Ben, F. Jia, J. Zeng, J. Dong, D. Lin, and J. Pang. Homie: Humanoid loco-manipulation with isomorphic exoskeleton cockpit. arXiv preprint arXiv:2502.13013 , 2025. 11 [50] H. Fang, H.-S. Fang, Y. Wang, J. Ren, J. Chen, R. Zhang, W. Wang, and C. Lu. Airexo: Low-cost exoskeletons for learning whole-arm manipulation in the wild. In 2024 IEEE International Conference on Robotics and Automation (ICRA) , pages 15031–15038. IEEE, 2024. [51] H. Fang, C. Wang, Y. Wang, J. Chen, S. Xia, J. Lv, Z. He, X. Yi, Y. Guo, X. Zhan, et al. Airexo-2: Scaling up generalizable robotic imitation learning with low-cost exoskeletons. arXiv preprint arXiv:2503.03081 ,2025. [52] S. Yang, M. Liu, Y. Qin, R. Ding, J. Li, X. Cheng, R. Yang, S. Yi, and X. Wang. Ace: A cross-platform visual-exoskeletons system for low-cost dexterous teleoperation. arXiv preprint arXiv:2408.11805 ,2024. [53] H. Etukuru et al. Robot utility models: General policies for zero-shot deployment in new environments. 
+
+arXiv preprint arXiv:2409.05865 , 2024. [54] M. Seo et al. Legato: Cross-embodiment imitation using a grasping tool. IEEE Robotics and Automation Letters , 10(3):2854–2861, 2025. [55] N. M. M. Shafiullah et al. On bringing robots home. arXiv preprint arXiv:2311.16098 , 2023. [56] S. Young et al. Visual imitation made easy. In Conference on Robot Learning , volume 155, pages 1992–2005. PMLR, 2020. [57] S. Song, A. Zeng, J. Lee, and T. Funkhouser. Grasping in the wild: Learning 6dof closed-loop grasping from low-cost demonstrations. IEEE Robotics and Automation Letters , 5(3):4978–4985, 2020. [58] J. A. Maples and J. J. Becker. Experiments in force control of robotic manipulators. In IEEE International Conference on Robotics and Automation , pages 695–702, 1986. [59] N. Hogan. Impedance control: An approach to manipulation. ASME Journal of Dynamic Systems, Measurement, and Control , 107(1):1–24, 1984. [60] Y. Hou, Z. Liu, C. Chi, E. Cousineau, N. Kuppuswamy, S. Feng, B. Burchfiel, and S. Song. Adaptive compliance policy: Learning approximate compliance for diffusion guided control. arXiv preprint arXiv:2410.09309 , 2024. [61] M. Kalakrishnan, L. Righetti, P. Pastor, and S. Schaal. Learning force control policies for compliant manipulation. In IEEE/RSJ International Conference on Intelligent Robots and Systems , pages 4639– 4644, 2011. [62] M. A. Lee, Y. Zhu, K. Srinivasan, P. Shah, S. Savarese, L. Fei-Fei, A. Garg, and J. Bohg. Making sense of vision and touch: Self-supervised learning of multimodal representations for contact-rich tasks. In 
+
+IEEE International Conference on Robotics and Automation , pages 8943–8950, 2019. [63] E. Todorov, T. Erez, and Y. Tassa. Mujoco: A physics engine for model-based control. 2012 IEEE/RSJ International Conference on Intelligent Robots and Systems , pages 5026–5033, 2012. [64] Bambu Lab. Bambu lab. https://bambulab.com/en-us, 2026. Accessed: 2026-05-19. [65] WowRobo. Wowrobo. https://shop.wowrobo.com/, 2026. Accessed: 2026-05-19. [66] Hexfellow Robotics. Hexfellow robotics. https://hexfellow.com/, 2026. Accessed: 2026-05-19. [67] swerve drive specialties. swerve drive specialties. https://www.swervedrivespecialties.com/, 2026. Accessed: 2026-05-19. [68] DJI. Dji. https://www.dji.com/, 2026. Accessed: 2026-05-19. [69] Jieruiweitong. Jieruiweitong. https://jieruiweitong.world.tmall.com/, 2026. Accessed: 2026-05-19. 12 Appendix 
+
+## A Extended Related Work 
+
+Teleoperated data collection. Teleoperation [ 40 , 41 ] has long been used for demonstration data collection, and since the introduction of ALOHA [ 13 ], it has emerged as one of the dominant paradigms. Many follow-up works have further improved different aspects of the original system, including ALOHA 2 [21], Mobile ALOHA [ 42 ], FACTR [ 43 ], and GELLO [ 15 ]. In ALOHA-style teleoperation , the user drives the end-effector of a leader arm that shares a similar morphology with the follower arm. However, controlling the whole-arm configuration is not intuitive unless the user uses both hands to physically constrain a single leader arm. Compared to ALOHA-style teleoperation, exoskeleton-based teleoperation provides a more intuitive way to control the entire arm configuration. While upper-limb exoskeletons have long been popular in rehabilitation robotics [ 26 , 27 , 44 , 45 , 46 , 47 , 48 , 48 ], researchers have recently begun exploring their use for collecting robot demonstrations. HOMIE [ 49 ] is an isomorphic exoskeleton that commands a humanoid robot directly in joint space but the mobility of the humanoid is controlled using an additional foot pedal, unlike our embedded IMU. AirExo [ 50 ] and AirExo-2 [ 51 ] can also directly command the follower arm in joint space, but they are not fully isomorphic, requiring additional calibration steps or a specialized adapter. Despite adopting an exoskeleton form factor, ACE [ 52 ] records only wrist poses and finger joint values. Another line of work in teleimpedance [ 41 ] builds impedance-command interfaces to directly control the stiffness of the follower arm. However, as far as we know, the majority of the aforementioned works do not provide direct joint-level haptic torque feedback to the operator. Their focus is primarily on motion capture and position-based teleoperation rather than bidirectional torque interaction. 
+
+In-the-wild data collection. Another popular paradigm for collecting robot demonstrations is in-the-wild data collection that does not require a robot. One of the main categories is handheld devices [ 16 , 17 , 18 , 19 , 53 ,54 , 55 , 56 , 57 ]. Handheld devices are typically designed with end-effectors identical to those of the robot. By equipping both the handheld devices and the robot with wrist-mounted cameras, these methods leverage in-hand observations to ensure visual consistency. In addition to handheld devices, some exoskeletons [ 50 , 51 ]can also be used to collect demonstrations directly rather than teleoperation. In-the-wild data collection naturally enables real-time haptic feedback to the operator through direct physical interaction with the environment. However, because these methods typically record only end-effector poses, policies deployed in highly constrained spaces must rely on external inverse kinematics solvers for collision handling. 
+
+Learning active compliant behaviors. Active compliance in robot manipulation can be achieved through different paradigms. One common approach is to combine a high-level position-based policy with a low-level compliance controller, such as admittance control [ 58 ] or impedance control [ 59 ]. Building on this, recent work has explored learning the compliance parameters of such controllers from demonstrations. Hou et al. [60] introduce Adaptive Compliance Policy (ACP), which augments a diffusion policy to additionally predict stiffness parameters, and uses a fixed admittance controller at the low level. In another work, Xu et al. [12] incorporate force/torque feedback into policy learning, but still relies on higher-level motion or residual action outputs combined with compliant controllers. Alternatively, compliance can be achieved by learning an end-to-end torque policy, where the policy directly maps observations to torque commands, bypassing any explicit compliance controller [61, 62]. While this approach offers greater flexibility, it requires a torque-controllable platform and places the full burden of stable, safe force control on the learned policy. 
+
+## B Extended Analysis on Fridge Drink Retrieval                        
+
+> Turn Around Open fridge Take out drink Close fridge Transport drink Place drink
+> No-torque 1.00 0.95 0.90 0.90 0.90 0.90
+> UMI 1.00 0.95 0.00 0.00 0.00 0.00
+> UME (Ours) 1.00 1.00 0.95 0.95 0.95 0.95
+
+Table 2: Fridge drink retrieval stage-wise success rate. 
+
+13 C Extended Details on Universal Retargeting 
+
+In this section, we present the complete computation underlying our universal retargeting algorithm. Fig. 6 shows the full retargeting process to compute position and velocity feedforward and torque feedback for all sub-manipulators. 3-DoF Shoulder 
+
+> (Glenohumeral Joint)
+> 1-DoF Elbow
+> (Humeroulnar Joint)
+> 3-DoF Wrist
+> (Radiocarpal Joint)
+> OpenArm
+> J1, J2, J3
+
+Position Feedforward 
+
+> OpenArm
+> J4
+> OpenArm
+> J5, J6, J7
+> Exoskeleton
+> J1, J2, J3
+> Exoskeleton
+> J4
+> Exoskeleton
+> J5, J6, J7
+
+Velocity Feedforward 
+
+Torque Feedback 
+
+Human  Robotic Arm Exoskeleton 
+
+Fig 6: UME retargeting algorithm for every sub-manipulator. 
+
+C.1 Exoskeleton Commanded Torque 
+
+After we independently obtain the feedback torque for the shoulder, elbow and wrist sub-manipulators, namely, 
+
+τ exo shoulder , τ exo elbow , and τ exo wrist , there is one more step to compute the exoskeleton’s final whole-arm commanded torque with Coriolis, centrifugal, gravity, and friction compensation, shown below: 
+
+τ exo command =c(q exo , ˙q exo )+ g(q exo )+ f(˙ q exo )+ τ exo feedback 
+
+where c(q exo ,˙q exo ) is the Coriolis and centrifugal compensation torque, g(q exo ) is the gravity compensation torque, f(˙ q exo ) is the friction compensation torque, and τ exo feedback = [ τ exo shoulder , τ exo elbow , τ exo wrist ] is the collated feedback torque from all sub-manipulators. 14 C.2 Teleoperating X-ARM and Franka 
+
+To further demonstrate the universal retargeting algorithm, we use UME to teleoperate bimanual 6-DoF X-ARMs and 7-DoF Franka arms (shown in Fig. 7). The operator can control the X-ARMs to pick up a block, hand it over to the other arm, and place it into a cup. Since physical hardware is unavailable for the Franka arms, we demonstrate their teleoperation using the MuJoCo simulator [63]. (a) 6DoF X-ARMs  (b) 7DoF Franka arms 
+
+Fig 7: UME teleoperates other robotic arms. 
+
+## D Extended Details on the Learning Algorithm 
+
+Table 3 shows parameters for training our ACT models. All models are trained for 40k gradient steps on one NVIDIA RTX 4090 GPU for 8 hours.            
+
+> Parameter Value batch size 200 image backbone architecture ResNet18 image backbone learning rate 1×10 −5
+> transformer encoder layers 4transformer decoder layers 7feedforward dimension 3200 hidden dimension 512 transformer heads 8transformer learning rate 1×10 −4
+> dropout 0.1
+
+Table 3: Parameters for autonomous policy learning. 
+
+## E Hardware Details 
+
+In this section, we provide extra details on UME and our in-house mobile manipulator. 
+
+E.1 UME Motors, Materials and Weight 
+
+An exploded isometric view of UME, along with the motor models and materials used for different components, is provided in Fig. 8. To balance portability, haptic torque transparency, and the torque required for payload support and gravity compensation, we selected the Damiao Technology DM-J4340-2EC as the shoulder actuator because it best satisfies our design requirements. The DM-J4340-2EC provides 9Nm of torque while weighing only 362g with a 40:1 reduction ratio (9Nm, 362g, 40:1). We evaluated several similar actuators but ultimately rejected them due to their trade-offs. For example, the DM-J4340P (9Nm, 375g, 40:1) uses a cross-roller bearing that increases multi-directional stiffness at the cost of higher friction, reducing torque transparency. The DM-J8006 (8Nm, 550g, 6:1), in contrast, achieves a lower reduction ratio at the cost of a significantly heavier stator coil, reducing portability. Built with PLA plastic structural links, UME weighs approximately 12kg, allowing a typical adult to wear it comfortably for up to 2 hours. Using higher-strength and stiffer materials, such as CNC-machined aluminum, could further reduce the weight to approximately 8kg. 15 Damiao Technology 
+
+DM-J4340-2EC (9Nm) 
+
+Bambu Lab 
+
+PLA Basic 4kg 
+
+Aluminum Extrusions 
+
+> Text
+
+(a) Exploded isometric view  (b) Motor model and part materials 
+
+Damiao Technology 
+
+DM-J4310-2EC (3Nm) Fig 8: UME motors and materials. 
+
+E.2 UME Bill of Materials 
+
+UME is designed with cost efficiency in mind from day one. The total material cost of building a complete UME system is only $1900, roughly the price of a MacBook. To achieve this low cost, we intentionally select off-the-shelf components, including Damiao [ 22 ] joint actuator modules, Bambu Lab [ 64 ] PLA 3D printing material [64], and industry-standard hardware such as M3/M5 screws and 2020 aluminum extrusions. A detailed breakdown of the material selection and associated costs is provided in the bill of materials (Table 4).                
+
+> Material Name Price (USD ×Count) Damiao Technology DM-J4340-2EC ×8$117 ×8
+> Damiao Technology DM-J4310-2EC ×8$88 ×8
+> IXGNIJ 2020 ×20 cm aluminum extrusion $3.5×6
+> Bambu Lab PLA Basic ×4$13 ×4
+> Kunhong dual channel CAN-FD to USB adapter $52 ×1
+> Jesverty adjustable 30V 10A DC power supply $41 ×1
+> Gaoyuan XT30 2+2 cable ×14 $2×14
+> Yahboom IMU $9×1
+> M3 hex socket screws $3×6
+> M5 hex socket screws $5×6
+> M5 T-nuts $7×1
+> Quick-detach belt $2×1
+> Total $1900
+
+Table 4: Bill of materials for one UME. 
+
+E.3 UME Range of Motion 
+
+UME captures the human whole-arm configuration with minimal compromise to the range of motion. Unlike other leader–follower teleoperation systems, UME preserves nearly the entire wrist range of motion, while only limiting the reachability of certain uncommon shoulder postures. Its range of motion is visualized from both the front and side views in Fig. 9. 
+
+E.4 In-House Mobile Manipulator Platform 
+
+To evaluate UME’s capability for collecting demonstrations to learn autonomous mobile manipulation policies, we built an in-house mobile manipulator. We discuss several key design choices below. 16 (b) Range of Motion: Front View  (c) Range of Motion: Side View (a) Human wearing Exoskeleton 
+
+> Damiao 9Nm
+> Motor
+> Damiao 3Nm
+> Motor
+
+Fig 9: UME Range of motion. WowRobo OpenArm 1.0  bimanual  
+
+> 7-DoF arm + 1-DoF gripper
+> Hexfellow PCW-25
+> power caster module
+> DJI Power 1000
+> camping battery
+> Jieruiweitong 2K 210-degree
+> FoV HDR fisheye camera
+
+Fig 10: In-house mobile manipulator key components. 
+
+Robot Arm. We select the WowRobo [65] OpenArm 1.0 bimanual 7-DoF arm due to its high-quality Damiao [ 22 ] joint actuators (DM-J8009P, DM-J4340P, DM-J4340, and DM-J4310), well-machined aluminum components, and low overall cost ($5200 for the complete upper body with two arms). 
+
+Mobile Base. By using the Hexfellow PCW-25 [66] ($900) powered caster module instead of the FRC SDS MK4 swerve module [ 67 ] ($300) used in the original TidyBot++ [ 32 ] system, our mobile robot base achieves improved compliance and more accurate odometry due to its lower gear ratio and reduced backlash, while remaining fully holonomic. We use the DJI Power 1000 [ 68 ] to supply power to all robot electronics, eliminating the need for a wired wall connection during mobile manipulation. We choose the DJI Power 1000 [68] over other available options due to its well-designed power delivery system, including surge protection, well-isolated multi-channel AC outputs, and overall build quality. 
+
+Camera. We use Jieruiweitong [ 69 ] 2K-resolution, 210 ◦ FoV (field of view) HDR fisheye cameras on the robot head and wrists. We select these cameras for their low cost ($37.5), wide FoV, low latency, and strong high-dynamic-range imaging performance. 
+
+E.5 In-House Mobile Manipulator Bill of Materials 
+
+Table 5 provides a detailed breakdown of the material selection and cost for our in-house mobile manipulator. 17 Material Name price (USD ×Count) WowRobo OpenArm 1.0 $5200 ×1
+
+Hexfellow Robotics PCW-25 ×4 $900 ×4
+
+DJI Power 1000 camping battery $386 ×1
+
+Jieruiweitong fisheye camera ×3 $37 .5×3
+
+Kunhong dual channel CAN-FD to USB adapter $52 ×1
+
+Jesverty adjustable 60V 5A DC power supply $45 ×1
+
+IXGNIJ 2020 ×50 cm aluminum extrusion ×14 $7.5×14 
+
+2020 corner bracket ×16 $1.6×16 
+
+M5 T-nuts $7×1
+
+Total $9533 .1
+
+Table 5: Bill of materials for one in-house mobile manipulator. 
+
+## F User Study 
+
+Fig. 11 demonstrates two of the three methods compared in the user study. Human demonstrations provide an upper bound on the performance of UME teleoperation. (b) Teleoperation with UME 
+
+#  
+
+#  
+
+#  
+
+(a) Human 
+
+demonstration 
+
+#  
+
+#  
+
+#  
+
+Fig 11: User study on different users. 
+
+18
