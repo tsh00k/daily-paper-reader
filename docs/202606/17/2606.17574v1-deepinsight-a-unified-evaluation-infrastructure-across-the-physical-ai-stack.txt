@@ -1,0 +1,690 @@
+Title: DeepInsight: A Unified Evaluation Infrastructure Across the Physical AI Stack
+
+URL Source: https://arxiv.org/pdf/2606.17574v1
+
+Published Time: Wed, 17 Jun 2026 00:42:01 GMT
+
+Number of Pages: 31
+
+Markdown Content:
+> XPENG ROBOTICS
+
+# DeepInsight: A Unified Evaluation Infrastructure Across the Physical AI Stack 
+
+Siyi Li, Chunyu Sun, Jiahao Zhang, Yuchen Kang, Wuliang Wang, Yu Qiu, Rui Jiang, Haitao Cui, Jie Chen †
+
+> XPENG Robotics
+
+Abstract 
+
+Evaluating a Physical AI stack spans operators that differ by more than three orders of magnitude— from a single foundation-model decoding step to thousands of physics ticks of whole-body control— varying orthogonally in modality, reward semantics, and resource profile. No existing framework spans this range, so the stack is evaluated today by stitching together separate harnesses that share neither runtime nor scoring, preserving each segment’s local validity but losing the shared identity needed to diagnose cross-layer regressions. We present DeepInsight, an evaluation infrastructure that serves this full spectrum on a single runtime. Rather than homogenize the regimes, it preserves their heterogeneity behind three narrow abstractions—task, resource, and result—each realized as one invariant shared by every subsystem: one episode driver, one resource-handle protocol implemented by every expensive backend (LLM inference and sandboxed runtimes alike), and one trace identity scheme under which every event is written. Deployed in production across all three layers of an embodied humanoid stack, this single set of invariants onboards new benchmarks largely by configuration. Where mature peer orchestrators exist—at the foundation-model end—it reproduces published references and peer-framework readings within their own spread, runs the same suites faster on a single node, and scales near-linearly across nodes. Its distinctive return is diagnostic: because every layer writes into one shared trace, a regression that begins in one layer and surfaces in another stays localizable on that trace—a cross-layer payoff no federation of per-segment harnesses can reproduce. 
+
+## 1 Introduction 
+
+Evaluation for a Physical AI stack is heterogeneous at the level of the operators it must drive. At one end of the workload sit foundation models: short episodes—often a single decoding step, sometimes tens of tool-calling turns—driven by throughput-bound inference and scored by exact-match or model-based judgment. At the other end sit whole-body control policies: episodes spanning hundreds to thousands of physics ticks, driven by physics-bound simulation, and scored by trajectory-analytic conditions on balance, contact, and tracking. Between these endpoints lies an inventory of embodied evaluation needs— manipulation policies, navigation stacks and so on. This paper introduces DeepInsight , an evaluation infrastructure that serves this full spectrum on a single runtime. DeepInsight is not a universal definition of Physical AI; it is an evaluation substrate for a specific embodied humanoid stack. Following recent industrial humanoids [ 1], we take this stack to be three layers: semantic goal reasoning at System 2 (foundation-model evaluation), visuomotor policy execution at System 1 
+
+(navigation/manipulation evaluation), and whole-body stabilization and control at System 0 (whole-body-control evaluation). Figure 1 sketches the stack; DeepInsight serves evaluation across all three layers in production. We use “Physical AI” throughout this paper as a label for this evaluation spectrum , in the sense of the operator continuum just described. The heterogeneity of this spectrum is not incidental; it is the engineering substance of the problem.   
+
+> †Correspondence: Jie Chen at chenj81@xiaopeng.com
+
+1
+
+> arXiv:2606.17574v1 [cs.AI] 16 Jun 2026 Physical World / Simulated Environment
+> the embodiment — sensors stream in, actuators drive out
+
+The Physical AI Stack  — System 2 / 1 / 0    
+
+> A layered control hierarchy for embodied agents — deliberative reasoning at the top, reflexive whole-body stabilization at the bottom. Commands flow down ; observations flow up , closing the loop with the physical world.
+> 2
+
+System 2      
+
+> Semantic Goal Reasoning
+> deliberative low-rate semantic intent
+> Language
+> Understanding
+> Vision
+> Understanding
+> Task Decomposition
+> & Planning
+> System 2 →System 1
+> Plan · Commands · Goals
+> 1
+
+System 1      
+
+> Visuomotor Policy Execution
+> reactive mid-rate visuomotor
+> Sensorimotor
+> Policy
+> Whole-Body
+> Joint Targets
+> Action
+> Generation
+> System 1 →System 0
+> Actions · Control Targets
+> 0
+
+System 0     
+
+> Whole-Body Stabilization & Control
+> re fl exive high-rate dynamics & contact
+> State Estimation
+> & Kinematics
+> Balance &
+> Contact Handling
+> Low-Level Control
+> & Actuation
+> System 0 →World
+> Joint Torques · Actuation
+> I N C R E A S I N G R AT E  · D E C R E A S I N G A B S T R A C T I O N F E E D B A C K L O O P  · O B S E RVAT I O N S & W O R L D - S TAT E
+
+Figure 1. Physical AI stack considered by DeepInsight. 
+
+Episode lengths span more than three orders of magnitude, from a single decoding step to thousands of physics ticks. Observation modalities range over text, image, audio, and continuous physics state. Reward semantics range from exact string match through model-based judgment to trajectory-analytic termination. Resource profiles range from GPU-bound model inference, through I/O- and CPU-bound sandboxed execution, to compute-bound parallel simulation that may be CPU- or GPU-resident. These axes do not collapse—no single representative point captures the spectrum—and they vary essentially orthogonally: a foundation-model agentic task may share its episode length with a manipulation policy while sharing nothing of its resource profile. Building a single evaluation infrastructure on this spectrum means an architecture that absorbs heterogeneity across the full range without forcing one segment’s assumptions on another, and that lets new tasks anywhere along the spectrum enter through extension rather than reimplementation. Heterogeneity does not by itself demand a unified evaluation infrastructure; one could in principle build separate harnesses for each segment of the spectrum and let them evolve independently. The case for unification is that, in a deployed Physical AI stack, the failures of these layers are coupled. A semantic planner’s error changes the distribution seen by the visuomotor policy; a policy’s hesitation changes the stabilizer’s operating regime; a stabilizer’s recovery behavior changes what the higher layers can attempt. Evaluating these layers in separate harnesses preserves their local benchmark validity but destroys the shared run identity, resource accounting, and trace continuity needed to diagnose cross-layer regressions. DeepInsight therefore unifies evaluation not by pretending the regimes are homogeneous—they plainly are not—but by preserving their heterogeneity behind common task, resource, and result interfaces. DeepInsight’s architecture is organized around three abstractions, each chosen to absorb a different class of spectrum heterogeneity. The task abstraction absorbs heterogeneity in episode shape, observation modality, reward semantics, and termination, expressing tasks from across the spectrum on the same runtime through a narrow reset /step interface and a per-episode handle on which all transient state lives. The resource abstraction absorbs heterogeneity in backend resource profile and operational irregularity, detaching the expensive resource classes that drive evaluation cost—language-model inference and sandboxed runtimes (covering code containers and physics simulators alike)—from the orchestrator, so that the operational unruliness of any backend cannot consume the orchestrator’s async budget. The 
+
+result abstraction absorbs heterogeneity in event type across the layers, recording the runtime’s dialogue, the judge’s rationale, the resource layer’s lease and inference events, and the simulator’s trajectory 2under one schema and one identity scheme, so that an aggregate score remains a queryable join over its constituents. Each abstraction carries a primary load: the task abstraction underwrites span coverage by letting heterogeneous episodes share one runtime, the resource abstraction underwrites in-regime throughput by detaching expensive resources from the orchestrator, and the result abstraction underwrites compositional extensibility by admitting new event types and analyses through the same trace. Concretely, the claim this paper defends is that a heterogeneous Physical AI evaluation workload can be carried by one episode driver, one resource-handle protocol, and one trace identity scheme without sacrificing benchmark fidelity, in-regime throughput, or the ability to localize cross-layer regressions on the trace. 
+
+Contributions. DeepInsight absorbs the heterogeneity of the Physical AI spectrum behind three abstractions—task, resource, and result—each realized as one invariant every subsystem shares: one episode driver, one resource-handle protocol, and one trace identity scheme. Where existing frameworks each cover a single segment, these three invariants carry the spectrum end to end—foundation-model decoding through whole-body control—on a single runtime. We defend this in two parts, mirroring the two halves of the evaluation: • Production-grade where peers exist. At the foundation-model end—the only segment with mature peer orchestrators—DeepInsight reproduces published references and peer-framework readings within a stated error budget, runs the same suites faster than the strongest single-regime baseline on a single node, and scales near-linearly across nodes; these gains follow from architecture-level mechanisms that are not segment-specific (Section 4). • Full-stack reach, and cross-layer diagnosis. The same runtime carries the rest of the stack, where no peer orchestrator exists: a progression of case studies reaches closed-loop simulation and trajectory-analytic release evaluation, and culminates in a composed System 2–1–0 task where a regression surfacing in one layer is diagnosed at its origin in another—a cross-layer localization on one shared trace that no federation of per-segment harnesses can reproduce (Section 5). 
+
+## 2 Related Work 
+
+Benchmarks across the Physical AI stack. Each layer of the embodied humanoid stack has a mature, internally coherent benchmark ecosystem, developed by largely disjoint communities. Projected onto the operational spectrum sketched in Section 1, these benchmarks occupy distinct segments rather than a common ground. At System 2, static knowledge-and-reasoning QA—MMLU [ 2 ], GSM8K [ 3], Hu-manEval [ 4]—sits at the spectrum’s short-episode, exact-match, throughput-bound end: one decoding step per sample, deterministic scoring, and an LLM-inference resource profile. Long-horizon agen-tic harnesses—SWE-bench [ 5], GAIA [ 6 ], OSWorld [ 7 ], τ-bench [ 8 ], WebArena [ 9]—move one step inward: episodes of tens to hundreds of turns, mixed exact-match and model-based judgment, and a resource profile that adds sandboxed runtimes to LLM inference. At System 1, visuomotor policy benchmarks—CALVIN [ 10 ], LIBERO [ 11 ], Meta-World [ 12 ], RLBench [ 13 ], Open X-Embodiment [ 14 ], SimplerEnv [ 15 ]—occupy a middle band: episodes of tens to a few hundred control steps, scoring that blends task-completion booleans with trajectory features, and a resource profile dominated by simulation rather than inference. At System 0, whole-body stabilization and locomotion—HumanoidBench [ 16 ], RoboHive [ 17 ], Isaac Lab [ 18 ]—anchor the long-episode, trajectory-analytic, physics-bound end: hun-dreds to thousands of physics ticks per rollout, continuous reward, and parallel simulation as the dominant cost. Each benchmark is internally consistent within its segment; signals across segments are not directly comparable because the operators producing them are not the same operators. The structural observation that motivates DeepInsight is simpler still: no single benchmark spans the spectrum from end to end , and the spaces between adjacent segments are spaces where evaluation needs accumulate without a common substrate. 3Table 1. Coverage of the Physical AI evaluation spectrum across orchestration frameworks. Rows are spectrum axes; columns are frameworks. Check: first-class support; half-filled circle: partial coverage or support via extension; cross: not supported or out of scope. DeepInsight provides first-class support across the spectrum’s full range; the contrast with single-segment frameworks is the structural observation that motivates the rest of the paper.                                                                                                              
+
+> Spectrum axis lm-eval OpenCompass HELM VLMEvalKit lmms-eval Inspect AI DeepInsight
+> Episode length
+> ≤1 step (single decode) ✓✓✓✓✓✓✓
+> 2–50 steps (multi-turn, tool use) ✗✗✗✗✓✓
+> 50–500 steps (sandboxed agent, manipulation) ✗✗✗✗✗✓
+> ≥500 physics ticks (whole-body, locomotion) ✗✗✗✗✗✗✓
+> Reward semantics
+> Exact / log-likelihood / rule-based ✓✓✓✓✓✓✓
+> Model-based judge ✗✓✓
+> Trajectory-analytic (continuous, in-env) ✗✗✗✗✗✗✓
+> Backend resource profile
+> LLM inference only ✓✓✓✓✓✓✓
+> + Sandboxed runtimes ✗✗✗✗✗✓✓
+> + Physics-bound parallel simulation ✗✗✗✗✗✗✓
+> Input modality
+> Text ✓✓✓✓✓✓✓
+> + Vision ✗✓✓✓
+> + Audio ✗✗✗✓✗✓
+> + Physics state ✗✗✗✗✗✗✓
+> Execution model
+> Multi-node execution ✗✓✗✗✗✓
+> Stage-decoupled asynchronous ✗✗✗✗✗✓
+
+Frameworks for evaluation orchestration. A parallel infrastructure literature has emerged around how to run these benchmarks at scale, and each framework in it bakes in assumptions whose validity is local to its segment. The lm-evaluation-harness [ 19 ] assumes short episodes, static datasets, and deterministic scorers; this makes it efficient on the short-episode, exact-match segment and incompatible with everything else. OpenCompass [ 20 ] assumes per-sample cost is predictable and stages are homogeneous, which lets it shard statically across Slurm jobs but disqualifies it for workloads where stage cost is dynamic or stages are heterogeneous. HELM [ 21 ] organizes 42 scenarios under a Scenario × Metric × Adapter abstraction that is methodological rather than operational; its operational footprint remains within text and short-horizon multimodal QA. VLMEvalKit [ 22 ] and lmms-eval [ 23 ] extend coverage to 80–100+ vision–language benchmarks each, but inherit the single-shot generation assumption of their text antecedents and stay an-chored at the short-episode end. Inspect AI [ 24 ] relaxes that assumption: its Task = Dataset + Solver + Scorer abstraction with asynchronous solver–scorer execution makes it the strongest open-source baseline for our short- and mid-episode comparisons in Section 4, but the Task contract is still scoped to foundation-model evaluation, with no first-class notion of long physics-tick episodes or trajectory-analytic scoring. From the opposite end, Isaac Lab [ 18 ] provides robust parallel-simulation infrastructure for whole-body control evaluation, but it is a simulator framework, not a model/sandbox/judge orchestration framework: bringing language-model agents or sandbox-coupled tasks under its execution model would mean crossing its abstraction boundary, not extending it. 
+
+The shape of the gap. Table 1 is not a list of inadequacies: each framework is a well-engineered substrate within its regime. What it shows is that the abstractions these frameworks adopt are themselves regime-local—each shaped by the operator assumptions of its segment, each disqualified outside it. Extending any one of them across regime boundaries would mean discarding the assumptions that gave it efficiency in the first place, leaving extension and reimplementation indistinguishable. DeepInsight is designed against this structural gap, not against any particular benchmark; its architecture, developed in Section 3, follows from the shape of the gap. 43 System Design 
+
+This section presents DeepInsight’s architecture. Section 3.1 gives the system in overview; Section 3.2, Section 3.3, and Section 3.4 each take up one of its three abstractions and develop the engineering choices that abstraction forces. 
+
+3.1 Architecture Overview 
+
+DeepInsight’s architecture rests on a single premise: the operator heterogeneity that defines the Physical AI evaluation spectrum must be absorbed by abstractions —narrow interfaces across which one axis of heterogeneity is hidden from all the others. Three such abstractions organize the system; the remainder of this section argues that no smaller set suffices. The first is the task abstraction : the interface between what a task is and how the runtime drives it . Tasks vary along four axes—episode length, observation modality, reward semantics, and termination—each over a range wide enough that no single representative collapses it. The abstraction that absorbs all of this is small: an environment exposes a reset /step interface, and a per-episode handle carries all transient state through the pipeline. The narrowness of this interface is what allows one asynchronous runtime to drive episodes of widely differing shape through the same workers. Section 3.2 develops the engineering choices behind it. The second is the resource abstraction : the interface between the orchestrator and the resources whose cost and operational irregularity dominate evaluation. Such resources are compute-bound rather than async-bound, require multi-node deployment, and have failure modes whose timescales would dominate any orchestrator that hosted them directly. DeepInsight delegates each such resource class to its own 
+
+control plane and exposes it back through a narrow handle: ask for a handle, release it, and that is all the orchestrator does. Backend variance stays inside the planes; the orchestrator stays asynchronous and thin. Section 3.3 develops the engineering choices behind it. The third is the result abstraction : the interface between what the system records and what it reports .Every event the system produces is written into one structured record, addressed by a uniform identity tuple. Reported metrics are computed from this trace rather than retained in place of it; an aggregate localizes to a trace coordinate, and a new analysis enters as a new reader over the same trace rather than as a modification of the pipeline. Section 3.4 develops the engineering choices behind it. Figure 2 shows the system that realizes these three abstractions. Four pipeline stages run top to bottom— task specification, environment, execution, and scoring & reporting—and the resource-plane bank sits to the side of execution as a service rather than as a stage in the main flow. Three carrier mechanisms make the abstractions concrete: a per-episode handle carries the task abstraction through the main pipeline, holding all transient episode state—the dataset sample, the conversation, the in-flight result, the current observation–action pair—so that environments and workers themselves remain stateless across episodes; plane handles carry the resource abstraction across the execution-to-plane boundary, isolating execution from the operational machinery behind each plane; and a structured trace record carries the result abstraction from the moment any subsystem writes an event to the moment scoring reads it. The main-flow arrow from execution to scoring delivers per-episode results and events, while the resource planes write their own lease and inference events directly into the trace. The three abstractions are not parallel choices; they are causally linked. Driving operator-heterogeneous episodes on one runtime requires a task abstraction that hides episode shape from the workers driving them. A unified task driver then surfaces a heterogeneous resource bottleneck—LLM inference is throughput-bound, while sandboxed runtimes span I/O-bound code containers and compute-bound physics simulators—which the resource abstraction absorbs by detaching each class into its own control plane. The heterogeneous execution that follows produces heterogeneous events, which the result abstraction absorbs by collapsing them into one schema under one identity. Each step’s output is the next step’s input; the choice of three is not aesthetic. 51 TASK SPECIFICATION  Suite con fi g  
+
+> dataset, environment, scorer
+> Template con fi g
+> model, concurrency, resource budget
+> Executed con fi guration snapshot (persisted artifact)
+> 2
+
+ENVIRONMENT  Environment.reset(handle)  → obs       
+
+> Environment.step(handle, action) →obs, event, termination
+> Environments are stateless w.r.t. episodes; all transient state lives on the per-episode handle.
+> 3
+
+EXECUTION  thin async orchestrator  multi-turn (¬ terminated)          
+
+> Step-based: Reset Generation Step Output
+> Agent-based: Reset Agent rollout (black-box) Output
+> Each stage is its own async queue with its own concurrency budget.
+> acquire
+> release
+> results / events
+> 4RESOURCE PLANES
+> symmetric — each scales on its own axis
+> Inference plane
+> LLM endpoints · multi-GPU autoscale
+> Sandbox plane
+> container (code/simulator) lifecycle, reaper
+> parallel rollout allocation
+> 5
+
+SCORING & REPORTING 
+
+> Per-episode judges
+> rule / model / vision / benchmark
+> Off -path reporters
+> read trace; do not stall pipeline
+
+Figure 2. DeepInsight’s architecture. Four pipeline stages (task specification, environment, execution, scoring & reporting) run top to bottom, with the resource-plane bank side-mounted on execution. Execution acquires capacity from the bank via a shared acquire /release handle protocol and emits results directly to scoring; the two planes (inference, sandbox) are structurally identical from the orchestrator’s perspective. 
+
+“Single runtime” here denotes four shared elements: one episode driver, one scheduler over per-stage worker pools, one resource-handle protocol that every plane implements, and one trace identity scheme under which all subsystems write. The inference and sandbox planes run as separate control planes—each with its own deploy lifecycle and failure modes—but they participate in evaluation only through the shared handle protocol and only by writing into the shared trace. A federation of per-segment harnesses linked by a top-level dispatcher would share none of these; the distinction between coordination and a shared runtime is structural, not nominal. Together these three abstractions are the architecture’s response to the spectrum-coverage gap diagnosed in Section 2. The joint adoption of all three—rather than any one in isolation—is what allows the infrastructure to span the spectrum across its full range, foundation-model end through whole-body-control end, on a single runtime. 
+
+3.2 The Task Abstraction 
+
+Three engineering choices realize the task abstraction: state lives on a per-episode handle, the executed configuration is the persisted artifact, and judgment is an axis orthogonal to the task. The patterns themselves—stateless servers with per-request state, configuration-snapshot replay, decoupling of metric from task—are not novel; the contribution is their composition under the constraint of spanning the spectrum. 
+
+State lives on the per-episode handle. A conventional pipeline stores per-task state on the environment itself—the dataset cursor, the in-progress conversation, the sandbox handle. This binds one environment to one episode: each instance becomes single-use, or fresh ones must be allocated per episode, which is expensive at scale and fragile around external resources. Under concurrency, residual state in shared environments makes which episodes interleave with which others a function of scheduling order. DeepInsight inverts this. Environments are stateless with respect to episodes; all transient state—the dataset sample, the in-flight result, the conversation, the current observation–action pair—lives on the 6per-episode handle that workers carry through the pipeline. One environment instance can serve arbitrarily many concurrent episodes because every read and write goes through this handle. The structural payoff is at the runtime layer: a one-step QA decode and a several-hundred-step sandboxed agent rollout, despite using different environment implementations, share the same workers and the same async loop. Episode-bound state lives on the handle, not on the environment, so workers do not specialize to one shape or the other. This is the prerequisite for a task abstraction that crosses spectrum segments at all. The interface that results is a two-method surface (Figure 2): reset(handle) returns an observation, and step(handle, action) returns an observation, a per-step event, and a termination class. Every environment in the deployed inventory—from a static-QA decoder to a sandbox-coupled coding rollout to a physics-bound humanoid simulator—implements exactly this surface. Episode-scoped state is read from and written to handle ; the Environment object itself holds only configuration. The termination value carries the episode’s exit class (success, failure mode, timeout); the event value carries the per-step record that the result abstraction (Section 3.4) will later persist. 
+
+The executed configuration is the persisted artifact. If tasks are to be declared rather than written, then the form they actually execute in must itself survive the run. Task configurations in real pipelines fragment across multiple artifacts: a specification of what the task is, a specification of how to run it, override mechanisms, and inherited defaults. What actually executes is their merger, and is rarely captured in a form that survives the run. DeepInsight separates declaration into two layers. A suite configuration pins what a task is—dataset, environment, scoring. A template configuration pins one run of it—model endpoints, concurrency, resource budgets. At startup the two merge with any per-field overrides into a single snapshot, dumped to disk and used for every replay. The snapshot captures every override actually applied, including those that vanish into command-line flags or environment defaults in less disciplined pipelines. The same separation makes the declared form expressive enough for use directly. Because the suite alone declares what a task is, the dominant fraction of deployed benchmarks enters the system as configuration rather than code: one generic environment serves the majority of deployed suites, and bespoke environments appear only where reward generation falls outside declarative scoring, such as sandbox verifiers, tool-call validators, and simulator-based user models. The onboarding cost of a new benchmark, in the dominant case, is one configuration file. This is the mechanism through which the deployed inventory continues to grow: a new benchmark—at any point along the spectrum—is brought online as a declarative suite as long as its environment fits the carrier and its scoring fits the judge interface, without modifying the runtime. 
+
+Judgment is an axis orthogonal to the task. Many evaluation harnesses embed the scoring function in the task: the task computes its own metric. This couples two things that should evolve independently. When a scorer is upgraded—from exact to fuzzy match, from rule to model-based judge, from heuristic to in-environment verifier—the task’s semantics shift with the metric. Two runs marked “same task, different versions” might differ because the model changed, or because the scoring did, with no clean way to tell. DeepInsight makes judgment an orthogonal axis. Tasks define what is recorded—the trajectory, the termination class, the model’s final output. Scorers are separately registered components that read the trace and emit rewards. The system carries four scorer families—rule-based, model-based, vision-specific, and benchmark-specific—sharing one interface: a trace in, a structured judgment out. A new judge applies across the corpus by substitution rather than per-task integration; the reported score is the cross product (task × judge), each independently versioned. Orthogonality here is interface-level, not absolute. A trajectory-analytic judge needs the environment to record the trajectory features it consumes; a model-based judge of an agentic rollout needs the runtime to persist the full conversation. The coupling runs through the trace schema—data-shape, not code path—and does not propagate into the scoring layer. 7Together, the three structural choices let the task abstraction carry the full spectrum on a single runtime, and let extension along the spectrum reduce, in the dominant case, to configuration. 
+
+3.3 The Resource Abstraction 
+
+Scaling an evaluation infrastructure looks deceptively like scaling any compute workload, until the heterogeneity of evaluation stages is taken seriously. Resources at the spectrum’s foundation-model end are throughput-bound, those of its agentic middle are I/O-bound, and those of its whole-body-control end are physics-bound; each scales on its own axis. Three sources of scaling friction recur when this is ignored: stages with different resource profiles forced to share a concurrency budget, expensive backends hosted by the orchestrator process, and scaling knobs whose effects entangle across workloads. The resource abstraction addresses each. 
+
+Stages get independent concurrency budgets. Evaluation tasks decompose into stages that instantiate the resource profiles introduced above. A generation step is GPU-bound, dominated by token decoding. Sandboxed execution splits further: deploying a stateful sandbox is API-bound, dominated by a multi-second wait on a remote control service; a code-test step is I/O-bound and slow; and a lightweight verifier or deterministic scorer is CPU-bound, fast, and cheap. Physics-simulation stages are compute-bound and handled by the same sandbox plane. If these stages share one concurrency budget, the slow stages monopolize workers while the cheap ones starve, and throughput collapses to the rate of whichever stage is currently saturating the pool. DeepInsight separates stages at a finer granularity than role alone: a CPU-bound step and an I/O-bound step are different queues even when they share the same step role. Each queue gets its own worker pool and concurrency budget, scaled to the bottleneck of its own profile. A slow sandbox step occupies only its own pool; cheap judge steps proceed in parallel through a separate one. The orchestrator becomes a flow controller across heterogeneous lanes rather than a single rate limiter, and the throughput at the spectrum’s foundation-model end is no longer hostage to the queue characteristics of the spectrum’s agentic middle. 
+
+Resources are delegated to symmetric control planes. The expensive resources of evaluation— language-model inference and sandboxed execution—bring more than slowness; they are operationally unruly. An inference replica can lag autoscale under load; a sandboxed runtime can leak resources between runs, or, when it hosts a physics simulator, drift in step rate. If the orchestrator hosts these resources, its async budget is consumed by their failure modes, and the infrastructure’s throughput becomes a function of backend operational health. DeepInsight’s response was sketched in Section 3.1: detach the two resource classes into their own control planes—inference and sandbox—and expose only narrow handles to the orchestrator. The detail that closes the scaling friction is what each plane does behind its handle. The inference plane scales inference capacity autonomously: multi-GPU, multi-node deployment with autoscaling under load. The sandbox plane manages the full lifecycle of sandboxed runtimes autonomously, from deployment under load through resource accounting to recovery from failure. The same plane carries workloads whose resource profiles differ widely—I/O-bound code containers used by tool-using agents, compute-bound physics simulators used by whole-body control evaluation, parallel rollouts that produce trajectory streams—because what unifies them at the infrastructure level is the lifecycle (allocate, lease, reap, restart), not the inner workload profile. To the orchestrator, both planes look the same: ask for a handle, release it, and that is all. Backend operational variance stays inside the planes; the orchestrator’s async loop interacts only with the handle. The symmetry across the two planes is the point. Each takes a request from a worker, returns a handle, and manages everything behind that handle autonomously. The same interface hides inference autoscaling, container deploy-storms, and parallel simulator allocation alike. Whatever runs behind the handle, the orchestrator sees the same shape. 8ORCHES TRA TOR                                  
+
+> Infe rence clie nt (inor che str ator )
+> Pluggable load balancer:
+> RR ·LeastConn ·P2C ·ConsistentHash ·Bounded-load hash (KV-cache affinity)
+> INFERENCE PLANE
+> Serv ice ca talo gHetero ge neous engi neflee t
+> mult i-GP Uperrepl ica ·mult i-no de
+> vLLM SGLang · · ·
+> Planecontrol loop
+> pl ace ment ·sca ling
+> watch requ est
+> (di rec t)
+> regi st er
+> fail ur e/load scale
+
+(a) Inside the inference plane. A caller-side client with a pluggable load balancer watches a service catalog and routes requests directly to a heterogeneous engine fleet; engine-side telemetry feeds the plane’s scaling loop. ORCHES TRA TOR                                            
+
+> Sandb ox clie nt (inor che str ator )
+> Per-taskmo de selec tion ·episo de -lea seacc ount ing
+> SANDBO XPLANE
+> Stateless mo de
+> pr e-warm ed cont ai nerpool front ed by
+> HTT Pserv ice
+> fun ction -call tie r
+> —ma th/code int erpr eters —
+> Statef ul mo de
+> on -de mandOpenSandb ox per-episo de cont ai ner
+> cont ai nertie r
+> —SW E-be nch ,emb odime nt sim ula tors —
+> Kube rn etescontrol loop
+> de ploy ·sched ul e·rec ov ery ·de ploy -storm manage ment
+> ac qu ire/relea seac qu ire/relea se
+
+(b) Inside the sandbox plane. Two deployment modes sit behind one handle: a pre-warmed pool fronted by HTTP for stateless tool calls, and an on-demand OpenSandbox provi-sioner that leases a per-episode container for stateful workloads. Lifecycle rides the underlying Kubernetes control loop. 
+
+Figure 3. What sits behind the two plane handles. Both planes expose the same acquire /release handle protocol upward; the contents below are the per-plane mechanisms that handle protocol hides. 
+
+Inside the inference plane. Behind the handle, the plane carries a heterogeneous engine fleet—vLLM, vLLM-Omni, SGLang—uniformly, so a benchmark expressed for one model is re-run against another by swapping a configuration field rather than rewriting the resource path. It places those engines across the GPU pool with parallelism shape fixed at plan time and admits new replicas into the live deploy without orchestrator restart. Service discovery is client-side: engines register their endpoints into a catalog that the caller-side transport watches, so requests reach the chosen replica without a gateway hop, and the load-balancing policy is free to condition on application-level routing keys—including a bounded-load consistent-hash policy that gives KV-cache affinity for prefix-cache hits with automatic spillover under hot keys. Engine-side telemetry—failure events and load—feeds the plane’s scaling loop. Figure 3a sketches what sits behind the handle. 
+
+Inside the sandbox plane. Sandboxed tasks vary in their state needs—and, with them, in deploy cost: a math benchmark’s interpreter call is request-scoped and tolerates no multi-second deploy wait, while a SWE-bench rollout’s filesystem state must persist across hundreds of agentic turns inside a per-episode container. The plane carries two deployment modes behind one handle to match. A long-running pool of pre-warmed containers fronted by an HTTP service serves the stateless case, eliminating the API-bound deploy wait that would otherwise dominate per-call latency. An on-demand provisioner leases a fresh OpenSandbox container per request, binds its lifetime to the episode handle of Section 3.2, and reclaims it on release for the stateful case. The two modes occupy the function-call and container tiers of the four-tier isolation spectrum (function-call → container → microVM → fullVM) catalogued in recent industrial practice [ 25 ]; higher-isolation tiers are reachable through the same handle but unneeded by current workloads. Lifecycle—deploy, schedule, recovery, deploy-storm management—rides the underlying Kubernetes control loop; the plane sits above this, selecting the mode, binding each lease to its episode, and accounting for it. Figure 3b sketches the arrangement. That shape is two methods: acquire(kind, episode_id, constraints) returns a handle, and 
+
+release(handle) returns nothing. The kind field discriminates inference and sandbox; episode_id 
+
+ties the lease to the per-episode handle of Section 3.2, so that resource accounting joins on the same identity as the trace; constraints carries the per-class budget—model identifier and decoding param-eters for inference; container image, resource cap, and (for physics-simulator workloads) simulator configuration and seed for sandbox. Beyond acquire and release , the orchestrator has no view into a plane’s internals—autoscaling, deploy-storm management, and parallel-rollout allocation all live behind 9the handle. 
+
+Scaling knobs are orthogonal. Even with stages decoupled and backends delegated, a poorly factored scaling story can reintroduce coupling. If one knob controls multiple bottlenecks at once—for instance, a top-level concurrency setting that simultaneously caps worker count, connection-pool size, and sandbox deploys—then tuning becomes guesswork: raising the number to relieve one bottleneck pushes another past its limit. DeepInsight exposes a scaling knob at each independent bottleneck: per-stage worker concurrency in the orchestrator, connection pool and replica count at the inference plane, and deploy / active-concurrency / parallel-rollout caps at the sandbox plane (set independently per workload class—code containers and physics simulators saturate on different axes). Each axis is independent. Tuning one does not deplete another: a workload that taxes sandbox capacity is tuned through sandbox knobs while leaving inference throughput intact. Together, the three structural choices decouple the throughput bottlenecks across the spectrum, so that an optimization at one segment is not held hostage by the resource profile at another. The orchestrator stays asynchronous and thin; the planes scale autonomously beneath their handles; tuning adjusts independently along each axis. Section 4 reports the throughput and stability consequences of these choices against open-source single-regime baselines along the spectrum. 
+
+3.4 The Result Abstraction 
+
+Evaluation produces a fan-out of event types—conversation turns, judge rationales, lease events, inference events, trajectory steps—that downstream analyses must read as one coherent trace. Three patterns recur in conventional pipelines that prevent this: heterogeneous result shapes from different subsystems, aggregates retained at the expense of the underlying trace, and reporting coupled into the evaluation pipeline. The result abstraction addresses each. 
+
+Events share one schema and one identity scheme. Different evaluation subsystems produce different kinds of events. A judge produces a reward, a rationale, and a reason. The runtime produces turn-by-turn dialogue, a termination class, and error counts. The inference plane produces inference events; the sandbox plane produces lease events and, where the sandboxed runtime is a physics simulator, per-step trajectory events with continuous state. In a conventional pipeline these would arrive in different shapes, in different stores, with different identifiers. Cross-source analysis—asking, for instance, whether the model’s worst failures coincide with inference-plane saturation, or whether a manipulation policy’s trajectory anomalies cluster with particular dataset partitions—becomes a multi-source data integration problem before it is a research question. DeepInsight collapses this fan-out: every event from every subsystem writes into one structured record, addressed by a hierarchical identity that descends from the run to a position within an episode, and carrying its own causal lineage so that an event can be linked to the upstream event that produced it. The judge’s reward, the runtime’s dialogue, the sandbox plane’s lease and trajectory events, and the inference plane’s request event all share the same record shape and the same coordinate system. Cross-source analysis dissolves into a join on identity, and cross-layer causal analysis dissolves into a graph traversal over the parent pointer. The schema admits new event types—a perception failure from a new embodied environment, a fairness reading from a new judge family—through the same path, without retroactive migration of existing records. Figure 4 sketches the schema, with fields grouped by role. The schema separates three concerns. The first group is identity : (run_id, suite_id, task_id, episode_id, epoch) is the join key, and every producer—runtime, scorer, inference plane, sandbox plane—writes the same tuple shape, so cross-source analysis is a join on any prefix rather than a multi-source reconciliation. The second group is position and lineage : the multi-rate index (turn_id, 
+
+10 5 TraceRecord  {                  
+
+> Shared schema emitted across the pipeline — the single record every reporter reads.
+> S C O R I N G & R E P O R T I N G
+> off-path, append-only trace
+> 1Identity — join key + pass@k repetition
+> run_id suite_id task_id episode_id
+> epoch
+> 2Position within episode (multi-rate)
+> turn_id step_id tick
+> 3Per-event identity & causal lineage
+> event_id parent_event_id
+> 4Event discrimination & provenance
+> event_type producer schema_version
+> 5Time — wall-clock; sim_time where one exists
+> timestamp sim_time
+> 6Body inline, or payload_ref for high-rate streams
+> payload payload_ref
+> 7Back-reference to the resource plane (Sec. 3.3)
+> resource_refs
+> Append-only · producers write; off-path reporters read — never stalling the execution pipeline. }
+
+Figure 4. The TraceRecord schema. Identity, multi-rate position within an episode, per-event identity and causal lineage, event discrimination and provenance, time, payload, and the back-reference to the resource plane (Sec. 3.3) are grouped by role. The trace is append-only: every producer writes; off-path reporters read. 
+
+step_id, tick) lets one trace carry a one-step QA decode, a multi-turn agentic rollout, and a whole-body-control rollout without changing shape, while (event_id, parent_event_id) reduces cross-layer diagnosis to a graph traversal—a stabilizer regression at a tick walks back through its control decision, the policy generation, and the LLM call that produced the plan, on a single trace. The third group is content : event_type discriminates the producer’s domain, payload is schema-versioned per type so a newly onboarded subsystem joins by extending the type registry rather than by migrating prior records, 
+
+payload_ref provides a by-reference escape hatch for the high-rate trajectory case, and resource_refs 
+
+links every event back to the inference endpoint or sandbox lease that produced it—so that a generation that coincided with an inference replica drop, a code-sandbox step that coincided with an eviction, or a physics-simulator trajectory anomaly tied to a specific lease is localizable on a single trace by a single join. 
+
+The trace is the unit of retention. Most evaluation pipelines retain the aggregate and discard the trace, or retain the trace transiently and discard it after aggregation. The implicit assumption is that aggregate scores are the product and that traces are incidental—useful at the moment of execution and discarded soon after. When a regression surfaces a week later, the trace that would explain it has been overwritten. DeepInsight inverts the priority. The trace is the durable artifact: every event written under the schema above is persisted. Aggregate scores are computed from this trace, not retained in its place. A regres-sion observed in aggregate can be traced back to its constituent events long after the run: the events themselves are still on disk. Drill-down becomes a read operation. Across spectrum segments this matters disproportionately: at the foundation-model end the aggregate hides individual generations; at the whole-body-control end it hides per-step physics state. In both cases the explanation of a degraded metric lives in the events, not in the number. 
+
+Reporting is decoupled from evaluation. Even when traces are retained, conventional pipelines often compute aggregates within the evaluation pipeline itself: each task’s reporter runs as part of the pipeline, and modifying or extending the aggregation path requires changing the pipeline. The aggregate computed at pipeline exit is the only one available. 11 In DeepInsight, reporting consumes the trace as a downstream stage. Multiple reporters operate on the same trace within a run, off the hot path: an expensive aggregation does not stall evaluation, and adding a new reporter is a registration, not a pipeline modification. The reporters consume the same record format that was written by the upstream subsystems—the trace is uniformly addressed end-to-end, and reporters are simply its first consumers. The evaluation pipeline produces events; reporters produce numbers. Together, the three structural choices let the events produced across the spectrum accumulate into one trace that downstream analyses can read. A new event type from a newly onboarded benchmark joins through the same schema; a new analysis on existing or newly onboarded tasks joins as a new reader on the trace. Section 4 evaluates metric fidelity and throughput where peer references exist, while Section 5 uses the same retained trace for cross-layer diagnosis. 
+
+## 4 Evaluation 
+
+System 2 is the only layer of the stack where DeepInsight competes with mature open-source frameworks, and therefore the only one where we can measure — rather than merely demonstrate—what the infras-tructure delivers. This section establishes that production-grade depth along three axes: DeepInsight reproduces reference scores at peer-framework fidelity, runs the same suites faster on a single node, and scales near-linearly across nodes. The reach across the rest of the stack, which no peer comparison can quantify, is the subject of Section 5. All numbers below come from the deployed infrastructure in its production configuration, on a subset of the suites it runs continuously—not a one-off benchmarking setup. We compete against lm-evaluation-harness and Inspect AI on text-only benchmarks, and VLMEvalKit and lmms-eval on multimodal VQA. We proceed in three steps. First, we show that DeepInsight reproduces reference scores, both against published model-card numbers and against each peer framework running the same task on the same model. Second, we show that it runs the same suites faster on a single node. Third, we attribute the speedup to the resource abstraction of Section 3.3. All System 2 comparisons use the same hardware envelope, inference backend, and benchmark protocol across frameworks. Each model is served through the same vLLM configuration on a single 8 ×A100 node, and each benchmark family uses the official recommended sampling profile for that model. Model-based scoring likewise uses a shared judge configuration wherever a judge or user simulator is required. What differs by framework is only the scheduler surface: concurrency is set to the highest-throughput setting appropriate to each framework’s own execution model, so the per-row readings below pair each framework’s score with the scheduler setting it was designed to use. The primary model under test is Qwen3.6-27B—a dense 27B-parameter model with a hybrid linear-and-full-attention stack. We also include one Qwen3-32B text-alignment table under its official thinking protocol as a protocol-transfer check; it is not used in the throughput claims. Tasks driven by an LLM judge or user simulator—SimpleQA, τ-bench, and the multimodal VQA suite—share the same Qwen3-30B-A3B-Instruct-2507 judge configuration across all frameworks, removing judge-model variance as a source of disagreement. SimpleQA follows the short-form factuality benchmark of Wei et al. [26]. The only additional model family is the omni-modal setting in Table 5, where we run Qwen3-Omni-30B-A3B-Instruct under the same single-node vLLM-Omni configuration and official recommended decoding profile. Among the peer frameworks, only lmms-eval natively supports omni-modal evaluation, so Table 5 compares DeepInsight with lmms-eval. 
+
+4.1 Accuracy and cross-framework alignment 
+
+We compare DeepInsight against each peer framework on every task the peer natively supports. The goal is alignment, not improvement: DeepInsight should recover the published reference and peer-framework readings to within the residual spread of the peer runs themselves. This fidelity check is the precondition for the throughput comparison in Section 4.2. 12 Table 2. Reference-anchored text alignment on Qwen3.6-27B under the production thinking profile. Entries are primary-metric percentages; bold marks closest to Ref., and the final row counts closest-to-reference rows.                                                                          
+
+> Class Benchmark Ref. lm-eval Inspect AI DeepInsight Knowledge & reasoning MMLU-Pro 86.2 83.14 ±0.04 86.49 ±0.07 85.44 ±0.07 MMLU-Redux 93.5 94.34 ±0.13 —92.99 ±0.01
+> SuperGPQA 66.0 ——66.25 ±0.05
+> GPQA-Diamond 87.8 84.85 ±1.39 86.03 ±1.68 83.38 ±2.10 C-Eval 91.4 90.81 ±0.10 —91.50 ±0.03
+> HLE 24.0 —23.95 ±0.59 25.17 ±0.80 Math HMMT Feb 2025 93.8 ——93.33 ±2.04
+> Code LiveCodeBench v6 83.9 ——75.61 ±0.49 Closest to Ref. —0/8 3/8 5/8
+
+Table 3. Reference-anchored text alignment on Qwen3-32B under the official thinking profile. Rows complement Table 2; entries are primary-metric percentages; bold marks closest to Ref., and the final row counts closest-to-reference rows.                                                                                            
+
+> Class Benchmark Ref. lm-eval Inspect AI DeepInsight Knowledge & reasoning MMLU-Redux 90.9 90.79 ±0.08 —89.29 ±0.06 GPQA-Diamond 68.4 60.61 ±1.92 63.89 ±0.03 60.61 ±3.47 C-Eval 87.3 89.38 ±0.84 —84.59 ±0.09 LiveBench 74.9 —65.24 ±0.21 74.25 ±0.25
+> Math MATH-500 97.2 96.80 ±0.79 —93.50 ±0.30 AIME-2024 81.4 72.71 ±4.72 73.54 ±2.76 76.04 ±4.44
+> AIME-2025 72.9 56.25 ±5.46 59.79 ±7.12 58.75 ±6.11 Instruction & QA IFEval 85.0 83.36 ±1.60 81.34 ±0.78 83.45 ±0.09
+> Tool use (BFCL) BFCL-v3 70.3 —43.37 ±0.02 50.63 ±0.89 Closest to Ref. —3/9 2/9 4/9
+
+Tables 2–5 report the reference-anchored comparison on task families covered by at least one peer framework. The two text tables are complementary: Table 2 reports Qwen3.6-27B production-model rows, while Table 3 adds Qwen3-32B official-protocol rows, including additional math benchmarks and BFCL-v3. Table 4 extends the test to the 15 multimodal VQA rows shared by VLMEvalKit and lmms-eval; Table 5 covers the five omni-modal rows shared with lmms-eval. Each row reports the benchmark’s primary metric; dashes mean the framework does not natively support the task, bold marks the cell closest to Ref., and the final row counts closest-to-reference rows. The text rows draw from MMLU-Pro [ 27 ], MMLU-Redux [ 28 ], SuperGPQA [ 29 ], GPQA-Diamond [ 30 ], C-Eval [ 31 ], Humanity’s Last Exam [ 32 ], MathArena competition sets [ 33 ], LiveCodeBench [ 34 ], LiveBench [ 35 ], MATH/MATH-500 [ 36 , 37 ], IFEval [ 38 ], and BFCL [ 39 ]. The multimodal rows draw from MMMU [ 40 ], MMMU-Pro [ 41 ], MathVista [ 42 ], DynaMath [ 43 ], BlindTest/VLMs-Are-Blind [ 44 ], MMBench [ 45 ], MMStar [ 46 ], RealWorldQA [ 47 ], SimpleVQA [ 48 ], CharXiv [ 49 ], OCRBench [ 50 ], CountBench [ 51 ], RefCOCO [ 52 ], ERQA [ 53 ], and Video-MME [ 54 ]. The omni-modal rows use Lib-riSpeech [ 55 ], WeNetSpeech [ 56 ], and WorldSense [ 57 ]; their Ref. values come from the Qwen3-Omni technical report [58]. 
+
+Cross-framework alignment. Across the four alignment tables, DeepInsight stays on the reference scale while covering the broadest set of modalities. It is closest to Ref. on the largest number of rows in every table: 5/8 on Qwen3.6 text, 4/9 on Qwen3-32B text, 8.0/15 on shared multimodal VQA, and 4/5 on omni-modal evaluation. This is the fidelity condition needed for the throughput comparison: the systems being timed are producing comparable scores, not trading accuracy for speed. The remaining offsets are protocol-level rather than infrastructure-level. LiveCodeBench depends on an 13 Table 4. Multimodal VQA alignment on the 15 Qwen3.6-27B benchmarks shared by all three frameworks. Entries are mean ± std over 3 runs; bold marks closest to Ref., and the final row counts closest-to-reference rows with ties split.                                                                                                                                                                  
+
+> Class Benchmark Ref. VLMEvalKit lmms-eval DeepInsight STEM & Puzzle MMMU (DEV_VAL) 82.9 82.04 ±0.67 71.75 ±0.54 83.14 ±0.49
+> MMMU-Pro (10c CoT) 75.8 75.90 ±0.40 72.99 ±0.62 75.80 ±0.53
+> MathVista-mini 87.4 87.50 ±0.44 85.70 ±0.53 87.90 ±0.36 DynaMath 85.6 84.52 ±0.42 70.14 ±0.05 86.59 ±0.30
+> VlmsAreBlind 97.0 90.23 ±0.05 88.59 ±0.28 90.26 ±0.23
+> General VQA MMBench EN-DEV 92.3 86.57 ±0.35 87.28 ±0.23 92.74 ±0.13
+> MMStar 81.4 78.64 ±0.50 80.90 ±0.79 80.49 ±0.31 RealWorldQA 84.1 83.40 ±0.34 83.22 ±0.84 83.83 ±0.59
+> SimpleVQA 56.1 57.01 ±0.30 51.13 ±0.52 57.52 ±0.08 Document CharXiv (reasoning) 78.4 78.57 ±0.78 72.97 ±0.50 78.47 ±0.67
+> OCRBench 89.4 88.43 ±0.25 87.87 ±0.21 88.40 ±1.25 Spatial CountBench 97.8 97.40 ±0.31 97.40 ±0.31 96.92 ±0.90 RefCOCO 92.5 92.19 ±0.16 92.89 ±0.12 91.63 ±0.53 ERQA 62.5 58.83 ±1.23 58.83 ±1.16 58.25 ±1.39 Video Video-MME (64f) 87.7 67.63 ±0.35 65.56 ±0.17 74.88 ±0.92 Closest to Ref. —5.0/15 2.0/15 8.0/15
+
+Table 5. Omni-modal alignment on the five Qwen3-Omni benchmarks shared with lmms-eval. Entries are mean ± std over 3 runs; bold marks closest to Ref., and the final row counts closest-to-reference rows.                                                           
+
+> Benchmark Modality Metric Ref. lmms-eval DeepInsight LibriSpeech-clean audio →text WER ↓1.22 1.438 ±0.004 1.412 ±0.007
+> LibriSpeech-other audio →text WER ↓2.48 2.625 ±0.014 2.566 ±0.020
+> WeNetSpeech-meeting audio →text (ZH) CER ↓5.89 5.906 ±0.008 5.806 ±0.010 WeNetSpeech-net audio →text (ZH) CER ↓4.69 4.768 ±0.004 4.728 ±0.011
+> WorldSense video+audio MCQ acc ↑54.0 49.21 ±0.06 53.03 ±0.18 Closest to Ref. —1/5 4/5
+
+unpublished reference sandbox/timeout; Video-MME is compared against a with-subtitles reference while all open runs use no subtitles. These cases bound the alignment evidence instead of weakening it: where the protocol is matched, DeepInsight reproduces reference-scale readings across text, multimodal VQA, and omni-modal suites. 
+
+4.2 End-to-end throughput 
+
+Given the alignment established above, we compare wall-clock on each peer’s native task surface. Open-source peers do not share a common task surface: lm-eval covers short-episode text benchmarks, Inspect AI extends to tool use and agentic rollouts, and VLMEvalKit and lmms-eval cover multimodal VQA. They also differ in how they schedule that work, along the two axes DeepInsight’s engine targets (Section 3.3). lm-eval, its multimodal fork lmms-eval, and VLMEvalKit are phase-structured and batch-oriented: they generate over the dataset in synchronous passes and score afterward, with the heterogeneous stages sharing a single global concurrency setting. Inspect AI is the exception on the first axis—it drives samples through an asyncio event loop with adaptive model-connection concurrency, so generation is already pipelined continuously rather than dispatched in batches—but on the second axis it behaves like the rest, routing generation, tool/sandbox execution, and scoring through one shared concurrency budget rather than giving each stage an independent pool. None of the four runs multi-node. We therefore make one pairwise comparison per peer rather than fixing a single suite for all peers. For each peer, the dataset list is exactly what that peer natively supports on Qwen3.6-27B; the same list is submitted to DeepInsight, 14 and both frameworks schedule it natively on a single 8 ×A100 node under the configuration of Section 4.1. Wall-clock is the elapsed time of the full suite. DeepInsight  Peer framework Wall-clock (hours)    
+
+> 0h
+> 8h
+> 16h
+> 24h
+> 32h
+> 11.6
+> 15.0
+> 1.29×
+> lm-eval
+> 26.7
+> 30.2
+> 1.13×
+> Inspect AI
+> 23.0 23.7
+> 1.03×
+> VLMEvalKit
+> 23.0 23.8
+> 1.04×
+> lmms-eval
+> 1.50 1.80
+> 1.20×
+> lmms-eval (omni)
+
+Figure 5. End-to-end suite-level wall-clock comparison, single 8 ×A100 node. Each pair of bars is one peer comparison on that peer’s native dataset list. Wall-clock is the elapsed time of the full suite, reported in hours. Speedup is the peer wall-clock divided by DeepInsight’s; > 1 favors DeepInsight. The omni row uses Qwen3-Omni-30B-A3B-Instruct; all other rows use Qwen3.6-27B. 
+
+The Qwen3-32B protocol check is fidelity-only and is excluded from the wall-clock comparison. All com-parisons are single-node because the peer frameworks do not support multi-node execution; DeepInsight’s own multi-node scaling has no peer baseline and is reported separately in Section 4.3. The speedup tracks two things: how much idle time a workload’s output-length variance leaves for the scheduler to reclaim, and which of DeepInsight’s engine mechanisms the peer lacks. Multimodal VQA is prefill-bound—image encoding dominates per-episode cost and decoder outputs are short and roughly uniform—so there is little to reclaim, and the speedup over VLMEvalKit and lmms-eval compresses to 1.03 –1.04 ×; the omni suite, mixing long ASR transcripts with short-form MCQ, sits at 1.20 ×. The lm-eval list is where the batch-oriented discipline costs most—its math and extended-thinking rows are long and length-variable, so the slowest episode in each synchronous pass holds back the rest, and asynchronous pipelining reclaims exactly those idle slots for 1.29 ×. Inspect AI carries a comparably long agentic and tool-use workload yet shows a smaller 1.13 ×, precisely because it is already asynchronous and does not pay that batch-barrier cost; what remains against it traces to its stages still sharing one concurrency budget rather than to pipelining. Section 4.3 isolates both mechanisms directly—asynchronous pipelining on AIME-2024, where output-length variance is maximal, and stage decoupling on a workload whose stage profiles diverge sharply. 
+
+4.3 Where the throughput comes from 
+
+A speedup number does not explain itself, and the cross-framework comparison of Section 4.2 cannot by itself isolate cause: a peer differs from DeepInsight in implementation as well as architecture. We therefore reproduce each peer’s scheduling discipline inside DeepInsight and re-measure on a fixed System 2 workload, disabling one structural choice from Section 3.3 at a time while holding the model, sampling, judge, and hardware fixed. Two of the three choices map directly onto the architectural axes just described: forcing a synchronous batch barrier reproduces the batch-oriented discipline of lm-eval, lmms-eval, and VLMEvalKit, and collapsing the stages into one shared pool reproduces the single-budget discipline common to all four peers (Inspect AI included). Because only the disabled choice varies, any speedup it recovers is attributable to that choice rather than to incidental differences—so these internal 15 async sync                       
+
+> 0
+> 50
+> 100
+> 150
+> minutes
+> 108 min
+> 152 min
+> async 1.41× faster
+> Total wall-clock time
+> async sync
+> 0
+> 500
+> 1000
+> 1500
+> 2000
+> 2500
+> tokens / sec  2,178
+> 1,547
+> +41% higher
+> LLM throughput
+> async sync
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> % busy
+> 89%
+> 54%
+> fewer idle GPUs
+> Generation worker occupancy
+> step_judge
+> reset
+> generation
+> end 108 min
+> one continuous busy band
+> async generation busy 88% (50% of 64 workers)
+> 02000 4000 6000 8000
+> time since profiling start (s)
+> step_judge
+> reset
+> generation
+> end 152 min
+> batch long-tail: few stragglers run,
+> most workers idle at the barrier
+> long-tail / barrier idle 45% of run
+> sync generation busy 55% (50% of 64 workers)
+> generation busy (mode-colored) generation long-tail (low utilization) reset / batch barrier step_judge events
+> Pipeline stage occupancy over time why async wins
+
+Figure 6. Asynchronous pipelining ablation on AIME-2024. Top: wall-clock and LLM throughput under async refill vs. synchronous batch barriers. Bottom: generation occupancy over wall-clock time. 
+
+ablations are what license reading the cross-framework trend as a consequence of architecture. The third choice, horizontal scaling, has no peer baseline, since none of the peers run multi-node. The first choice is asynchronous pipelining. We isolate its effect on AIME-2024 ( 30 problems ×16 repeats = 480 episodes, the standard mean-at-16 protocol for this benchmark), varying only the engine’s scheduling discipline: async refills from the queue continuously, whereas sync imposes a 64 -episode batch barrier. Figure 6 reports the result. Asynchronous pipelining alone cuts wall-clock from 152 to 108 minutes—a 1.41 × speedup—while preserving accuracy to within the run-to-run variance of the 16 -sample mean ( 94 .79 vs. 95 .63% ). The per-stage occupancy trace makes the mechanism concrete: under the batch barrier, the slowest episode in each group of 64 stretches the batch past its median and leaves the generation pool idle through the long tail of every batch (generation occupancy 54% ), whereas async frees each fast episode’s slot the moment it finishes, holding generation at 89% occupancy in one continuous band and lifting LLM throughput from 1 ,547 to 2 ,178 tokens/s ( +41%). The second choice is stage decoupling. We isolate its effect on LiveCodeBench v6 ( 454 samples), whose stages have the sharpest profile mismatch in the System 2 suite: generation is GPU-bound and runs at concurrency 128 across two eval instances, while sandbox code-execution is I/O-bound and capped at 14 concurrent containers by the sandbox plane. Two conditions vary only the orchestrator’s scheduling discipline. The decoupled condition runs each stage on its own queue and worker pool. The globally coupled condition collapses the steady-state stages into a single global pool, which must be sized to the most constrained stage to avoid backpressure—here 14 workers, the sandbox cap. This is the single-shared-budget regime every peer operates in, Inspect AI included, but sized to the sandbox cap as a coupled lower-bound ablation rather than as any peer’s default configuration. Heterogeneous stages contend for one concurrency setting instead of each receiving its own pool. Figure 7 reports the result. Under this sized-to-sandbox-cap coupling, stage decoupling yields a 3.31 × wall-clock speedup ( 1 h 48 mvs. 5h 57 m). The coupled pool is busy 98% of the time, but that occupancy is spent on the wrong resource: with only 14 shared slots, generation is throttled from its 128 -way budget down to 14 , starving the GPU and collapsing LLM throughput from 2,385 to 731 tokens/s. The decoupled orchestrator instead runs sandbox at its 14 -way cap and generation at its full 128 -way budget concurrently. Coupling carries a second penalty, visible in the completion trace: because each sample’s sandbox step queues behind the entire generation backlog in the shared FIFO, no sample finishes until ∼336 minutes in, after which all 16 decoupled coupled 
+
+> 0
+> 100
+> 200
+> 300
+> 400
+> minutes
+> 108 min
+> 357 min
+> decoupled 3.31× faster
+
+Total wall-clock time  
+
+> decoupled coupled
+> 0
+> 1000
+> 2000
+> 3000
+> tokens / sec  2,385
+> 731
+> +226% higher
+
+LLM throughput 
+
+> 0
+> 50
+> 100
+> active workers  gen cap 128
+> sandbox cap 14
+> finishes 108 min
+
+decoupled         
+
+> generation runs ~100-wide GPU stays fed
+> 050 100 150 200 250 300 350
+> elapsed (minutes)
+> 0
+> 50
+> 100
+> active workers  gen cap 128
+> sandbox cap 14
+> finishes 357 min
+
+globally coupled (pool = 14)          
+
+> one 14-worker pool does gen+sandbox
+> generation throttled to 14 GPU starved
+> 0
+> 100
+> 200
+> 300
+> 400
+> completed / 454
+> legend both panels
+> generation workers active (decoupled)
+> sandbox workers active (decoupled)
+> global pool active gen+sandbox share 14 (coupled)
+> contexts completed, cumulative (both)
+> 0
+> 100
+> 200
+> 300
+> 400
+> completed / 454
+> 0 samples complete until ~336 min:
+> each sample's sandbox step waits behind the
+> whole generation backlog in the shared FIFO
+> queue all 454 finish in a final burst
+
+Concurrency over time why decoupling wins Figure 7. Stage-decoupling ablation on LiveCodeBench v6. Top: wall-clock and LLM throughput under decoupled stage pools vs. a sized-to-sandbox-cap coupled lower bound, not a peer default configuration. Bottom: generation, sandbox, and completion concurrency over wall-clock time. 
+
+454 complete in a single final burst—so coupling also forfeits any incremental results. Pass@ 1 differs by 
+
+∼ 3 pp between conditions (75 .55 vs. 72 .69), within the single-pass binomial uncertainty at 454 items. The third choice is horizontal scaling. We run the same 27 -suite System 2 workload at 1, 2 , and 4 nodes, with the eval-instance count scaling with hardware ( 2 / 4/ 8 instances at TP = 4 each). Figure 8 reports the result. Wall-clock halves at each doubling— 80 h 55 m at 1 node, 39 h 53 m at 2 nodes, and 20 h14 m at 4nodes—yielding a 2.03 × speedup across the first doubling, 1.97 × across the second, and 4.00 × across the full 1 → 4 range, each within ∼ 1.5% of linear; failure rates stay below 0.1% across all three runs, and the shared judge configuration is never the bottleneck. Capacity grows with hardware without re-tuning the orchestrator, which is the structural property the resource abstraction targets. 1 2 41234
+
+1.00 ×
+
+2.03 ×
+
+4.00 ×
+
+Number of nodes Speedup vs. 1 node  Ideal linear 
+
+DeepInsight (measured) 
+
+Figure 8. Horizontal scaling on the 27 -suite System 2 workload. Measured speedup is shown against the ideal linear reference across 1, 2, and 4 nodes. 
+
+17 5 Case Studies across the Stack 
+
+Where peer frameworks exist, the previous section measured DeepInsight competitively. The rest of the stack has no such peers: no orchestrator spans the visuomotor middle or the whole-body-control end, so here we exhibit what a peer comparison cannot. The three case studies that follow form a single arc of increasing reach. System 1 extends the substrate into closed-loop simulation and subjective evaluation (Section 5.1); System 0 turns trajectory-analytic evaluation into a release decision (Section 5.2); and the full-system study composes all three layers under one trace and localizes the failures that surface only after composition (Section 5.3). Each step reaches a regime no existing framework touches; together they show the whole stack carried on one runtime. These are demonstrations of coverage, not competitive benchmarks. The System 1 and System 0 results report what the substrate can drive and how new evaluations are onboarded; the quantitative depth of those two layers is left to future work. 
+
+5.1 System 1: Reaching Closed-Loop Simulation and Subjective Evaluation 
+
+System 1 is the subsystem-planning layer between System 2’s reasoning and System 0’s control—an open set of navigation, manipulation, and motion subsystems. Its value as a case study is that it extends the evaluation infrastructure into a regime the previous section does not touch: closed-loop physics simulation and subjective human-preference evaluation, both supported by a unified execution, trace, and reporting infrastructure for heterogeneous System 1 subsystems. What we demonstrate is the evaluation coverage and extensibility enabled by the unified closed-loop simulation infrastructure—not exact score reproduction under the original benchmark environments. Figure 9 situates these subsystems on this unified infrastructure. S Y S T E M 2 · S E M A N T I C G O A L R E A S O N I N G              
+
+> S Y S T E M 1·S U B S Y S T E M - P L A N N I N G L A Y E R
+> S U B S Y S T E M S · O P E N S E T
+> each: dataset · model
+> S H A R E D S U B S T R AT E · O N E R U N T I M E S C O R I N G · P E R M O D A L I T Y R E S U LT
+> Manipulation
+> e.g. LIBERO · π0.5
+> Navigation
+> e.g. VLN-CE · NaVILA
+> Motion generation
+> custom dataset · custom model
+> Motion planning
+> custom dataset · custom model
+> + new subsystem
+> benchmark · model · task
+> Shared scene
+> self-built · shared scenes
+> Task abstraction
+> uniform reset / step · per-episode handle
+> Parallel runtime
+> concurrent episodes · per-stage pools
+> Closed-loop
+> objective metrics
+> automatic · in-environment
+> Open-loop
+> human preference
+> subjective · multi-rater
+> Reports & scores
+> per-subsystem metrics
+> objective scores + human-preference rates
+> composes →full-system eval
+> S Y S T E M 0·W H O L E - B O D Y C O N T R O L
+
+Figure 9. System 1 subsystem-planning evaluation on the unified infrastructure. Heterogeneous subsystem benchmarks share one simulation, execution, trace, and reporting path; benchmark-specific logic stays in adapters and scorers. 
+
+Closed-loop coverage across subsystems. System 1 subsystems, such as navigation, manipulation, and motion generation, are instantiated on DeepInsight’s unified closed-loop simulation infrastructure and shared execution/reporting path. Baseline examples include VLN-CE-style navigation [ 59 ], LIBERO-style manipulation [ 11 ], and additional internally constructed tasks with custom scenes and metrics. For each benchmark, DeepInsight preserves the protocol elements that define the evaluation—suites, splits, policies, success criteria, and metrics—while binding them to common simulation, resource, trace, and reporting infrastructure. The point is not exact score reproduction under a new simulator, but that structurally different System 1 evaluations coexist within one evaluation infrastructure without a separate harness for each subsystem. 18 Subjective evaluation as a complementary modality. For System 1 outputs that interact with users through language or motion, objective task or trajectory metrics are often insufficient, and human prefer-ence provides a direct complementary evaluation signal. We use audio-conditioned motion generation as an example: two anonymized model outputs are compared on 20 audio clips, with ten blind raters making pairwise judgments in four categories—A preferred, B preferred, both good, or both poor— across scene/content match, motion completeness and smoothness, perceived safety, and expressive style. DeepInsight records these judgments in the same result schema as closed-loop evaluations, allowing subjective and objective evaluations to be reported through the same infrastructure. Table 9 (appendix) summarizes the categorical preference results. 
+
+Cross-benchmark evaluation extensibility. System 1 extensibility comes from localizing benchmark-specific assumptions to well-defined adapter boundaries while keeping the underlying infrastructure fixed. A new benchmark binds its scene content, raw data format, episode specification, model interface, and metrics to the corresponding adapters and reducers; the simulation, execution, model-interface, and reporting abstractions are reused. For either a new public benchmark or an internal benchmark, onboarding therefore requires implementing the benchmark-specific scene/asset binding, task adapter, model binding, and evaluation reducers, rather than changing the evaluation runtime itself. Table 10 (appendix) summarizes where shared infrastructure ends and benchmark-specific binding begins. System 1 extensibility is therefore not a new harness per benchmark, but the same infrastructure with benchmark-specific bindings—a prerequisite for the cross-layer evaluation in Section 5.3. 
+
+5.2 System 0: From Aggregate Ranking to Release Decision 
+
+System 0 evaluates the whole-body controller (WBC) that makes upstream plans physically executable. Here the case study makes a methodological point peer benchmarks cannot: at this layer evaluation is not a number but a release decision, and the decision is made on the trace. Routine training produces many WBC policies, and the best aggregate row may still hide local contact, posture, or joint-dynamics failures that block deployment. DeepInsight therefore runs a two-stage, trace-backed workflow—summarized in Figure 10—a mechanical policy-set screen, then a behavior-level diagnostic on the candidate the screen nominates. A score  nominates. 
+
+The trace  certifies.  The aggregate winner is  not  the release-clean policy.               
+
+> 1Nominate
+> A G G R E G A T E S C R E E N
+> MPJPE↓
+> SR →
+> nominated
+> aggregate winner candidates
+> 2Certify
+> T R A C E - B A C K E D D I A G N O S T I C
+> t0tktN
+> R O L L O U T
+> reference executed localized failure
+> 3Release
+> D E C I S I O N O N T H E T R A C E
+> R E L E A S E S T A T E
+
+BLOCKED                
+
+> G L O B A L L O C O M O T I O N ·P A S S
+> Command tracking
+> Gait symmetry
+> Swing-foot clearance
+> Style scores
+> L O C A L D Y N A M I C S ·B L O C K
+> Hip-joint dynamics
+> Contact /torso posture
+> Upper-body kinematics
+
+Figure 10. Trace-backed System 0 release workflow. A policy-set score nominates the aggregate winner, but the selected policy is then certified against per-tick trajectory evidence on the shared trace. 
+
+Stage 1: a controlled aggregate screen. Every candidate faces the same robot, motions, rollout settings, and success thresholds, so the screen is a controlled comparison rather than a set of curated examples. For each policy DeepInsight exports a model-pool row with success rate (SR) and mean per-joint position error (MPJPE), and the SR–MPJPE plane (Figure 11) makes the trade-off visible. By that aggregate 19 criterion, WBC-RC-01 is the best policy in the run. The leaderboard excerpt behind the plane and representative stills from the auditable per-clip videos retained by the screen are given in the appendix (Table 11, Figure 14). 92 93 94 95 96 97 98 22.533.5
+
+> selected
+
+SR (%) MPJPE (cm) 
+
+Success rate (SR) versus mean per-joint position error (MPJPE) 
+
+> Candidate policy
+> Selected policy
+
+Figure 11. System 0 policy-set screening in the success-rate–tracking-error plane. Each point is one candidate WBC policy; the selected policy is highlighted. 
+
+Stage 2: the aggregate winner, blocked on the trace. Winning the plane is necessary but not suf-ficient. WBC-RC-01 is then put through a behavior-level diagnostic checklist—command tracking, gait symmetry, swing-foot clearance, style scores, hip-joint dynamics, contact attitude, torso posture, upper-body kinematics—whose acceptance states are computed from registered trajectory statistics, not visual inspection. The result is the contrast that motivates the whole workflow (Table 6): the aggregate winner passes the global locomotion checks for command tracking, gait symmetry, swing-foot clearance, and style scores, yet fails the localized checks for hip dynamics, contact and torso posture, and upper-body range of motion. The diagnostic-metric schema and representative rollout video stills are in the appendix (Table 12, Figure 15). 
+
+Table 6. Behavior-level diagnostic checklist for the selected policy. Acceptance states are computed from registered trajectory statistics rather than visual inspection. Behavioral dimension Diagnostic statistic Acceptance state Command tracking Linear-velocity and yaw-rate tracking residuals Pass Gait symmetry Left–right step-length asymmetry Pass Swing-foot clearance Mean foot clearance and bilateral clearance imbalance Pass Style scores Forward, backward, turn, and rotate imitation scores Pass Hip-joint dynamics Mean hip-pitch angular velocity Fail Contact-attitude stability Touchdown foot-pitch angle; torso pitch angle Fail Upper-body kinematics Elbow- and shoulder-pitch range of motion Fail 
+
+This is a judgment an aggregate-only pipeline cannot produce: it depends on per-tick trajectory state being retained and queryable on one trace, so that a release-blocking local failure stays localizable behind an otherwise winning score. DeepInsight therefore does not stop System 0 evaluation at policy ranking; it converts the screen, leaderboard, diagnostics, and pass/fail checks into a single release-facing evidence chain, exposing why an aggregate winner may still not be ready for deployment. 
+
+5.3 Full-System Validation: Cross-Layer Failure Localization 
+
+Real-world robotic tasks are inherently compositional: a robot must combine reasoning, tool use, skill execution, and physical control within one episode. The preceding case studies evaluate each layer in isolation. They are necessary but not sufficient for measuring the final task performance of the integrated 20 embodied system: System 2 evaluation can assess high-level reasoning without verifying executable tool use; System 1 evaluation can measure local skills without testing orchestration across tool calls; and System 0 evaluation can expose stability without determining whether that stability supports task completion. We therefore include a full-system case study to evaluate what isolated benchmarks cannot: the task-level performance of the integrated System 2–1–0 system and the failures that emerge only after the layers are composed. This study uses one representative composed task family to instantiate integrated evaluation and cross-layer failure localization on a single trace; broader coverage across task families is left to future work. 
+
+Task and protocol. We use a representative vehicle-guide task to evaluate the integrated System 2–1–0 system in a showroom-like scene. Each episode contains a robot, a user agent, and one or more vehicles, with their poses randomized within the showroom. The robot receives a single task prompt: “Find the user, greet them, ask what help is needed, and then complete the requested assistance.” The user agent may respond freely; in the evaluated task instances, the interaction enters the vehicle-guide branch when the user asks, “Please introduce the car in front of me.” The robot must then resolve the deictic reference, reach a presentation pose near the referenced vehicle, and deliver a spoken presentation with accompanying motion. The evaluation focuses on both the completed task and the system behavior that produces it. We measure not only whether the vehicle-guide episode succeeds end-to-end, but also how task understanding, user interaction, navigation, state handoff, content grounding, presentation delivery, and physical execution contribute to the final outcome. Figure 12 illustrates one representative episode trace for this task. It shows how semantic analysis, navigation, user interaction, speech delivery, presentation motion, low-level control events, and the final judgment are recorded under the same episode identity.                  
+
+> System 2 System 1 System 0 User
+> System 2
+> System 1
+> System 0
+> User
+> Task decomposition User dialogue Request grounding
+> Knowledge retrieval
+> Navigate to user Greeting Navigate to vehicle
+> Speech delivery
+> Presentation motion
+> Locomotion Whole-body control Locomotion Whole-body control
+> User request
+> “Introduce the car in front of me”
+> One shared TraceRecord identity across System 2 ,System 1 ,System 0 , and user events
+
+Figure 12. Cross-layer episode execution for the interactive vehicle-guide case. The swim lanes separate System 2 reasoning and dialogue, System 1 skills, System 0 support, and user events. Arrows mark the main execution flow, System 0 support links, and user-response flow. All events are recorded under one TraceRecord identity, enabling end-to-end evaluation and failure attribution. 
+
+Full-system evaluator. For full-system validation, DeepInsight provides a trace-based evaluation mechanism that maps one composed execution trace to episode-, subgoal-, and subsystem-level judgments. In this representative task, the episode-level judgment reports end-to-end task success. The subgoal-level judgment evaluates whether the semantic, interactive, navigational, and physical criteria of the task are satisfied along the episode, from recognizing the user’s assistance intent to reaching the referenced object 21 and completing the presentation. The subsystem-level judgment reports the supporting subsystem signals, including System 2 tool and dialogue decisions, System 1 outcomes for navigation and presentation delivery, and System 0 locomotion and whole-body-control stability. Because these judgments are derived from the same trace identity rather than from separate evaluation scripts, the episode score, subgoal scores, and subsystem diagnostics remain grounded in the same episode events. In the DeepInsight abstraction, the task defines the episode contract, the resource binds the agent to executable skills and control, and the result turns the composed trace into hierarchical judgments. 
+
+End-to-end decomposition. A central output of the full-system evaluator is the decomposition of the gap between subgoal-level completion and end-to-end task success. Table 7 summarizes the results over 96 episodes across three layout groups: 58 episodes completed the task end-to-end, while 38 failed to satisfy the full success criterion. Each row corresponds to an evaluation criterion associated with a task step, subsystem signal, or cross-step state dependency. Criterion-level rates are marginal diagnostics over all 96 episodes: failures can overlap across rows, and the final row requires all required criteria to hold within the same episode. The results expose a clear composition gap: high local completion rates do not necessarily yield a successful system-level outcome. At the same time, the criterion-level view makes weak points observable, showing where performance is lost before the episode-level failure is emitted. 
+
+Table 7. Subgoal-level report for the interactive vehicle-guide task over 96 episodes. Each criterion row is a marginal diagnostic evaluated from the shared episode trace and reports one task criterion, its supporting evidence, the associated system locus, and the criterion-level success rate. The final row reports end-to-end success when all required criteria are satisfied within the same episode.                              
+
+> Evaluation criterion Evidence Locus Success (%) Task intent recognized instruction is parsed as a user-first interactive guide task System 2 94.8 Tool sequence valid required calls appear in order with legal arguments System 2 / tool contracts 93.8 User target selected vision-search navigation returns the intended user candidate System 1 navigation 82.3 User reached final distance and yaw satisfy the social-interaction condition System 1 + System 0 77.1 Greeting completed wave action finishes and the controller reports stable posture System 1 + System 0 83.3 User request consumed user-agent event is joined into the next semantic analysis System 2 dialogue state 91.7 Vehicle-guide request grounded user request is grounded as a navigation-and-presentation subtask for the referenced vehicle System 2 90.6 Vehicle target selected navigation selects the correct car from candidate objects System 1 navigation 74.0 Vehicle reached final pose satisfies distance, view, and presentation requirements System 1 + System 0 70.8 Post-arrival state handed off navigation result provides the vehicle state for subsequent reasoning System 1 / System 2 handoff 85.4 Presentation content valid request intent is recognized and vehicle-specific presentation content is generated System 2 93.8 Presentation motion aligned generated motion has sync points for the explanation System 2 / System 1 handoff 82.3 Presentation executed speech and whole-body presentation complete without losing the valid pose System 0 whole-body 91.7 Collision-free execution trace contains no physical contact violation with scene objects System 0 safety 82.3 End-to-end episode success all required criteria are satisfied within the same episode Full system 60.4
+
+Failure attribution. Beyond task success, full-system validation must identify where performance is lost. For each non-success episode, a judge agent assigns the episode a primary failure label from 22 violated criteria, execution traces, tool statuses, and control events. This attribution makes both subsystem failures and system-boundary handoff failures observable: a navigation event may succeed locally while violating the downstream task precondition, a selected route may be difficult for locomotion to execute, and generated presentation motion may exceed whole-body-control feasibility constraints. We manually inspect a subset of the attributions for quality control. Figure 13 aggregates the 38 non-success episodes by failure locus, and Table 8 expands the corresponding primary labels. 
+
+# 38 
+
+non-success 
+
+FAILURE LOCUS 
+
+System 1 16 42.1% 
+
+Boundary handoff 11 28.9% 
+
+System 2 7 18.4% 
+
+System 0 4 10.5% 
+
+Figure 13. Primary failure-locus distribution over the 38 non-success episodes, ordered by descending share. Each episode is assigned one primary failure locus by the judge agent. Boundary handoff denotes failures at system boundaries during composed execution, including mismatched state, preconditions, timing, success semantics, route executability, or controller feasibility across adjacent systems. 
+
+Table 8. Detailed failure labels for the non-success episodes in Figure 13. 
+
+Primary failure label Failure class Locus Count Share (%) Diagnostic trace evidence User target-search failure module System 1 navigation 5 13.2 vision-search navigation misses the user, selects a false positive, or times out Vehicle target-search failure module System 1 navigation 5 13.2 referenced vehicle is not selected from candidate objects after the request is grounded Vehicle navigation execution failure module System 1 navigation 6 15.8 target vehicle is correct, but path planning, progress, or arrival timeout fails Navigation-to-task boundary mismatch boundary System 1 / System 2 3 7.9 navigation reports local success, but pose, visibility, or post-arrival state does not satisfy the next task precondition Navigation-to-locomotion executability mismatch boundary System 1 / System 0 3 7.9 navigation selects the correct route or waypoint sequence, but the path is difficult for locomotion to execute under physical constraints Task scheduling / grounding error module System 2 5 13.2 assistance intent or vehicle-guide request is not grounded into the correct navigation-and-presentation subtask Control execution / safety error control System 0 4 10.5 collision with scene objects or whole-body instability invalidates the rollout Dialogue state-handling error module System 2 2 5.3 user reply is not joined into the next semantic analysis Motion-to-WBC executability mismatch boundary System 1 / System 0 3 7.9 generated presentation motion is difficult for whole-body control to execute under balance, range, or timing constraints Success-contract boundary mismatch boundary System 1 / System 2 2 5.3 System 1 tool reports local success, but the shared-trace criterion needed by System 2 remains unsatisfied 
+
+The case study is not intended to introduce a new benchmark; it isolates the part of Physical AI evaluation that component benchmarks cannot measure. The results show that system-level task performance is not reducible to isolated module-level quality: the largest failure locus lies in System 1 execution (16/38), driven mainly by user/vehicle search and vehicle-navigation failures, while system-boundary handoff forms the second-largest locus (11/38), followed by System 2 reasoning failures (7/38). These boundary failures expose latent gaps left by independently designed subsystems: assumptions about state, 23 preconditions, timing, and executability that are not visible when each module is evaluated in isolation, but that strongly affect the final system outcome. In this sense, full-system validation turns architecture into an evaluation target and reveals the integration gaps that determine the practical performance ceiling of the embodied system. 
+
+## 6 Conclusion 
+
+DeepInsight brings the embodied humanoid stack—language reasoning through whole-body control— onto a single runtime, in place of the patchwork of incompatible harnesses each layer would otherwise demand. In production it onboards new benchmarks largely through configuration, reproduces matched System 2 references where mature peer frameworks exist, and carries the same runtime abstractions into release-oriented embodied evaluation. Where peer frameworks exist it stays competitive on a single node—and, unlike them, scales across multiple nodes without re-tuning. Its deeper return is diagnostic: because every layer writes into one shared trace, a regression that begins in one layer and surfaces in another stays localizable on that trace—the cross-layer diagnosis that a federation of separate harnesses, however well coordinated, cannot reconstruct. The work ahead is to broaden the embodied side of the stack. First, System 1 and System 0 need wider task-family coverage: more navigation, manipulation, motion-generation, locomotion, safety, and whole-body-control evaluations should enter through the same task and result interfaces, so that the production surface is not limited to the representative case studies reported here. Second, every rollout reported here is simulated, and the sim-to-real gap remains the decisive uncertainty for policies bound for hardware. A natural next step is therefore to put real-world robots behind the same resource-handle protocol as simulators, allowing simulated and physical rollouts to share one trace identity. That would turn the sim-to-real gap from an external deployment risk into something DeepInsight can measure, compare, and diagnose directly. 
+
+## References 
+
+[1] Figure AI. Introducing helix 02: Full-body autonomy. https://www.figure.ai/news/helix-02 ,2026. [2] Dan Hendrycks, Collin Burns, Steven Basart, Andy Zou, Mantas Mazeika, Dawn Song, and Jacob Steinhardt. Measuring massive multitask language understanding. In International Conference on Learning Representations , 2021. [3] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman. Training verifiers to solve math word problems. In arXiv preprint arXiv:2110.14168 ,2021. [4] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, Alex Ray, Raul Puri, Gretchen Krueger, Michael Petrov, Heidy Khlaaf, Girish Sastry, Pamela Mishkin, Brooke Chan, Scott Gray, Nick Ryder, Mikhail Pavlov, Alethea Power, Lukasz Kaiser, Mohammad Bavarian, Clemens Winter, Philippe Tillet, Felipe Petroski Such, Dave Cummings, Matthias Plappert, Fotios Chantzis, Elizabeth Barnes, Ariel Herbert-Voss, William Hebgen Guss, Alex Nichol, Alex Paino, Nikolas Tezak, Jie Tang, Igor Babuschkin, Suchir Balaji, Shantanu Jain, William Saunders, Christopher Hesse, Andrew N. Carr, Jan Leike, Joshua Achiam, Vedant Misra, Evan Morikawa, Alec Radford, Matthew Knight, Miles Brundage, Mira Murati, Katie Mayer, Peter Welinder, Bob McGrew, Dario Amodei, Sam McCandlish, Ilya Sutskever, and Wojciech Zaremba. Evaluating large language models trained on code. arXiv preprint arXiv:2107.03374 , 2021. 24 [5] Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir Press, and Karthik Narasimhan. SWE-bench: Can language models resolve real-world github issues? In International Conference on Learning Representations , 2024. [6] Grégoire Mialon, Clémentine Fourrier, Craig Swift, Thomas Wolf, Yann LeCun, and Thomas Scialom. GAIA: A benchmark for general ai assistants. In International Conference on Learning Representations , 2024. [7] Tianbao Xie, Danyang Zhang, Jixuan Chen, Xiaochuan Li, Siheng Zhao, Ruisheng Cao, Toh Jing Hua, Zhoujun Cheng, Dongchan Shin, Fangyu Lei, Yitao Liu, Yiheng Xu, Shuyan Zhou, Silvio Savarese, Caiming Xiong, Victor Zhong, and Tao Yu. OSWorld: Benchmarking multimodal agents for open-ended tasks in real computer environments. In Advances in Neural Information Processing Systems , 2024. [8] Shunyu Yao, Noah Shinn, Pedram Razavi, and Karthik Narasimhan. τ-bench: A benchmark for tool-agent-user interaction in real-world domains. In arXiv preprint arXiv:2406.12045 , 2024. [9] Shuyan Zhou, Frank F. Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar, Xianyi Cheng, Tianyue Ou, Yonatan Bisk, Daniel Fried, Uri Alon, and Graham Neubig. WebArena: A realis-tic web environment for building autonomous agents. In International Conference on Learning Representations , 2024. [10] Oier Mees, Lukas Hermann, Erick Rosete-Beas, and Wolfram Burgard. CALVIN: A benchmark for language-conditioned policy learning for long-horizon robot manipulation tasks. IEEE Robotics and Automation Letters , 2022. [11] Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter Stone. LIBERO: Benchmarking knowledge transfer for lifelong robot learning. In Advances in Neural Information Processing Systems , 2023. [12] Tianhe Yu, Deirdre Quillen, Zhanpeng He, Ryan Julian, Karol Hausman, Chelsea Finn, and Sergey Levine. Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning. In Conference on Robot Learning , 2020. [13] Stephen James, Zicong Ma, David Rovick Arrojo, and Andrew J. Davison. RLBench: The robot learning benchmark and learning environment. IEEE Robotics and Automation Letters , 2020. [14] Open X-Embodiment Collaboration. Open x-embodiment: Robotic learning datasets and RT-X models. arXiv preprint arXiv:2310.08864 , 2024. [15] Xuanlin Li, Kyle Hsu, Jiayuan Gu, Karl Pertsch, Oier Mees, Homer Rich Walke, Chuyuan Fu, Ishika Singh, Huy Ha, Quan Vuong, Ted Xiao, Sergey Levine, Chelsea Finn, and Jianlan Luo. SimplerEnv: Simulated manipulation policy evaluation environments for real robot setups. arXiv preprint arXiv:2405.05941 , 2024. [16] Carmelo Sferrazza, Dun-Ming Huang, Xingyu Lin, Yuke Zhu, and Pieter Abbeel. HumanoidBench: Simulated humanoid benchmark for whole-body locomotion and manipulation. arXiv preprint arXiv:2403.10506 , 2024. [17] Vikash Kumar, Rutav Shah, Gaoyue Zhou, Vincent Moens, Vittorio Caggiano, Abhishek Gupta, and Aravind Rajeswaran. RoboHive: A unified framework for robot learning. In Advances in Neural Information Processing Systems , 2023. [18] Mayank Mittal, Caleb Yu, Quan Ho Vuong, Arthur Allshire, Viktor Makoviychuk, Jérôme Hillaire, Nima Rudin, David Hoeller, Ankur Handa, Gavriel State, Marco Hutter, and Animesh Garg. Orbit: A unified simulation framework for interactive robot learning environments. IEEE Robotics and Automation Letters , 2023. 25 [19] Lintang Sutawika, Hailey Schoelkopf, Leo Gao, Baber Abbasi, Stella Biderman, Jonathan Tow, ben fattori, Charles Lovering, farzanehnakhaee70, Jason Phang, Anish Thite, Fazz, Thomas Wang, Niklas, Aflah, sdtblck, nopperl, gakada, tttyuntian, researcher2, Julen Etxaniz, Chris, James A. Michaelov, Hanwool Albert Lee, Janna, Leonid Sinev, Khalid, Kiersten Stokes, Zdenˇ ek Kasner, and KonradSzafer. EleutherAI/lm-evaluation-harness: v0.4.11, 2026. URL https://doi.org/10. 5281/zenodo.18636344 .[20] OpenCompass Contributors. OpenCompass: A universal evaluation platform for foundation models. 
+
+https://github.com/open-compass/opencompass , 2023. [21] Percy Liang, Rishi Bommasani, Tony Lee, Dimitris Tsipras, Dilara Soylu, Michihiro Yasunaga, Yian Zhang, Deepak Narayanan, Yuhuai Wu, Ananya Kumar, Benjamin Newman, Binhang Yuan, Bobby Yan, Ce Zhang, Christian Cosgrove, Christopher D. Manning, Christopher Ré, Diana Acosta-Navas, Drew A. Hudson, Eric Zelikman, Esin Durmus, Faisal Ladhak, Frieda Rong, Hongyu Ren, Huaxiu Yao, Jue Wang, Keshav Santhanam, Laurel Orr, Lucia Zheng, Mert Yuksekgonul, Mirac Suzgun, Nathan Kim, Neel Guha, Niladri Chatterji, Omar Khattab, Peter Henderson, Qian Huang, Ryan Chi, Sang Michael Xie, Shibani Santurkar, Surya Ganguli, Tatsunori Hashimoto, Thomas Icard, Tianyi Zhang, Vishrav Chaudhary, William Wang, Xuechen Li, Yifan Mai, Yuhui Zhang, and Yuta Koreeda. Holistic evaluation of language models. arXiv preprint arXiv:2211.09110 , 2022. [22] Haodong Duan, Xinyu Fang, Junming Yang, Xiangyu Zhao, Yuxuan Qiao, Mo Li, Amit Agarwal, Zhe Chen, Lin Chen, Yuan Liu, Yubo Ma, Hailong Sun, Yifan Zhang, Shiyin Lu, Tack Hwa Wong, Weiyun Wang, Peiheng Zhou, Xiaozhe Li, Chaoyou Fu, Junbo Cui, Jixuan Chen, Enxin Song, Song Mao, Shengyuan Ding, Tianhao Liang, Zicheng Zhang, Xiaoyi Dong, Yuhang Zang, Pan Zhang, Jiaqi Wang, Dahua Lin, and Kai Chen. VLMEvalKit: An open-source toolkit for evaluating large multi-modality models. arXiv preprint arXiv:2407.11691 , 2024. [23] Kaichen Zhang, Bo Li, Peiyuan Zhang, Fanyi Pu, Joshua Adrian Cahyono, Kairui Hu, Shuai Liu, Yuanhan Zhang, Jingkang Yang, Chunyuan Li, and Ziwei Liu. LMMs-Eval: Reality check on the evaluation of large multimodal models. arXiv preprint arXiv:2407.12772 , 2024. [24] UK AI Security Institute. Inspect AI: Framework for large language model evaluations, 2024. URL 
+
+https://doi.org/10.5281/zenodo.18434279 .[25] DeepSeek-AI. DeepSeek-V4: Technical report. https://www.alphaxiv.org/abs/ deepseek-v4 , 2025. [26] Jason Wei, Nguyen Karina, Hyung Won Chung, Yunxin Joy Jiao, Spencer Papay, Amelia Glaese, John Schulman, and William Fedus. Measuring short-form factuality in large language models. 
+
+arXiv preprint arXiv:2411.04368 , 2024. [27] Yubo Wang, Xueguang Ma, Ge Zhang, Yuansheng Ni, Abhranil Chandra, Shiguang Guo, Weiming Ren, Aaran Arulraj, Xuan He, Ziyan Jiang, Tianle Li, Max Ku, Kai Wang, Alex Zhuang, Rongqi Fan, Xiang Yue, and Wenhu Chen. MMLU-Pro: A more robust and challenging multi-task language understanding benchmark. In Advances in Neural Information Processing Systems , 2024. [28] Aryo Pradipta Gema, Joshua Ong Jun Leang, Giwon Hong, Alessio Devoto, Alberto Carlo Maria Mancino, Rohit Saxena, Xuanli He, Yu Zhao, Xiaotang Du, Mohammad Reza Ghasemi Madani, Claire Barale, Robert McHardy, Joshua Harris, Jean Kaddour, Emile van Krieken, and Pasquale Minervini. Are we done with MMLU? In Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies ,2025. [29] Xinrun Du, Yifan Yao, Kaijing Ma, Bingli Wang, Tianyu Zheng, Kang Zhu, Minghao Liu, Yiming Liang, Xiaolong Jin, Zhenlin Wei, Chujie Zheng, Kaixin Deng, Shian Jia, Sichao Jiang, Yiyan Liao, Rui Li, Qinrui Li, Sirun Li, Yizhi Li, Yunwen Li, Dehua Ma, Yuansheng Ni, Haoran Que, Qiyao 26 Wang, Zhoufutu Wen, Siwei Wu, Tianshun Xing, Ming Xu, Zhenzhu Yang, Zekun Moore Wang, Junting Zhou, Yuelin Bai, Xingyuan Bu, et al. SuperGPQA: Scaling LLM evaluation across 285 graduate disciplines. arXiv preprint arXiv:2502.14739 , 2025. [30] David Rein, Betty Li Hou, Asa Cooper Stickland, Jackson Petty, Richard Yuanzhe Pang, Julien Dirani, Julian Michael, and Samuel R. Bowman. GPQA: A graduate-level google-proof Q&A benchmark. In International Conference on Machine Learning , 2024. [31] Yuzhen Huang, Yuzhuo Bai, Zhihao Zhu, Junlei Zhang, Jinghan Zhang, Tangjun Su, Junteng Liu, Chuancheng Lv, Yikai Zhang, Jiayi Lei, Yao Fu, Maosong Sun, and Junxian He. C-Eval: A multi-level multi-discipline chinese evaluation suite for foundation models. In Advances in Neural Information Processing Systems , 2023. [32] Long Phan, Alice Gatti, Ziwen Han, Nathaniel Li, Josephina Hu, Hugh Zhang, Chen Bo Calvin Zhang, Mohamed Shaaban, John Ling, Sean Shi, Michael Choi, Anish Agrawal, Arnav Chopra, Adam Khoja, Ryan Kim, Richard Ren, Jason Hausenloy, Oliver Zhang, Mantas Mazeika, et al. Humanity’s last exam. arXiv preprint arXiv:2501.14249 , 2025. [33] Mislav Balunovic, Jasper Dekoninck, Ivo Petrov, Nikola Jovanovic, and Martin Vechev. MathArena: Evaluating LLMs on uncontaminated math competitions. Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks , 2025. [34] Naman Jain, King Han, Alex Gu, Wen-Ding Li, Fanjia Yan, Tianjun Zhang, Sida Wang, Armando Solar-Lezama, Koushik Sen, and Ion Stoica. LiveCodeBench: Holistic and contamination free eval-uation of large language models for code. In International Conference on Learning Representations ,2025. [35] Colin White, Samuel Dooley, Manley Roberts, Arka Pal, Ben Feuer, Siddhartha Jain, Ravid Shwartz-Ziv, Neel Jain, Khalid Saifullah, Sreemanti Dey, Shubh-Agrawal, Sandeep Singh Sandha, Siddartha Naidu, Chinmay Hegde, Yann LeCun, Tom Goldstein, Willie Neiswanger, and Micah Goldblum. LiveBench: A challenging, contamination-limited LLM benchmark. In International Conference on Learning Representations , 2025. [36] Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric Tang, Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving with the MATH dataset. In 
+
+Advances in Neural Information Processing Systems Datasets and Benchmarks Track , 2021. [37] Hunter Lightman, Vineet Kosaraju, Yuri Burda, Harrison Edwards, Bowen Baker, Teddy Lee, Jan Leike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. In International Conference on Learning Representations , 2024. [38] Jeffrey Zhou, Tianjian Lu, Swaroop Mishra, Siddhartha Brahma, Sujoy Basu, Yi Luan, Denny Zhou, and Le Hou. Instruction-following evaluation for large language models. arXiv preprint arXiv:2311.07911 , 2023. [39] Shishir G. Patil, Huanzhi Mao, Fanjia Yan, Charlie Cheng-Jie Ji, Vishnu Suresh, Ion Stoica, and Joseph E. Gonzalez. The berkeley function calling leaderboard (BFCL): From tool use to agentic evaluation of large language models. In Proceedings of the 42nd International Conference on Machine Learning , volume 267 of Proceedings of Machine Learning Research , pages 48371–48392. PMLR, 2025. [40] Xiang Yue, Yuansheng Ni, Kai Zhang, Tianyu Zheng, Ruoqi Liu, Ge Zhang, Samuel Stevens, Dongfu Jiang, Weiming Ren, Yuxuan Sun, Cong Wei, Botao Yu, Ruibin Yuan, Renliang Sun, Ming Yin, Boyuan Zheng, Zhenzhu Yang, Yibo Liu, Wenhao Huang, Huan Sun, Yu Su, and Wenhu Chen. MMMU: A massive multi-discipline multimodal understanding and reasoning benchmark for expert AGI. In IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2024. 27 [41] Xiang Yue, Tianyu Zheng, Yuansheng Ni, Yubo Wang, Kai Zhang, Shengbang Tong, Yuxuan Sun, Botao Yu, Ge Zhang, Huan Sun, Yu Su, Wenhu Chen, and Graham Neubig. MMMU-Pro: A more robust multi-discipline multimodal understanding benchmark. In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics , 2025. [42] Pan Lu, Hritik Bansal, Tony Xia, Jiacheng Liu, Chunyuan Li, Hannaneh Hajishirzi, Hao Cheng, Kai-Wei Chang, Michel Galley, and Jianfeng Gao. MathVista: Evaluating mathematical reasoning of foundation models in visual contexts. In International Conference on Learning Representations ,2024. [43] Chengke Zou, Xingang Guo, Rui Yang, Junyu Zhang, Bin Hu, and Huan Zhang. DynaMath: A dynamic visual benchmark for evaluating mathematical reasoning robustness of vision language models. In International Conference on Learning Representations , 2025. [44] Pooyan Rahmanzadehgervi, Logan Bolton, Mohammad Reza Taesiri, and Anh Totti Nguyen. Vision language models are blind: Failing to translate detailed visual features into words. In Asian Conference on Computer Vision , 2024. [45] Yuan Liu, Haodong Duan, Yuanhan Zhang, Bo Li, Songyang Zhang, Wangbo Zhao, Yike Yuan, Jiaqi Wang, Conghui He, Ziwei Liu, Kai Chen, and Dahua Lin. MMBench: Is your multi-modal model an all-around player? In European Conference on Computer Vision , 2024. [46] Lin Chen, Jinsong Li, Xiaoyi Dong, Pan Zhang, Yuhang Zang, Zehui Chen, Haodong Duan, Jiaqi Wang, Yu Qiao, and Dahua Lin. Are we on the right way for evaluating large vision-language models? In Advances in Neural Information Processing Systems , 2024. [47] xAI. RealWorldQA. https://huggingface.co/datasets/xai-org/RealworldQA , 2024. [48] Xianfu Cheng, Wei Zhang, Shiwei Zhang, Jian Yang, Xiangyuan Guan, Xianjie Wu, Xiang Li, Ge Zhang, Jiaheng Liu, Yuying Mai, Yutao Zeng, Zhoufutu Wen, Ke Jin, Baorui Wang, Weixiao Zhou, Yunhong Lu, Tongliang Li, Wenhao Huang, and Zhoujun Li. SimpleVQA: Multimodal factuality evaluation for multimodal large language models. In IEEE/CVF International Conference on Computer Vision , 2025. [49] Zirui Wang, Mengzhou Xia, Luxi He, Howard Chen, Yitao Liu, Richard Zhu, Kaiqu Liang, Xindi Wu, Haotian Liu, Sadhika Malladi, Alexis Chevalier, Sanjeev Arora, and Danqi Chen. CharXiv: Charting gaps in realistic chart understanding in multimodal LLMs. arXiv preprint arXiv:2406.18521 , 2024. [50] Yuliang Liu, Zhang Li, Mingxin Huang, Biao Yang, Wenwen Yu, Chunyuan Li, Xucheng Yin, Cheng-Lin Liu, Lianwen Jin, and Xiang Bai. OCRBench: On the hidden mystery of OCR in large multimodal models. Science China Information Sciences , 2024. [51] Roni Paiss, Ariel Ephrat, Omer Tov, Shiran Zada, Inbar Mosseri, Michal Irani, and Tali Dekel. Teaching CLIP to count to ten. In IEEE/CVF International Conference on Computer Vision , 2023. [52] Licheng Yu, Patrick Poirson, Shan Yang, Alexander C. Berg, and Tamara L. Berg. Modeling context in referring expressions. In European Conference on Computer Vision , 2016. [53] Gemini Robotics Team. Gemini robotics: Bringing AI into the physical world. arXiv preprint arXiv:2503.20020 , 2025. [54] Chaoyou Fu, Yuhan Dai, Yongdong Luo, Lei Li, Shuhuai Ren, Renrui Zhang, Zihan Wang, Chenyu Zhou, Yunhang Shen, Mengdan Zhang, Peixian Chen, Yanwei Li, Shaohui Lin, Sirui Zhao, Ke Li, Tong Xu, Xiawu Zheng, Enhong Chen, Rongrong Ji, and Xing Sun. Video-MME: The first-ever comprehensive evaluation benchmark of multi-modal LLMs in video analysis. In IEEE/CVF Conference on Computer Vision and Pattern Recognition , 2025. 28 [55] Vassil Panayotov, Guoguo Chen, Daniel Povey, and Sanjeev Khudanpur. LibriSpeech: An ASR corpus based on public domain audio books. In IEEE International Conference on Acoustics, Speech and Signal Processing , pages 5206–5210, 2015. [56] Binbin Zhang, Hang Lv, Pengcheng Guo, Qijie Shao, Chao Yang, Lei Xie, Xin Xu, Hui Bu, Xiaoyu Chen, Chenchen Zeng, Di Wu, and Zhendong Peng. WenetSpeech: A 10000+ hours multi-domain mandarin corpus for speech recognition. In IEEE International Conference on Acoustics, Speech and Signal Processing , pages 6182–6186, 2022. [57] Jack Hong, Shilin Yan, Jiayin Cai, Xiaolong Jiang, Yao Hu, and Weidi Xie. WorldSense: Evaluating real-world omnimodal understanding for multimodal LLMs. arXiv preprint arXiv:2502.04326 ,2025. [58] Qwen Team. Qwen3-omni technical report. arXiv preprint arXiv:2509.17765 , 2025. [59] Jacob Krantz, Erik Wijmans, Arjun Majumdar, Dhruv Batra, and Stefan Lee. Beyond the nav-graph: Vision and language navigation in continuous environments. In European Conference on Computer Vision , 2020. 29 A System 1 Modality and Extensibility Details 
+
+Table 9. Audio-conditioned motion-generation preference evaluation over 20 clips. Ten blind raters compare Model A and Model B on each dimension; model identity and presentation order are randomized and hidden from raters. Dimension rows report categorical judgment counts; the aggregate row reports pooled percentages across all dimensions. Dimension A better B better Both good Both poor Total Scene / content match 96 46 41 17 200 Motion completeness and smoothness 62 51 74 13 200 Perceived safety 42 35 112 11 200 Expressive style 90 48 28 34 200 Aggregate (%) 36.3 22.5 31.9 9.4 100.0 
+
+Table 10. System 1 evaluation extensibility by architectural boundary. Benchmark-specific requirements are localized to boundary bindings, while the unified simulation, execution, model-interface, and reporting abstractions are reused. Boundary Reused infrastructure Benchmark-specific binding Scene / data binding scene abstraction, coordinate conventions, asset representation scene content, raw data format, maps, semantic labels, asset metadata Task adapter episode driver, interaction loop, termination handling episode specification, observations, actions, goal specification Execution binding rollout abstraction, resource model, simulator integration benchmark-specific execution parameters and embodiment settings Model binding model endpoint abstraction, inference contract, adapter interface model-specific observation/action adapter Evaluation / reporting trace schema, aggregation protocol, report abstraction benchmark metrics and evaluation reducers 
+
+## B System 0 Screening and Diagnostic Details 
+
+Table 11. System 0 model-pool leaderboard excerpt for the policy-set screen. Rows are anonymized checkpoint entries. Columns keep only report-visible model-pool fields, aggregate metrics used for ranking, training settings, and brief checkpoint notes; the full SR–MPJPE distribution is visualized in Figure 11.                      
+
+> Model ID Model name Release state SR (%) MPJPE (cm) Training Config Notes
+> s0_001 WBC-RC-01 Blocked 97.90 1.915 Data v3 / reward v4 / sampler v2 Reward update
+> s0_002 WBC-RC-02 Not advanced 97.53 2.178 Data v3 / reward v4 / distill v1 Distillation
+> s0_003 WBC-RC-03 Not advanced 97.44 2.198 Data v4 / reward v3 / sampler v1 Dataset refresh
+
+30 (a) High-dynamic clip A, early rollout (b) High-dynamic clip A, later rollout  
+
+> (c) High-dynamic clip B, early rollout (d) High-dynamic clip B, later rollout
+
+Figure 14. Representative stills from high-dynamic policy-set evaluation videos attached to the model-pool run. Green overlays show the replay/reference motion and gray–white overlays show the evaluated checkpoint output across synchronized views. DeepInsight batches the broader clip set across candidate policies, computes SR and MPJPE from logged rollout metrics, and retains the videos as auditable evidence for selected model–clip cases. 
+
+Table 12. Compact selected-policy diagnostic metric schema. The table groups representative statistics by the behavior family they support; pass/fail decisions are reported separately in Table 6. 
+
+Metric family Representative statistics Diagnostic purpose Command tracking Linear-velocity residuals; yaw-rate tracking residuals Verify that commanded motion is followed Gait and style Step period; step length; left–right asymmetry Detect unstable or asymmetric locomotion patterns Swing-foot clearance Mean foot clearance; bilateral clearance imbalance Detect foot-dragging and clearance imbalance Joint dynamics Mean hip-pitch angular velocity; bilateral hip-dynamics imbalance Detect localized joint-dynamics abnormalities Contact and posture Touchdown foot-pitch angle; torso pitch angle Detect contact-attitude and body-posture risk Upper-body kinematics Elbow- and shoulder-pitch range of motion Detect frozen or excessive upper-body motion Style scores Forward, backward, turn, and rotate imitation scores Provide imitation-style context across motion modes                
+
+> (a) t=5.00 s (b) t=5.75 s (c) t=7.00 s (d) t=9.50 s
+
+Figure 15. Representative time-ordered stills from the selected-policy diagnostic video. The video provides visual context for the diagnostic checks; Table 6 reports the corresponding pass/fail outcomes used by the release decision. 
+
+31

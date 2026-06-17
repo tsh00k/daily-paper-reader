@@ -1,0 +1,413 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-17T22:27:36.809599+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 3,
+    "deep_divecandidates": 5,
+    "deep_cap": 8,
+    "deep_selected": 5,
+    "quick_candidates": 4,
+    "quick_skim_target": 13,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.14551v2",
+      "source": "arxiv",
+      "title": "TRACE: Trajectory-Routed Causal Memory for Delayed-Evidence Visuomotor Imitation",
+      "abstract": "Robots under autonomous operation may require decisions based on evidence that is no longer visible. We study delayed-evidence tasks, where an early cue disappears before a later decision point, so visually similar observations can require different actions. In these settings, the current observation is not a sufficient state for control. We introduce TRAjectory-routed Causal Evidence (TRACE), a memory framework for visuomotor imitation policies. TRACE stores task-relevant visual and robot-state evidence, such as object identity, target choice, or route-dependent state, in a fixed-size latent memory that remains bounded over long episodes. Instead of indexing memory by raw time or manually provided task labels, TRACE uses path signatures: compact, order-sensitive features of the executed robot-state trajectory. These signatures do not store the visual cue itself; rather, they provide trajectory-conditioned keys for writing and retrieving the evidence stored when the cue was visible. When the robot later reaches an ambiguous observation, the policy conditions on TRACE memory to recover the missing context and choose the correct branch. TRACE attaches through lightweight adapters to policies, without changing the policy backbone, action head, or imitation objective. Across real-world long-horizon manipulation tasks with visually ambiguous branch points, TRACE improves branch selection and task success over alternative baselines, including short-history and recurrent memory. Project page: https://jeong-zju.github.io/trace",
+      "authors": [
+        "Zihao Li",
+        "Ranpeng Qiu",
+        "Yincong Chen",
+        "Guoqiang Ren",
+        "Weiming Zhi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-12T15:30:18+00:00",
+      "link": "https://arxiv.org/pdf/2606.14551v2",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "visuomotor imitation policy with memory framework",
+      "llm_evidence_cn": "视觉运动模仿策略与记忆框架",
+      "llm_evidence": "视觉运动模仿策略与记忆框架",
+      "canonical_evidence": "视觉运动模仿策略与记忆框架",
+      "llm_tldr_en": "TRACE proposes a memory framework for visuomotor imitation policies that handles delayed-evidence tasks by storing task-relevant evidence via path signatures, enabling robust imitation under visual ambiguity.",
+      "llm_tldr_cn": "本文针对机器人自主操作中需要基于已消失的视觉证据做出决策的延迟证据任务，提出了一种名为TRACE的记忆框架，用于视觉运动模仿策略。TRACE通过路径签名存储任务相关的视觉和机器人状态证据，在长回合中保持固定大小的潜在记忆。实验表明，该方法能有效处理视觉相似但需要不同动作的场景，提高了模仿策略在延迟证据任务中的鲁棒性。该工作为模仿学习在复杂视觉环境中的应用提供了新的记忆机制。",
+      "llm_tldr": "本文针对机器人自主操作中需要基于已消失的视觉证据做出决策的延迟证据任务，提出了一种名为TRACE的记忆框架，用于视觉运动模仿策略。TRACE通过路径签名存储任务相关的视觉和机器人状态证据，在长回合中保持固定大小的潜在记忆。实验表明，该方法能有效处理视觉相似但需要不同动作的场景，提高了模仿策略在延迟证据任务中的鲁棒性。该工作为模仿学习在复杂视觉环境中的应用提供了新的记忆机制。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.15896v1",
+      "source": "arxiv",
+      "title": "LoComposition: Terrain-Adaptive Energy-Efficient Quadruped Locomotion without Gait Priors",
+      "abstract": "Learning-based quadrupedal locomotion typically relies on complex reward formulations that entangle task specification, operational limits, gait preference, and terrain adaptation within a single optimization objective. We instead treat these functions through distinct mechanisms: rewards for task specification, constraints for operational limits, energy minimization for gait preference, and exteroceptive perception for adapting energy use to terrain difficulty. We show that these components jointly enable efficient, terrain-adaptive locomotion, and that removing each component exposes a distinct failure mode. Our formulation removes explicit gait priors (including air-time, contact-count, and foot-clearance targets) in favor of emergent behavior. Compared to a conventional complex-reward baseline, our formulation achieves comparable terrain traversal while reducing cost of transport by 56% and operational-limit violations by 96%. The resulting policies transfer zero-shot to a physical Unitree Go2 using LiDAR-based elevation mapping. Project website with videos: https://tinyurl.com/locomposition.",
+      "authors": [
+        "Loukas Kordos",
+        "Leonard T. Franz",
+        "Simon Rappenecker",
+        "Oliver Hausdoerfer",
+        "Angela P. Schoellig",
+        "Pavel Kolev",
+        "Georg Martius"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-06-14T16:27:00+00:00",
+      "link": "https://arxiv.org/pdf/2606.15896v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "quadruped locomotion techniques",
+      "llm_evidence_cn": "四足运动技术",
+      "llm_evidence": "四足运动技术",
+      "canonical_evidence": "四足运动技术",
+      "llm_tldr_en": "LoComposition presents terrain-adaptive energy-efficient quadruped locomotion without gait priors, using rewards for task, constraints for limits, and perception for energy adaptation.",
+      "llm_tldr_cn": "针对四足机器人运动学习需要复杂奖励公式的问题，本文提出LoComposition，将任务、约束、步态偏好和地形适应分离到不同机制，无需显式步态先验（如空中时间、触地次数）。通过能量最小化和外感知结合，实现了高效地形自适应运动。实验表明各组件不可或缺，为腿式运动控制提供了简洁有效的框架。",
+      "llm_tldr": "针对四足机器人运动学习需要复杂奖励公式的问题，本文提出LoComposition，将任务、约束、步态偏好和地形适应分离到不同机制，无需显式步态先验（如空中时间、触地次数）。通过能量最小化和外感知结合，实现了高效地形自适应运动。实验表明各组件不可或缺，为腿式运动控制提供了简洁有效的框架。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17833v1",
+      "source": "arxiv",
+      "title": "HumanoidArena: Benchmarking Egocentric Hierarchical Whole-body Learning",
+      "abstract": "Humanoid robots promise whole-body interaction in human-centered environments, but scalable policy learning remains difficult because task-level decision-making and whole-body dynamic execution are tightly coupled. A practical solution is hierarchical control, where a high-level policy predicts intermediate whole-body actions and low-level general motion trackers (GMTs) execute them as stable humanoid motion. However, existing benchmarks rarely evaluate the policy-tracker interface itself, leaving open whether intermediate whole-body actions are executable, robust under task distribution shifts, and transferable across different GMT backends. We introduce HumanoidArena, a simulation-first benchmark for egocentric hierarchical whole-body learning. The benchmark formulates policy learning as a hierarchical decision making problem: a high-level policy converts egocentric vision, proprioception, and instructions into a compact whole-body action, which is subsequently executed by a low-level GMT. Instead of treating the legs as planar transport tools, HumanoidArena emphasizes interactions where lower-body coordination is structurally necessary in task completion. We therefore design 7 leg-critical HOI/HSI tasks in which success requires foot placement, balance maintenance, posture adjustment, and whole-body reorientation. To further diagnose the hierarchical system, we evaluate policies from two complementary perspectives: perturbation-conditioned generalization and GMT-conditioned transfer. Experiments show that hierarchical control enables learned policies to solve diverse leg-critical interactions, but performance is strongly tracker-conditioned and cross-GMT transfer remains fragile. These results position HumanoidArena as a benchmark for studying transferable intermediate action representations and scalable egocentric whole-body policy learning.",
+      "authors": [
+        "Taowen Wang",
+        "Zikang Xie",
+        "Bin Yang",
+        "Yunheng Wang",
+        "Zizhao Yuan",
+        "Yuetong Fang",
+        "Yixiao Feng",
+        "Yichi Wang",
+        "Xingyu Chen",
+        "Haodong Chen",
+        "Qiwei Wu",
+        "Weisheng Xu",
+        "Lihan Chen",
+        "Lusong Li",
+        "Zecui Zeng",
+        "Renjing Xu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-16T12:01:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.17833v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "benchmark for hierarchical whole-body learning in humanoid robots",
+      "llm_evidence_cn": "人形机器人全身控制的分层学习基准",
+      "llm_evidence": "人形机器人全身控制的分层学习基准",
+      "canonical_evidence": "人形机器人全身控制的分层学习基准",
+      "llm_tldr_en": "Introduces HumanoidArena, a simulation benchmark for evaluating hierarchical whole-body learning, focusing on the policy-tracker interface for humanoid locomotion and manipulation.",
+      "llm_tldr_cn": "现有分层全身控制方法缺少对高层策略与底层运动跟踪器接口的系统评估。本文提出HumanoidArena模拟基准，测试全身动作的可执行性、分布外鲁棒性和跨跟踪器迁移能力，为全身控制研究提供了标准化评估平台。",
+      "llm_tldr": "现有分层全身控制方法缺少对高层策略与底层运动跟踪器接口的系统评估。本文提出HumanoidArena模拟基准，测试全身动作的可执行性、分布外鲁棒性和跨跟踪器迁移能力，为全身控制研究提供了标准化评估平台。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "WBC framework for legged robot locomotion",
+      "matched_requirement_id": "req-20",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17455v1",
+      "source": "arxiv",
+      "title": "Continual Online Personalization of Exoskeleton Control via Manifold-Aware Experience Replay",
+      "abstract": "Personalizing exoskeleton control remains a critical challenge for clinical users with gait disabilities. Online adaptation (OA) offers an effective solution by adapting in real time to subject variability, device fit, and diverse locomotor tasks. However, OA involves a continual stream of user state data, which can lead to catastrophic forgetting of previously learned locomotor contexts. Here, we develop a manifold-aware experience replay-based online personalization framework designed to maintain user-specific representations across diverse tasks during OA of exoskeleton control. By replaying previously experienced tasks from a replay buffer, we preserve the personalized exoskeleton assistance across all learned tasks. Furthermore, we capture a gait manifold that distinguishes between different locomotor tasks, removing the need for explicit task labeling when selecting target replay bins. We evaluated our framework on emulated hemiplegic gait, which largely deviates from able-bodied patterns, across multiple forgetting scenarios with speed and incline transitions. Our manifold-aware replay framework achieved 40% and 60% improvements in torque and gait phase tracking accuracy, respectively, compared to a baseline framework without replay, which exhibited catastrophic forgetting during task transitions. This demonstrates that our proposed framework personalizes exoskeleton control in real time across diverse locomotor contexts in daily ambulation of clinical populations.",
+      "authors": [
+        "Changseob Song",
+        "Inseung Kang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-16T03:17:49+00:00",
+      "link": "https://arxiv.org/pdf/2606.17455v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "exoskeleton control for gait adaptation in humanoid walking",
+      "llm_evidence_cn": "外骨骼步态自适应控制",
+      "llm_evidence": "外骨骼步态自适应控制",
+      "canonical_evidence": "外骨骼步态自适应控制",
+      "llm_tldr_en": "Proposes a manifold-aware experience replay framework for continual online personalization of exoskeleton control, preventing catastrophic forgetting across diverse locomotor tasks.",
+      "llm_tldr_cn": "该论文针对外骨骼控制在线个性化过程中灾难性遗忘的问题，提出了一种基于流形感知经验回放的在线自适应框架，通过重放之前学习过的任务数据，保持个性化辅助效果。实验表明该方法能在多行走任务中维持高性能，提升了外骨骼临床应用的实用性。",
+      "llm_tldr": "该论文针对外骨骼控制在线个性化过程中灾难性遗忘的问题，提出了一种基于流形感知经验回放的在线自适应框架，通过重放之前学习过的任务数据，保持个性化辅助效果。实验表明该方法能在多行走任务中维持高性能，提升了外骨骼临床应用的实用性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "recent advances in humanoid walking and whole body control",
+      "matched_requirement_id": "req-18",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17574v1",
+      "source": "arxiv",
+      "title": "DeepInsight: A Unified Evaluation Infrastructure Across the Physical AI Stack",
+      "abstract": "Evaluating a Physical AI stack spans operators that differ by more than three orders of magnitude -- from a single foundation-model decoding step to thousands of physics ticks of whole-body control -- varying orthogonally in modality, reward semantics, and resource profile. No existing framework spans this range, so the stack is evaluated today by stitching together separate harnesses that share neither runtime nor scoring, preserving each segment's local validity but losing the shared identity needed to diagnose cross-layer regressions. We present DeepInsight, an evaluation infrastructure that serves this full spectrum on a single runtime. Rather than homogenize the regimes, it preserves their heterogeneity behind three narrow abstractions -- task, resource, and result -- each realized as one invariant shared by every subsystem: one episode driver, one resource-handle protocol implemented by every expensive backend (LLM inference and sandboxed runtimes alike), and one trace identity scheme under which every event is written. Deployed in production across all three layers of an embodied humanoid stack, this single set of invariants onboards new benchmarks largely by configuration. Where mature peer orchestrators exist -- at the foundation-model end -- it reproduces published references and peer-framework readings within their own spread, runs the same suites faster on a single node, and scales near-linearly across nodes. Its distinctive return is diagnostic: because every layer writes into one shared trace, a regression that begins in one layer and surfaces in another stays localizable on that trace -- a cross-layer payoff no federation of per-segment harnesses can reproduce.",
+      "authors": [
+        "Siyi Li",
+        "Chunyu Sun",
+        "Jiahao Zhang",
+        "Yuchen Kang",
+        "Wuliang Wang",
+        "Yu Qiu",
+        "Rui Jiang",
+        "Haitao Cui",
+        "Jie Chen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-06-16T06:22:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.17574v1",
+      "tags": [
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "DeepInsight provides evaluation infrastructure covering whole-body control physics ticks",
+      "llm_evidence_cn": "DeepInsight提供覆盖全身控制物理步长的评估基础设施",
+      "llm_evidence": "DeepInsight提供覆盖全身控制物理步长的评估基础设施",
+      "canonical_evidence": "DeepInsight提供覆盖全身控制物理步长的评估基础设施",
+      "llm_tldr_en": "DeepInsight unifies evaluation across the Physical AI stack, including whole-body control, on a single runtime with three abstractions.",
+      "llm_tldr_cn": "该论文针对物理AI栈评估覆盖不同量级算子（从单个解码步到数千个全身控制物理步长）的问题，提出DeepInsight统一评估基础设施。它通过三个窄抽象保留异构性，在单一运行时上支持从基础模型解码到全身控制的完整评估，有助于诊断跨层回归。",
+      "llm_tldr": "该论文针对物理AI栈评估覆盖不同量级算子（从单个解码步到数千个全身控制物理步长）的问题，提出DeepInsight统一评估基础设施。它通过三个窄抽象保留异构性，在单一运行时上支持从基础模型解码到全身控制的完整评估，有助于诊断跨层回归。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.13886v1",
+      "source": "arxiv",
+      "title": "PhysVLA: Towards Physically-Grounded VLA for Embodied Robotic Manipulation",
+      "abstract": "Vision-Language-Action (VLA) models excel at mapping visual inputs and natural language instructions directly to robotic control policies. However, because they are trained primarily to fit behavioural demonstration data, they do not explicitly enforce fundamental physical principles such as rigid-body dynamics or contact constraints. This exposes a critical physics gap: standard temporal smoothing applied on top of single-step or chunked VLAs trades trajectory quality for added failures that short-term memory cannot resolve. To bridge this gap, we introduce PhysVLA (Physics-VLA), a plug-and-play, inference-time framework designed to wrap any frozen VLA backbone without retraining, fine-tuning, or weight access, with less than 1 ms of overhead per control step. PhysVLA intercepts the predicted control action, captures only the simulator or system state, and applies a dual-layered correction: (i) a phase-aware finite-state machine that structures discrete task segments (approach, grasp, transport, and place), and (ii) a selective Euler-Lagrange gate that activates only when a dynamics oracle detects kinodynamic inconsistency. Evaluated across OpenVLA, OpenVLA-OFT, Force-VLA, and Generalist-VLA on LIBERO-Spatial with a 7-DoF Franka Panda, the framework delivers absolute success rate increases of up to 17% and stability increases of up to 19% with no per-task regressions, improves trajectory efficiency by up to 15% across all four backbones, and shows up to a 10x improvement in trajectory jerk robustness on a Robosuite Lift cross-simulator sweep. We further validate the framework on a real Agilex Piper arm with a pick-and-place task, confirming that PhysVLA transfers to physical hardware without retraining, with success-rate improvements of up to 50%, establishing physical awareness as a composable, backbone-agnostic runtime module.",
+      "authors": [
+        "Namai Chandra",
+        "Shriram Damodaran",
+        "Lin Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-06-11T20:23:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.13886v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "improves VLA policies learned from demonstration data by enforcing physics constraints",
+      "llm_evidence_cn": "通过物理约束改进基于演示的VLA策略",
+      "llm_evidence": "通过物理约束改进基于演示的VLA策略",
+      "canonical_evidence": "通过物理约束改进基于演示的VLA策略",
+      "llm_tldr_en": "PhysVLA is a plug-and-play inference-time framework that enforces physical principles on frozen VLA models trained with imitation learning, reducing failures from temporal smoothing with under 1ms overhead.",
+      "llm_tldr_cn": "视觉-语言-动作模型通常通过行为克隆拟合演示数据，但缺乏物理约束，导致轨迹平滑失败。本文提出PhysVLA，一种即插即用的推理时框架，在不重训练或微调的情况下对任意冻结的VLA骨干施加刚体动力学和接触约束，开销小于1毫秒每步，有效减少了因短时记忆无法解决的实际操作失败，弥合了物理鸿沟。",
+      "llm_tldr": "视觉-语言-动作模型通常通过行为克隆拟合演示数据，但缺乏物理约束，导致轨迹平滑失败。本文提出PhysVLA，一种即插即用的推理时框架，在不重训练或微调的情况下对任意冻结的VLA骨干施加刚体动力学和接触约束，开销小于1毫秒每步，有效减少了因短时记忆无法解决的实际操作失败，弥合了物理鸿沟。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.15148v2",
+      "source": "arxiv",
+      "title": "MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency",
+      "abstract": "Inverse kinematics (IK) remains a critical bottleneck for real-time robot manipulation. Classical numerical solvers achieve high geometric precision but often suffer from discontinuous branch switching and unstable behavior near kinematic singularities during closed-loop deployment. Meanwhile, learned IK approaches frequently struggle to balance spatial accuracy, motion smoothness, and real-time efficiency, particularly when trained on noisy human teleoperation data. We present \\textbf{MimicIK}, a real-time generative inverse kinematics framework that learns smooth and robust joint-space motion priors from teleoperation demonstrations through conditional flow matching. Given the current joint configuration and a target end-effector pose, MimicIK predicts continuous delta-joint commands using an efficient two-step iterative refinement process based on a Minimal Iterative Policy (MIP) backbone. To enforce physical consistency, we further introduce an FK consistency loss, a differentiable forward-kinematics regularization that penalizes task-space deviations from the target pose during training. We evaluate MimicIK on a real-world 6-DOF robot dataset containing 8,848 teleoperation demonstrations. MimicIK achieves a mean position error of 4.65 mm, a 10 mm success rate of 92.01\\%, and a trajectory spike rate of only 7.99\\%. Compared with a UNet diffusion baseline, our method improves both spatial accuracy and motion smoothness while reducing inference latency from 21.66 ms to 6.74 ms. Furthermore, unlike deterministic MLP baselines that catastrophically diverge under out-of-distribution deployment, MimicIK remains stable near singular configurations and enables robust 20 Hz real-time control on deployment hardware.",
+      "authors": [
+        "Jiahao Yang",
+        "Shenhao Yan",
+        "Fan Feng",
+        "Chengsi Yao",
+        "Ge Wang",
+        "Zhixin Mai",
+        "Yiming Zhao",
+        "Yatong Han"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-13T06:32:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.15148v2",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "imitation from demonstrations",
+      "llm_evidence_cn": "从演示中模仿",
+      "llm_evidence": "从演示中模仿",
+      "canonical_evidence": "从演示中模仿",
+      "llm_tldr_en": "MimicIK learns smooth joint-space motion priors from teleoperation demonstrations via conditional flow matching, enabling real-time generative inverse kinematics.",
+      "llm_tldr_cn": "针对逆运动学求解在实时部署中不连续、不稳定的问题，本文提出MimicIK，利用遥操作演示通过条件流匹配学习平滑的关节空间运动先验。该方法能生成满足正向运动学一致性的实时逆解，在精度、平滑性和效率上优于传统数值方法和学习方法。为机器人操控中的逆运动学提供了高效的模仿学习方案。",
+      "llm_tldr": "针对逆运动学求解在实时部署中不连续、不稳定的问题，本文提出MimicIK，利用遥操作演示通过条件流匹配学习平滑的关节空间运动先验。该方法能生成满足正向运动学一致性的实时逆解，在精度、平滑性和效率上优于传统数值方法和学习方法。为机器人操控中的逆运动学提供了高效的模仿学习方案。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.15631v1",
+      "source": "arxiv",
+      "title": "Retrieve, Don't Retrain: Extending Vision Language Action Models to New Tasks at Test Time",
+      "abstract": "Extending a vision-language-action (VLA) policy to a new task typically requires task-specific teleoperated demonstrations and per-task fine-tuning, making adaptation costly in both data collection and compute. In this paper, we show that this target-side per-task adaptation cost can be replaced by retrieval. Our retrieval-augmented policy is trained once on paired demonstrations from the target embodiment (query) and a cheaper embodiment (pool, e.g., human-hand video), then frozen. New tasks are added at deployment by appending pool-side demonstrations to a retrieval pool. The frozen policy conditions on retrieved trajectories at every control step, so new tasks are absorbed by indexing data rather than updating parameters. Fine-tuning is needed only to take on a new, unseen embodiment, not for each new task. We show that retrieval improves policies beyond a specific backbone, including standard VLA policies, but its effect is especially pronounced in Cosmos Policy, a video-generation-based world-action model (WAM). In this setting, retrieval supplies coarse task progression, while the WAM's future-image objective provides an additional visual consistency signal that strengthens the retrieval-conditioned actions. On PushT, we study how retrieval provides a reusable high-level motion prior for cross-embodiment generalization to unseen goal angles, while on RoboTwin 2.0 our method outperforms cross-embodiment baselines on unseen tasks, and we additionally demonstrate the method on a real robot.",
+      "authors": [
+        "Jeongeun Park",
+        "Juhan Park",
+        "Taekyung Kim",
+        "Sungjoon Choi",
+        "Dongyoon Han",
+        "Sangdoo Yun"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-14T06:48:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.15631v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "retrieval-augmented imitation learning from demonstrations",
+      "llm_evidence_cn": "基于检索的演示模仿学习",
+      "llm_evidence": "基于检索的演示模仿学习",
+      "canonical_evidence": "基于检索的演示模仿学习",
+      "llm_tldr_en": "Proposes a retrieval-augmented VLA policy that generalizes to new tasks at test time without fine-tuning, using a frozen policy conditioned on retrieved trajectories.",
+      "llm_tldr_cn": "针对VLA策略适应新任务需大量演示和微调的问题，提出检索增强策略：在冻结参数下，通过检索池中的演示轨迹来条件生成动作，实现零微调任务扩展。实验表明该方法在多种操作任务上达到与微调相当的性能。",
+      "llm_tldr": "针对VLA策略适应新任务需大量演示和微调的问题，提出检索增强策略：在冻结参数下，通过检索池中的演示轨迹来条件生成动作，实现零微调任务扩展。实验表明该方法在多种操作任务上达到与微调相当的性能。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.17456v1",
+      "source": "arxiv",
+      "title": "Embodiment Shapes Rolling Behavior in a Multimodal Infant Model",
+      "abstract": "Rolling over is one of the earliest milestones in infant motor development, reflecting the emergence of coordinated, whole-body sensorimotor control. Here, we conduct a computational study of infant rolling using MIMo, a virtual infant embodiment equipped with proprioception and vestibular sensation. MIMo learns supine-to-prone rolls with reinforcement learning. Interestingly, the learned behaviors capture developmental trends and coordination patterns consistent with those reported in real infants, including improved performance and faster execution with age. Our results explain how infant capabilities and constraints can give rise to realistic behaviors in artificial agents, with a particular emphasis on how motor development is shaped by the changing body morphology. This work highlights the role of embodied computational models as a powerful tool for studying sensorimotor development.",
+      "authors": [
+        "Leon Philipp",
+        "Francisco M. López",
+        "Jochen Triesch"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "q-bio.NC"
+      ],
+      "published": "2026-06-16T03:18:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.17456v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "studies whole-body rolling locomotion using RL on a virtual infant model, capturing coordination patterns",
+      "llm_evidence_cn": "使用强化学习在虚拟婴儿模型上研究全身滚动运动，捕捉协调模式",
+      "llm_evidence": "使用强化学习在虚拟婴儿模型上研究全身滚动运动，捕捉协调模式",
+      "canonical_evidence": "使用强化学习在虚拟婴儿模型上研究全身滚动运动，捕捉协调模式",
+      "llm_tldr_en": "A virtual infant model learns supine-to-prone rolling via RL; the learned behaviors match real infant developmental trends and coordination patterns, showing how embodiment shapes motor development.",
+      "llm_tldr_cn": "婴儿翻身是早期运动发育中的全身协调里程碑。本文在虚拟婴儿MIMo模型上使用强化学习学习从仰卧到俯卧的翻滚，学到的行为捕捉到了真实婴儿的发育趋势和协调模式，包括随年龄改善的表现和更快的执行速度。结果表明，婴儿的能力和约束如何能在人工智能体中产生现实行为，强调了运动发育如何被变化中的身体塑造。",
+      "llm_tldr": "婴儿翻身是早期运动发育中的全身协调里程碑。本文在虚拟婴儿MIMo模型上使用强化学习学习从仰卧到俯卧的翻滚，学到的行为捕捉到了真实婴儿的发育趋势和协调模式，包括随年龄改善的表现和更快的执行速度。结果表明，婴儿的能力和约束如何能在人工智能体中产生现实行为，强调了运动发育如何被变化中的身体塑造。",
+      "llm_tags": [
+        "query:locowbc:composite"
+      ],
+      "matched_query_tag": "query:locowbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找机器人locomotion、WBC的工作, especially work that connects or combines: robot locomotion techniques and algorithms; whole-body control for robots; humanoid robot locomotion and control; legged locomotion planning and control; motion planning for robot locomotion; contact force control in locomotion; methods for whole body control in robot locomotion; recent advances in humanoid walking and whole body control; control strategies for bipedal robot locomotion; WBC framework for legged robot locomotion.",
+      "matched_requirement_id": "req-composite-locowbc",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

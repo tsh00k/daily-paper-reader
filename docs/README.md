@@ -6,79 +6,49 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-16
-- 运行时间：2026-06-16 23:00:54 UTC
+- 最新运行日期：2026-06-17
+- 运行时间：2026-06-17 22:33:11 UTC
 - 运行状态：成功
-- 本次总论文数：19
-- 精读区：8
-- 速读区：11
+- 本次总论文数：9
+- 精读区：5
+- 速读区：4
 
 ### 今日简报（AI）
-今日日报聚焦类人机器人自主导航与灵巧操作两大突破，精读两篇9分论文。
-最值得看的方向：类人机器人的通用地形导航（GuideWalk）和从单目人类视频学习灵巧操作（V2P-Manip）。
-建议普通读者关注这两项技术的结合潜力，以及速读中概率安全控制方法（Pixels to Proofs）的实用性。
-- 详情：[/202606/16/README](/202606/16/README)
+今日聚焦延迟证据模仿学习与无步态先验的四足运动两大突破，TRACE和LoComposition均获9.0高分。  
+最值得看的方向：TRACE用因果记忆解决视觉运动模仿中的延迟证据问题；LoComposition实现地形自适应的高能效四足运动，无需预定义步态。  
+建议优先精读这两篇高分工作，速读部分可作为拓展参考。
+- 详情：[/202606/17/README](/202606/17/README)
 
 ### 精读区论文标签
-1. [GuideWalk: Learning Unified Autonomous Navigation and Locomotion for Humanoid Robots across Versatile Terrains](/202606/16/2606.10449v2-guidewalk-learning-unified-autonomous-navigation-and-locomotion-for-humanoid-robots-across-versatile-terrains)  
+1. [TRACE: Trajectory-Routed Causal Memory for Delayed-Evidence Visuomotor Imitation](/202606/17/2606.14551v2-trace-trajectory-routed-causal-memory-for-delayed-evidence-visuomotor-imitation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：视觉运动模仿策略与记忆框架
+2. [LoComposition: Terrain-Adaptive Energy-Efficient Quadruped Locomotion without Gait Priors](/202606/17/2606.15896v1-locomposition-terrain-adaptive-energy-efficient-quadruped-locomotion-without-gait-priors)  
    标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人跨地形运动与导航的统一框架
-2. [V2P-Manip: Learning Dexterous Manipulation from Monocular Human Videos](/202606/16/2606.16436v1-v2p-manip-learning-dexterous-manipulation-from-monocular-human-videos)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：从人类演示视频学习灵巧操作策略
-3. [Maximum Entropy Inverse Reinforcement Learning for Mean-Field Games with Average Reward](/202606/16/2606.16759v1-maximum-entropy-inverse-reinforcement-learning-for-mean-field-games-with-average-reward)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：最大熵逆强化学习
-4. [Video-Based Optimal Transport for Feedback-Efficient Offline Preference-Based Reinforcement Learning](/202606/16/2606.16856v1-video-based-optimal-transport-for-feedback-efficient-offline-preference-based-reinforcement-learning)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：使用最优传输从人类反馈学习奖励函数
-5. [Reinforcement Learning-Guided Retrieval with Soft Fusion for Robust Multimodal Imitation Learning under Missing Modalities](/202606/16/2606.15514v1-reinforcement-learning-guided-retrieval-with-soft-fusion-for-robust-multimodal-imitation-learning-under-missing-modalities)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：缺失模态下的模仿学习
-6. [Perfect Demo Makes Poor Teacher: Learning Robust Alignment from Critical Motion Segments](/202606/16/2606.15587v1-perfect-demo-makes-poor-teacher-learning-robust-alignment-from-critical-motion-segments)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：研究了流畅演示在模仿学习中的失败模式，提出从关键运动片段学习
-7. [LoComposition: Terrain-Adaptive Energy-Efficient Quadruped Locomotion without Gait Priors](/202606/16/2606.15896v1-locomposition-terrain-adaptive-energy-efficient-quadruped-locomotion-without-gait-priors)  
+   evidence：四足运动技术
+3. [HumanoidArena: Benchmarking Egocentric Hierarchical Whole-body Learning](/202606/17/2606.17833v1-humanoidarena-benchmarking-egocentric-hierarchical-whole-body-learning)  
+   标签：评分：9.0/10、query:locowbc
+   evidence：人形机器人全身控制的分层学习基准
+4. [Continual Online Personalization of Exoskeleton Control via Manifold-Aware Experience Replay](/202606/17/2606.17455v1-continual-online-personalization-of-exoskeleton-control-via-manifold-aware-experience-replay)  
    标签：评分：8.0/10、query:locowbc
-   evidence：无需步态先验的地形自适应四足运动
-8. [ADAPT: Analytical Disturbance-Aware Policy Training for Humanoid Locomotion](/202606/16/2606.16542v1-adapt-analytical-disturbance-aware-policy-training-for-humanoid-locomotion)  
+   evidence：外骨骼步态自适应控制
+5. [DeepInsight: A Unified Evaluation Infrastructure Across the Physical AI Stack](/202606/17/2606.17574v1-deepinsight-a-unified-evaluation-infrastructure-across-the-physical-ai-stack)  
    标签：评分：8.0/10、query:locowbc
-   evidence：人形机器人抗扰动运动策略
+   evidence：DeepInsight提供覆盖全身控制物理步长的评估基础设施
 
 ### 速读区论文标签
-1. [Pixels to Proofs: Probabilistically-Safe Latent World Model Control via Parallel Conformal Robust MPC](/202606/16/2606.15594v1-pixels-to-proofs-probabilistically-safe-latent-world-model-control-via-parallel-conformal-robust-mpc)  
-   标签：评分：8.0/10、query:mpc-wbc
-   evidence：鲁棒MPC结合潜在世界模型用于安全运动规划
-2. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/16/2606.15148v1-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
+1. [PhysVLA: Towards Physically-Grounded VLA for Embodied Robotic Manipulation](/202606/17/2606.13886v1-physvla-towards-physically-grounded-vla-for-embodied-robotic-manipulation)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：通过条件流匹配从遥操作示教中学习逆运动学
-3. [Rethinking Implicit Spatial Representation in Visuomotor Policy Learning](/202606/16/2606.15232v1-rethinking-implicit-spatial-representation-in-visuomotor-policy-learning)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：在基于生成模型的机器人操作模仿学习中重新思考隐式空间表示
-4. [Scaling Short-Term Memory of Visuomotor Policies for Long-Horizon Tasks](/202606/16/2606.16178v1-scaling-short-term-memory-of-visuomotor-policies-for-long-horizon-tasks)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：用于视觉运动模仿学习短期记忆的Transformer架构
-5. [ATHENA: Accelerated Multi-Task Heterogeneous Influence Functions for Robot Data Curation](/202606/16/2606.16208v1-athena-accelerated-multi-task-heterogeneous-influence-functions-for-robot-data-curation)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：用于机器人模仿学习数据策划的影响函数
-6. [Training and Evaluating Diffusion Policies with Long Context Lengths](/202606/16/2606.16447v1-training-and-evaluating-diffusion-policies-with-long-context-lengths)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：对模仿学习策略在不同上下文长度下进行基准测试，发现简单增加上下文长度并非脆弱
-7. [HOLO-MPPI: Multi-Scenario Motion Planning via Hierarchical Policy Optimization](/202606/16/2606.16480v1-holo-mppi-multi-scenario-motion-planning-via-hierarchical-policy-optimization)  
-   标签：评分：7.0/10、query:mpc-wbc
-   evidence：结合高层策略学习与低层MPPI实现多场景运动规划
-8. [TopoRetarget: Interaction-Preserving Retargeting for Dexterous Manipulation](/202606/16/2606.16272v1-toporetarget-interaction-preserving-retargeting-for-dexterous-manipulation)  
+   evidence：通过物理约束改进基于演示的VLA策略
+2. [MimicIK: Real-Time Generative Inverse Kinematics from Teleoperation with FK Consistency](/202606/17/2606.15148v2-mimicik-real-time-generative-inverse-kinematics-from-teleoperation-with-fk-consistency)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：利用人类演示通过参考跟踪训练强化学习策略
-9. [Elastic ODYN: Differentiable Optimization for Infeasible Control and Learning in Robotics](/202606/16/2606.16564v1-elastic-odyn-differentiable-optimization-for-infeasible-control-and-learning-in-robotics)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：用于不可行接触条件的可微QP求解器
-10. [Reinforcement Learning with Inner-loop Dynamics Estimator for Aerial Manipulation under Uncertainty](/202606/16/2606.16621v1-reinforcement-learning-with-inner-loop-dynamics-estimator-for-aerial-manipulation-under-uncertainty)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：用于空中全身操控的分层RL
-11. [VENOM: Versatile Embodied Network for Omni-bodied Motion tracking](/202606/16/2606.16696v1-venom-versatile-embodied-network-for-omni-bodied-motion-tracking)  
+   evidence：从演示中模仿
+3. [Retrieve, Don't Retrain: Extending Vision Language Action Models to New Tasks at Test Time](/202606/17/2606.15631v1-retrieve-dont-retrain-extending-vision-language-action-models-to-new-tasks-at-test-time)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：从演示数据学习全身运动跟踪
+   evidence：基于检索的演示模仿学习
+4. [Embodiment Shapes Rolling Behavior in a Multimodal Infant Model](/202606/17/2606.17456v1-embodiment-shapes-rolling-behavior-in-a-multimodal-infant-model)  
+   标签：评分：6.0/10、query:locowbc
+   evidence：使用强化学习在虚拟婴儿模型上研究全身滚动运动，捕捉协调模式
 
 
 <div class="dpr-home-promo-card">
