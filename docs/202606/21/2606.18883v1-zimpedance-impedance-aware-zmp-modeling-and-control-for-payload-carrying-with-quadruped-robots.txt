@@ -1,0 +1,352 @@
+Title: ZiMPedance: Impedance-Aware ZMP Modeling and Control for Payload Carrying with Quadruped Robots
+
+URL Source: https://arxiv.org/pdf/2606.18883v1
+
+Published Time: Thu, 18 Jun 2026 00:50:27 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# ZiMPedance: Impedance-Aware ZMP Modeling and Control for Payload Carrying with Quadruped Robots 
+
+Giovanni B. Dessy 1, Lorenzo Amatucci 1, Victor Barasuol 1 and Claudio Semini 1
+
+Abstract —Load transportation with quadruped robots is strongly affected by the dynamics of the physical interface between the robot and the load. Passive spring-based arms reduce weight and complexity compared to active manipulators, but their spring-damper dynamics can introduce oscillatory forces that degrade locomotion stability. This paper derives an extended Zero Moment Point (ZMP) formulation that includes passive payload-interface dynamics, relating stiffness, damping, and payload mass to the stability margin. The analysis shows that underdamped configurations can resonate with locomotion harmonics. Based on this insight, we augment a Single Rigid Body Dynamics model with passive subsystem dynamics and integrate it into a Model Predictive Control framework. In simulation, the proposed controller reduces stability violations by up to 10 ×, from 7.0% to 
+
+0.7% , and increase locomotion efficiency by lowering horizontal ground reaction force effort by up to 15% compared to a nominal baseline. Hardware experiments with a 2 kg payload show stable locomotion under pull-release disturbances where the nominal controller fails. The same model also enables end-effector tracking through passive arm dynamics without direct arm actuation. Video: https://youtu.be/HcHV9IJVlwQ 
+
+I. INTRODUCTION Heavy load transportation is a physically demanding oper-ation that can expose human operators to significant risk in logistics, industrial, and search-and-rescue scenarios. Robotic systems can reduce this risk by assisting with strenuous carrying tasks. Among mobile platforms, legged robots offer clear advantages when navigating uneven terrain compared to wheeled ones [1], [2]. They also provide higher payload capacity than aerial platforms [3], [4], making them well-suited to carrying in human-centered and unstructured environments. This work focuses on a quadruped robot carrying a payload through a passive, spring-based arm. Compared with placing a rigid payload directly on the robot body, an arm-like interface enables the load to be displaced, guided, and mechanically coupled to external agents or task objectives, which is important for collaborative carrying and loco-manipulation. The spring-damper elements provide mechanical compliance, allowing the payload to move relative to the robot and reducing the direct transmission of interaction forces that would occur with a rigid connection. Fully actuated manipulators provide similar interaction with high dexterity, but add cost, weight, complexity, and power requirements that reduce payload capacity. Passive elements provide a lightweight alternative by transmitting interaction forces and allowing compliant payload motion with lower actuation requirements. Similar compliance is often rendered in actuated manipulators through impedance control [5], [6], while passive arms realize it mechanically. This benefit comes with a stability challenge: the passive 
+
+> 1Authors are with Dynamic Legged Systems Lab, Istituto Italiano di Tecnologia (IIT). name.lastname@iit.it.
+
+Fig. 1: Top: Lateral end-effector tracking under a 3 kg load. Bottom: pull-release disturbance with a 2 kg payload. 
+
+spring-damper interface can store and release energy during locomotion, generating oscillatory forces between the payload and the robot base. Recent work [7] demonstrated a passive arm for quadruped payload carrying, but did not analyze how arm stiffness, damping, and payload mass affect locomotion stability. This gap motivates the spring-damper aware stability analysis developed in this paper. Payload transport and loco-manipulation with legged robots have been studied using cable-based towing [8], ball-joint inter-robot connections [9], actuated arms [6], [10], [11], and learning-based methods [12]– [15]. These works demonstrate effective payload interaction and task execution, but they do not explicitly derive how passive interface stiffness, damping, and carried mass affect the locomotion stability margin. Learning-based methods have also shown promising results for cooperative carrying and loco-manipulation in humanoid and quadruped systems [12]–[15]. These approaches can achieve scalable task execution, but stability and interaction behavior are typically shaped through training objectives rather than derived from an explicit payload-interface model. In contrast, this paper focuses on modeling the passive interface dynamics and relating them directly to locomotion stability. Since the main question in this work is how payload-interface dynamics affect locomotion stability, Model Predictive Control (MPC) provides a natural way to compensate for these effects. MPC is well suited for stability-aware payload carrying because feasibility and stability requirements can be incorporated explicitly inside its formulation. In quadruped robotics, MPC has been applied to collaborative loco-manipulation using 
+
+> arXiv:2606.18883v1 [cs.RO] 17 Jun 2026
+
+centralized formulations [16] and supervisory predictive control based on simplified locomotion models [17]. These works demonstrate effective coordinated locomotion and manipulation, but mainly consider active interfaces and dynamic trotting behaviors. In contrast, this paper focuses on passive payload interfaces during low-speed quasi-static crawl gait, where stiffness, damping, and carried mass can directly modify the stability margin. To quantify this effect, we use the Zero Moment Point (ZMP) [18], a widely used criterion for dynamic stability that has been applied to tasks such as stair climbing [19] and inclined trotting [20]. This makes ZMP-based constraints a natural tool for analyzing stability-aware payload carrying. In this paper, we extend the ZMP formulation to include passive spring-damper dynamics and embed the resulting subsystem model into an MPC. Several works are closely related from the perspective of stability-aware transport. Agravante et al. [21], [22] proposed walking pattern generators and a complete optimization-based framework for human-humanoid collaborative carrying, where interaction forces are incorporated into humanoid walking and whole-body control. Zhong et al. [23] formulated cooperative humanoid transport as an optimal control problem with extended ZMP, joint, velocity, and torque constraints. Hawley and Suleiman [24] proposed a dual-humanoid transport framework combining a simplified cooperative model, arm compliance, local planning, and ZMP preview control. These works establish important links between cooperative carrying, interaction forces, and stability-aware control. However, they primarily address active humanoid robot-robot or human-humanoid transport, where the interaction is handled through coordinated motion generation, force sensing, active arm compliance, or whole-body control. In contrast, this paper studies a quadruped carrying a payload through a passive spring-damper interface. This changes the stability problem: the interface is not only an interaction channel, but also an internal oscillatory subsystem whose stiffness, damping, and carried mass directly affect the ZMP evolution. To the best of our knowledge, no previous work explicitly derives the relationship between passive interface parameters, payload mass, and the resulting ZMP stability margin, analyzes the corresponding impedance-locomotion resonance, or incorporates the passive subsystem dynamics into a legged robot MPC formulation. This paper addresses this gap by modeling the payload interface as an impedance-coupled subsystem, analyzing its influence on locomotion stability, and augmenting the classical Single Rigid Body Dynamics (SRBD) formulation [25] with passive interface dynamics inside a predictive controller. To the best of the authors’ knowledge, this paper makes the following contributions:  
+
+> •
+
+a novel extended ZMP formulation that embeds passive spring-damper payload-interface dynamics and relates stiffness, damping, and payload mass to the stability margin;  
+
+> •
+
+a frequency-domain analysis showing how gait induced excitation can align with the passive-interface resonance, highlighting that arm impedance and gait selection should be considered together to reduce payload and base oscillations;  
+
+> •
+
+the first impedance-augmented SRBD-MPC formulation that incorporates passive interface dynamics, validated in simulation and on a real quadruped equipped with a passive arm. The paper is organized as follows. Section II reviews ZMP stability and impedance-based subsystems. Section III derives the extended ZMP formulation and analyzes the impedance-stability relationship. Section IV evaluates load-impedance effects in simulation. Section V introduces the impedance-augmented MPC and validates it in simulation and on a real robot. Section VI draws the final discussions and conclusions. II. BACKGROUND This section reviews the ZMP formulation used for stability analysis and motivates the mass-spring-damper abstraction of compliant payload interfaces. 
+
+A. The ZMP concept of stability 
+
+The ZMP is a well-known concept in legged robot control [18]. It is defined as the point on the ground plane at which the net moment of all forces acting on the system has no component along the horizontal directions, assuming negligible centroidal angular momentum variations. Under standard assumptions, if the ZMP lies within the convex hull of the contact points, also known as the support polygon, the system is typically considered dynamically stable. To account for the payload carrying and external interactions, we consider the ZMP formulation in the presence of an external force applied at a generic interaction point. When no external interaction is present, i.e., fext = 0, the formulation reduces to the standard ZMP expression used in legged locomotion: 
+
+zzmp = τ × nf · n , (1) 
+
+f = mtot 
+
+ g − ¨xCoM 
+
+ + fext , (2) 
+
+τ = xCoM × mtot 
+
+ g − ¨xCoM 
+
+ + xext × fext . (3) Here, zzmp is the ZMP position vector. f and τ are the resultant force and moment entering the ZMP balance of the robot-payload system, while fext denotes the interaction force applied at the payload interface. The vector n is the unit normal to the contact surface, xCoM and ¨xCoM are the center of mass (CoM) position and acceleration, g is the gravitational acceleration vector, and mtot is the total mass of the robot-payload system. The terms fext = [ fx, f y , f z ]T and xext =[xext , y ext , z ext ]T denote, respectively, the point of application and the value of the external interaction force. On flat ground, 
+
+n = [0 , 0, 1] T . Assuming small vertical CoM variations, the planar ZMP coordinates simplify to: 
+
+xzmp = mtot g x CoM 
+
+mtot g + fz
+
++ zCoM mtot ¨xCoM 
+
+mtot g + fz
+
++ xext fz − zext fx
+
+mtot g + fz
+
+,yzmp = mtot g y CoM 
+
+mtot g + fz
+
++ zCoM mtot ¨yCoM 
+
+mtot g + fz
+
++ yext fz − zext fy
+
+mtot g + fz
+
+,
+
+(4) This formulation shows that the ZMP depends on three main contributions: the CoM position, the CoM acceleration, and the external force applied through the payload interface. We will show in Sec. III how we used the ZMP concepts presented here to analyze the effects of the arm design on the locomotion stability. B. Passive Elements in Robotic Carrying Applications 
+
+> Fig. 2: Examples of payload-interface mechanisms that can introduce passive interaction dynamics. From left to right: ball-joint rigid inter-robot connection, passive spring-based arm, one-DoF arm with pendulum-like payload behavior, and cable-towed payload.
+
+Recent progress in payload-carrying with legged robots has seen the development of various mechanical interfaces to allow quadrupeds to properly perform the task. Figure 2 collects some examples, including a passive spring-based arms [7], ball-joint inter-robot connections [9], pendulum-like payload links [26], and cable-towed payloads [8]. Although mechanically different, all these interfaces introduce an interaction dynamics between the payload and the robot base that, around a nominal operating point, can be approximated by an equivalent mass-spring-damper model: 
+
+F = m¨x + c ˙x + kx, (5) where F is the transmitted interaction force, x is the relative displacement between the payload and robot base, m is the equivalent moving mass, and k and c are the equivalent stiffness and damping components. A similar interpretation applies to active impedance-controlled manipulators, where desired closed-loop stiffness and damping are imposed at the end-effector [1], [5]. In particular in the remainder of this work, we will focus on passive arms as a payload-interface subsystem and explicitly incorporate their dynamics into the ZMP formulation derived in Sec. III and into a novel MPC formulation presented in Sec. V. III. IMPEDANCE AND STABILITY 
+
+A. Theoretical model of ZMP with impedance elements 
+
+We now derive how the passive arm, modeled as a passive payload interface, affects locomotion stability, analyzing its contribution to the ZMP. The goal of this section is not to model the full robot-arm system in all its kinematic details, but to obtain a reduced model that explicitly relates the passive arm stiffness, damping, and carried load mass to the ZMP displacement. This provides the analytical link between the mechanical interface parameters, the equivalent stiffness and damping introduced in Sec. II, and the stability margin used later in the controller derivation. As shown in Fig. 3, the quadruped body is represented by its CoM, while the carried load is modeled as a point mass attached to the passive arm. Around the nominal carrying configuration, the passive arm is approximated as an equivalent spring-damper payload interface acting between the robot base and the load. This reduced model captures the dominant horizontal interaction forces transmitted by the passive arm while remaining suitable for ZMP analysis. At the joint level, the passive arm generates restoring torques according to a spring-damper law: 
+
+τq,i = −ki(qi − qi, 0) − ci ˙qi (6) 
+
+> Fig. 3: Schematic view of the passive arm mounted on a quadruped robot. The 3 passive arm joints are highlighted in orange, with their spring-damper components. The support polygon is highlighted in green, together with the gravity vector and end-effector force.
+
+where ki and ci denote the stiffness and damping coefficients of joint i, qi and ˙qi are its displacement and velocity, and 
+
+qi, 0 is the corresponding rest position. Around the operating configuration, these joint-level passive dynamics are mapped to an equivalent Cartesian spring-damper interaction along the considered horizontal direction. Starting from the planar ZMP expression in (4) , we focus on the x-direction to derive the effect of the passive spring-damper interface on the ZMP. The same derivation holds for the y-direction by replacing xCoM ,
+
+xload , and fx with their corresponding y-axis quantities. For compactness, only the x-axis formulation is reported. The ZMP along the x-axis can be written as: 
+
+xzmp = Φ + ∆
+
+mtot g (7) with Φ collecting the payload-interface contribution, Φ = 
+
+mload xload g + zload (k(xload − xload ,0) + c ˙xload ), and ∆ collect-ing the robot CoM contribution, ∆ = mrxCoM g + zCoM mr ¨xCoM .where mr is the robot mass, mload is the carried load mass, and 
+
+mtot = mr + mload is the total robot-load mass. The variable 
+
+xCoM denotes the horizontal position of the robot CoM along the considered direction, while ¨xCoM is the corresponding CoM acceleration. The terms zCoM and zload denote the CoM height and load height, respectively, and xload is the horizontal position of the load. The load position is obtained from the passive-arm forward kinematics. We define the nominal carrying configuration as the static equilibrium of the passive arm under the attached payload, with zero base acceleration and zero arm velocity. In this configuration, the load height is approximately aligned with the robot CoM height, so we assume zload ≈ zCoM 
+
+in the reduced model. The term ∆ collects the CoM contribution to the ZMP numerator, while Φ collects the payload-interface contribution, including the load gravitational term and the spring-damper interaction force. To isolate the contribution of the passive payload-interface subsystem, we analyze the incremental ZMP displacement around a nominal carrying configuration. In this local analysis, the CoM contribution is treated as a constant offset, while the base acceleration term is neglected, i.e., ¨xCoM ≈ 0, ∆ ≈ 0. While this approximation is not intended to describe the full robot motion, it exposes the direct relationship between the passive interface dynamics and the resulting ZMP displacement. The full CoM-dependent terms are retained in the complete ZMP formulation present in the simulation analysis (see Sec. IV). Under this approximation, the ZMP contribution due to the load and passive interface becomes: 
+
+xzmp = mload gx load + zload [kx load + c ˙xload ]
+
+mtot g (8) Thus, the ZMP displacement depends directly on the interface stiffness and damping in both horizontal directions. To analyze the effect of impedance in the frequency domain, we express the system in Laplace form: 
+
+Xzmp (s) = mload g + zload (k + cs )
+
+mtot g Xload (s). (9) Solving for Xload (s) gives: 
+
+Xload (s) = Fext (s)
+
+mload s2 + cs + k (10) By substituting (10) into (9), the system transfer function is obtained as: 
+
+G(s) = Xzmp (s)
+
+Fext (s) = zload cs + zload k + gm load 
+
+(mload s2 + cs + k)mtot g (11) This transfer function relates the external force acting on the impedance subsystem to the resulting ZMP displacement, highlighting that ZMP displacement is directly governed by the impedance parameters (stiffness and damping) and the carried mass mload . To validate the analytical model in (11) ,we compare its frequency response with data obtained from a simulation of the full system in MuJoCo [27]. A chirp force input with frequency increasing from 1 to 100 Hz is applied at the passive arm end-effector. As shown in Fig. 4(a), for a critically damped (CD) arm with a 2.5 kg load, using joint stiffness values k = {5, 15 , 5}⊤ [Nm /rad] and damping values c = {2.7, 2.7, 2.7}⊤ [Nms /rad] . The analytical model captures the simulated response with a magnitude match of approximately 75% . The largest mismatch appears at high frequencies, outside the range of locomotion-induced excitation analyzed in this work; therefore, it does not affect the resonance analysis around the gait fundamental frequency and its harmonics. This result supports the use of the reduced transfer-function model to analyze the dominant effect of the passive subsystem on ZMP variations and motivates the damping-condition study presented in Sec. IV. Using the validated analytical model, we compare how different damping conditions affect the ZMP response. Figure 4(b) reports the Bode magnitude of the transfer function in (11) for a 2.5 kg load under UD (blue), CD (green) and OD (orange) conditions. The UD configuration exhibits a clear magnitude peak around 1 Hz , showing that force components near the natural frequency of the passive arm-load subsystem are amplified in the resulting ZMP displacement. In contrast, the CD configuration lies at the boundary between oscillatory and non-oscillatory behavior and therefore does not exhibit a resonant peak. The OD configuration also avoids resonant amplification in the frequency range of interest, although the increased damping changes the high-frequency force-to-ZMP 10 −1 10 0 10 1          
+
+> −100
+> −50
+> |GZMP |
+> [dB ] (a)
+> Analytical model Chirp
+> 10 0
+> −100
+> −50
+> Mag. [dB]  (b)
+> Under damped Critically damped Over damped
+> 10 0
+> 0.0
+> 0.5
+> |F{ ax}| [m/s2] (c)
+> 10 0
+> Frequency [Hz]
+> 0.00
+> 0.25
+> |F{ ay }| [m/s2] (d) back-diagonal circular
+> Fig. 4: From top to bottom: (a) analytical ZMP transfer-function validation against MuJoCo chirp data for a CD arm with a 2.5 kg load; (b) Bode magnitude for a 2.5 kg load under underdamped (UD),CD and overdamped (OD) regimes; (c)-(d) FFT magnitude of horizontal base accelerations, axand ay, for back-diagonal and circular crawl gaits.
+
+transmission. For this reason, the comparison focuses on the locomotion-relevant frequencies shown in Fig. 4, where gait-induced excitation can overlap with the UD resonance. 
+
+B. Frequency response of the theoretical model 
+
+The transfer-function analysis above assumes a fixed robot base. During locomotion, however, legged robots may generate periodic base and arm excitation due to gait patterns or repetitive step cycle frequency and duty factor [28]. These periodic motions introduce harmonic components into the coupled robot payload dynamics. To connect the frequency-domain model with locomotion-induced excitation, we analyze the horizontal base accelerations using Fast Fourier Transform (FFT) analysis [29]. Base accelerations are used because they directly capture the motion of the robot body and therefore the excitation transmitted to the passive payload-interface subsystem. We consider two crawl gait patterns: back-diagonal crawl (Left Front (LF)-Right Hind (RH)-Right Front (RF)-Left Hind (LH)) and circular crawl (LF-RF-RH-LH) , where the sequences denote the swing-leg order. In a crawl gait, only one leg at a time is in swing while the remaining legs stay in contact, resulting in a statically stable low-speed walking pattern. The two crawl configurations differ only in the leg swing order: the back-diagonal crawl produces a stronger back-and-forth excitation along the sagittal direction, as the leg in swing alternate along a diagonal pattern between the fronts and rear legs, whereas the circular crawl progresses clock-wise and yields a smoother transversal excitation. These two gaits are selected because they generate different dominant horizontal base-acceleration frequencies while using the same step frequency and duty factor, allowing us to evaluate how locomotion harmonics can excite the passive arm dynamics. Both motions use a step frequency of 0.5 Hz 
+
+and a duty factor of 0.7. The vertical lines in Fig. 4 indicate the locomotion fundamental frequency and its harmonics. The dominant spectral peak appears at 0.5 Hz , corresponding to the locomotion frequency. Higher harmonics are also clearly visible. In particular, both gaits exhibit significant energy near 
+
+1 Hz , corresponding to the second harmonic of the locomotion cycle. The two crawl patterns differ in their spectral distribution, especially in the forward direction, reflecting differences in base motion generation and contact sequencing. This observation is particularly relevant when compared with the transfer function analysis in Fig. 4(b), where the resonance of the payload-interface subsystem appears at approximately 1 Hz .This alignment indicates that the passive arm can be strongly excited when its natural frequency is close to a locomotion harmonic frequency. This analysis shows that the interface stiffness and damping should be chosen to avoid resonance with locomotion harmonics. In particular, CD configurations reduce resonance amplification while avoiding the sluggish response associated with OD behavior, making them better suited for stable payload carrying. More generally, any payload-interface mechanism with a natural frequency near locomotion harmonics may induce amplified ZMP oscillations, that could lead to unstable locomotion. These insights motivate the next section, where we qualitatively analyze the impact of different damping parameters on locomotion stability in simulation. IV. S IMULATION ANALYSIS OF DAMPING CONDITIONS 
+
+The simulations and hardware validation use the PACC platform [7]: a 23 kg Unitree Aliengo quadruped equipped with a 1.5 kg passive arm mounted on the front of the robot’s torso. The arm consists of three unactuated joints with mechanical spring-damper elements, whose positions are measured with encoders. The external wrench at the passive arm end-effector is estimated online using a momentum observer based on the measured arm joint states and known spring-damper parameters, avoiding the need for a force/torque sensor. All simulations are conducted in MuJoCo using a back-diagonal crawl (LF-RH-RF-LH) and a desired longitudinal speed of 0.1 m /s. This gait is selected since Sec. III showed that it produces stronger sagittal base excitation. To isolate the effect of passive-arm damping, this section uses the nominal SRBD-MPC controller from [7], while varying only the damping configuration of the passive arm, tested in three configurations: UD, CD, OD. The MPC enforces contact feasibility and the augmented ZMP stability constraint along the prediction horizon. The ZMP constraint requires the predicted ZMP to remain inside the support polygon with a desired minimum margin of 0.04 m .Such a constraint is softened using slack variables to avoid solver failure in conditions where the ZMP can no longer be fully representative, e.g. rough terrains. This approximation allows for temporary violations of the desired margin, but the resulting ZMP-margin distributions are still a valid metric to compare how each damping configuration affects locomotion stability. 
+
+A. ZMP Margin Distributions Under Damping Variations 
+
+Figure 5(a) reports the ZMP margin distributions on flat terrain for the three damping conditions and payload masses. 0
+
+0.05 
+
+0.1 
+
+0.15 
+
+> ZMP Margin [m]  (a)
+
+UD CD OD UD CD OD UD CD OD 
+
+Impedance Settings 
+
+-0.2 
+
+-0.1 
+
+0
+
+0.1 
+
+0.2   
+
+> ZMP Margin [m]  (b) 2.5[kg] 5[kg] 8[kg]
+> Fig. 5: Violin plots of the ZMP margin for a single quadruped carrying different payloads on flat (a) and rough terrain (b) under three impedance regimes: UD, CD, and OD.
+
+The desired margin threshold is shown by the dotted horizontal line at 0.04 m . Therefore, distributions concentrated above the dash-dotted line indicate stable locomotion with sufficient margin, while long lower tails indicate that the ZMP frequently approaches or crosses the support-polygon boundary. For the 
+
+2.5 kg payload, all three damping conditions remain mostly above the desired threshold, showing that the load-induced inertial forces are still limited. As the payload increases to 
+
+5 kg and 8 kg , the damping condition has a clearer effect. The UD case develops wider distributions and longer lower tails, meaning that arm oscillations more frequently reduce the ZMP margin. In contrast, the CD case remains more compact and is mostly concentrated above the threshold, indicating more consistent margin variation. The OD case also reduces oscillations, but shows more dispersed margins at higher payloads, consistent with its slower response. Figure 5(b) shows the same comparison on rough terrain. Since the contact feet are not necessarily coplanar, the ZMP margin is computed after projecting the foot contacts onto a reference plane. Thus, the rough-terrain margin should be interpreted as a projected stability indicator rather than an exact dynamic stability certificate. Under this common metric, the same trend is observed: UD produces the largest spread and deepest lower tails, especially for higher payloads, while CD provides the most consistent margins above the desired threshold. These trends directly reflect the frequency-domain analysis in Sec. III. As shown in Fig. 4(b), the UD configuration has a pronounced resonance peak near 1 Hz , while the CD and OD configurations exhibit smoother responses. Since the crawl gait contains excitation near this frequency, as shown in Fig. 4(c), the UD arm is more strongly excited during locomotion. The resulting oscillations generate larger force and moment variations at the robot base, which appear in Fig. 5 as wider ZMP-margin distributions and deeper lower tails. As expected, the CD configuration attenuates this resonant response, producing more compact distributions and larger margins over the gait cycle. V. I MPEDANCE AUGMENTED MPC The previous sections showed that passive payload-interface dynamics amplify oscillations when excited by locomotion harmonics, reducing the ZMP margin and affecting the robot stability. This motivates a controller that explicitly predicts the passive arm-payload dynamics instead of compensating their effect as external disturbances, as done in [7]. We therefore introduce an impedance-augmented MPC formulation for legged robot payload carrying. The controller extends the standard SRBD dynamics model with the passive spring-damper subsystem dynamics, allowing the MPC to account for oscillatory payload-interface forces when optimizing the ground reaction forces. We first present the augmented dynamics, then validate the resulting arm-aware MPC (ARMPC) controller in simulation and on a real robot. 
+
+A. Augmented SRBD model with passive element dynamics 
+
+We consider a floating-base quadruped robot coupled to a passive spring-damper arm, as shown in Fig. 3. The full system dynamics can be decomposed into two coupled components: the floating-base dynamics of the robot and the passive dynamics of the arm. This decomposition makes explicit how the spring-damper behavior of the interface enters the robot dynamics and affects the forces transmitted to the base. In contrast to the standard SRBD model, which neglects any limb dynamics, our formulation allows the MPC to account for the effect of the stiffness, damping, and payload mass when computing the ground reaction forces. In the implementation used in this work, the payload-interface subsystem corresponds to the passive arm mounted on the quadruped robot. Using generalized coordinates, the coupled dynamics of the floating base and the passive arm can be written as: 
+
+ Mb Mbs 
+
+Msb Ms
+
+  ˙νb
+
+˙νs
+
+
+
++
+
+hb
+
+hs
+
+
+
++
+
+06×6 00 KN
+
+  qb
+
+qs − qs, 0
+
+
+
++
+
+06×6 00 CN
+
+  νb
+
+νs
+
+
+
+=
+
+ w0N
+
+
+
++
+
+ 06
+
+−J⊤ 
+
+> s
+
+fe
+
+
+
+.
+
+(12) Here, qb and νb denote the floating-base pose and spatial velocity, while qs and νs describe the N -dimensional passive subsystem coordinates and velocities. Their time derivatives, 
+
+˙νb and ˙νs, are the corresponding generalized accelerations. The matrices Mb and Ms represent the reduced base and passive-subsystem inertias, while Mbs and Msb capture the inertial coupling between the robot base and the passive subsystem. The vectors hb and hs collect the gravity and configuration-dependent bias terms retained in the reduced model. As in standard SRBD-based MPC, full velocity-dependent articulated-body effects are not modeled explicitly. The wrench w = [ P 
+
+> i
+
+fi, P 
+
+> i
+
+pi × fi]T is generated by the ground reaction forces, where fi is the force at the i-th stance foot and pi is the vector from the robot CoM to the corresponding contact point. The matrices KN , CN ∈ RN ×N
+
+encode the passive stiffness and damping, and qs, 0 is the passive subsystem rest configuration. The term JTs fe maps the estimated end-effector interaction force into the passive subsystem generalized coordinates, with the sign following the convention in (12) . The resulting Optimal Control Problem (OCP) retains the same cost and constraints terms as in [7], but augments the state with the passive subsystem coordinates and velocities, while the control inputs remain the ground reaction forces. The cost, in our implementation, also includes a regularization term for the arm’s joint position and velocity, and a tracking term to follow a desired end-effector position. −0.1  
+
+> 0.0
+> 0.1
+> Eef - Y [m]
+> 0510
+
+Time [s]   
+
+> 0.0
+> 0.5
+> q1 [rad]
+> −0.025 0.000 0.025
+
+Eef - Y [m]   
+
+> 0.300
+> 0.350
+> 0.400
+> 0.450
+> Eef - Z [m]
+> Actual Desired
+> Fig. 6: Simulation results for passive-arm end-effector tracking. Left: lateral y-axis tracking with the corresponding passive arm joint motion
+> q1. Right: circular tracking in the lateral-vertical ( y-z) plane. Dashed and solid lines denote desired and measured trajectories, respectively.
+
+B. Comparison Against the Nominal Controller 
+
+To evaluate ARMPC, we compare it with the controller introduced in [7], referred here as the Nominal controller. This baseline estimates the end-effector interaction forces and compensates for their effect to the robot base, imposing, in the MPC dynamics, a fixed disturbance wrench. Both controllers are tested in MuJoCo while the robot carries a 
+
+2 kg payload attached to the passive arm. Considering the arm mass of 1.5 kg , the combined arm-payload load represents approximately 20% of the robot mass applied at the front of the body. In ARMPC, the arm-payload subsystem is included in the prediction model through the augmented passive dynamics, whereas the Nominal controller treats its effect as a fixed external disturbance applied at the base. The robot is tasked to perform a back-diagonal crawl gait with a forward velocity of 
+
+0.1 m /s. Three scenarios are considered: nominal flat-terrain locomotion, impulsive perturbations at the passive arm end-effector, and sinusoidal end-effector force excitation. The disturbance forces are not modeled in either controller, but are applied along the world-frame x-axis to evaluate the controller’s robustness to unmodeled disturbances. Each disturbance is a 30 N force pulse lasting 0.2 s , corresponding to 6 N s per pulse and 48 N s over eight pulses. The sinusoidal excitation has an amplitude of 20 N and frequency 1 Hz . Performance is evaluated using the percentage of ZMP-margin violations, root-mean-square (RMS) base pitch and roll, and horizontal ground reaction force (GRF) effort. The violation percentage measures how often the ZMP margin falls below the desired threshold, while RMS pitch and roll quantify base attitude ARMPC Nominal        
+
+> -0.10
+> 0
+> 0.04
+> 0.15
+> ZMP Margin [m]
+> 0.00 0.25 0.50 0.75 1.00 1.25 1.50 1.75
+> Time [s]
+> 10
+> 20
+> 30
+> |F | [N]
+
+Release Fig. 7: Hardware pull-release experiment with a 2 kg payload. The plots show ZMP margin and external force magnitude. The orange shaded region highlights the pull phase, the vertical line coincides with the nominal-controller failure. Left: ARMPC; right: nominal MPC. 
+
+variations. The GRF effort captures the magnitude of corrective horizontal forces required for stabilization during locomotion. Table I shows that ARMPC reduces ZMP-margin violations across all scenarios and consistently lowers the required horizontal GRF effort. Base attitude variations are also generally reduced, although not uniformly across all components. The largest reduction occurs in the sinusoidal excitation case, where violations decrease by a factor of 10. These results TABLE I: Performance comparison between the Nominal controller and the proposed ARMPC.                                    
+
+> Scenario Ctrl Viol. [%] Pitch [deg] Roll [deg] ∥fxy ∥[N] Flat ARMPC (Our) 0.9 1.01 1.45 26.8
+> Nominal 6.4 3.50 1.64 30.4 Impulse ARMPC (Our) 1.6 1.51 2.21 28.7
+> Nominal 12.7 3.28 1.42 29.9 Sin 20 N ARMPC (Our) 0.7 1.24 0.98 20.5
+> Nominal 7.0 2.83 1.32 23.2
+
+demonstrate the advantage of explicitly including the passive arm dynamics within the MPC prediction model. While a full whole-body model could describe this coupling in greater detail, it would also increase the optimization complexity and make real-time implementation more challenging. Instead, ARMPC preserves the standard SRBD simplicity while augmenting it only with the passive subsystem dynamics that dominate the payload-interface coupling. This enables the controller to predict oscillatory arm-induced forces that are absent from the nominal model, reducing corrective ground reaction forces and improving robustness under disturbances. 
+
+C. End-Effector Task 
+
+ARMPC can also exploit the passive arm dynamics for end-effector tracking. With a 2 kg payload attached to the arm, the controller can track both a sinusoidal and a circular end-effector reference motion, as shown in Fig. 6. As the bottom left plot in Fig. 6 shows, the ARMPC exploits the passive joints to track the reference sinusoidal motion, achieving a RMS error of 0.01 m , while with the circular trajectory achieves RMS errors of 0.01 m along the y-axis and 0.04 m along the z-axis. These results show that the augmented model can also exploit passive joints for more accurate task execution. 
+
+D. Hardware Validation 
+
+After validating the proposed controller in simulation, we assess its real-world performance on a Unitree Aliengo, a 23 kg 
+
+torque-controlled quadruped robot equipped with our custom passive arm. The floating-base state used by the controller is estimated from the robot proprioceptive sensors in [30], while the passive arm joint positions are measured with encoders. The hardware validation focuses on a pull-release experiment during payload carrying, designed to evaluate disturbance rejection and robustness under external perturbations. In this test, the arm is manually pulled and released while the robot performs a forward crawl gait, exciting the coupled arm-load dynamics analyzed in the previous sections. Two payload conditions are evaluated: an unloaded passive arm and a 2 kg payload attached to the arm. The loaded pull-release test is shown in Fig. 7. In both cases, the arm is manually pulled for approximately 2 to 
+
+5 s and then released, exciting all passive joints. This multi-axis excitation triggers the locomotion-interface coupling discussed in Sec. III, which can reduce stability if not explicitly modeled. In the unloaded case, both the nominal MPC and the proposed ARMPC exhibit comparable behavior, as expected due to the limited coupling introduced by the arm alone. With the 2 kg 
+
+loaded case, the difference between controllers becomes more pronounced. The Nominal controller fails to complete the pull-release experiment, losing stability during the release phase. In contrast, ARMPC maintains stable locomotion throughout all the trials. To provide a fair quantitative comparison, both controllers are evaluated over matched time windows with similar disturbance profiles, as shown in Fig. 7. Although the average ZMP margin remains similar ( 0.08 vs. 0.075 ), ARMPC keeps the margin above the 0.04 m threshold for a larger portion of the experiment ( 82% vs. 70% ) and reduces the peak horizontal ground reaction force (GRF) effort by 15% .The snapshots further show that the Nominal controller loses stability when the ZMP margin becomes negative, whereas ARMPC maintains positive margins under sustained excitation. Additional hardware results are shown in the accompanying video. VI. CONCLUSIONS This paper presented a ZMP-based modeling and control approach for legged robots carrying payloads through passive interfaces. By extending the ZMP formulation with passive mass-spring-damper dynamics, we related interface stiffness, damping, and payload mass to locomotion stability and showed that locomotion harmonics can align with passive-interface resonance. This suggests that arm impedance and gait strategy cannot be treated as fully independent aspects of payload-carrying locomotion. Based on this insight, we proposed an impedance-aware MPC that augments the model with passive subsystem dynamics. In simulation, the controller reduced ZMP stability violations by up to an order of magnitude and lowered horizontal ground reaction force effort by up to 15% .Hardware experiments with a 2 kg payload showed that the proposed controller maintained stable locomotion in conditions where the nominal controller failed. Our new formulation also enables passive end-effector tracking, exploiting the passive arm dynamics. Future work will investigate online adaptation of the passive-interface parameters, richer whole-body models enabled by fast GPU-based solvers [31], and extensions to robot-robot and human-robot collaborative carrying using distributed optimization methods [32]. REFERENCES [1] D. Sirintuna, I. Ozdamar, and A. Ajoudani, “Carrying the uncarriable: A deformation-agnostic and human-cooperative framework for unwieldy objects using multiple robots,” in 2023 IEEE Int. Conf. on Robotics and Automation (ICRA) . IEEE, 2023, pp. 7497–7503. [2] F. Kennel-Maushart and S. Coros, “Payload-aware Trajectory Optimisa-tion for Non-holonomic Mobile Multi-robot Manipulation with Tip-Over Avoidance,” IEEE Robotics and Automation Letters , pp. 1–8, 2024. [3] F. Caccavale, G. Giglio, G. Muscio, and F. Pierri, “Cooperative impedance control for multiple uavs with a robotic arm,” in 2015 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) , 2015, pp. 2366–2371. [4] Z. Wang, S. Singh, M. Pavone, and M. Schwager, “Cooperative Object Transport in 3D with Multiple Quadrotors Using No Peer Communication,” in 2018 IEEE Int. Conf. on Robotics and Automation (ICRA) . IEEE, May 2018, pp. 1064–1071. [5] M. Risiglione, V. Barasuol, D. G. Caldwell, and C. Semini, “A whole-body controller based on a simplified template for rendering impedances in quadruped manipulators,” in 2022 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) , 2022, pp. 9620–9627. [6] R. Parosi, M. Risiglione, D. G. Caldwell, C. Semini, and V. Barasuol, “Kinematically-decoupled impedance control for fast object visual servoing and grasping on quadruped manipulators,” in 2023 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) , 2023, pp. 1–8. [7] G. Turrisi, L. Schulze, V. S. Medeiros, C. Semini, and V. Barasuol, “Pacc: A passive-arm approach for high-payload collaborative carrying with quadruped robots using model predictive control,” in 2024 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) , 2024, pp. 11 139–11 146. [8] C. Yang, G. N. Sue, Z. Li, L. Yang, H. Shen, Y. Chi, A. Rai, J. Zeng, and K. Sreenath, “Collaborative Navigation and Manipulation of a Cable-Towed Load by Multiple Quadrupedal Robots,” IEEE Robotics and Automation Letters , vol. 7, no. 4, pp. 10 041–10 048, 2022. [9] J. Kim, R. T. Fawcett, V. R. Kamidi, A. D. Ames, and K. A. Hamed, “Layered Control for Cooperative Locomotion of Two Quadrupedal Robots: Centralized and Distributed Approaches,” IEEE Transactions on Robotics , vol. 39, no. 6, pp. 4728–4748, 2023. [10] C. D. Bellicoso, K. Kramer, M. Stauble, D. Sako, F. Jenelten, M. Bjelonic, and M. Hutter, “ALMA - Articulated Locomotion and Manipulation for a Torque-Controllable Robot,” in 2019 Int. Conf. on Robotics and Automation (ICRA) . IEEE, 2019, pp. 8477–8483. [11] I. Dadiotis, M. Mittal, N. Tsagarakis, and M. Hutter, “Dynamic object goal pushing with mobile manipulators through model-free constrained reinforcement learning,” in 2025 IEEE Int. Conf. on Robotics and Automation (ICRA) , 2025, pp. 13 363–13 369. [12] B. Pandit, A. Gupta, M. S. Gadde, A. Johnson, A. K. Shrestha, H. Duan, J. Dao, and A. Fern, “Learning decentralized multi-biped control for payload transport,” in Proceedings of The 8th Conf. on Robot Learning ,vol. 270, 2025, pp. 1021–1034. [13] G. C. R. Bethala, H. Huang, N. Pudasaini, A. M. Ali, S. Yuan, C. Wen, A. Tzes, and Y. Fang, “H2-compact: Human-humanoid co-manipulation via adaptive contact trajectory policies,” in 2025 IEEE-RAS 24th Int. Conf. on Humanoid Robots (Humanoids) , 2025, pp. 1004–1011. [14] T. An, F. D. Vincenti, Y. Ma, M. Hutter, and S. Coros, “Collaborative Loco-Manipulation for Pick-and-Place Tasks with Dynamic Reward Curriculum,” 2025. [15] B. Pandit, A. K. Shrestha, and A. Fern, “Multi-quadruped cooperative object transport: Learning decentralized pinch-lift-move,” 2026. [Online]. Available: https://arxiv.org/abs/2509.14342 [16] F. Vincenti and S. Coros, “Centralized Model Predictive Control for Collaborative Loco-Manipulation,” in Robotics: Science and Systems XIX . Robotics: Science and Systems Foundation, 2023. [17] J. Kim and K. Akbari Hamed, “Cooperative Locomotion Via Supervisory Predictive Control and Distributed Nonlinear Controllers,” Journal of Dynamic Systems, Measurement, and Control , vol. 144, no. 3, p. 031005, 2022. [18] M. Vukobratovi ´c and B. Borovac, “ZERO-MOMENT POINT — THIRTY FIVE YEARS OF ITS LIFE,” Int. Journal of Humanoid Robotics , vol. 01, no. 01, pp. 157–173, 2004. [19] S. Caron, A. Kheddar, and O. Tempier, “Stair Climbing Stabilization of the HRP-4 Humanoid Robot using Whole-body Admittance Control,” in 
+
+ICRA 2019 - 36th IEEE Int. Conf. on Robotics and Automation (ICRA) ,2019, pp. 277–283. [20] C. D. Bellicoso, F. Jenelten, C. Gehring, and M. Hutter, “Dynamic Loco-motion Through Online Nonlinear Motion Optimization for Quadrupedal Robots,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 2261– 2268, 2018. [21] D. J. Agravante, A. Sherikov, P.-B. Wieber, A. Cherubini, and A. Kheddar, “Walking pattern generators designed for physical collaboration,” in 2016 IEEE Int. Conf. on Robotics and Automation (ICRA) . IEEE, 2016, pp. 1573–1578. [22] D. J. Agravante, A. Cherubini, A. Sherikov, P.-B. Wieber, and A. Kheddar, “Human-Humanoid Collaborative Carrying,” IEEE Transactions on Robotics , vol. 35, no. 4, pp. 833–846, 2019. [23] Q. Zhong, Y. Li, C. Zheng, and T. Shen, “Humanoid Robot Cooperative Motion Control Based on Optimal Parameterization,” Frontiers in Neurorobotics , vol. 15, p. 699820, 2021. [24] L. Hawley and W. Suleiman, “Control framework for cooperative object transportation by two humanoid robots,” Robotics and Autonomous Systems , vol. 115, pp. 1–16, 2019. [25] N. Rathod, A. Bratta, M. Focchi, M. Zanon, O. Villarreal, C. Semini, and A. Bemporad, “Model predictive control with environment adaptation for legged locomotion,” IEEE Access , vol. 9, pp. 145 710–145 727, 2021. [26] A. Rigo, J. Ma, N. Chun, S. K. Gupta, and Q. Nguyen, “Hierarchical control framework for collision-free collaborative loco-manipulation of large and heavy objects,” in 2025 IEEE 21st Int. Conf. on Automation Science and Engineering (CASE) , 2025, pp. 333–338. [27] E. Todorov, T. Erez, and Y. Tassa, “Mujoco: A physics engine for model-based control,” in 2012 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) , 2012, pp. 5026–5033. [28] P. Gonz ´alez-de Santos, E. Garcia, and J. Estremera, Quadrupedal Locomotion: An Introduction to the Control of Four-legged Robots .Springer-Verlag, 2006. [29] E. O. Brigham, The fast Fourier transform and its applications . Prentice-Hall, Inc., 1988. [30] Y. Nistic `o, J. C. V. Soares, L. Amatucci, G. Fink, and C. Semini, “Muse: A real-time multi-sensor state estimator for quadruped robots,” IEEE Robotics and Automation Letters , vol. 10, no. 5, pp. 4620–4627, 2025. [31] L. Amatucci, J. Sousa-Pinto, G. Turrisi, D. Orban, V. Barasuol, and C. Semini, “Primal-dual ilqr for gpu-accelerated learning and control in legged robots,” IEEE Robotics and Automation Letters , vol. 11, no. 1, pp. 1010–1017, 2026. [32] L. Amatucci, G. Turrisi, A. Bratta, V. Barasuol, and C. Semini, “Accel-erating model predictive control for legged robots through distributed optimization,” in 2024 IEEE/RSJ Int. Conf. on Intelligent Robots and Systems (IROS) . IEEE, 2024, p. 12734–12741.

@@ -1,0 +1,1834 @@
+Title: ExoTraj: A General Lower-limb Exoskeleton Assistance Policy for Complex Environments
+
+URL Source: https://arxiv.org/pdf/2606.16876v1
+
+Published Time: Tue, 16 Jun 2026 02:45:42 GMT
+
+Number of Pages: 28
+
+Markdown Content:
+# ExoTraj : A General Lower-limb Exoskeleton Assistance Policy for Complex Environments 
+
+> Journal Title XX(X):1–28 ©The Author(s) 2026 Reprints and permission: sagepub.co.uk/journalsPermissions.nav DOI: 10.1177/ToBeAssigned www.sagepub.com/
+
+SAGE 
+
+Xiao-Yin Liu 1,2 , Guotao Li 1,2 , Long Sun 4, Xu Liang 4 and Zeng-Guang Hou 1,2,3 
+
+Abstract 
+
+Adaptive torque prediction in dynamic exoskeleton scenarios requires expensive motion capture systems, which are infeasible in complex outdoor environments. Trajectory prediction has emerged as one of the effective approaches to address such an issue. However, the core challenges of exoskeleton trajectory prediction are twofold: 1) establishing the mapping from multi-modal features to trajectory information; 2) constructing the mapping from trajectory to torque. For the former, most existing methods perform only single-step prediction in dynamic scenarios and neglect inter-subject trajectory variability, thereby limiting the trajectory optimization space and prediction generalization. To address this, this paper proposes a fast flow matching (FM) method that enables accurate trajectory prediction and better generalization with accelerated inference for real-time performance, where trajectory generation errors and encoded observations are used to guide the training direction. For the second challenge, due to the high dynamics of the human-robot system and the strong coupling between perception and control, simple control methods struggle to achieve efficient assistance based on the predicted trajectory. This paper utilizes model predictive control (MPC) and designs a novel optimization objective to optimize torque, ensuring the exoskeleton achieves comfortable and robust assistance. By integrating the above two components, the unified policy, denoted as ExoTraj , is developed to enable adaptive assistance in complex outdoor scenarios without high data acquisition cost. Experimental results show that compared to traditional methods, 
+
+ExoTraj reduces cross-subject prediction error by 14 .0% during the online phase and maintains robustness against external noise. Relative to the zero torque condition, ExoTraj decreases metabolic rate by 11 .5% ∼ 24 .4% , heart rate by 1.7% ∼ 19 .5% , and peak muscle activation levels by 10 .9% ∼ 41 .3% , respectively. This progress facilitates the deployment of exoskeletons toward viable community-wide adoption. Project page: ExoTraj. 
+
+Keywords 
+
+Exoskeleton robot; Unstructured terrain assistance; Trajectory prediction; Real-time robust control 
+
+1 Introduction 
+
+With the global aging population continuously expanding, the number of individuals with impaired walking abili-ties and stroke-related conditions is steadily increasing. Exoskeleton robots have emerged as a promising solution to support elderly care (Slade et al. 2022). When the assistance provided by exoskeletons aligns with the user’s movement intention, it can effectively enhance walking capacity in older adults and improve rehabilitation outcomes for stroke patients. Although exoskeleton robots have been deployed in relatively structured and controlled clinical environ-ments, their application remains challenging in complex and dynamic outdoor scenarios (Molinaro et al. 2024a). There-fore, recent research has focused on deploying exoskeletons in complex real-world environments. 
+
+1.1 Key Challenges for Complex Environments 
+
+To enhance adaptability in complex environments, data-driven methods have been widely adopted for exoskeleton control. Currently, data-driven approaches can be broadly categorized into two main types: reinforcement learning (RL) based methods (Luo et al. 2024, 2023; Karimi and Ahmadi 2025) and multi-modal information fusion-based methods (Molinaro et al. 2024b,a; Divekar et al. 2024). Reinforcement learning-based methods train exoskeleton control policies through online interactions in simulated environments before transferring them to physical systems (Luo et al. 2023). These approaches heavily rely on high-fidelity environmental simulations and accurate muscu-loskeletal models (Luo et al. 2024). However, training high-dimensional musculoskeletal models to achieve human-like walking across diverse terrains remains a highly challenging problem, which limits the potential of RL in exoskeleton applications. On the other hand, multimodal information fusion-based methods integrate user motion state and exoskeleton    
+
+> 1The State Key Laboratory of Multimodal Artificial Intelligence Systems, Institute of Automation, Chinese Academy of Sciences, China
+> 2The School of Artificial Intelligence, University of Chinese Academy of Sciences, China
+> 3CASIA-MUST Joint Laboratory of Intelligence Science and Technology, Institute of Systems Engineering, Macau University of Science and Technology, China.
+> 4The School of Automation and Intelligence, Beijing Jiaotong University, China
+> Corresponding authors:
+> Guotao Li and Zeng-Guang Hou Email: guotao.li@ia.ac.cn and zengguang.hou@ia.ac.cn
+> Prepared using sagej.cls [Version: 2017/01/17 v1.20]
+> arXiv:2606.16876v1 [cs.RO] 15 Jun 2026 2Journal Title XX(X)
+
+state information to predict human movement intentions, thereby enabling accurate assistance (Molinaro et al. 2024a,b). This class of methods holds promise for exoskeleton assistance in complex task environments. The aforementioned method focuses on torque prediction, which relies on expensive motion capture systems (foot pressure plates are costly). However, deploying these systems in complex outdoor scenarios is impractical. To enhance the adaptability of exoskeletons in outdoor environments, it is necessary to develop a low-cost data acquisition scheme and a corresponding control framework. In particular, human walking trajectory information, such as angle or angular velocity, is readily available in complex outdoor environments. Therefore, this paper aims to adopt ahierarchical control framework: i) the high-level controller predicts human joint trajectories (mapping from multi-modal features to trajectory); ii) the low-level controller optimizes motor torque output to track the desired trajectory (mapping from trajectory to torque). For the high-level controller (trajectory prediction in complex environments), existing research has predominantly focused on single-step prediction (Zhang et al. 2026; Xiong et al. 2026), which suffers from several pronounced limitations: the short prediction horizon is insufficient to compensate for the mechanical system’s response delay (Yi et al. 2021); the limited information cannot support trajectory-based optimization control, such as model predictive control (Xu et al. 2025) or impedance control (Chen et al. 2024b); and abrupt prediction changes may lead to discontinuous or uncomfortable assistance. Furthermore, due to the complexity of high-dimensional motion trajectories and the variability in motion patterns across users, supervised learning methods, such as LSTM and TCN, struggle to fully capture the variability in multi-modal data, often leading to low trajectory prediction accuracy and poor generalization. For the low-level controller (torque optimization), due to the strong coupling between sensing and control of direct-drive exoskeletons, simple control methods struggle to achieve robust and comfortable control. The underlying reasons are as follows: Human locomotion is highly dynamic, and the human-exoskeleton system is a tightly coupled dynamical system (Molinaro et al. 2024b). Pronounced mismatches between the predicted trajectories and the actual trajectories give rise to significant torque oscillations in the vicinity of the zero-crossing point, which in turn triggers severe anteroposterior jitter of the exoskeleton. This structural vibration further deteriorates the trajectory prediction performance of the onboard perception network, forming a detrimental positive feedback loop (vicious cycle) that directly impairs the efficacy of the exoskeleton assistance (Xia et al. 2026). Thus, integrating the above high-level and low-level control, two challenges for the exoskeleton to achieve efficient, trajectory-prediction-based assistance in outdoor scenarios can be summarized as follows: 1) Given the high-dimensional output space and user-dependent motion variability, how to effectively fuse multi-modal data from diverse users for accurate and real-time trajectory prediction and better generalization? 2) Given the high dynamicity of human-robot systems and strong perception-control coupling, how can the optimization algorithm be designed for comfort-able and robust exoskeleton control under adaptive dynamic trajectories? 
+
+1.2 Solutions for Key Challenges 
+
+For challenge 1, human trajectory prediction is rooted in imitation learning from human locomotion. Behavior cloning, which only learns the mean trajectory of demonstrations, has limited generalization to individuals with distinct motion distributions, whereas generative methods model the full trajectory distribution and achieve superior performance in high-dimensional outputs and generalization to unseen scenarios (Chi et al. 2023). Generative methods such as diffusion model (Song et al. 2021) and flow matching (FM) (Lipman et al. 2023) have been widely exploited in applications, including robotic manipulation (Ding et al. 2025; Chi et al. 2023) and autonomous driving (Fu et al. 2025). Despite their advantages in generalization, generative approaches have had very limited application in exoskeleton trajectory prediction. Compared with the diffusion model, FM provides a simpler training, as it operates by solving an ordinary differential equation rather than the more complex stochastic differential equation (Ding et al. 2025). To address 
+
+challenge 1, this paper introduces flow matching into exoskeleton trajectory prediction to realize high-level fusion of multi-modal data across different subjects and improve trajectory prediction performance in complex and dynamic environments. The high dynamicity of human locomotion in outdoor sce-narios demands strong real-time performance for trajectory inference. However, FM inherently trains a vector field to solve the underlying ordinary differential equation (ODE), which requires multiple iterative steps to generate the final target and thus incurs excessive inference latency and com-putational overhead (Geng et al. 2025; Frans et al. 2025). To accelerate inference, this paper develops a one-step iterative trajectory generation method that maintains high prediction accuracy while reducing inference latency. Specifically, the error between the trajectory generated in a one-step iter-ation and the ground-truth trajectory is incorporated as a constraint during FM vector field training. This guides the model to generate trajectories that more closely approximate the true trajectories. Then, human-exoskeleton multi-modal information is encoded into a conditional vector to guide vector field training, enabling target locomotion trajectory generation under specific observations. This approach can ensure both real-time performance and high accuracy in trajectory prediction under complex environments. For challenge 2 , the core issue lies in the high dynamics of predicted trajectories and the mutual coupling between perception and control. In dynamic scenarios, most existing works that employ predicted trajectories for exoskeleton assistance use key parameters, such as the amplitude of sinusoidal functions (Lee et al. 2024), dynamic primitive parameters (Chen et al. 2024a), and gait parameters (Tricomi et al. 2025). Due to the low variability of these trajectories, previous control methods can achieve  
+
+> Prepared using sagej.cls
+
+3Fast Flow Matching  
+
+> Encode 𝐜
+
+…
+
+… 
+
+> Noise 𝐱
+
+…      
+
+> Observation 𝐨 Trajectory 𝐲 Model Predictive Control
+> 𝒑 𝟎 𝒑 𝟏 𝒑 𝒔 𝒑 𝒕
+> 𝒗 𝒔 (𝐱)
+> 𝐱
+> 𝐲
+> 𝝍 𝒕 (𝐱)
+> one-step
+
+…       
+
+> Torque a
+> Exoskeleton dynamic model
+> IMU
+> Motor
+> Objective: min
+> 𝐚 Δ𝐞 𝐭
+> 𝐓 𝐔 Δ𝐞 𝐭 +𝐚 𝐭
+> 𝐓 𝐕 𝐚 𝐭
+> Real-time
+> Robust Comfort
+> Figure 1. The framework of the proposed assistance policy
+
+ExoTraj . The process begins by encoding the observation o to guide the learning of the velocity field vt of flow matching, and the one-step iteration enables the rapid generation of joint trajectories 
+
+y. Subsequently, a model predictive control scheme is employed to optimize the motor torque output a for efficient assistance. Ultimately, this pipeline ensures the delivery of safe and comfortable assistance for complex outdoor environments. 
+
+.satisfactory performance; however, they struggle to adapt to tasks with high dynamic characteristics. For adaptive trajectories in dynamic scenarios, the control optimization algorithm must track the desired trajectory while ensuring smooth, comfortable joint torques that align with the user’s motion intention. Model predictive control (MPC) employs receding horizon optimization, which can achieve the aforementioned objective by designing an appropriate cost function. However, the human-robot coupled dynamic model is difficult to accurately describe in mathematical terms, especially the interaction torque. Most existing studies approximate the human-exoskeleton interaction torque via the impedance model (Chen et al. 2024b), but impedance control shares an inherent structural similarity to proportional-integral-derivative (PID) control, and is prone to inducing optimization instability when deployed in outdoor scenarios relying on high-dynamic predicted reference trajectories. Inspired by biomechanical principles, this paper employs joint angular velocity and angular acceleration information to approximate human-exoskeleton interaction torque, so as to guarantee the stability of the optimization process. To ensure the robustness and smoothness of the optimized torque profile, inspired by work (Xu et al. 2026), this paper introduces a dedicated torque penalty term in the MPC optimization cost function to constrain the output torque, thus ensuring the comfort of exoskeleton assistance. 
+
+1.3 Results and Contributions 
+
+Finally, combining the above two core components, a general lower-limb exoskeleton assistance policy, named ExoTraj ,is proposed for complex outdoor environments, with its overall workflow illustrated in Fig. 1. ExoTraj adopts a hierarchical control framework: the high-level controller fuses multi-modal information to achieve accurate and real-time trajectory prediction, while the low-level controller performs real-time torque optimization to realize robust and comfortable control of the exoskeleton. We validate the performance of the proposed policy ExoTraj in complex dynamic outdoor scenarios, with evaluation metrics including trajectory prediction accuracy and generalization, control comfort and robustness, as well as metabolic rate, heart rate, and muscle activation. We acquire multi-modal locomotion data, including measurements from 3 inertial measurement units (IMUs) and 2 drive motors, to train the high-level controller. Experimental results demonstrate that, compared with conventional data-driven methods, the improved FM method achieves a 14 .0% reduction in trajectory prediction error in cross-subject scenarios. MPC-optimized torque trajectory achieves robust and comfortable assistance under different types of external disturbance. Compared to the zero torque condition, the user’s metabolic rate, heart rate, and peak muscle activation level are reduced by 11 .5% ∼ 24 .4% ,
+
+1.7% ∼ 19 .5% , and 10 .9% ∼ 41 .3% , respectively. The policy ExoTraj achieves a trajectory inference time of approximately 5 ms, and the MPC-based torque optimization takes around 2 ms, enabling reliable operation in highly dynamic scenarios. The main contributions of this work can be summarized as follows: 1) A general assistance policy framework, named 
+
+ExoTraj , is proposed for the hip exoskeleton, which can be adapted to diverse terrain and tasks without high data acquisition costs. 2) A novel FM is firstly proposed for exoskeleton tra-jectory prediction, with one-step generation error and observation encoding guiding training, to achieve real-time, accurate prediction, and superior generalization. 3) A new MPC optimization objective is designed for torque optimization, ensuring robust and comfortable control, and enabling real-time adaptive exoskeleton control in dynamic scenarios. The framework of this paper is as follows: Section 2 covers related works in exoskeleton trajectory generation and control. The problem formulation for exoskeleton assistance is defined in Section 3. The proposed trajectory generation algorithm, fast FM, is detailed in Section 4, followed by the torque optimization and exoskeleton control framework in Section 5. Section 6 and Section 7 are dedicated to the experimental procedure and results. The paper concludes this work in the final section. 
+
+2 Related Works 
+
+This section aims to systematically summarize the research work on exoskeleton trajectory prediction and assistive torque generation. Then, we elaborate on the fundamental   
+
+> Prepared using sagej.cls 4Journal Title XX(X)
+
+differences between the proposed ExoTraj framework and existing methods reported in the literature. 
+
+2.1 Trajectory Prediction for Exoskeleton 
+
+Exoskeleton trajectory prediction refers to the task of predicting future multi-step trajectory information in a single forward pass based on historical observed measurements. Traditional artificial intelligence algorithms, such as LSTM and TCN, often struggle with predicting high-dimensional temporal data (trajectory prediction). To reduce the complexity of the trajectory prediction, existing research on exoskeleton trajectory prediction mostly relies on prior analytical models (e.g., dynamic movement primitives (Chen et al. 2024a) and sinusoidal functions (Tricomi et al. 2025)), where only the key model parameters are estimated. However, such methods suffer from poor adaptability to dynamically complex environments. The above methods typically employ a two-stage approach for trajectory prediction. First, in the offline phase, dimensionality reduction techniques such as dynamic movement primitives (DMPs) (Chen et al. 2024a) or probabilistic movement primitives (ProMPs) (Dong et al. 2025; Chen et al. 2024b) are applied to captured motion trajectories to learn key parameters for different types of assistance. Then, in the online phase, multi-modal sensor data are fused to classify the required assistance type, and human-in-the-loop optimization algorithms are used to refine the key parameters (Chen et al. 2024b), thereby generating the desired motion trajectory. Although the methods above can achieve satisfactory performance in scenarios with low dynamics, they often struggle in highly complex and dynamic environments due to their reliance on learning key parameters tailored only to specific static conditions. Furthermore, there exists inherent inter-subject variability in locomotion patterns across different users, as well as intra-subject gait variability when the same individual performs identical locomotion tasks (Molinaro et al. 2024b). Most existing works on lower-limb exoskeleton trajectory prediction have rarely accounted for these variabilities, which may result in limited generalization capability of the trained models. Currently, generative models are capable of efficiently fusing multimodal data and data capturing inherent variabilities, enabling high-fidelity generation of target data (Song et al. 2021; Chi et al. 2023). Therefore, this paper aims to leverage generative models to efficiently fuse multimodal data from diverse subjects and realize real-time, high-precision trajectory prediction in complex, unstructured environments. 
+
+2.2 Torque Generation for Exoskeleton Control 
+
+To ensure satisfactory assistive comfort during human-exoskeleton interaction, the exoskeleton’s assistive control should use a torque-control mode. While joint torque information can be acquired via a motion capture system (Molinaro et al. 2024a), such an approach suffers from prohibitive cost and is infeasible for deployment in complex, unstructured outdoor environments. With accessible joint torque measurements, the neural network can be trained to predict joint torque directly, without the intermediate step of trajectory forecasting (Molinaro et al. 2024b). Accurate ground-truth joint torque measurements are difficult to obtain in unstructured outdoor scenarios. For this reason, most existing approaches rely on joint trajectory prediction (i.e., joint angle and angular velocity) to indirectly generate the required joint torque commands. Existing trajectory-to-torque generation approaches for exoskeletons fall into two primary categories: optimization-based control (e.g., model predictive control (Xu et al. 2025; Xia et al. 2026)) and analytical formula-based control (e.g., PID (Tricomi et al. 2025) and impedance control (Lee et al. 2024)). The first category of approaches consists of optimization-based methods for assistive torque determination. While model predictive control (MPC) has been widely applied to the control of lower-limb exoskeleton robots, the reference trajectories adopted in most existing works are predefined via heuristic rules and have not been implemented in closed-loop dynamic trajectory prediction pipelines. This limitation poses significant challenges to the robustness and optimization performance of MPC in complex unstructured environments. For the second category of approaches, they exhibit limited adaptive capability in trajectory prediction, including typical methods based on sine wave peak prediction (Tricomi et al. 2025), and gait phase division and terrain classification (Lee et al. 2024). While these methods can achieve satisfactory trajectory tracking performance via PID or impedance control, they struggle to adapt to trajectory prediction tasks with high complexity and pronounced dynamic characteristics. (Xiong et al. 2026) computes the torque based on the angular error between the multi-step-ahead predicted angles and the actual measured values. However, the robustness of such a method is difficult to reliably guarantee. Therefore, the aforementioned two categories of approaches are unable to reliably achieve efficient and robust assistance in complex unstructured environments. To address it, this paper develops a novel optimization objective and a dedicated estimation method for human-exoskeleton interaction torque, to realize efficient and adaptive assistive performance for the lower-limb exoskeleton. 
+
+2.3 Comparisons and Advantages of ExoTraj 
+
+This part compares the policy ExoTraj proposed in this paper with state-of-the-art research methods in the field ((Molinaro et al. 2024a,b; Luo et al. 2024; Lee et al. 2024; Scherpereel et al. 2025)), clarifies their core differences, and elaborates on the advantages of ExoTraj 
+
+in practical deployment. Table 1 conducts a comparison of five core dimensions: whether it relies on a motion capture system, whether it depends on a musculoskeletal model, data collection cost, training complexity, and the terrains or tasks to which it is applicable. Molinaro et al. (2024a) and Molinaro et al. (2024b) rely on motion capture systems (MoCaps) and OpenSim to acquire a large corpus of human joint torque data during motor tasks, then train a neural network to achieve one-step-ahead joint torque prediction, enabling high-efficiency assistive control for complex task scenarios. While the adopted network features a relatively straightforward training pipeline, it suffers from prohibitively high data acquisition costs and cannot be readily generalized to complex, unstructured outdoor  
+
+> Prepared using sagej.cls
+
+5                                            
+
+> Table 1. Comparison results against state-of-the-art methods for adaptive lower-limb exoskeleton assistance in outdoor scenarios, where MoCaps denotes motion capture systems and MSK denotes musculoskeletal model.
+> References MoCaps MSK Data Cost Complexity Tasks & Terrains Scenario
+> Molinaro et al. (2024a) !%High Low Level ground, Stair and Ramp Indoor Molinaro et al. (2024b) !%High Low Walk, Run, Jump, Squat, Step up (28 activities) Indoor Scherpereel et al. (2025) !%Low Low Walk, Run, Jump, Squat, Step up (28 activities) Indoor Luo et al. (2024) %!Low High Ground walk, Stair climb and Run Outdoor Lee et al. (2024) %%Low Low Level ground, Stair and Ramp Outdoor
+> Ours (ExoTraj )%%Low Low Run, Rocky climb, Rugged terrain variable-speed walk Outdoor Jump, Squat, Kick (Multiple high-dynamic movements)
+
+environments. Building on the aforementioned MoCaps-based data, Scherpereel et al. (2025) collects unlabeled human motion data to achieve inter-subject generalization and effectively reduces the cost of data acquisition. While this method features a significantly lowered data acquisition burden, its inherent reliance on the foundational MoCap-derived reference data constrains the integration and utilization of complementary multi-sensor modalities. To circumvent the prohibitive cost of joint torque data acquisition, Luo et al. (2024) trains exoskeleton control policies in physics-based simulation environments. However, it relies on high-fidelity musculoskeletal models and elaborate reward function tuning, incurring substantial training overhead. While this method achieves high-efficiency assistive control across locomotion modes, including walking at varying speeds, running, as well as stair ascent and descent, it fails to generalize to assistive control for other complex unstructured terrains. This limitation arises as training a unified high-dimensional musculoskeletal model adaptive to complex terrains remains a long-standing open challenge. Lee et al. (2024) eliminates the need for MoCaps. By fusing kinematic information from IMUs and other onboard sensors, it achieves gait pattern and terrain type recognition, and generates reference joint torques matched to the identified gait and terrain via an impedance model. While this approach features low overhead in data acquisition and model training, it is only suitable for relatively static scenarios such as walking on flat ground and stairs, and exhibits limited adaptability to highly dynamic outdoor environments. The proposed method ExoTraj removes the reliance on the dedicated MoCaps. With the inherent advantages of low data acquisition cost and minimal training computational complexity, it enables robust, high-performance assistive operation in complex and highly dynamic unstructured outdoor environments. In addition to the inherent advantage of low data acquisition cost, ExoTraj presents the following superiorities over existing methods: 1) Excellent cross-platform transferability: It only requires collecting kinematic data from users wearing other exoskeletons with different sensor configura-tions, and can achieve assistance for the target-specific exoskeleton via rapid network retraining. 2) Broad scenario adaptability: Benefiting from the portability of its data acquisition scheme, it enables high-efficiency assistive control in complex outdoor terrains and extreme environments, including rugged terrain and sloped rocky surfaces. 3) Superior control robustness: By adopting a hierar-chical control framework and optimizing joint torques via MPC, it achieves high-efficiency assistive control even in the presence of network prediction deviations and external disturbances. 
+
+3 Task Definition and Problem Formulation 
+
+This section defines the task requirements for the exoskeleton robot implemented in this study and presents the key scientific problems that the paper aims to address. 
+
+3.1 Task Definition 
+
+Robotic exoskeleton systems represent highly coupled human–robot systems. To enhance the assistance perfor-mance of exoskeletons in complex and dynamic outdoor environments, exoskeletons must learn to predict human motion intentions and subsequently provide the correspond-ing assistive actions. To ensure the comfort of human–robot interaction during assistance, it is indispensable to imple-ment a torque-controlled actuation mode for the driving motors. However, deploying expensive motion capture sys-tems outdoors to measure the joint torques associated with human movements is impractical. In contrast, in outdoor environments, the joint trajectories of the user can be directly acquired. Therefore, to reduce data acquisition costs and improve adaptability to complex terrains, this paper aims to predict joint trajectory information and then optimize torque output based on predicted trajectories. The proposed method primarily accomplishes two key tasks: first, it learns the mapping from multi-modal data (denoted as observations ot) to joint trajectory information 
+
+yt; second, it establishes the mapping from joint trajectories 
+
+yt to torque outputs at. The mathematical relationships are described as follows: 
+
+yt = F(ot), at = G(yt), (1) where F(·) and G(·) denote the mapping functions from observations o to joint trajectories y and from joint trajectories y to torque outputs a, respectively. The observation ot = {ot−i}To 
+
+> i=1
+
+∈ RTo×Ho represents the history of the state o over the past To time steps, which consists of measurements from three IMUs and two motors, totaling Ho features. The trajectory yt = {yt+i; ˙yt+i}Tp 
+
+> i=1
+
+∈
+
+RTp×2Hp denotes the sequence of joint angles y and angular velocities ˙y over the future Tp-step prediction horizon, where 
+
+Hp is the number of joints. The torque at = {ut+i}N −1 
+
+> i=0
+
+∈
+
+RN ×Hp corresponds to the sequence of motor torques u,where N is the optimization horizon.  
+
+> Prepared using sagej.cls
+
+6 Journal Title XX(X) Expensive collecting cost 
+
+> Joint trajectory collection
+> Individual motion difference
+> Accurate and real-time prediction
+> High dynamic and coupling
+> Real-time and robust control
+
+(a) (b) (c)  
+
+> Multi-modal data
+> Control
+> Perception
+> Couple
+> Motor
+> IMU
+> Motion capture
+> systems
+> Impractical to
+> deploy outdoors
+> Direct acquisition in
+> complex environments
+> Trajectory
+> Multi-
+> subjects
+> Gait feature
+> Complex
+> terrain
+> Dynamic speed
+> Different distribution
+> Generalization
+> Optimization
+> Source Target
+> Trajectory
+
+… … 
+
+> Torque
+> (a1)
+> (a2)
+> (b1)
+> (b2)
+> (c1)
+> (c2)
+> Figure 2. Schematic overview of problems and solutions for exoskeleton assistance in complex environments. (a) shows that outdoor motion-capture-based data acquisition is cost-prohibitive and infeasible, whereas direct trajectory measurements are readily obtainable. (b) indicates that substantial inter-subject motor variability demands effective fusion of multi-distribution data for real-time, precise cross-subject and cross-task trajectory forecasting. (c) reveals that human-exoskeleton systems are highly dynamic with coupled perception and control, calling for an efficient, robust, and real-time optimization scheme to ensure assistance performance.
+
+.This paper aims to learn the aforementioned two mapping functions, enabling accurate real-time prediction of user motion trajectories and real-time optimization of torque outputs in complex outdoor environments, thereby ensuring the safety and compliance of the assistance. The former requires efficient fusion of multi-modal data from diverse users, while the latter necessitates the formulation of an appropriate optimization objective function. The detailed problem formulation is presented as follows. 
+
+3.2 Problem Formulation 
+
+Most state-of-the-art exoskeletons predominantly rely on single-step prediction (Molinaro et al. 2024a,b; Luo et al. 2024), which involves learning a mapping from observations 
+
+o to torque a. Although the aforementioned methods have demonstrated promising assistance performance in complex tasks, they rely heavily on either expensive motion capture systems (Molinaro et al. 2024a,b) or sophisticated musculoskeletal models (Luo et al. 2024; Karimi and Ahmadi 2025). Motion capture systems are impractical to deploy in dynamic outdoor environments (See Fig. 2 (a)), while musculoskeletal models face substantial challenges in being trained for locomotion over complex terrains. Furthermore, single-step prediction suffers from inherent limitations, including network inference latency and high prediction variance, which inevitably degrade the comfort of robotic assistance. Therefore, this paper aims to learn the two mapping functions defined in Eq. (1), enabling user trajectory prediction in complex scenarios and subsequent torque output optimization, thereby delivering effective assistance. While trajectory prediction for exoskeletons has been extensively investigated, its application to dynamic trajec-tory prediction and adaptive assistance in complex outdoor environments remains largely underexplored. Most existing works that apply trajectory prediction to practical exoskele-ton assistance typically employ dynamic movement primi-tives (DMPs) (Chen et al. 2024a), probabilistic movement primitives (ProMPs) (Chen et al. 2024b; Dong et al. 2025), or predefined functions (Lee et al. 2024) to reduce trajectory dimensionality and predict task-specific parameters. While these approaches have achieved efficient assistance perfor-mance in certain scenarios, they lack sufficient adaptability to handle highly dynamic and complex environments. There-fore, predicting high-dimensional trajectories in complex environments and integrating them into exoskeleton control remains an open and challenging problem. 
+
+1) Learning the map function F(·): Previous deep learning methods for exoskeletons, such as long short-term memory (LSTM), are often inadequate for high-dimensional long-term trajectory prediction. Furthermore, there exists significant inter-user variability in movement patterns and substantial distributional differences in multi-modal data (Liu et al. 2025) (See Fig. 2 (b)). Directly training neural networks with deterministic policies under such conditions often leads to poor generalization performance. Conversely, learning a probabilistic policy F(·) ∼ p(·| ot) ∈ [0 , 1] can enhance policy exploration and thus effectively mitigate this limitation. Generative approaches (Lipman et al. 2023; Song et al. 2021), which learn the probabilistic path from an initial distribution to a target distribution, have been widely adopted to achieve the above goal. The human-exoskeleton system is a highly coupled and highly dynamic system, where the accuracy and real-time performance of trajectory prediction are of paramount importance. Generative methods, such as diffusion model (Song et al. 2021) and flow matching (Lipman et al. 2023), start from a Gaussian distribution and iteratively generate the final target distribution through multiple steps. However, these methods incur substantial inference latency, rendering them unable to meet the stringent real-time prediction requirements of exoskeleton systems. For example, the diffusion model requires approximately 100 denoising steps to generate a trajectory, and the inference time requires approximately 1 s (Ding et al. 2025). Furthermore, compared to FM, diffusion models exhibit significantly higher training complexity. Therefore, the first key challenge is how to effectively incorporate multi-modal data from diverse subjects into FM training, such that accurate trajectory  
+
+> Prepared using sagej.cls
+
+7
+
+prediction can be achieved while preserving stringent real-time inference performance (Solved in Section 4). 
+
+2) Learning the map function G(·): Exoskeleton robots are designed to provide comfortable assistance during complex environmental tasks. Position control schemes are inherently insufficient to achieve this objective. In human-exoskeleton coupled systems, tracking dynamic trajectories using torque control schemes poses significant challenges (See Fig. 2 (c)). This arises from the high dynamicity of human locomotion in complex scenarios, where predicted trajectories exhibit substantial deviations from actual human movements and optimized torque values oscillate significantly near zero. This, in turn, induces exoskeleton chattering and prevents the delivery of effective assistance. Accordingly, the second critical challenge is how to design an optimization objective function that can fully leverage trajectory information and ensure optimization stability, thereby optimizing torque outputs to achieve safe and robust assistance (Solved in Section 5). 
+
+4 Trajectory Prediction in Complex Environments via Fast Flow Matching 
+
+This section begins with an introduction to the fundamental mathematical principles of flow matching. It then presents in detail the architecture and training procedure of the proposed fast FM algorithm, and concludes with a discussion of the deployment specifics, including the network framework and key design choices. 
+
+4.1 Preliminaries for Flow Matching 
+
+Given a sample x ∈ Rd drawn from the known distribution 
+
+psrc and a target sample y ∈ Rd drawn from target distribution ptar . Flow Matching (FM), a framework of a generative model, constructs a probability path (pt)0≤t≤1
+
+between the source distribution psrc = p0 and the target distribution ptar = p1 (Albergo and Vanden-Eijnden 2022). FM can also build a time dependent flow ψt(x) : [0 , 1] ×
+
+Rd −→ Rd between source data x and target data y, where 
+
+ψt(x) ∼ pt and ψ0(x) = x. This flow can be determined by the following ordinary differential equation (ODE) (Lipman et al. 2024): 
+
+dψ t(x)
+
+dt = vt (ψt(x)) , t ∈ [0 , 1] (2) where vt(·) : [0 , 1] × Rd −→ Rd is the time dependent vector field, which is the core of FM and can control the direction of flow path, that is the vector field vt(·) generates flow path 
+
+ψt(·) (or probability path pt(·)) (Tong et al. 2023). The goal of FM is that the output of ψ1(x) is close to the expected value y. Thus, y = ψ1(x) can be regarded as the condition of flow (probability) path. A Gaussian conditional path 
+
+pt(·| y) = N (μt(y), σ 2 
+
+> t
+
+(y)) is usually employed to represent the conditional flow ψt(·| y) and inversely solve for the conditional vector field vt(·| y) (Lipman et al. 2023): 
+
+ψt(z|y) = μt(y) + z · σt(y),vt(z|y) = σ′
+
+> t
+
+(y)
+
+σt(y) (z − μt(y)) + μ′
+
+> t
+
+(y), (3) where μ′
+
+> t
+
+(·) and σ′
+
+> t
+
+(·) are the time derivation of mean μt(·)
+
+and standard deviation σt(·), respectively. z ∈ Rd is the auxiliary variable. Under the following conditions: μ0(y) = 
+
+x and μ1(y) = y, the mean μt(·) and standard deviation 
+
+σt(·) can be simplified to the following form (Tong et al. 2023): 
+
+μt(y) = (1 − t)x + ty, σt(y) = σ, (4) where the standard deviation is a small constant. Then, the conditional vector field vt(·| y) can be derived as: 
+
+vt(·| y) = y − x. (5) During the prediction phase, the true target value y is not known a priori. We want to learn a time-dependent vector field vθ (t, x) parameterized with θ based on the available training data D. The parameters θ can be optimized by minimizing a flow matching loss: 
+
+LFM (θ) = Et,p t(z|y) vθ (x, t ) − vt(z|y) 22, (6) where t ∼ U (0 , 1) and ∥ · ∥ 22 is the squared 2-norm. This loss function is designed to enforce vθ (t, x) to converge toward the ground-truth vector field (Eq. (5)). Once vθ (x, t )
+
+is obtained, given the sample ψ0(x) = x, the final output 
+
+y = ψ1(x) can be derived through T iterative steps based on Eq. (2). The iteration equation can be represented as : 
+
+ψt(x) = ψt−1(x) + ∆ t · vt−1(ψt−1(x)) , where ∆t = 1 /T .While a larger T (finer discretizations of [0 , 1] )improves ODE solution accuracy, it increases inference time for the network-approximated vt, degrading real-time generation performance. Consequently, improving the inference efficiency of FM is critical to robotic real-time control. Moreover, the generation y is based on x ∼ p0,and in most existing works, x follows the distribution 
+
+N (0 , I ). In practical robotic control, the motion trajectory 
+
+y is generated using FM conditioned on the encoder c ∈
+
+Rd of the current observation. Thus, the generation of 
+
+y should be guided by c to ensure task-aware trajectory synthesis. Therefore, effectively integrating observation into the FM framework presents another critical problem in robotic control applications. 
+
+4.2 Fast FM Policy 
+
+To solve the above two critical problems in robotic control for FM, we make two major modifications in the FM formulation: 1) adding the one-step trajectory generation error to the loss function accelerates inference while preserving prediction accuracy; 2) making the generation y
+
+(flow processes) conditioned on the encoder c of the input observation o to guide the vector filed training, where the condition can be denoted as ct = E(ot). In exoskeleton assistance, the observation o ∈ RTo×Ho is multi-modal motion data measured from the IMU and motor, and the generation value y ∈ RTp×2Hp (Tp × 2Hp = d) is the joint trajectory. The proposed method aims to learn the policy distribution p(y|o) ∈ [0 , 1] through FM, that is, learning the map function F(·). The following part provides details of the policy learning.    
+
+> Prepared using sagej.cls 8Journal Title XX(X) 1) Accelerating Inference:
+
+FM generates y through T -step iterations, but it requires a certain inference time during actual prediction. Currently, the majority of acceleration methods for inference focus on reducing the number of iterations T , where T typically denotes the number of function evaluations (NFE). In this work, we also adopt this perspective. For solving the ψ1(x) = y, if the vector field vt
+
+is known, Eq. (2) admits a closed-form analytical solution: 
+
+ψt(x) = ψ0(x) + 
+
+Z t
+
+> 0
+
+vτ
+
+ ψτ (x)dτ. (7) where the true vector field vt is unknown, and the term 
+
+vθ (x, t ) is trained to approximate the true vector field. Due to the highly dynamic nature of exoskeleton robots in outdoor assistive scenarios, this paper aims to train a one-step inference model ( i.e. , NFE = 1 ) to meet the stringent requirement for real-time performance. According to Eq. (7), the final predicted trajectory y can be expressed as 
+
+ˆy = x + vθ (x, 1) . (8) However, directly training the vector field using Eq. (6) leads to significant error in one-step trajectory generation. In image generation, flow matching emphasizes similarity between images across different categories. In contrast, trajectory generation prioritizes predictive accuracy (Fu et al. 2025). To ensure high precision in one-step inference, we integrate the one-step trajectory prediction error into the training of the vector field vθ (x, t ), thereby guiding its optimization process. The corresponding loss function is formulated as follows: 
+
+Lθ = LFM (θ) + α · D(y, ˆy). (9) where LFM (θ) and ˆy are defined in Eq. (6) and Eq. (8), respectively. D(y, ˆy) = Ex,y∥y − ˆy∥22 is a regularization term that measures the error between the true trajectory and one-step generation trajectory. The coefficient α ≥ 0 is a hyperparameter used to trade off the prediction accuracy and generalization. A larger coefficient strengthens the constraint on trajectory accuracy, but it can impede the FM process from accurately learning the true trajectory distribution, thereby compromising the network’s generalization ability. Conversely, an excessively small coefficient facilitates learning of the distribution, but often at the expense of reduced precision in the generated trajectories. Therefore, selecting an appropriate coefficient helps the velocity field maintain its ability to learn the trajectory distribution while further enhancing the precision of trajectory generation. Once vθ (·) is trained, the desired trajectory can be accurately generated with a one step. Please note that the ground-truth trajectory y aligns with the observed values 
+
+o, and the predicted trajectory ˆy should also correspond to these observations. Below, we present the methodology for guiding trajectory generation yt based on observed values 
+
+ot, that is, learning the policy distribution p(yt|ot). 
+
+> 2) Guidance with Observation:
+
+The generation of trajecto-ries is influenced by the vector field vθ (·). This part illustrates how to incorporate the observation o into the training process of the vector field. The vector field guided by the observation 
+
+o can be denoted as v(x, t |c), where c is the encoder of 
+
+Algorithm 1: Fast FM Policy Training & Inference  
+
+> 1:
+
+## Training 
+
+Input: Initial parameters θ, prior distribution 
+
+p0 = N (0 , I ), and the collected dataset 
+
+D = {oi, yi}Ni=1 .
+
+Output: Learned mean vector field parameters θ. 
+
+> 2:
+
+for i = 1 , 2, · · · , N iter do  
+
+> 3:
+
+Sample x ∼ p0, and sample time step t from distribution U . 
+
+> 4:
+
+Encode observation ot, and obtain condition ct. 
+
+> 5:
+
+Calculate the target vector field vtar (·) and the error between the true and one-step generation trajectory.  
+
+> 6:
+
+Update vθ (·) through minimizing Eq. (9).  
+
+> 7:
+
+end for  
+
+> 8:
+
+## One-step Inference 
+
+Input: The learned vector field vθ , the observation o, and prior distribution p0.
+
+Output: Predicted trajectory ˆy. 
+
+> 9:
+
+Sample x ∼ p0 and encode observation c = E(o). 
+
+> 10:
+
+Calculate the predicted trajectory via Eq. (8). the observation o. From the above formulation, time t can also be treated as a conditioning variable of the vector field. Here, both the observed values o and time t are regarded as encoded inputs, and flow matching is utilized to decode the combined conditioning information along with the initial noise x, thereby generating the final trajectory y. Therefore, the trajectory generated under the guidance of observation o
+
+can be expressed as the following two components: 
+
+Henc = EN Et(t), Eo(o) ,Hdec = DE Ex(x), H enc . (10) where EN (·) and DE (·) represent the encoding of the conditioning inputs and the decoding of the trajectory, respectively. The encoder and decoder are both based on the transformer architecture. The details can be found in Section 4.3. The terms Et(·), Eo(·), and Ex(·) represent the related encoders of time t, observation o, and noise x, respectively. Algorithm 1 summarizes the training and inference process of the fast FM policy. In the training phase, first, a sample x is drawn from the prior distribution p0, while time step t is sampled from a logit-normal distribution. Then, the observation o is encoded to obtain condition c,and the error between the true trajectory and K generated trajectories is calculated, which are both used to guide the trajectory generation. Finally, the target vector field vtar is computed, and then the parameter θ is updated via Eq. (9). In inference phase, once the observation-conditional vector filed vθ (·) is obtained, according to Eq. (8), the trajectory ˆy
+
+under the observation o can be obtained through one-step iteration, that is ˆy = x + vθ (x, 1|c), where c = E(o) and 
+
+x ∼ N (0 , I ). The trajectory also can be generated by T -step iterations in this setting, where v(x, 1) can be calculated by ∆t PT −1 
+
+> i=0
+
+vθ (x, t i), and ti denotes the i-th time point uniformly discretized between 0 and 1 over T intervals. 
+
+4.3 Key Design Decisions 
+
+In this part, we outline the key design decisions behind the fast FM policy and present its concrete implementation  
+
+> Prepared using sagej.cls
+
+9Transformer Encoder  Transformer Decoder 
+
+C                        
+
+> Time 𝐭 Embedding
+> Observation 𝐨
+> Input Token
+> …
+> Data
+> …
+> Noise 𝐱 Token
+> Vector Filed 𝒗 Memory Condition Input
+> Trajectory 𝐲 Prediction
+> 𝐜 ො𝐲 =𝐱 +𝑣 𝜃 𝐱 ,1|𝐜
+> Fast FM
+> …
+> One -step
+> …
+> …
+> …
+> Figure 3. Schematic of the fast FM network framework. The framework begins by encoding the observation oand time step t, which are then combined and fed into a transformer encoder module. The output eof the encoder, along with an encoding of the noise x,serves as input to the transformer decoder module. The decoder outputs a vector field v, which is iterated in a one-step to generate the predicted trajectory ˆy.
+
+.using transformer architectures. Fig. 3 shows the overall schematic of the fast FM composition. Specifically, the detailed network architecture of the modules involved in Eq. (10) is described as follows. 
+
+1) Conditions Encoder: The conditions for fast FM policy include two parts: the time t and the observation o. The observation o for trajectory generation consists of high-dimensional, multi-feature time-series data. To capture their temporal dependencies and fuse the multi-modal features, we employ a transformer-based architecture (Vaswani et al. 2017) for encoding the observational inputs. The core of the transformer can be represented as 
+
+E(e) = softmax 
+
+ Q(e)KT (e)
+
+√dk
+
+
+
+V(e), (11) where Q(e), K(e) and V(e) are query, key and value embedding results for input e, respectively (Vaswani et al. 2017), and √dk is scaling factor. For fast FM encode, the input e can be obtained through the following two parts: The time variable t is encoded using sinusoidal positional encoding, and the observation values o are transformed into an embedded sequence via a shared multilayer perceptron. These two components are then combined to obtain e, and then the term e is passed as input features to a transformer-based encoder for unified representation learning. The schematic diagram of the encoding process is shown in the first two subfigures of Fig. 3. The encoded values are subsequently passed to the trajectory decoding module to guide the direction of the flow matching-based trajectory generation. Note that in the conditional encoding process, the observation o is influenced by the observation horizon To,and the selection of the horizon parameter To is critical. A minimal value of To is detrimental to long-term prediction, while an overly large value increases inference time and may even degrade prediction performance. Therefore, selecting an appropriate horizon To is essential to ensure inference speed while improving the accuracy of trajectory generation. For related ablation studies and analysis, please refer to Appendix A.3. This stage of encoding observations o and temporal information t lays the foundation for subsequent trajectory decoding. 
+
+2) Trajectory Decoder: Trajectory decoding aims to gen-erate the vector field v based on the encoder context c and the input noisy x, which is subsequently used to recover the trajectory y via a one-step iteration of the flow matching pro-cess. Given that the trajectory itself is also high-dimensional data, we likewise adopt a transformer-based architecture to decode both the conditioned encoding Henc and the initial noise x. The decoder incorporates a cross-attention mech-anism to focus on the encoded conditioning input Henc ,and employs causal encoding to preserve temporal causality across time steps. During the trajectory generation process, the prediction horizon Tp is a critical parameter. An exces-sively large value of Tp can lead to degraded prediction accuracy, whereas an overly small value may fail to meet the assistance requirements of the exoskeleton. To address this, we generate a trajectory with a longer length Tp, but only the first L time steps of the predicted trajectory are selected as the control target for the exoskeleton. This approach maintains prediction accuracy while simultaneously fulfill-ing the need for long-term assistance. Appendix A.3 gives the specific details regarding the selection of parameters L
+
+and Tp.
+
+5 Torque Optimization via Model Predictive Control 
+
+The previous section utilizes fast FM to generate joint trajectories yt = {yt+i, ˙yt+i}Tp
+
+> i=1
+
+, which provide joint angle 
+
+y and angular velocity ˙y information. This section aims to design an appropriate optimization objective to optimize the torque sequence at = {ut+i}N −1 
+
+> i=0
+
+based on the predicted trajectory, thereby providing comfortable and compliant assistance and achieving efficient human–robot assistance in complex environments. Model predictive control (MPC), which is based on the optimization of long-term future trajectories, offers an excellent optimization framework. On this basis, torque optimization is carried out in the following. 
+
+5.1 Dynamic Model for Exoskeleton 
+
+MPC relies on the dynamic model of the exoskeleton robot. Let the number of joints be n. Here, n is equivalent to the aforementioned Hp in representing the number of joints. For brevity, n is used uniformly hereafter. Following Han et al. (2023), the dynamic model of an exoskeleton robot, with consideration of human–robot interaction Tint , can be given by 
+
+M ¨y + C(y, ˙y) ˙ y + G(y) + Tint = u, (12)  
+
+> Prepared using sagej.cls
+
+10 Journal Title XX(X) 
+
+where y ∈ Rn and yd ∈ Rn are the actual and desired joint angle, respectively. M ∈ Rn×n and C(y, ˙y) ∈ Rn×n are the 
+
+n × n inertial and velocity-dependent matrices, G(y) ∈ Rn
+
+is the n-dimensional gravitational torque vector, and u ∈ Rn
+
+and Tint ∈ Rn are motor output torque and the interaction torque, respectively. This model has the properties that M is symmetric and positive definite, and that M − 2C is skew-symmetric (Li et al. 2017). The parameters for M, C, and G
+
+are obtained from the Lagrangian dynamics and are functions of the exoskeleton link’s mass, inertia, and center of mass, which can be acquired from the CAD model. In general, the interaction torque Tint is represented as impedance model (Chen et al. 2024b), that is B(yd −
+
+y) + K( ˙ yd − ˙y) = Tint , where B ∈ Rn×n and K ∈ Rn×n
+
+are stiffness and damping matrices of impedance model. Nevertheless, the impedance model shares a critical flaw with PID control: significant discrepancies between yd (the predicted trajectory) and the real trajectory cause large fluctuations in the calculated interaction torque, thereby compromising the effectiveness of the torque optimization. In complex operational scenarios, the impedance model exhibits poor applicability in control frameworks built upon high-dynamic trajectory prediction. Crucially, the optimal exoskeleton assistance does not correspond to the smallest possible interaction torque; instead, it requires the interaction torque to be proportional to the true human-generated torque (Molinaro et al. 2024b). Since the impedance model cannot adequately represent human motor biomechanics, we integrate human kinematic information into the interaction torque estimation framework while ensuring the stability of the optimization process. Inspired by the work in (Altinkaynak and Braun 2019), which employs joint angles y and angular velocities ˙y to fit joint torques, we adopt the same two kinematic variables to approximate the human–robot interaction torques, that is: 
+
+Tint = T0 + K0yd + K1 ˙yd, (13) where T0, K0 and K1 are the fitting coefficients. Here, we utilize the predicted trajectory yd instead of the actual trajectory y. This design choice is motivated by the need to mitigate the detrimental impact that large oscillations in the measured trajectory would otherwise exert on the downstream optimization procedure. Let the state be s = [ y; ˙ y] ∈ R2n and action be u ∈ Rn.Then, based on Eq. (12), the dynamic relationship between the derivation of the state ˙s and action u can be written as 
+
+˙s =
+
+ s1
+
+M−1 u − Cs1 + G(s0) − Tint (s0, s1)
+
+, (14) where s0 = y and s1 = ˙y, and the next state can be denoted as st+1 = st + ˙st∆t. Then, the discrete-time system with state st and control input ut can be characterized by a deterministic transition function f that maps the current state-action pair to the next state: 
+
+st+1 = f (st, ut). (15) The above equation can be used to constrain the MPC optimization problem. The details of torque optimization can be found in the part below. 
+
+5.2 Objective Problem Formulation 
+
+When tracking a desired joint trajectory yd by regulating motor torque with conventional PID control, the resulting torque profile often exhibits undesirable fluctuations and poor tracking accuracy, which may ultimately degrade the overall assistance performance. In contrast, MPC incor-porates long-term dynamic behavior into the optimization process and can optimize torque based on the designed objective: 
+
+
+
+min 
+
+> at
+
+PN −1 
+
+> i=0
+
+ℓ(st+i, ut+i) + ℓN (st+N ),
+
+s.t. st+1 = f (st, ut), st = sinit 
+
+h(st, ut) ≤ 0, ∀t ∈ Z+
+
+(16) where ℓ(·) and ℓN (·) are running and final cost function, respectively, h(st, ut) are the constrain function of the state and action, and sinit is the initial state. The term N refers to the horizon of optimization, which is a key hyperparameter for MPC performance. The final cost function ℓN (·) can be represented as ∆sT 
+
+> t+N
+
+O∆st+N , where O ⪰ 0 ∈ R2n×2n
+
+is final weight matrices. For exoskeleton assistance, the running cost function ℓ(·) consists of three components: trajectory tracking error ( ∆1), torque safety ( ∆2), and torque smoothness ( ∆3). The first two terms aim to minimize the trajectory tracking error and constrain the joint torque within a safe range, which can be mathematically expressed as: 
+
+∆1 + ∆ 2 = ∆ sT 
+
+> t
+
+Q∆st + uT 
+
+> t
+
+Ru t (17) where ∆st = st − st, ref , and Q ⪰ 0 ∈ R2n×2n and R ⪰ 0 ∈
+
+Rn×n are tracking error and torque weighting matrices, respectively. The third term ∆3 enforces the smoothness of the torque, which requires that the torque gradually changes between consecutive time steps to ensure acomfortable experience and natural assistance. This is achieved by penalizing the rate of change of the joint torque, mathematically expressed as: 
+
+∆3 =
+
+ dut
+
+dt
+
+T
+
+P
+
+ dut
+
+dt
+
+
+
+, (18) where P ⪰ 0 ∈ Rn×n is the weighting matrices. Consid-ering discrete torque form at = [ ut; ... ; ut+N −1] ∈ RN n ×1,the time derivative of at is expressed as (Xu et al. 2026) 
+
+dat
+
+dt =
+
+ dut
+
+dt ; ... ; dut+N −2
+
+dt
+
+
+
+∈ Rn(N −1) ×1
+
+= 1∆t [ut+1 − ut; ... ; ut+N −1 − ut+N −2]= 1∆t
+
+
+
+−1 1
+
+−1 1
+
+. . . . . .
+
+−1 1
+
+ at
+
+= Aa t, where A ∈ Rn(N −1) ×N n 
+
+(19) Then, substituting Eqs. (17)-(19) into Eq. (16), the objective can be written as 
+
+
+
+min 
+
+> at
+
+eT 
+
+> t
+
+Ue t + aT 
+
+> t
+
+Va t,
+
+s.t. st+1 = f (st, ut),
+
+st ∈ [sl, su], ut ∈ [ul, uu],
+
+(20)  
+
+> Prepared using sagej.cls
+
+11 Observation 𝐨 𝐭   
+
+> Trajectory 𝐲 𝐭
+> Torque 𝐚 𝐭
+
+𝑜 ଵ 𝑜 ଶ 𝑜 ் ೚
+
+…
+
+𝑦 ଵ 𝑦 ଶ … 𝑦 ே 𝑦 ௅ିேି௜ … 𝒚 𝑳 𝑦 ் ೛
+
+𝑜 ௧ 𝑜 ௧ାଵ 𝑜 ௧ା் ೚
+
+…… …
+
+uଵ uଶ … u௜ … u௅ିே 
+
+… …
+
+…          
+
+> Observation 𝐨 ௧
+> Fast Flow Matching
+> Model Predictive Control
+> Observation 𝐨 ௧
+> Trajectory Prediction Horizon 𝑇 ௣
+> Next 𝑇 ௣Steps Prediction
+> Latency 𝑖 Update 𝑇 ௣− 𝑖 Steps
+
+𝑦 ேାଵ …
+
+… … 
+
+> Optimization Horizon 𝑁
+
+…
+
+𝑦 ௅ିே 
+
+…
+
+…
+
+… … …  
+
+> Figure 4. Control data flow diagram of the proposed
+
+ExoTraj policy. First, the fast FM is used to predict the Tp-step-ahead trajectory using the observations o acquired over the past To time steps, where the first L steps of the trajectory are used to optimize torque. Then, MPC is adopted to optimize the current torque based on the trajectory spanning from the current time step to the 
+
+N -step-ahead horizon. A new round of trajectory prediction is triggered when the receding horizon progresses to the ( L − N − i)-th time step (where i denotes the number of time steps consumed by algorithm inference), and the trajectory of the remaining Tp − i
+
+> steps after the (
+
+L − N )-th step is updated simultaneously. 
+
+.where et = [∆ st; ... ; ∆ st+N ] ∈ R2n(N +1) ×1 and ∆st =
+
+st − ∆st, ref . sl and su and al and au are the low and high bounds of state and action, respectively. The matrices 
+
+U ⪰ 0 ∈ R2n(N +1) ×2n(N +1) and V ⪰ 0 ∈ RN n ×N n can be represented as: 
+
+U = diag {Q1, ..., QN , O},
+
+V = diag {R1, ..., RN } +
+
+A0
+
+T
+
+diag {P1, ..., PN }
+
+A0
+
+
+
+,
+
+where Qi = Q, Ri = R, Pi = P and 0 ∈ Rn×N n . Thus, the torque can be optimized using Eq. (20). Note that each optimization uses trajectories from the current to N future steps for tracking, but only the first optimized torque value is applied to the motors, which are re-optimized at every time step. By designing the optimization objective under the predictive control paradigm of the model, we achieve the construction of the mapping G(·) from the reference trajectories to the corresponding output control torques. 
+
+5.3 Control Framework of ExoTraj 
+
+By combining the trajectory generated by fast FM and the MPC-based optimization, this paper proposes a general exoskeleton assistance policy, denoted as ExoTraj , for complex environments. ExoTraj employs a hierarchical control architecture, where the high controller utilizes FM to rapidly generate task-specific trajectories y, while the low controller leverages MPC to compute motor torque command a. Fig. 4 illustrates the pipeline of ExoTraj for converting observations o into control signals a within the control process. Firstly, based on the past To time steps of observations, FM is employed to generate trajectories for the next Tp time steps. The first L predicted steps are utilized for torque optimization, and MPC with a horizon of N is applied to compute the optimal torque output. This cyclic workflow enables real-time and high-efficiency assistance for the exoskeleton system. To ensure the MPC horizon remains N steps even toward the end of the L-step execution, the prediction horizon Tp is set longer than L.Real-time performance is critical for exoskeleton robot assistance. For the high-level controller, inference is performed on an edge computing GPU device, with an inference time of approximately 5 − 6 ms. For the low-level controller, torque optimization is implemented using the CasADi toolkit, requiring around 2 ms. The system operates at a sampling and control command output frequency of 200 
+
+Hz. However, the inference time occasionally exceeds 5 ms. To ensure real-time model inference, this paper introduces an inference interval i, which is when the system reaches step L − N − i, a new trajectory is generated for the next 
+
+Tp steps. Please note that although network inference is triggered at time step L − N − i, the subsequent trajectory is only used at time step L − N . Moreover, for the MPC torque optimization from steps L − i to L, the input trajectory consisting of N points is still derived from the previously generated trajectory of Tp points. The analysis of the effect of the usage trajectory steps L on continuous trajectory prediction accuracy is presented in Appendix A.3.1. 
+
+6 Experiment Setup 
+
+This section details the experimental setup, which comprises the architecture of the exoskeleton system, the protocol for data collection and experiment, and the configuration of critical control parameters. 
+
+6.1 Details of Experiment Procedures 
+
+Fig. 5 (a) illustrates the mechanical configuration and core components of the hip exoskeleton. The system consists of a waist harness, adjustable elastic belts, thigh support frames, controller housing, and hip joint actuation modules, with a total mass of 6.8 kg. This device provides assistance for hip flexion and extension motions, offering a continuous torque of 9 Nm and a peak torque of 22 Nm. Torque assistance is achieved through a quasi-direct drive actuator (AK80-9, T-Motor, China). Three inertial measurement units (MPU9250) are mounted on bilateral thighs and the lower torso to capture human locomotion kinematics. The edge computing device (NVIDIA Jetson Orin NX) undertakes real-time neural network inference and torque optimization. The microcontroller (STM32F429) is responsible for sensor data sampling and motor drive control. The exoskeleton is firmly fastened to the user’s pelvis and thighs via customized orthoses. A two-degree-of-freedom passive revolute joint  
+
+> Prepared using sagej.cls
+
+12 Journal Title XX(X) Controller Housing   
+
+> （a） （b）
+> Thigh Orthotic
+> Actuator
+> Waist Orthotic
+> Figure 5. (a) illustrates the structure and system configuration of the proposed untethered hip exoskeleton, consisting of a waist-mounted battery pack, drive motors, and orthotic supports for the waist and thighs. (b) presents a schematic diagram of the terrain in complex outdoor environments for exoskeleton assistance, including rugged terrain, rocky slopes, and uneven lawns.
+
+.preserves natural hip mobility during movement. More details can be found in Appendix A.2.1. Based on the established hip exoskeleton platform, the experiments are divided into offline and online stages. The offline stage focuses on multimodal data acquisition and assistance policy training, whereas the online stage verifies the actual assistive performance under complex, unstructured outdoor scenarios. In the offline phase, 12 
+
+healthy adult participants are recruited for data collection. The first 8 participants (AB01-AB08) are instructed to wear the exoskeleton system configured in a non-assistive passive mode, and to walk naturally at a range of self-selected walking speeds in a dynamic outdoor walking environment (depicted in Fig. 5 (b)). The predefined outdoor walking course covers typical complex unstructured terrains, including sloped slopes of variable gradient, rough uneven ground, and other challenging outdoor surfaces. During the walking trials, full multi-modal sensor data from the exoskeleton system are synchronously recorded. The remaining four subjects are employed for cross-subject evaluation of exoskeleton assistance performance. More details can be found in Appendix A.2.2. In the online phase, to verify the real-time assistance performance of ExoTraj , participants wore the active exoskeleton system and completed walking trials in the complex outdoor environment. The cross-subject experimental design is adopted with three experimental conditions: 1) No exo: natural overground walking without exoskeleton wear; 2) Assist off: walking with the exoskeleton configured in zero-torque passive mode; 3) Assist on: walking with the exoskeleton enabled with the proposed assistance policy. To quantitatively evaluate the assistance efficiency of the proposed policy, three categories of physiological metrics are synchronously measured and recorded for all trials: 1) Metabolic rate, calculated by indirect calorimetry based on oxygen consumption and carbon dioxide production measurements obtained with the COSMED K5 device; 2) Muscle activation, acquired via a surface electromyography (EMG) system (ELONXI EMG-C4); 3) Heart rate, measured using a high-precision Garmin wearable heart rate monitor. The experiments adopt a cross-subject evaluation paradigm, in which test subjects’ motion data remain unseen during policy training.                                        
+
+> Table 2. Parameters configuration for the policy ExoTraj .
+> High-Level Controller Lower-Level Controller
+> Parameter Value Parameter Value Batch size 512 Inertial mat. M0.0156 I
+> Training epoch 200 Velocity mat. C0
+> Learning rate 10 −4Gravity mat. G0.879 sin( y)
+> Coefficient α1Error mat. Qdiag {10 ,0.1}I
+> Obs. horizon To250 Torque mat. R0.5I
+> Pred. horizon Tp40 Penal. mat. P0.001 I
+> Infer. latency i1Terminal mat. O0.1I
+> Usage steps L20 Opt. horizon N15
+
+6.2 Parameters Configuration 
+
+This part presents the specific parameter configurations used in the high-level (trajectory prediction) network and the lower-level MPC controller. For exoskeleton control, the parameters of the dynamic model, M(y), C(y, ˙y), and 
+
+G(y) in Eq. (12), and the MPC parameters optimization horizon N , error weight matrix Q, torque weight matrix 
+
+R, and penalization weight matrix P should be tuned according to the specific exoskeleton model and control objectives. The detailed parameter configuration is provided in Table 2. In the MPC formulation, the state s (angle 
+
+y and angular velocity ˙y) and action a constraints are defined with lower and upper bounds of sl and su, set to values [−0.4π, −100 , −15] and [0 .4π, 100 , 15] , respectively. The error matrix Q, torque matrix R, penalization weight matrix P, and terminal weight matrix O are set as diag {10 In, 0.1In}, 0.1In, 0.001 In and I2n, respectively, where Ii denotes the i-dimensional identity matrix. For the interaction torque estimation Tint described in Eq. (13), the three coefficients T0, K0 and K1 are configured as 0.01 In,
+
+0, and 4In, respectively. The prediction horizon N of the MPC torque optimization is set to 15 , with an average per-iteration computational time of about 2 ms, which fully meets the system’s real-time control requirements. The network parameters of fast FM consist of atransformer-based network architecture and associated training hyperparameters (See Table 2). The transformer network is configured with 4 attention layers, each employing 4 attention heads. The linear layer contains 256 
+
+neurons. The model is trained with a learning rate of 1 ×
+
+10 −4, a batch size of 256 , for 200 epochs. The time t
+
+is sampled from the normal logit distribution. The weight coefficient α is set to 1. The input observation features o 
+
+> Prepared using sagej.cls
+
+13  
+
+> Table 3. Comparison results of prediction performance for various methods in the offline and online phase. Offline evaluation uses the in-distribution ( InDist ) dataset and the cross-subject ( CrossSub ) dataset, while online tests adopt exoskeleton-based real-time prediction. Bold and underlined values denote the best and second-best performance, respectively.
+
+Methods Offline Phase Online Phase 
+
+InDist (Tp = 20 ) InDist (Tp = 40 ) CrossSub (Tp = 20 ) Usage steps L = 20 
+
+ADE R2(%) ADE R2(%) ADE R2(%) Time (ms) ADE R2(%) Time (ms) LSTM 0.008 99 .95 0.011 99 .93 0.026 95 .42 4.24 0.758 70 .13 23 .23 
+
+TCN 0.014 99 .29 0.024 98 .90 0.024 96 .65 1.91 0.546 87 .37 2.53 
+
+TF 0.025 99 .50 0.030 99 .36 0.030 94 .75 1.95 0.515 88 .35 3.48 
+
+FM 0.010 99 .88 0.012 99 .87 0.023 96 .70 12 .70 0.611 82 .00 13 .85 
+
+Fast FM 0.004 99 .94 0.006 99 .93 0.018 98 .10 4.10 0.443 89 .30 5.09 
+
+Improved ↓ 44 .3% ↓ 0.0% ↓ 44 .4% ↑ 0.0% ↓ 20 .5% ↑ 1.5% ↑ 2.2 ↓ 14 .0% ↑ 1.1% ↑ 2.6
+
+have a dimension of [250 , 20] , and the output trajectory y is represented as a [40 , 4] feature vector, that is, the observation horizon To = 250 and the prediction horizon Tp = 40 .The entire network comprises approximately 6 million parameters. In the deployed system, both the predicted joint trajectories and the sensor observations (IMU and joint angles) supplied to the network are updated at 5 ms intervals. The high-level controller requires approximately 
+
+5 − 6 ms for trajectory prediction, while the low-level MPC optimization takes 2 ms. To ensure real-time performance, we introduce an inference latency compensation step i. A 
+
+1-step-ahead prediction strategy is adopted, which starts prediction 5 ms in advance to mitigate the inference latency. In this scenario, a new cycle of trajectory prediction is triggered when the receding horizon progresses to the ( L −
+
+N − i)-th time step. The details of data flow can be found in Fig. 4 and Fig. A.2. 
+
+7 Experimental Results 
+
+This section validates the effectiveness of the proposed fast FM-based unified control policy in highly dynamic envi-ronments through extensive offline and online experiments, aiming to address the following research questions: • Q1 : For the high-level controller, how does the proposed trajectory prediction method compare with other data-driven methods? • Q2 : For the low-level control module, what are the advantages of using model predictive control over traditional control methods? • Q3 : What is the effectiveness of the assistance of the proposed ExoTraj policy in complex and dynamic environments? The following experimental section will address each of these questions in turn. Detailed parameter analyses, ablation studies, and additional experimental results are presented in Appendix A.3. Related project materials, including movies and documentation, are available at Page. 
+
+7.1 Performance of Trajectory Prediction ( Q1)
+
+1) Evaluation Metrics: Fast FM predicts the future motion trajectory y over a horizon of Tp times, based on the observed exoskeleton state o from the past To times. The performance of trajectory prediction can be quantified using two metrics: the average displacement error (ADE) and the squared R ( R2). A smaller ADE value, approaching zero, indicates lower trajectory prediction error, while an R2 value closer to 1 signifies better prediction performance from a statistical perspective. The equations can be represented as: 
+
+ADE = 1
+
+Np
+
+1
+
+TpNp
+
+X
+
+> i=1
+> Tp
+
+X
+
+> t=1
+
+yi,t − ˆyi,t 2 ,R2 = 1 −
+
+PNp
+
+> i=1
+
+PTp 
+
+> t=1
+
+yi,t − ˆyi,t 2
+
+PNp
+
+> i=1
+
+PTp 
+
+> t=1
+
+yi,t − ¯yi,t 2
+
+,
+
+(21) where Np is the number of trajectory, yi,t represents the the motion angles of the two joints at the t-th time step of the i-th trajectory, ∥ · ∥ 2 denotes the L2-norm, and ¯yi,t 
+
+is the ground truth position of the center point, which can be calculated by P
+
+> i
+
+P 
+
+> t
+
+yi,t /N pTp. We evaluate the algorithm’s performance in both offline and online phases. In the offline phase, we employ the cross-validation protocol on the collected dataset: data from 8 subjects are used for model training, while data from the remaining 4 subject are held out exclusively to evaluate the model’s generalization capability. In the online phase, system performance is quantified by computing the trajectory error between the network’s real-time predictions (generated from streaming sensor data) and the corresponding ground-truth trajectories, recorded while human subjects operate the exoskeleton. 
+
+2) Offline Evaluation: To demonstrate the predictive accu-racy and generalization of fast FM in the offline phase, we compare it with representative data-driven approaches: long short-term memory (LSTM) (Hochreiter and Schmidhuber 1997), temporal convolutional network (TCN) (Lea et al. 2017), transformer (TF) (Vaswani et al. 2017), and flow matching (FM) (Lipman et al. 2023). We re-implemented the code and conducted evaluations on the two different types of datasets: the first is an in-distribution ( InDist ) test set, where 5% of the data from the first 8 subjects are held out and remain completely unseen during model training; the second is a cross-subject ( CrossSub ) test set, consisting of locomotion data collected from entirely novel subjects who did not participate in the training phase. Table 3 compares the performance of various methods in the above two offline datasets, in terms of prediction metrics defined in Eq. (21) for 
+
+20 and 40 prediction steps ( Tp) given 250 past observations, and corresponding network inference times (unit: ms). The last row indicates the performance improvement rate of the  
+
+> Prepared using sagej.cls
+
+14 Journal Title XX(X)                                                    
+
+>  
+>   
+>  
+>   
+>                     
+> 
+> 
+> 
+>    
+>          
+>     
+>  
+> 
+> 
+>         
+>   
+>   
+>   
+>   
+>                      
+>    
+> 
+> 
+> 
+>  
+>              
+>     
+>     
+>    
+>     
+>    
+>        
+>    
+>          
+>    
+>     
+>    
+>    
+
+Figure 6. Comparison of online trajectory prediction among Fast FM, TCN, and Transformer for six activities: running, obstacle crossing, leg swing pause, sit-to-stand, squatting, and stair climbing. Each full motion corresponds to one gait cycle, and all curves are scaled to 0-100 cycles, and the true angular velocity is filtered with a cutoff frequency of 5 Hz. 
+
+.best method over the second-best one or the degradation rate relative to the optimal value. Table 3 demonstrates that fast FM achieves the highest prediction accuracy on in-distribution ( InDist )validation data when prediction horizons Tp = 20 and 
+
+Tp = 40 , with about 44 .0% reduction in prediction error (ADE). While conventional neural networks exhibit fast inference speeds, their performance in long-term prediction tasks is comparatively inferior. The standard FM algorithm delivers superior prediction accuracy after three iterations, yet it suffers from significantly slower inference latency. On the cross-subject ( CrossSub ) dataset (for generalization performance evaluation), all methods exhibit a substantial degradation in prediction performance. Among them, LSTM experiences the most pronounced drop in generalization capability, whereas FM maintains better predictive performance. Fast FM still retains a favorable generalization prediction performance. When prediction horizon Tp equals 20 , its prediction error declines by 20 .5% 
+
+(ADE). Overall, compared with other approaches, fast FM achieves competitive prediction accuracy and generalization capability while guaranteeing real-time inference. 
+
+3) Online Evaluation: To verify the performance of fast FM in the real-time online phase, the test is conducted on an unseen subject, whose motion data are completely excluded from the network training pipeline. The subjects are instructed to perform a series of complex motor tasks, including several previously unseen actions not present in the training dataset, such as rapid deep squats, single-leg suspension, abrupt stopping, backward locomotion, and high-obstacle crossing. The trained model is converted to the TensorRT format and deployed on edge computing devices for real-time inference. During walking trials, both the predicted and true trajectories are recorded synchronously. In the online prediction phase, the prediction horizon is set to Tp = 40 and the actual usage trajectory length is 
+
+L = 20 . Table 3 presents the online real-time trajectory prediction accuracy of different methods across subjects. This shows that fast FM still achieves the optimal prediction performance, with the maximum prediction error reduced 
+
+Table 4. Comparison results of prediction accuracy for angular trajectory and angular velocity trajectory in the online phase. 
+
+Methods Angle Angle Velocity Combined 
+
+ADE R2 ADE R2 ADE R2
+
+LSTM 0.037 99 .3 0.756 66 .1 0.758 70 .1
+
+TCN 0.022 99 .5 0.545 86 .9 0.546 87 .4
+
+TF 0.052 98 .7 0.510 88 .0 0.515 88 .3
+
+FM 0.037 99 .3 0.608 79 .9 0.611 82 .0
+
+Fast FM 0.024 99 .7 0.442 88 .1 0.443 89 .3
+
+by 14 .0% . Both LSTM and FM methods exhibit significant prediction errors, primarily due to their excessive online inference latency, which causes a substantial temporal misalignment between the predicted trajectories and the ground-truth trajectories. It can be observed that the prediction errors of all methods generally increase in the online phase compared to the offline phase, which is primarily attributed to the relatively large prediction errors in angular velocity. Table 4 presents the prediction accuracies of angle and angular velocity separately during the online prediction stage. This shows that all methods achieve relatively high prediction accuracy for the angle. For angular velocity, due to its larger value range and higher dynamic characteristics than angle, an average displacement error (ADE) of around 0.7 is within the acceptable range. Fig. 6 compares the real-time trajectory prediction per-formance of different methods for human subjects wearing the exoskeleton across various tasks. The comparison is conducted across three methods: TCN, Transformer, and the proposed fast FM. Note that the exoskeleton is set to zero-torque mode during this test phase; because LSTM and FM incur high inference latency and introduce prediction errors, these two methods are not included in the comparison. In the above experiments, each subject performs a single type of movement repeatedly. One full execution of a movement is defined as one cycle, and all joint angle trajectories are scaled to the range of 0–100 . The bar chart in Fig. 6 shows that fast  
+
+> Prepared using sagej.cls
+
+15 
+
+FM achieves superior alignment and higher prediction accu-racy across different movements. For highly dynamic move-ments, the maximum prediction error (ADE) is reduced by up to 33 .3% and 53 .0% (run movement) compared with TCN and Transformer, respectively. The average error of fast FM is reduced by 21 .7% and 18 .6% for TCN and Transformer, respectively. Fig. 6 also presents the ground-truth trajectories and predicted trajectories for the specified motor tasks. For angle trajectories, the predicted values closely match the ground truth. For angular velocity, the predicted values show deviations in the peak regions, but the overall trends are basically consistent. The above experimental results show that fast FM still achieves consistently favorable prediction performance in complex dynamic scenarios, outperforming the other two baseline methods, confirming its feasibility for practical deployment. 
+
+7.2 Performance of Torque Optimization ( Q2)
+
+1) Evaluation Metrics: The performance of torque opti-mization is evaluated via two core metrics: assistance com-fort and robustness. Robustness is reflected in the amplitude of fluctuations in the optimized torque output under signif-icant perturbations or adversarial attacks on the predicted trajectory. Assistance comfort can be indirectly characterized by torque smoothness and the consistency between torque and joint angle trajectories, where consistency refers to the degree of proximity between the gait cycle phase of the trajectory peak and that of the zero-torque point. This peak point corresponds to the stance-to-swing phase transition point in the gait cycle. Since the swing phase is characterized by high angular velocities, even a minor lead or lag in the assistive torque will result in significant user discomfort. Therefore, achieving perfect temporal consistency between the gait trajectory and the generated torque at this specific point is of paramount importance. In this paper, the Jerk window can quantify the smoothness of the torque curve. Given the NT discrete torque points {ui}NT
+
+> i=0
+
+, the formula to calculate Jerk is presented as follows. 
+
+Srms =
+
+vuut 1
+
+NT − 3 
+
+> NT−3
+
+X
+
+> i=1
+
+∥Si∥2, (22) where Si = ui+3 − 3ui+2 + 3 ui+1 − 3ui. Given the joint trajectory y and torque profile a within a single gait cycle, we can derive the gait phase position of the trajectory peak 
+
+Φy and the gait phase position of the zero-torque point Φa,based on which the consistency metric can be defined as: 
+
+Tshif = |Φy − Φa|, (23) Then, combining Eq. (22) and Eq. (23), the comfort metric of assistance can be indirectly measured by 
+
+Cmpc = λr · exp {− ωr Srms } + λt · exp {− ωtTshift }, (24) where ωr = 0 .01 and ωt = 1 are scale factors, λr = 0 .5
+
+and λt = 0 .5 are weight coefficients, and Cmpc ∈ [0 , 1] ,with values closer to 1 indicating better assistance comfort and values closer to 0 indicating worse comfort. The robustness of assistance Rmpc is quantified by measuring the variations in assistance torque profiles and their smoothness characteristics under baseline conditions and after introducing additive noise or targeted adversarial attacks. Therefore, we define the metric below to measure the robustness of the control method: 
+
+Rmpc =λa · exp {− ωa · ad − ap
+
+> 2
+
+}+
+
+λc · exp {− ωc · Cd 
+
+> mpc
+
+− Cp 
+
+> mpc 2
+
+}, (25) where ωa = 0 .01 and ωc = 1 are scale factors, λa = 0 .6
+
+and λc = 0 .4 are weight coefficients, ap and ad correspond to the torque optimization profiles obtained before and after disturbance injection, respectively, and Cp 
+
+> rms
+
+and Cd
+
+> rms
+
+denote the smoothness performance indices before and after disturbance noise injection, respectively. A value of Rmpc 
+
+closer to 1 implies stronger robustness, while a smaller value indicates poorer robustness. 
+
+2) Comfort: Based on the predicted trajectories, we compare the assistance comfort metrics between the conventional PID algorithm and our MPC algorithm during the assistance process. Fig. 7 (a) gives the optimized torque profiles generated by the conventional PID control method during treadmill walking at a constant speed of 1.0 m/s. As PID control operates on an error-driven principle, we predict the reference trajectory 20 steps ahead, corresponding to a 100 ms time horizon. The control torque is derived from the error between the predicted state at the 20 -th future step and the current measured state. A PD control law is adopted herein, with a proportional gain of 20 and a derivative gain of 0.005 . Assist off indicates that the exoskeleton is not providing any assistance. It is verified that the 20 -step-ahead reference trajectory can be accurately predicted under the unassisted condition. However, once the exoskeleton engages in active assistance, the system exhibits undesirable oscillations. This phenomenon stems from the inherent coupling between the exoskeleton’s perception and control loops. The PID controller’s performance is highly sensitive to trajectory prediction accuracy. Any significant instantaneous prediction error generates antagonistic control torques, which exacerbate prediction errors and ultimately cause erroneous control outputs in subsequent cycles. Even when the reference trajectory prediction is sufficiently accurate and the system remains free of oscillations, the assistive torque profile still exhibits undesirable fluctuations, which significantly compromise the human-exoskeleton interaction comfort. In contrast, the MPC-optimized assistance torque exhibits significantly lower sensitivity to trajectory prediction errors and demonstrates superior robustness. Fig. 7 (b) presents the predicted reference trajectory (Noise Free) and assistance torque optimized by MPC over a single gait cycle. This shows that the MPC-optimized torque exhibits excellent smoothness and closely follows the intrinsic kinematic pattern of human locomotion. Specifically, the generated torque decays to zero and undergoes full polarity reversal precisely at the trajectory peak amplitude, consistent with the natural kinematic characteristics of human limb motion. Based on Eqs. (22)–(24), the MPC-optimized controller achieves torque smoothness and phase consistency metrics of 8.38 and 0.02 , respectively, corresponding to a comprehensive assistance comfort metric of 0.95 . In contrast, the PID-optimized controller yields metrics of  
+
+> Prepared using sagej.cls
+
+16 Journal Title XX(X)                           
+
+>   
+>   
+>   
+>   
+>                 
+>          
+>  
+>         
+>    
+>   
+>   
+>   
+>   
+>          
+>       
+>   
+>        
+> 
+>   
+>   
+>  
+> 
+> 
+>  
+>  
+>           
+>       
+>   
+>         
+>          
+>           
+>  
+> 
+> 
+> 
+>                
+>           
+>             
+>   
+>  
+>  
+>  
+
+Figure 7. Torque optimization comparison results. (a) illustrates the torque optimization performance of the PID controller. (b) compares the optimized torque profiles obtained via MPC optimization before and after injecting Gaussian noise into the predicted trajectories. In each subplot, the upper panel depicts the reference trajectory, while the lower panel presents the corresponding optimized torque. Shaded regions indicate the variance across multiple trials. 
+
+.
+
+15 .76 (torque smoothness) and 0.09 (phase consistency), with a lower comprehensive comfort score of 0.88 . This further validates the inherent advantages of the MPC-based optimization scheme. 
+
+3) Robustness: In practical human-in-the-loop assistance, predicted trajectories suffer from fluctuations and intrinsic human gait variability, requiring MPC optimization to be robust to disturbances and uncertainties. This part compares the performance of the optimized torque before and after noise injection/adversarial attacks. All experiments are conducted on a constant-speed treadmill to ensure consistent baseline conditions and predicted trajectories across trials. Fig. 7 (b) presents the results of the optimized torque profiles after random noise injection into the predicted trajectories, where the applied noise follows a zero-mean Gaussian distribution N (0 .2) with variance 0.2. This figure shows that noise injection introduces significant fluctuations to the model-predicted trajectories. Yet, the optimized torque remains nearly unchanged, which indirectly corroborates the robustness of the MPC based on the optimization objective in Eq. (20). Table 5 presents the quantitative results of the robustness performance metrics under two noise injection modalities (Gaussian noise N (·) and impulse noise P(·))with different intensities. Gaussian noise is added to every time step of predicted trajectories, and impulse noise is randomly inserted at a single time step. To ensure a fair comparison, the subject is instructed to walk on a treadmill at a constant speed of 1.0 m/s. Performance metrics are presented as mean and variance across multiple gait cycles. Table 5 shows the robustness index Rmpc presents a moderate decreasing trend with the rise of noise intensity, while still staying close to the noise-free reference level. Upon the introduction of noise disturbances, the Cmpc metric exhibits minimal variation, confirming that the optimized torque maintains comparable smoothness and consistency with and without noise. The maximum L2 norm of the difference between the optimized torque and the nominal torque remains approximately 10 ; these discrepancies are primarily attributed to inter-subject variations in gait cycle duration at 
+
+Table 5. Comparative results of the robustness performance metrics under different types of noise injection for cross-subject. Results are presented as the mean and standard deviation across multiple gait cycle segments. 
+
+Attack Type Robustness Metrics 
+
+∥ad − ap∥2 Cmpc Rmpc 
+
+> Gauss.
+
+N (0 .1) 8.24 ± 3.74 0.95 ± 0.01 0.95 ± 0.02 
+
+N (0 .2) 8.99 ± 2.22 0.95 ± 0.00 0.95 ± 0.01 
+
+N (0 .5) 12 .27 ± 2.98 0.94 ± 0.01 0.93 ± 0.02 
+
+> Pulse
+
+P(0 .5) 6.86 ± 1.11 0.95 ± 0.00 0.96 ± 0.01 
+
+P(1) 9.63 ± 2.74 0.94 ± 0.00 0.94 ± 0.01 
+
+P(2) 9.24 ± 1.70 0.95 ± 0.00 0.94 ± 0.01 
+
+Noise Free 0.00 ± 0.00 0.95 ± 0.00 1.00 ± 0.00 
+
+the specified walking speed, which introduce spurious torque offsets during the temporal scaling process, as illustrated in Fig. 7 (b). Overall, the above results sufficiently verify that the developed MPC-based optimization framework possesses excellent intrinsic robustness. 
+
+7.3 Assistance Performance ( Q3)
+
+1) Evaluation Metrics: The efficacy of exoskeleton assis-tance can be quantified via changes in human physio-logical metrics, such as muscle activation level At (unit: μV), metabolic rate Pt (unit: W/kg), and heart rate Ht
+
+(unit: BPM). We compare the effects of three conditions, No Exoskeleton (No exo), Exoskeleton without Assistance (Assist off), and Exoskeleton with Assistance (Assist on), on the three metrics across different scenarios. In muscle activation experiments, the root mean square (RMS) value of the EMG signal Et is used to quantify the level of muscle activation. The corresponding formula is given by: (Winters et al. 2012): 
+
+At =
+
+r
+
+1/T XTt=1 E2 
+
+> t
+
+, (26) where T denotes the duration of the time window. For the metabolic rate trials, after collecting oxygen consumption  
+
+> Prepared using sagej.cls
+
+17                                                                     
+
+>   
+>  
+>   
+>           #
+>     ! 
+>         
+>   
+>          #  
+> 
+> 
+>  
+>     
+>       
+> 
+>  
+>  
+> 
+> 
+>   
+>      
+>              
+>       
+>   
+>       
+>        
+>     " 
+>         !    
+>   
+>  
+>   
+>           #
+>     ! 
+>         
+>          #  
+> 
+> 
+>  
+>     
+>       
+> 
+>  
+>  
+> 
+> 
+>   
+>              
+>       
+>   
+>       
+>        
+>     " 
+>     
+>         !    
+>   
+>  
+>   
+>           #
+>     ! 
+>         
+>      
+>          #  
+> 
+> 
+>  
+>     
+>       
+> 
+> 
+> 
+>   
+>              
+>       
+>   
+>       
+>        
+>     " 
+>     
+>         !    
+
+Figure 8. Comparison of muscle activation profiles under three assistance conditions (Assist on, Assist off, and No exo). Subplots (a), (b), and (c) present the results obtained on level ground, ramp, and stair locomotion, respectively. In each subplot, the upper trace shows the true trajectory and optimized torque, and the lower trace presents the corresponding muscle activation results. 
+
+.  
+
+> 
+> 
+> 
+> 
+>  
+>   
+>   
+
+ # ! &     "  %   # 
+
+
+
+
+
+            
+
+>                   
+> 
+>                           
+> 
+> 
+> 
+> 
+>    
+>     
+>     
+>    
+>     
+>   
+>             
+>     
+>     
+
+  
+
+       
+
+ # ! &     "  %   # 
+
+  
+
+
+
+  
+
+       
+
+>               
+> 
+> 
+> 
+>     
+>    
+>   
+>    
+>   
+>      
+
+      
+
+   
+
+     
+
+  %   !       %  
+
+      
+
+ & $       %  '  %  !             
+
+>          
+>      
+
+Figure 9. Performance comparison results of metabolic rate (a) and heart rate (b) under three assistance conditions across three terrain types: level ground, sloped terrain, and staircase. 
+
+.(V O 2) and carbon dioxide production ( V CO 2) data, the instantaneous metabolic power Pt normalized by body mass 
+
+m is calculated as (Molinaro et al. 2024a): 
+
+Pt = 0.278 · V O 2 + 0 .075 · V CO 2
+
+m . (27) All subsequent experiments adopt an experimental paradigm for cross-subjects. 
+
+2) Muscle Activation Change: Due to the high sensitivity of EMG sensors to motion interference, cross-subject muscle activation experiments are conducted under three relatively stationary conditions: level ground, a slope, and a staircase. Specifically, a walking speed of 1.25 m/s is maintained on both level and inclined surfaces ( 10 ◦), achieved using a motorized treadmill. During stair climbing, subjects walk at a relatively constant speed of approximately 50 steps per minute. The final muscle activation profile is obtained by averaging the activation across multiple gait cycles. Fig. 8 presents the muscle activation and the corresponding torque averaged over multiple gait cycles across three terrain conditions under three distinct assistance modes: Assist on, Assist off, and No exo. These results demonstrate that the 
+
+ExoTraj policy yields substantial reductions in muscle activation: 1) Relative to the Assist off condition, ExoTraj 
+
+reduces peak muscle activation by approximately 41 .3% ,
+
+10 .9% , and 32 .9% for the three terrain conditions; 2) Compared with the No exo condition, ExoTraj achieves peak muscle activation reductions of 23 .8% , 11 .0% , and 
+
+−1.2% for the three respective terrains; 3) Relative to the Assist off condition, the integrated muscle activation over the gait cycle is reduced by 31 .9% , −5.6% , and 30 .8% across the three terrains, respectively; Under Assist on condition, compared with No exo, muscle-related metrics are reduced in certain scenarios, primarily due to the excessive weight of the entire system. Furthermore, the magnitude of torque peaks on sloped and stair-climbing terrains is higher than that on level ground, and the gait phase corresponding to the peak muscle activation is close to those of the torque peaks, which validates that the generated torques are well aligned with the user’s intrinsic locomotion trend. 
+
+3) Metabolic and Heart Rate Reduction: In this part, the subjects’ metabolic rates are measured under two distinct scenarios. The first scenario consisted of relatively fixed repetitive movements, including level walking ( 1.25 m/s), slope walking ( 5◦, 1.25 m/s), and stair climbing ( 70 steps per minute). In this phase, each experimental trial lasts about 
+
+5 minutes, and the average values of oxygen consumption and carbon dioxide production over the final 2 minutes are used to determine the metabolic rate. Similarly, heart rate is determined using the average value recorded during the final 2 minutes of each trial. The second scenario involved  
+
+> Prepared using sagej.cls
+
+18 Journal Title XX(X)      
+
+> 
+> 
+> 
+> 
+>  
+>   
+>   
+>  # ! &    "  %   #
+
+           
+
+>                
+>     
+>     
+> 
+>      
+>  # ! &    "  %   #
+>  
+
+   
+
+>    
+
+           
+
+>  
+>     
+>   %   !       % 
+>      
+>  & $       %  '  %  !         
+>          
+>      
+
+Figure 10. The comparative results of metabolic rate, average muscle activation, and heart rate after walking along a prescribed route on outdoor complex terrain under the three assistance conditions. 
+
+.                       
+
+>  
+>  
+>   
+>           
+>        
+>                  
+>  
+> 
+> 
+>           
+>        
+>                                      
+
+Figure 11. Results of real-time trajectory prediction and optimized torque profiles for cross-subject adaptive locomotion in complex outdoor field scenarios. The dashed lines represent the predicted trajectories, while the solid lines denote the actual joint trajectories. 
+
+.a complex outdoor environment along the route, where subjects are instructed to adjust their walking speed to precisely match that of a designated leader waking speed in each of the distinct task conditions. The test route covers a range of complex outdoor terrains, including steep slopes, rocky terrain, and grassy surfaces. The total time to complete the entire experimental course is approximately 6 minutes. Given that the entire experimental course comprises multiple distinct terrain segments, all performance metrics presented herein are the average values over the complete traversal. Fig. 9 shows the comparative results of the metabolic rate and heart rate average over three subjects recorded under three assistance conditions (Assist on, Assist off, and No exo) across three types of terrain. The results demonstrate that the ExoTraj policy significantly reduces metabolic rate and heart rate across all three assistance conditions: 1) Relative to the Assist off condition, the metabolic rate reductions range from 11 .5% during level walking to 24 .4% 
+
+during stair climbing, and the heart rate reduction range from 
+
+1.7% for level ground walking to 17 .5% for stair climbing. 2) Compared with the No exo condition, the metabolic reductions and heart rate range from 0.8% to 18 .2% and from 
+
+−0.9% to 11 .0% . Stair climbing results in the highest energy expenditure, and the most significant reductions in metabolic rate and heart rate are observed, confirming the efficacy of the exoskeleton-assistance policy. Additional assistance tasks, such as ramp ( 10 ◦, 1.25 m/s), run ( 1.8 m/s), and sit-stand, comparison results can be found in Appendix A.3.6. Fig. 10 compares the metabolic rate, average muscle activation level, and average heart rate averaged over two subjects under different assistance conditions on complex outdoor terrain. The terrain composition and duration of the entire experimental route are as follows: stair ascent and descent (about 1 minute), running (about 1 minute), brisk walking (about 1 minute), rock climbing (about 1 minute), and walking on uneven grass terrain (about 2 minutes). Fig. 10 shows that ExoTraj effectively reduces key physiological metrics during locomotion: 1) Compared with the Assist off condition, ExoTraj yields relative reductions of 14 .7% in metabolic cost, 9.8% in heart rate, and 21 .5% 
+
+in muscle activation; Relative to the No-exo baseline, ExoTraj achieves equivalent relative decreases: 8.1% for metabolic cost, 7.4% for heart rate, and 16 .2% for muscle activation. The above experiments further demonstrate that the ExoTraj can effectively reduce energy expenditure in complex outdoor environments. Fig. 11 presents the trajectory and torque curve of the proposed ExoTraj method during real-world in-situ assistance operation in complex unstructured outdoor terrains. Tasks include walking and running on lawns, sit-to-stand transitions, rock climbing, obstacle crossing, and stair climbing, among others. As illustrated in Fig. 11,  
+
+> Prepared using sagej.cls 19
+
+integrating trajectory prediction with torque optimization based on predicted trajectories enables the proposed framework not only to predict future locomotion trajectories accurately but also to achieve robust, adaptive performance in complex, unstructured locomotion tasks. As locomotion speed increases, the peak magnitudes of the generated torque profiles increase correspondingly. Moreover, the system exhibits robust adaptability to rapid changes in walking velocity. This demonstrates the high adaptability of ExoTraj to complex outdoor environments. Additional results of predicted trajectories and assistance torques across diverse scenarios and high-dynamic movements (not seen in the training dataset) are provided in Appendix A.3.6. 
+
+8 Discussion and Conclusion 
+
+This section provides further discussion on the necessity of trajectory prediction and exoskeleton robot assistance in high-dynamic environments, presents the advantages and limitations of the proposed method, and outlines promising directions for future improvements. Finally, the part concludes with a comprehensive summary of the entire work. 
+
+8.1 Discussion     
+
+> 1) Advantages of Trajectory Prediction:
+
+The proposed trajectory prediction strategy outperforms the conventional single-step prediction approach in two critical aspects: 1) it enables torque optimization to leverage long-term temporal context information; 2) it supports look-ahead prediction, which effectively mitigates the adverse impacts of inference latency in the real-time control loop. Specifically, relying solely on a single trajectory is insufficient to achieve effective optimization of the torque profiles, which compromises the adaptability and robustness to complex locomotion tasks. For example, as shown in Fig. 7 (a), a large deviation between predicted and actual values may easily induce control fluctuations, thereby hindering effective assistance. Furthermore, when the inference time exceeds the preset control time step, the single-step prediction scheme suffers from inherent time-lag behavior, which directly degrades the assistance comfort during human-exoskeleton interaction. For example, as listed in Table 3, the LSTM takes about 
+
+10 ms for inference, which cannot satisfy the 5 ms real-time control requirement and restricts the deployment of complex models for single-step prediction. Moreover, most multi-modal data in existing exoskeleton systems are time-series, enabling fast inference. Integrating linguistic information for natural human-exoskeleton interaction and visual information for complex terrain perception will significantly increase model inference latency. The trajectory prediction strategy can effectively mitigate this latency issue via pre-executed look-ahead prediction, which is a key advantage of trajectory prediction for future complex locomotion tasks.     
+
+> 2) Assistance in High-dynamic Environments:
+
+For exoskeleton robots to enhance lower-limb walking ability and reduce energy consumption in outdoor environments, they must adapt to complex and dynamic conditions. Traditional rule-based methods struggle to meet these assistance requirements. Over the past decade, neural network approaches have trained parameter weights using large amounts of feature-label data pairs, thereby learning a complex, high-dimensional function that maps features to labels in complex scenarios. Consequently, high-quality human-robot interaction (HRI) data has become the cornerstone of effective adaptive assistance for exoskeleton robots. While human kinematic features such as joint positions and velocities can be readily acquired through wearable sensors, accurate kinetic labels, including joint torques and ground reaction forces, remain extremely challenging to obtain directly in unconstrained environments. To overcome this data acquisition bottleneck, two main research directions have been explored in the literature. The first approach calculates joint torques through inverse dynamics using data captured by optical motion capture systems (Molinaro et al. 2024a,b). However, such systems require expensive and complex laboratory setups, making them impractical for deployment in complex outdoor terrains. The second approach generates synthetic torque data by training musculoskeletal models to perform human-like locomotion in simulation environments (Luo et al. 2024). Nevertheless, musculoskeletal models typically involve high-dimensional control spaces (often exceeding 100 dimensions), which makes it notoriously difficult to train them to reproduce natural human walking behaviors across diverse and complex terrains. Consequently, existing approaches remain fundamentally limited in their ability to provide robust exoskeleton assistance across diverse, unstructured outdoor terrains. To address both the prohibitive data acquisition costs and the insufficient environmental adaptability of current methodologies, this work presents a hierarchical control framework. The high-level module is designed to predict locomotion information, specifically joint angles and angular velocities, which can be directly captured using low-cost wearable sensors with minimal deployment complexity. The low-level module then establishes amapping between the predicted kinematic trajectories and the corresponding desired assistance torques using MPC. The proposed hierarchical framework can reduce the data acquisition burden and enhance the exoskeleton’s adaptability to complex and dynamic outdoor environments. More discussions on exoskeleton assistance are provided in Appendix A.4.  
+
+> 3) Discussion for Policy
+
+ExoTraj : Human locomotion characteristics exhibit significant inter-subject variability. The proposed assistance policy ExoTraj proposes a fast flow matching method to model the probabilistic distribution of trajectories, thereby generating reference trajectories in real time with enhanced accuracy and generalization capability, as demonstrated in Table 3 and Fig. 6. Perception and control are inherently strongly coupled in exoskeleton systems. Building upon a dynamic model, the proposed assistance policy ExoTraj introduces a novel objective function for MPC, which generates smooth and comfortable assistance torque curves. This approach maintains robust control performance even in the presence of external disturbances, as illustrated in Table 5 and Fig. 7. Compared  
+
+> Prepared using sagej.cls
+
+20 Journal Title XX(X) 
+
+with the assist off baseline, ExoTraj significantly reduces both the user’s metabolic rate and muscle activation levels in outdoor environments. Nevertheless, the proposed policy ExoTraj still has sev-eral limitations. The torque optimized by the MPC controller based on predicted trajectories still exhibits discrepancies with the ground truth joint torque curves. Although the torque optimized by ExoTraj generally agrees with human locomotion torques, noticeable discrepancies remain in some local details compared with the ground-truth torques. In scenarios where ground truth joint torques are not directly measurable, neural network optimization based on user preferences provides a promising alternative. However, cur-rent preference-based optimization methods for exoskeletons have been predominantly limited to tuning low-dimensional control parameters, rather than optimizing complex high-dimensional neural networks, which remains a significant open challenge in the field. Additionally, the overall weight of the current exoskeleton prototype remains relatively high, which may limit its long-term outdoor use. Future work will focus on comprehensive system optimization to reduce weight and enhance portability. Another critical yet underin-vestigated question in lower-limb exoskeleton control design pertains to establishing the appropriate scaling relationship between ground-truth hip joint moments and exoskeleton assistance torques when the former is experimentally mea-sured. During the stance phase, a substantial portion of the inherent hip joint moments is dedicated to supporting body weight and maintaining postural equilibrium. A fundamental ambiguity remains regarding whether these load-bearing and balance-related torque components should be explicitly incorporated into the exoskeleton’s assistance torque. 
+
+8.2 Conclusion 
+
+This paper presents a novel lower-limb exoskeleton assis-tance policy, named ExoTraj , designed for complex unstructured outdoor environments. The proposed pol-icy features low-cost data acquisition, requiring only that the user walk naturally while donning the exoskele-ton. ExoTraj employs a hierarchical control framework, wherein the high-level controller leverages fast FM to enable real-time, high-precision prediction of joint trajectories; the low-level controller employs MPC to optimize torque, thereby delivering comfortable and robust assistance. Com-pared with conventional data-driven approaches, ExoTraj 
+
+reduces trajectory prediction error by up to 14 .0% under cross-subject and complex terrain conditions. Relative to tra-ditional control methods, its optimized torque achieves supe-rior smoothness and enhanced robustness in highly dynamic scenarios. When applied in complex dynamic outdoor envi-ronments, ExoTraj reduces the metabolic rate, heart rate, and peak muscle activation by up to 24 .4% , 19 .5% , and 
+
+41 .3% , respectively. ExoTraj establishes a generalizable framework for outdoor lower-limb exoskeleton assistance, and further advances the translation of exoskeleton robots from laboratory research to real-world daily applications. 
+
+Funding 
+
+This work was funded by the National Natural Science Foundation of China under (Grant 62473365, Grant U22A2056, and Grant 62373013), and the Beijing Natural Science Foundation under (Grant L232021 and L242101) 
+
+Declaration of conflicting interests 
+
+The authors declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article. 
+
+References 
+
+Albergo MS and Vanden-Eijnden E (2022) Building normal-izing flows with stochastic interpolants. arXiv preprint arXiv:2209.15571 .Altinkaynak ES and Braun DJ (2019) A phase-invariant linear torque-angle-velocity relation hidden in human walking data. 
+
+IEEE Transactions on Neural Systems and Rehabilitation Engineering 27(4): 702–711. Camargo J, Ramanathan A, Flanagan W and Young A (2021) A comprehensive, open-source dataset of lower limb biomechan-ics in multiple conditions of stairs, ramps, and level-ground ambulation and transitions. Journal of biomechanics 119: 110320. Chen Y, Miao S, Chen G, Ye J, Fu C, Liang B, Song Sand Li X (2024a) Learning to assist different wearers in multitasks: efficient and individualized human-in-the-loop adaptation framework for lower-limb exoskeleton. IEEE Transactions on Robotics .Chen Y, Miao S, Ye J, Chen G, Cheng J, Du K and Li X (2024b) Upper-limb rehabilitation with a dual-mode individualized exoskeleton robot: A generative-model-based solution. The International Journal of Robotics Research .Chi C, Xu Z, Feng S, Cousineau E, Du Y, Burchfiel B, Tedrake R and Song S (2023) Diffusion policy: Visuomotor policy learning via action diffusion. The International Journal of Robotics Research : 02783649241273668. Ding H, Jaquier N, Peters J and Rozo L (2025) Fast and robust visuomotor riemannian flow matching policy. IEEE Transactions on Robotics 41: 5327–5343. Divekar NV, Thomas GC, Yerva AR, Frame HB and Gregg RD (2024) A versatile knee exoskeleton mitigates quadriceps fatigue in lifting, lowering, and carrying tasks. Science Robotics 9(94): eadr8282. Dong M, Ruan H, Wang Z, Sun C, Zuo S, Chen Y, Li J and Zhang M (2025) Toward physician-level performance in robot-assisted ankle rehabilitation via imitation learning with empirical and temporal adaptation. IEEE Transactions on Robotics : 1–18. Frans K, Hafner D, Levine S and Abbeel P (2025) One step diffusion via shortcut models. In: The Thirteenth International Conference on Learning Representations .Fu Y, Yan Q, Wang L, Li K and Liao R (2025) Moflow: One-step flow matching for human trajectory forecasting via implicit maximum likelihood estimation based distillation. In: 
+
+Proceedings of the Computer Vision and Pattern Recognition Conference . pp. 17282–17293. Geng Z, Deng M, Bai X, Kolter JZ and He K (2025) Mean flows for one-step generative modeling. arXiv preprint arXiv:2505.13447 .Han S, Wang H and Yu H (2023) Human–robot interaction evaluation-based aan control for upper limb rehabilitation robots driven by series elastic actuators. IEEE Transactions on Robotics 39(5): 3437–3451.  
+
+> Prepared using sagej.cls
+
+21 
+
+Hochreiter S and Schmidhuber J (1997) Long short-term memory. 
+
+Neural computation 9(8): 1735–1780. Karimi M and Ahmadi M (2025) ilead: An emg-based adaptive shared control framework for exoskeleton assistance via deep reinforcement learning. IEEE Transactions on Artificial Intelligence : 1–13. Lea C, Flynn MD, Vidal R, Reiter A and Hager GD (2017) Temporal convolutional networks for action segmentation and detection. In: proceedings of the IEEE Conference on Computer Vision and Pattern Recognition . pp. 156–165. Lee D, Lee S and Young AJ (2024) Ai-driven universal lower-limb exoskeleton system for community ambulation. Science advances 10(51): eadq0288. Li X, Pan Y, Chen G and Yu H (2017) Adaptive human–robot interaction control for robots driven by series elastic actuators. 
+
+IEEE Transactions on Robotics 33(1): 169–182. Lipman Y, Chen RT, Ben-Hamu H, Nickel M and Le M (2023) Flow matching for generative modeling. In: The Eleventh International Conference on Learning Representations .Lipman Y, Havasi M, Holderrieth P, Shaul N, Le M, Karrer B, Chen RT, Lopez-Paz D, Ben-Hamu H and Gat I (2024) Flow matching guide and code. arXiv preprint arXiv:2412.06264 .Liu XY, Li G, Zhou XH, Liang X and Hou ZG (2025) A weight-aware-based multisource unsupervised domain adaptation method for human motion intention recognition. IEEE Transactions on Cybernetics 55(7): 3131–3143. Luo S, Androwis G, Adamovich S, Nunez E, Su H and Zhou X (2023) Robust walking control of a lower limb rehabilitation exoskeleton coupled with a musculoskeletal model via deep reinforcement learning. Journal of neuroengineering and rehabilitation 20(1): 34. Luo S, Jiang M, Zhang S, Zhu J, Yu S, Dominguez Silva I, Wang T, Rouse E, Zhou B, Yuk H et al. (2024) Experiment-free exoskeleton assistance via learning in simulation. Nature 
+
+630(8016): 353–359. Molinaro DD, Kang I and Young AJ (2024a) Estimating human joint moments unifies exoskeleton control, reducing user effort. 
+
+Science robotics 9(88): eadi8852. Molinaro DD, Scherpereel KL, Schonhaut EB, Evangelopoulos G, Shepherd MK and Young AJ (2024b) Task-agnostic exoskeleton control via biological joint moment estimation. 
+
+Nature 635(8038): 337–344. Scherpereel KL, Gombolay MC, Shepherd MK, Carrasquillo CA, Inan OT and Young AJ (2025) Deep domain adaptation eliminates costly data required for task-agnostic wearable robotic control. Science Robotics 10(108): eads8652. Slade P, Kochenderfer MJ, Delp SL and Collins SH (2022) Personalizing exoskeleton assistance while walking in the real world. Nature 610(7931): 277–282. Song J, Meng C and Ermon S (2021) Denoising diffusion implicit models. In: International Conference on Learning Representations .Tong A, Malkin N, Huguet G, Zhang Y, Rector-Brooks J, Fatras K, Wolf G and Bengio Y (2023) Conditional flow matching: Simulation-free dynamic optimal transport. arXiv preprint arXiv:2302.00482 2(3). Tricomi E, Piccolo G, Russo F, Zhang X, Missiroli F, Ferrari S, Gionfrida L, Ficuciello F, Xiloyannis M and Masia L (2025) Leveraging geometric modeling-based computer vision for context aware control in a hip exosuit. IEEE Transactions on Robotics .Vaswani A, Shazeer N, Parmar N, Uszkoreit J, Jones L, Gomez AN, Kaiser Ł and Polosukhin I (2017) Attention is all you need. 
+
+Advances in neural information processing systems 30. Wang D, Liu C, Chang F and Xu Y (2025) Hierarchical diffusion policy: Manipulation trajectory generation via contact guidance. IEEE Transactions on Robotics 41: 2086–2104. Winters JM, Woo SL and Delp I (2012) Multiple muscle systems: biomechanics and movement organization . Springer Science & Business Media. Xia X, Cheng L and Han L (2026) Transparent lifting assistance strategy for arm exoskeletons using an adaptive torque controller. IEEE Transactions on Industrial Electronics 73(3): 4735–4746. Xiong J, Zhang Y, Leng Y, Xian H, Chen C, Wu Y, Zhuang W, Chen X and Fu C (2026) Future hip angle guided control: A concise and explicit assistance framework for hip exoskeleton. 
+
+IEEE/ASME Transactions on Mechatronics : 1–12. Xu L, Li Z, Li G and Jin L (2025) Robust model predictive control of a gait rehabilitation exoskeleton with whole body motion planning and neuro-dynamics optimization. IEEE Transactions on Cybernetics .Xu Z, Miao Z, Qiu Q, Zhang Z and She Y (2026) Diffog: Differentiable policy trajectory optimization with generalizability. IEEE Transactions on Robotics 42: 204–223. Yi C, Jiang F, Zhang S, Guo H, Yang C, Ding Z, Wei B, Lan X and Zhou H (2021) Continuous prediction of lower-limb kinematics from multi-modal biomedical signals. IEEE Transactions on Circuits and Systems for Video Technology 
+
+32(5): 2592–2602. Zhang Y, Xiong J, Xian H, Chen X, Fu C and Leng Y (2026) Ajap: An adaptive network for hip joint angle prediction in assistive walking with continual learning. IEEE Transactions on Cognitive and Developmental Systems 18(1): 43–56.  
+
+> Prepared using sagej.cls
+
+22 Journal Title XX(X) 
+
+# Appendices 
+
+A.1 Notations 
+
+The primary mathematical notations employed in this paper are summarized in Table A.1. The notations are divided into two parts: one concerns trajectory generation (i.e., the proposed fast flow matching algorithm), and the other focuses on trajectory optimization, which is related to model predictive control.  
+
+> Table A.1. Main symbols and notations used in this work.
+
+Notation Description 
+
+Fast Flow Matching 
+
+vt Velocity vector 
+
+ψt Flow path 
+
+x Input noise 
+
+o Observations in the past To steps 
+
+y Trajectory information of hip joint 
+
+a Motor torque of future N steps 
+
+To Time steps of the observation 
+
+Tp Time steps of the prediction trajectory 
+
+L Usage steps of predicted trajectory 
+
+Model Predictive Control 
+
+N Optimization horizon of MPC 
+
+M Inertial matrix of dynamic model 
+
+C Velocity matrix of dynamic model 
+
+C Gravity matrix of dynamic model 
+
+Tint Interaction torque 
+
+Q Tracking error matrix 
+
+R Torque constraint matrix 
+
+P Penalization weight matrix 
+
+O Terminal weight matrix 
+
+A.2 Other Experimental Details 
+
+This section provides comprehensive details concerning the exoskeleton system, real-time inference data flow, experimental participants, and data acquisition procedures. 
+
+A.2.1 Details of System Description 
+
+Fig. A.1 (a) illustrates the overall architecture of the proposed system design. The exoskeleton’s electronic system integrates perception, computation, and actuation into a cohesive unit. The high-level control, powered by an NVIDIA Jetson Orin NX, performs real-time trajectory prediction and torque optimization. A centralized STM32 board handles data acquisition, gathering motor data via CAN and IMU data via SPI, while facilitating bidirectional Ethernet communication with Jetson. Low-level motor driving is delegated to the AK80-9 T-Motor internal controllers, which also provide real-time current, velocity, and position feedback. The sensor data acquisition and TCP data transmission are strictly regulated with a 5
+
+ms cycle, while the low-level control operates at a 1
+
+ms period. Fig. A.1 (b) presents a schematic diagram of the equipment placement for measuring the physiological metrics of metabolic rate, muscle activation, and heart rate. The three types of sensory data are synchronously acquired, and precise data alignment is performed based on their corresponding recorded timestamps. In complex scenarios, real-time performance is critical for the control of exoskeleton robots. The high-level controller consists of two modules: trajectory prediction and torque optimization. It is required to ensure that the upper-level decision-making process is completed within 5 ms before being transmitted to the low-level controller, where the time consumption for data reading and transmission must also be taken into account. The edge computing device employed is the Jetson Orin NX, which supports both GPU acceleration and general-purpose CPU computation. To ensure real-time computation, a parallel computing architecture is adopted for the aforementioned trajectory prediction, torque optimization, and data read/write operations. Fig. A.2 presents a detailed data flow diagram of the exoskeleton robot system. The main processor streams data from the IMUs and actuator encoders to the machine learning coprocessor. The coprocessor runs three concurrent processes: an I/O handler for data communication and preprocessing, a dedicated engine for minimal-latency model inference, and a module for optimizing model-predicted control torque, which is then returned to the main processor. To accelerate the inference speed of Fast FM, the pre-trained model is first High-level Mid-level Low-level   
+
+> Human-Exo. IMU
+> Orin NX STM32F429 AK80-9
+> SPI
+> CAN TCP
+> MPU9250
+> Assist
+> Sample
+
+(a) (b)  
+
+> GARMIN HRM
+> COSMED K5
+> ELONXI EMG-C4
+> Metabolic Rate
+> Muscle Activation
+> Heart Rate
+> Figure A.1. (a) shows the system interconnection and communication architecture: TCP for data exchange between the Jetson Orin NX and STM32, CAN bus for STM32-drive motor communication, and SPI for IMU data acquisition by the STM32. (b) presents the relevant equipment used for measuring metabolic rate, muscle activation, and heart rate.
+
+. 
+
+> Prepared using sagej.cls
+
+23 Actuators 
+
+> IMUs
+> I/O Process
+
+NVIDIA Jeston Orin NX  
+
+> Inference Process Opt. Process
+> Read Data
+> In Queue
+> Out Queue Send Data
+> Model Input
+> Traj. Queue
+> Read Input
+> Torque Opt.
+
+STM32  
+
+> Read Sensors
+> Send Data
+> Read Cmd.
+> Send Cmd.
+> Figure A.2. Data flow diagram of the exoskeleton robot system. Sensor data is read by the STM32 via SPI and CAN protocols, then transmitted to the Orin NX via TCP over Ethernet. Three threads run in parallel on the edge device: the I/O thread reads sensor data in real time every 5 ms; new trajectories are buffered when the inference trigger is met. The MPC optimizes torque in real time based on the next N-step trajectory and sends it to the STM32 every 5 ms to achieve real-time inference control.
+
+. 
+
+> Table A.2. Physical information of each subject. The first eight are for offline multi-modal data acquisition, and the latter four are for cross-subject validation experiments.
+
+Subject ID Age Gender Height (m) Mass (kg) AB01 25 M 1.78 81.0 AB02 24 M 1.86 58.4 AB03 24 M 1.75 75.2 AB04 22 M 1.75 64.0 AB05 22 M 1.80 80.5 AB06 23 M 1.75 76.6 AB07 24 F 1.65 52.1 AB08 26 F 1.68 53.0 AB09 24 M 1.83 78.6 AB10 21 M 1.77 85.3 AB11 20 M 1.70 66.5 AB12 26 M 1.67 65.5 
+
+converted to the ONNX format and further optimized into a TensorRT engine to maximize inference throughput. To guarantee both the stability and computational efficiency of MPC optimization, the acados library in Python is utilized for numerical solution in this work. All I/O and queue operations between the processors employ non-blocking logic, ensuring the exoskeleton’s control loop robustly maintains a frequency of 200 Hz. 
+
+A.2.2 Details of the Collected Dataset 
+
+We recruited participants with diverse heights and body weights to collect multimodal data during walking on complex outdoor terrains. Detailed participant information is provided in Table A.2 ( 10 males, 2 females; age: 23 .4 ± 3.5
+
+years; height: 174 .9 ± 0.4 cm; weight: 69 .7 kg). Before the experiment, participants were informed of the experimental procedure, details, and precautions. All provided written informed consent (approval number: IA-2502-020403). Each data acquisition session lasted approximately 15 minutes, and two sessions were conducted for each participant. The first eight subjects were instructed to walk freely along the designated path at a self-selected speed under the guidance of a trained experimenter. The walking terrain included complex sloped surfaces, irregular lawns, and inclined ramps. The exoskeleton operated in zero-torque assistance mode. During walking, we collected data from 3 IMUs providing 18-dimensional information (position and velocity) and 2 motors providing 4-dimensional information (joint angle and angular velocity). Among these, the 18-dimensional IMU data and 2-dimensional joint angle data were used as input features, while the 2-dimensional joint angle and 2-dimensional angular velocity data served as the prediction labels. The data sampling frequency was set to 1 kHz. The raw angular velocity signals were processed using a low-pass filter to suppress noise. Finally, the training dataset was downsampled to 200 Hz. In addition, owing to variations in joint positions across different participants, calibration of the initial motor angles was performed before data collection. The initial reference was defined as the static standing posture of the participant while wearing the exoskeleton. 
+
+A.3 Other Experimental Results 
+
+This section presents a comprehensive analysis of the model-related hyperparameters, including the effective trajectory length L, the number of observation steps To and prediction steps Tp, the number of iteration steps for FM, and the key parameters of the MPC module. Subsequently, we compare the MPC-optimized torque with the measured actual torque collected from public datasets, and analyze the discrepancies between the two. Furthermore, this section presents the experimental results for additional scenarios and subjects. 
+
+A.3.1 Analysis of Usage Steps L
+
+The performance of model predictive control (MPC) for lower-limb exoskeletons is critically determined by both the accuracy and timeliness of predicted joint trajectories. While a longer prediction horizon length ( L) theoretically yields smoother control actions and improved anticipation of human motion intent, it inevitably introduces accumulated prediction errors and increased computational latency. To systematically investigate the impact of L on online trajectory prediction performance, we conduct cross-subject treadmill walking experiments at speeds ranging from 0 m/s to 1.6 m/s. Five distinct values of the effective prediction horizon length L are selected for evaluation: 16 , 20 , 40 , 80 ,
+
+and 100 . since the MPC prediction horizon N is set to 
+
+15 , the number of steps used cannot be less than 15 .Trajectory prediction accuracy is quantified using the ADE (See Eq. (21)), which measures the discrepancy between  
+
+> Prepared using sagej.cls
+
+24 Journal Title XX(X)                           
+
+>    
+>    
+>    
+>    
+>   
+>    
+>    
+>    
+>   
+>   
+>   
+>   
+>   
+>   
+>   
+>            
+> 
+>         
+>          
+>   
+> Figure A.3. Variation of online trajectory (angle and angle velocity) prediction error with different usage steps
+
+L.
+
+.predicted and ground-truth trajectories. Please note that in this experiment, the exoskeleton provides torque assistance. Fig. A.3 presents the effect of different lengths of L
+
+on the prediction errors of angle and angular velocity under exoskeleton assistance. The results demonstrate that during actual exoskeleton assistance, the error exhibits an upward trend as L increases, which is consistent with the phenomenon that the longer the network prediction horizon, the larger the prediction error. However, the error is relatively large at L = 16 (one inference per torque optimization). This may be due to continuous trajectory updates causing discontinuous torque optimization and non-optimal values, which impair assistance performance, affect user gait, and reduce prediction accuracy. Additionally, when the model incurs non-negligible inference latency (e.g., 50 ms, which corresponds to a 10 -step lag), the number of steps utilized must be increased accordingly to mitigate the adverse effects introduced by such computational delay. Specifically, for an MPC prediction horizon N of 15 steps under a 10 -step lag condition, the minimum required number of usage steps is 
+
+25 . For the implementation in this work, the model exhibits an average inference time of 6 ms, which necessitates 1-step look-ahead inference. As a result, the final usage step count 
+
+L is configured to 20 .
+
+A.3.2 Analysis of MPC Parameters 
+
+This subsection presents a detailed analysis of the influence exerted by the parameters U and V in the model predictive control (MPC) objective function (Eq. (20)) on the resulting optimized torque profiles. Here, U and V denote the penalty terms for trajectory tracking error and torque regularization, respectively. Specifically, the trajectory tracking penalty term U is determined by the error weighting matrix Q
+
+and the terminal weighting matrix O, while the torque regularization penalty term V is governed by the torque regularization matrix R and the control penalty matrix 
+
+P. Since the final form of the MPC objective function comprises these two penalty terms exclusively, analyzing their relative ratio is sufficient to characterize the impact of the aforementioned matrix parameters on the optimized torque profiles. Given that the error weighting matrix Q                                   
+
+>    
+>   
+>   
+>  
+>   
+>  
+>       
+>    
+>    
+>   
+>       
+>   
+>   
+>  
+> 
+> 
+>  
+>  
+>  
+>           
+>          
+>   
+>   
+> Figure A.4. Comparison results of real-time trajectory prediction and torque optimization under different
+
+U/V ratios during treadmill walking at 1.0 m/s across subjects. 
+
+.  
+
+> Table A.3. Performance metrics of optimized torque profiles for exoskeleton online assistance under different
+
+U/V ratio. 
+
+U/V Ratios 50 : 1 20 : 1 5 : 1 
+
+Smooth Srms 16 .7 ± 1.30 8.20 ± 0.16 3.72 ± 0.05 
+
+Phase Rshift 0.05 ± 0.04 0.01 ± 0.01 0.02 ± 0.01 
+
+Comfort Cmpc 0.90 ± 0.02 0.96 ± 0.00 0.97 ± 0.00 
+
+consists of two components corresponding to the trajectory angular error and angular velocity error, we fix the weighting ratio of angular error to angular velocity error at 100 : 1 
+
+throughout our analysis. Consequently, the ratio of penalty term U to V is defined as the ratio of the angular error coefficient to the magnitude of V.Fig. A.4 presents the comparison of the predicted trajectories and optimized torque profiles during the online assistance process, when a human subject walks on the treadmill under three different penalty ratios of 
+
+U to V: 5 : 1 , 20 : 1 , and 50 : 1 . As the U/V ratio decreases, corresponding to a reduction in the degree of torque regularization, both the peak torque values and the fluctuations in the torque profiles increase, and gait consistency deteriorates. Conversely, as the 
+
+U/V ratio increases, corresponding to enhanced torque regularization, the optimized torque profiles become progressively smoother; however, this improvement is achieved at the expense of losing fine-grained local details. From a mathematical perspective, an increase in the torque regularization coefficient directly corresponds to a larger torque smoothing coefficient as defined in Eq. (18), which in turn yields smoother torque profiles. In contrast, a smaller torque penalty coefficient allows the torque profiles to retain richer local details but compromises the comfort of the assistance provided. Table A.3 summarizes three key performance metrics of the optimized torque profiles under different U/V
+
+ratio configurations: smoothness Srms , phase consistency  
+
+> Prepared using sagej.cls
+
+25                     
+
+>    
+>    
+>    
+>    
+>    
+>    
+>                  
+>         
+> Figure A.5. Influence of prediction horizon Tpon real-time trajectory prediction error in offline phase.
+
+.
+
+Rshift , and comfort metric Cmpc defined in Eq. (22)-Eq. (24). Table A.3 confirms that decreasing the U/V
+
+ratio improves both the comfort index and smoothness index. However, these improvements come at the cost of reduced torque optimization authority, substantial loss of fine-grained local details, and consequently diminished assistance efficiency. Conversely, increasing the U/V ratio leads to more pronounced fluctuations in the torque profiles, degraded smoothness, and increased gait inconsistency, which negatively impacts user comfort. These quantitative findings align closely with the qualitative observations presented in Fig. A.4. To achieve an optimal balance among assistance comfort, efficiency, and preservation of local details, this work selects the intermediate value of 20 as the final ratio coefficient for the MPC objective function. 
+
+A.3.3 Analysis of Observation Steps To and Prediction Steps Tp
+
+Intuitively, the prediction error increases as the prediction horizon Tp grows longer. Fig. A.5 illustrates the impact of different prediction horizons on trajectory accuracy during the offline phase, which is consistent with the aforementioned observation. The MPC optimization requires a prediction horizon of no less than 15 steps. Fig. A.3 demonstrates that a trajectory length of approximately 20 
+
+yields satisfactory trajectory prediction accuracy during the real-time assistance process. In this paper, we set the prediction horizon to 50 , but only utilize the first 20 steps for actual implementation. For the observation step To, an excessively short sequence contains limited information and thus leads to inaccurate trajectory prediction. Conversely, an overly long sequence is not suitable for highly dynamic scenarios. Due to drastic motion variations, a large time window fails to accurately predict the user’s intention at the next moment. Table A.4 shows the influence of observation steps To for trajectory prediction accuracy in the offline dataset. The results show that prediction accuracy improves as the number of observation steps increases. The accuracy at 250 steps is nearly identical to that at 500 steps. This indicates that as the prediction horizon To increases, no significant improvement in prediction performance is observed beyond 250 time steps. Furthermore, excessively long prediction horizons are unsuitable for highly dynamic scenarios. To maintain adaptability to dynamic scenarios, we set the observation steps to 250 in this work.                             
+
+> Table A.4. Comparison results for different observation steps
+> Toand the iteration steps (NEF) of FM.
+> Observation Steps ToIteration Steps (NEF)
+> Num. ADE R2(%) Num. ADE R2(%) Time
+> 50 0.0259 99 .88 10.0136 99 .76 4.26 250 0.0044 99 .94 30.0123 99 .87 12 .70 500 0.0043 99 .94 10 0.0149 99 .79 41 .37
+
+A.3.4 Analysis of NEF for FM 
+
+This subsection analyzes the influence of the iteration steps of FM (NEF) on trajectory prediction performance. We analyze the offline cross-subject trajectory prediction error and inference latency under four settings with NEF =1, 3, 10 . It should be noted that all recorded inference times are measured on a workstation equipped with the RTX 4090 GPU, rather than edge computing devices. Table A.4 presents the corresponding results of different iteration steps for FM methods in the offline dataset. It can be concluded that, within the transformer encoder-decoder framework, higher iteration steps do not necessarily yield higher trajectory prediction accuracy. FM presents poor performance for one iteration. While three iterations enhance prediction accuracy, further increasing to ten iterations leads to accuracy degradation. This is mainly due to the low time utilization of the Transformer framework. First, it is only used in the encoding phase, but not in the decoding phase. Second, error accumulation exists: during the [0 , 1] 
+
+time interval, the network fails to learn well in some time segments, which degrades the prediction accuracy and further impairs the final inference accuracy. The proposed fast FM method requires no iterative process and generates prediction results directly in one step. 
+
+A.3.5 Comparison between MPC-optimized and Ground-Truth Torques 
+
+This part aims to quantitatively compare the correspondence between MPC-optimized assistance torques and human physiological joint torques. Given the inherent limitations of motion capture systems, which are restricted to controlled laboratory environments, we conduct this comparative analysis using publicly available biomechanical datasets (Camargo et al. 2021). Specifically, we select data from subjects in the public dataset whose anthropometric characteristics (body weight and height) closely match those of our cross-subject experiment participants. We extract joint torque data for treadmill walking at speeds of 0.6, 1.0, and 
+
+1.4 m/s to compare with the MPC-optimized torques. Since the exoskeleton is designed to provide approximately 15 % of the human physiological joint torque (Molinaro et al. 2024b), we scale the ground-truth torque values from the dataset by a factor of 0.15 to ensure a meaningful comparison. Fig. A.6 compares the MPC-optimized torques with the scaled hip joint ground-truth torques. It shows that human ground-truth hip joint torque curves exhibit significantly higher peak torques during the stance phase, whereas the swing phase is characterized by relatively low torque magnitudes. This is attributed to the fact that the stance phase must support the entire body weight, resulting in substantially higher torque demands.  
+
+> Prepared using sagej.cls
+
+26 Journal Title XX(X)                                        
+
+>   
+>  
+> 
+>  
+>         
+>       
+>   
+>              
+>                
+>       
+>   
+>  
+> 
+>  
+>         
+>       
+>   
+>              
+>                
+>           
+>            
+>                          
+>       
+>   
+>  
+> 
+>  
+>            
+>         
+>       
+>   
+>              
+>                           
+>           
+>            
+>             
+
+Figure A.6. Comparison between torques optimized by the ExoTraj policy and hip joint ground-truth torques (scaled by 0.15 ). Subfigures (a), (b), and (c) present the torque comparisons at treadmill speeds of 0.6, 1, and 1.4 m/s, respectively. 
+
+.                      
+
+> 
+> 
+>  
+>  
+>   
+>            
+>                        
+>      
+>      
+>        
+>   
+>   
+>   
+>   
+>   
+>            
+>     
+> 
+>     
+
+Figure A.7. The comparative results of metabolic rate (a) and heart rate (b) across different assistance modes during three task types: walking at a 10-degree ramp, running, and sit-to-stand transitions. 
+
+.When humans walk, the thigh moves at high angular velocities during the swing phase, and hip joint torque is mainly used to flex the hip and lift the leg. During the stance phase, if we exclude the torque needed for body weight support and postural balance (produced primarily by the gluteus maximus and hamstrings through hip extension), the peak hip torque in this phase drops significantly. For exoskeleton-assisted walking, the motor only provides hip extension torque. Since the exoskeleton is strapped to the user’s thigh and applies force directly to this segment, it cannot effectively support body weight or maintain postural balance. Therefore, in actual assistance scenarios, the stance phase does not require a high peak torque output from the exoskeleton. During the swing phase, to reduce thigh muscle effort, the actuator torque should be increased accordingly, as faster leg lifting requires greater assistive torque. The ExoTraj policy optimizes the torque profile to achieve these two goals: increasing swing-phase peak torque while decreasing stance-phase peak torque. It does this by approximating human-exoskeleton interaction torques using angular velocity and angular acceleration (Eq. (13)) when building the dynamics model. Detailed results are shown in Fig. A.6, which clearly illustrates that 
+
+ExoTraj generates significantly higher peak torques during the swing phase. Future work can further study the mapping between exoskeleton assistive torques and real biological joint torques, and identify the optimal scaling strategy for ground-truth torques to minimize energy consumption. 
+
+A.3.6 Results for Other Complex Scenarios 
+
+This section presents supplementary analyses of the exoskeleton’s assistive performance across more complex task scenarios. Specifically, we report metabolic cost and heart rate measurements for movements including running and sit-to-stand transitions, and further evaluate the exoskeleton’s assistance efficacy for complex movements unseen in the training dataset. Fig. A.7 compares metabolic rate and heart rate across three assistance modes during 10-degree ramp walking ( 1.25 m/s), running ( 1.8 m/s), and repeated sit-stand transition tasks. The results confirm that the ExoTraj policy reduces both metrics across all scenarios: 1) Relative to Assist off, metabolic rate reductions range from 4.6% (ramp walking) to 24 .1% (repeated sit-stand movements), while heart rate decreases by 8.7% 
+
+(running) to 16 .1% (ramp walking). 2) Compared with the No exo condition, metabolic rate and heart rate reductions span 0.4% ∼ 11 .1% and 2.6% ∼ 11 .9% , respectively. These findings further demonstrate that ExoTraj effectively lowers metabolic energy expenditure in human subjects, with a concurrent reduction in cardiovascular load. Fig. A.8 presents torque profiles generated by the 
+
+ExoTraj policy during exoskeleton assistance under varying treadmill speed conditions (b) and complex, high-dynamic movements (a). Fig. A.8 (b) shows that as locomotion speed increases, the peak magnitudes of the generated torque profiles increase and their frequency rises accordingly. Meanwhile, the system demonstrates rapid adaptability to velocity variations: when the user comes to a complete stop, the assistance torque rapidly decays to zero with negligible latency. This demonstrates that policy ExoTraj is capable of adapting to dynamically changing tasks with rapid velocity variations. Fig. A.8 (a) presents the torque assistance curves of the ExoTraj policy for several motions unseen in the training dataset. The experimental results consistently show that ExoTraj is  
+
+> Prepared using sagej.cls
+
+27                                                       
+
+>   
+>  
+>  
+>   
+>          % ( 
+>  %     '  
+>        
+>  
+> 
+> 
+>           
+>   
+>   !            '      !   &  $ (  '  ( #   !               " % )  %      )  %     %        #      # %  ! '   
+>  
+>   
+>             
+>               
+>                         
+>                    
+>  
+> 
+>  
+>           
+>   
+
+Figure A.8. ExoTraj torque assistance curve under complex scenarios and maneuvers. (a) shows the related curves for complex high-dynamic movements, including high knee lifts, rapid speed variations, jumping takeoffs, and single-leg hops, are absent from the training dataset. (b) shows the real-time prediction and torque assistance results under rapid speed variations on the treadmill. 
+
+.capable of rapid adaptation to complex high-dynamic out-of-distribution tasks. The policy generates smooth torque and maintains precise real-time tracking performance even during high-velocity movements. These findings collectively validate the robust generalization ability of the control framework, making it well-suited for deployment in a wide range of dynamic outdoor operational environments. 
+
+A.4 Other Discussion 
+
+A.4.1 Discussion for Generative methods 
+
+Generative methods achieve precise generation of the target distribution by establishing a probabilistic path from an initial Gaussian distribution to the target paths. These methods can efficiently fuse data from heterogeneous distributions and enable highly generalizable generative prediction. The dominant paradigms in this field are diffusion models and flow matching. Generative methods, such as diffusion policy (DP) (Chi et al. 2023; Wang et al. 2025), which can excel at learning complex robotic tasks, have been extensively adopted for trajectory generation in robotic manipulation. However, DP suffers from two problems: slow inference speed and high training complexity. DP requires approximately 100 denoising steps to generate a trajectory, and the inference time of DP typically requires approximately 1 second (Ding et al. 2025), which falls short of meeting the real-time control requirements of exoskeleton robots. Flow matching (FM) (Lipman et al. 2023) is a generative model method that leverages a learned vector field to map a simple prior distribution into a complex target distribution. From a high-level perspective, DP essentially involves solving a stochastic differential equation, whereas FM addresses an ordinary differential equation. Compared to DP, FM offers both easier training and faster inference while achieving comparable generation performance. However, if the FM generates precise trajectories, it still requires a considerable number of iterations (where the number of iterations in FM corresponds to the number of denoising steps in DP). An excessive number of iterations can compromise the real-time performance of the control system. To accelerate FM inference in image generation, Geng et al. (2025) proposed using average velocity fields to reduce the number of sampling steps, and Frans et al. (2025) introduced a shortcut model to speed up inference. In the field of image generation, the objective is to produce images whose distribution is closely aligned with that of images within the same category, emphasizing similarity. In contrast, trajectory prediction prioritizes the precise and accurate generation of motion trajectories. Consequently, acceleration techniques developed for image generation are   
+
+> Prepared using sagej.cls 28 Journal Title XX(X)
+
+often inadequate for ensuring the accuracy of trajectory prediction under fast inference. Therefore, this paper designs the mechanism of trajectory feature incorporation to guide the learning direction of the FM, thereby enhancing the precision of trajectory generation with FM under fewer inference steps. 
+
+A.4.2 Discussion for Exoskeleton Assistance  
+
+> 1) Real-time Inference and Control:
+
+Exoskeletons assist humans in complex environments with high dynamicity, imposing stringent requirements on inference and control, where the control frequency is typically no less than 200 Hz. In perception and control pipelines, neural network inference is computationally expensive. For complex networks, the inference latency often exceeds 5 ms, making the inference frequency lower than the required control frequency, which typically results in uncomfortable user experiences. Two approaches can address the aforementioned problem: first, model pruning and quantization, which inherently accelerate model inference speed; second, predictive triggering, which is only feasible for trajectory prediction (e.g., predicting 
+
+i steps and taking values starting from the i-th step of the trajectory when needed), but difficult to implement for single-step prediction. Therefore, when model parameters reach a certain scale, trajectory prediction becomes one of the important approaches to achieve real-time inference.  
+
+> 2) Robust Control:
+
+When exoskeleton systems operate in outdoor environments, they are often subject to elevated levels of sensor measurement noise, which introduces localized errors and inconsistencies in the predicted motion trajectories. Directly feeding these noisy trajectories into the low-level controller as reference commands will inevitably result in control chattering, jerky movements, and degraded assistive performance. It is necessary to design a control optimization strategy based on the predicted trajectories to compensate for prediction noise and external noise disturbances, thereby achieving compliant and smooth control. Model predictive control is an optimization-based control method that operates on predefined objectives and relies on the human-exoskeleton coupled dynamic model. By incorporating carefully designed penalty terms into the optimization objective, we can significantly enhance the robustness of the generated torque against external disturbances. Although an exact human-exoskeleton coupled dynamic model cannot be derived, our experiments show that approximate dynamic parameters and interaction torque parameters can still be used to optimize torque curves that conform to human gait cycles.  
+
+> 3) Cross-subject and Cross-task Prediction
+
+: Due to sig-nificant inter-subject variability in motor patterns and the complex and variable nature of exoskeleton assistance sce-narios, the limited collected data cannot fully cover all pos-sible motion distributions. Therefore, effectively improving the model’s generalization prediction performance across subjects and tasks has become one of the core urgent problems in the field of intelligent exoskeleton assistance. Currently, the development of foundation models has demon-strated strong generalization capabilities across tasks. Foun-dation models rely on large amounts of data and network parameters. Therefore, future research needs to collect more motion data from more subjects across more environmental tasks to enhance the generalization of exoskeleton trajectory prediction. Meanwhile, lightweight exoskeleton hardware is also required to reduce physical fatigue induced by long-duration data collection for human subjects.   
+
+> 4) Personalized Assistance:
+
+When high-fidelity joint torque profiles are obtainable via motion capture systems, it remains an open question whether direct proportional scaling of these curves constitutes an optimal strategy for generating exoskeleton assistive torque profiles. In physiological joint torque patterns, the peak torque during the stance phase exceeds that of the swing phase, as the stance phase accommodates body weight support and postural balance. However, exoskeleton assistance is primarily designed to reduce user metabolic expenditure, and users derive greater metabolic benefit from external assistance during the swing phase of locomotion. Therefore, future investigations should explore a physiologically informed joint torque scaling paradigm to deliver personalized and metabolically efficient assistance. When joint torques are not readily obtainable, a two-stage approach involving trajectory prediction and subsequent assistive torque generation has emerged as a promising solution for wearable exoskeleton control. Nevertheless, torques derived solely from kinematic trajectories may not align perfectly with individual users’ neuromuscular characteristics. Optimizing torque profiles through iterative user preference feedback is a viable strategy to mitigate this limitation, but existing preference-based optimization frameworks depend on extensive user feedback data and exhibit prohibitively low sample efficiency. Accordingly, future research should prioritize the development of data-efficient torque preference optimization algorithms.

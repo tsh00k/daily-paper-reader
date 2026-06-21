@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-06-20T21:45:47.705152+00:00",
-  "updated_date": "20260620",
+  "generated_at": "2026-06-21T21:16:29.119463+00:00",
+  "updated_date": "20260621",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260620",
+      "updated_date": "20260621",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260620",
+      "updated_date": "20260621",
       "carryover_days": 9,
       "items": []
     },
     "MPC-WBC": {
-      "updated_date": "20260620",
+      "updated_date": "20260621",
       "carryover_days": 9,
       "items": []
     }

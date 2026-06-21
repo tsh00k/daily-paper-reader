@@ -1,0 +1,369 @@
+Title: High-Degree-of-Freedom Lightweight Bioinspired Leg for Enhanced Mobility in Small Robots
+
+URL Source: https://arxiv.org/pdf/2606.18680v1
+
+Published Time: Thu, 18 Jun 2026 00:31:42 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+> JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 1
+
+# High-Degree-of-Freedom Lightweight Bioinspired Leg for Enhanced Mobility in Small Robots 
+
+Haoqi Han, Yifei Yu, Jiaming Zhang, Xinru Cui, Linxi Feng, Hesheng Wang, Senior Member, IEEE 
+
+Abstract —In microrobotics, enhancing locomotion capabilities by increasing the degrees of freedom (DoF) of leg mechanisms under severe spatial constraints remains a significant challenge. Inspired by insect locomotion, this paper presents a novel micro-scale parallel leg mechanism with four degrees of freedom, and systematically analyzes its mechanical design, electrical system, and kinematics. The design incorporates two spherical five-bar linkages to achieve spatial motion within a parallel four-bar con-figuration. Furthermore, a concentric design strategy is employed to simplify the analytical solution of the leg kinematics. Due to the parallel system architecture, all actuators are located on the main body, substantially reducing the equivalent inertia of moving parts compared to traditional high-DOF leg structures. The total mass of the system is only 18.9 g, with an end-effector output force of approximately 0.5 N and a workspace exceeding 22255 mm³. Experimental results demonstrate that the proposed single-leg mechanism achieves excellent motion flexibility, highlighting its potential for micro bio-inspired robotics. 
+
+Index Terms —Micro robots, legged robots, parallel mechanism 
+
+I. I NTRODUCTION 
+
+In recent years, small-scale legged robots often referred to as rat-sized or insect-scale platforms have garnered significant attention [1]. Due to their compact physical dimensions, these robots possess a unique advantage in navigating unstructured and confined environments that are inaccessible to larger machines [2], [3]. Consequently, they are envisioned as ideal candidates for critical tasks such as post-disaster search and rescue [4], environmental reconnaissance, and material trans-port in narrow, hazardous zones. However, endowing micro-robots with biological-level agility and payload capacity under extreme size constraints remains a formidable challenge. 
+
+This work was supported in part by the Natural Science Foundation of China under Grant 62225309, U24A20278, 62361166632, U21A20480 and 62403311. (Corresponding Author: Hesheng Wang). Haoqi Han is with the Department of Computer Science and Engi-neering, Shanghai Jiao Tong University, Shanghai, 200240, China (e-mail: hhq123@sjtu.edu.cn). Yifei Yu is with the Department of Automation Engineering,Shanghai Uni-versity of Electric Power,Shanghai,China(e-mail:yuyifei@mail.shiep.edu.cn). Jiaming Zhang is with the Department of Naval Architecture and Marine Engineering, Shanghai Jiao Tong University, Shanghai, 200240, China (e-mail: zjm4687@sjtu.edu.cn). Xinru Cui, Linxi Feng are with the Department of Automation, Shanghai Jiao Tong University, Shanghai, 200240, China (e-mail: ). Hesheng Wang is with the Department of Automation, Key Laboratory of System Control and Information Processing of Ministry of Education, Key Laboratory of Marine Intelligent Equipment and System of Ministry of Education, Shanghai Engineering Research Center of Intelligent Control and Management, Shanghai Jiao Tong University, Shanghai, 200240, China (e-mail: wanghesheng@sjtu.edu.cn). Manuscript received April 19, 2021; revised August 16, 2021. 
+
+Fig. 1. A novel micro-scale parallel leg mechanism 
+
+The core challenge in developing high-performance micro-robots lies in the inherent trade-off between actuator limita-tions and mechanical structure. Due to constraints in micro-electromechanical systems (MEMS), miniature actuators typi-cally exhibit low power density and limited output torque [5]– [7]. To adapt to these constraints and reduce system weight, existing studies often compromise on kinematic design by reducing degrees of freedom (DoF). Currently, mainstream small multi-legged robots mostly employ single-leg designs with fewer than three DoFs [8]–[10], which, while simplifying control, severely limits omnidirectional mobility and posture adjustment in complex terrains. Conversely, designs aiming for higher DoF often rely on conventional serial mechanisms, with actuators mounted directly at the joints. This serial configuration significantly increases the oscillating mass of the leg, leading to high rotational inertia that severely limits dynamic response and agility. Although cutting-edge research—such as the Har-vard RoboBee and HAMR series—has demonstrated high-frequency motion at the insect scale using piezoelectric ac-tuators [11]–[13], as well as soft artificial muscles [14], electromagnetic servo motors remain a more robust option for applications that demand high payload capacity and stable in-teraction. Therefore, a new structural paradigm is needed—one that resolves the trade-off between high DoF and low leg inertia while maintaining integrated servo actuation. Nature offers an elegant solution to this trade-off. These DoF enable organisms to control their limbs flexibly in com-0000–0000/00$00.00 © 2021 IEEE  
+
+> arXiv:2606.18680v1 [cs.RO] 17 Jun 2026 JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 2
+
+plex environments. The limbs of many organisms, though seemingly simple linkage systems, exhibit high kinematic redundancy—often possessing up to seven degrees of freedom (DoF) [15]–[17]. Crucially, unlike serial robots, arthropods employ a proximal actuation strategy: although their legs consist of serially connected rigid exoskeletons, precise motion is achieved through a parallel muscle system located within the thorax [18]. This configuration minimizes the distal inertia of the limb, enabling high-acceleration movements without compromising kinematic complexity. Notably, organisms utilize this seventh DoF—typically the knee joint between the femur and tibia—for critical posture regulation. While six DoFs are kinematically sufficient to define a spatial pose, this redundant seventh DoF allows the organism to adjust limb posture without changing foot position. The core significance of this mechanism lies in Force Transmission Optimization, enabling the organism to locate the optimal leverage point and maximize actuation efficiency across varying terrains [19]. Currently, existing small-scale multi-legged robots gener-ally exhibit limited mobility in complex environments, often attributed to insufficient drive power or inadequate DoFs. 1) Integration of Servo Systems: Integrating compact servo actuators into miniaturized leg designs is challenging due to spatial constraints. 2) Limitations of Serial Legs: Serial leg configurations increase the inertia of the end-effector, reducing dynamic performance and response speed. 3) Complexity of High-DoF Designs: The design and in-tegration of high-DoF leg mechanisms are inherently complex, making it difficult to ensure stability and reliability [20]. To address these challenges, this paper presents a novel spatial four-degree-of-freedom (DoF) parallel leg mechanism, as shown in Fig. 1. The goal is to design a lightweight, miniaturized, high-DoF parallel mechanism and to evaluate how additional active DoFs enhance robot functionality. The design aims to replicate both the kinematic agility and low-inertia characteristics of biological limbs through the following strategies: 1) Structural Configuration and Integrated Layout: We adopt the biological kinematic topology of three DoFs at the hip and one DoF at the knee. To accommodate symmetrical actuator layout, all drive units—including the actuator for knee motion—are centrally integrated within the robot’s thorax. This body-integrated design not only overcomes spatial constraints in servo integra-tion but also enables omnidirectional attitude control of the two-link system while minimizing rotational inertia at the distal end. 2) Dynamic Function and Significance: Unlike the con-ventional view that three DoFs are sufficient for cen-troidal control, the fourth DoF introduced here—which governs the inclination of the leg plane relative to the ground—goes beyond simple kinematic positioning. Instead, it is used to optimize force transmission in the leg linkage. By decoupling limb posture from contact force vectors, this redundant DoF significantly enhances locomotion stability and adaptability in unstructured environments. In summary, the main contributions of this work are as follows: 1) Novel Parallel Mechanism Based on Merged Spherical Centers: We propose a spatial four-DoF parallel leg mechanism using a Spatial Four-Bar (SFB) linkage [21]. By merging the rotational centers of the SFB joints, we simplify the complex spatial constraints into an equivalent parallel four-bar linkage. This design ensures structural symmetry and enables high-DoF spatial pos-ture adjustment via merged output along the central axis. 2) Body-Integrated Actuation and Low Inertia: With the proposed configuration, all actuators are fully integrated within the thorax and transmit motion via parallel link-ages. This layout not only addresses spatial constraints in micro-robots but also significantly reduces the rotational inertia of the leg tip, enhancing dynamic performance. Moreover, the merged-center design yields a simplified kinematic model suitable for real-time control. The remainder of this paper is organized as follows: Section II presents the parallel design concept and circuit control design of the leg. Section III provides an analysis of the leg’s kinematics and workspace. Section IV presents experimental results demonstrating the leg’s motion capability and force output. Finally, the paper concludes with a summary of the proposed design and directions for future research. II. D ESIGN 
+
+This work presents an innovative spatial four-bar linkage design for the leg-foot system of a micro robot. Conventional designs typically use planar parallel four-bar linkages. While these can achieve two-degree-of-freedom (2-DoF) motion and centralize the drive motors at the base to reduce moving inertia, their motion is confined to a single plane. To enhance the locomotion agility of the leg-foot system, this work extends the planar four-bar linkage to a spatial configuration. As shown in Fig. 2, a single leg comprises a power module, two spherical five-bar linkages, and one spatial four-bar linkage. By upgrading the planar four-bar joint to aspatial configuration, the two spherical five-bar linkages are responsible for integrating four motion inputs and transmitting the synthesized motion to the spatial four-bar linkage. This structure allows the links to deviate from their original working plane, thereby endowing the four-bar leg with additional capabilities of internal rotation and abduction. Fig. 2 illustrates the pose characteristics of the spatial parallel four-bar mechanism, which are governed by the spatial orientation of links A1B1 and A1B2. As shown in Fig. 2(a), in-phase pitching of A1B1 and A1B2 generates hip pitching motion. Out-of-phase pitching, depicted in Fig. 2(b), results in knee flexion/extension. In-phase abduction, as in Fig. 2(c), pro-duces hip abduction, while out-of-phase abduction (Fig. 2(d)) induces hip internal rotation. Note that the system approaches a kinematic singularity when A1B1 and A1B2 become nearly JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 3   
+
+> Fig. 2. Schematic illustration of the designed mechanism. (a) overall view of the mechanism in space; (b) Kinematic schematic of the A 1B2linkage; (c) Kinematic schematic of the spherical linkage; (d) Drive transmission configuration of the mechanism; (e) The drive and control circuit.
+
+collinear, leading to loss of actuation authority around the third rotational axis. To achieve active two-degree-of-freedom (DoF) control of the link, the design synthesizes base motion into spherical mo-tion using a spherical five-bar linkage. As shown in Fig. 4, the topology of the spherical five-bar joint is configured to satisfy the kinematic requirements of the spatial four-bar linkage. This mechanism defines the screw relationship between the input (driving) and output (driven) axes. The two input axes are arranged coaxially, decoupling pitch motion—i.e., motion that induces only overall pitching of the linkage without exciting other DoFs. All four input axes adopt this coaxial layout, which significantly simplifies the transmission system. Pure pitch motion is produced when the dual input axes move in phase; a phase difference generates lateral deflection. In addition to the two DoFs controlled by the dual input axes, the output axis of the spherical five-bar joint has an unconstrained rotational freedom along its own axis. If the two spherical five-bar joints are not concentric, additional revolute joints would be needed to compensate for motion deviation, substan-tially increasing mechanism complexity. Therefore, the design adopts a nested spherical mechanism: the inner spherical five-bar linkage uses a compact topology, allowing the outer layer to achieve a fully enveloping concentric configuration. The motion output of this configuration is currently con-strained by the servo motors’ stroke limits, and thus does not fully realize its design potential. The effective working length of the leg is set to 25 mm with an initial joint angle configuration of 45°. The drive system consists of four servo motors arranged JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 4
+
+Fig. 3. Kinematic Modeling of Spatial Four-bar Linkage and Spherical Five-bar Linkage 
+
+in an array within the drive module, connected to a parallel transmission architecture via helical gear sets. The main body of each leg is fabricated using high-precision additive man-ufacturing. Key load-bearing links are CNC-machined from carbon fiber reinforced polymer (CFRP) and bonded with epoxy structural adhesive. The foot tip is equipped with a high-damping silicone friction pad to optimize dynamic contact behavior. Each leg unit is driven by a dedicated control board featuring an STM32C011 microcontroller, which generates four-channel PWM signals to actuate the servo motors. III. A NALYSIS 
+
+A. Spatial four-bar linkage 
+
+As shown in Fig. 3, the leg kinematic chain of the hexapod robot essentially forms a spatial four-bar mechanism. Due to the non-orthogonal joint configuration of the previously designed SFB joint, the complexity of kinematic modeling is significantly increased. To simplify the kinematic analysis, a virtual orthogonal joint coordinate system is established at the center of the SFB joint, with its spatial configuration illustrated in Fig. 3. From the kinematic structure shown in Fig. 3, the virtual leg kinematic chain can be derived. 
+
+TC1 (θ) = e[S′ 
+
+> 11 ]θ′
+> 11
+
+e[S′ 
+
+> 12 ]θ′
+> 12
+
+e[S′ 
+
+> 13 ]θ′
+> 13
+
+e[S14 ]θ14 MC1 (1) The virtual joint angles can be obtained by solving the forward kinematic equations. 
+
+
+
+X2 
+
+> C1
+
++ Y 2 
+
+> C1
+
++ Z2 
+
+> C1
+
+= L′211 + L′212 − 2L′
+
+> 11
+
+L′ 
+
+> 12
+
+cos( θ14 ),
+
+−s′
+
+> 12
+
+(L′ 
+
+> 11
+
++ L′
+
+> 12
+
+c14 ) + c′
+
+> 12
+
+(L2s′
+
+> 13
+
+s14 ) = ZC1 ,
+
+−s′
+
+> 11
+
+(L2c′
+
+> 13
+
+s14 ) + c′
+
+> 11
+
+ c′
+
+> 12
+
+(L′ 
+
+> 11
+
++ L′
+
+> 12
+
+c14 ) + s′
+
+> 12
+
+L2s′
+
+> 13
+
+s14 
+
+ = XC1 .
+
+(2) Considering that the leg of the hexapod robot forms a spatial parallelogram mechanism, the azimuth angle of link B1C2
+
+remains synchronized with that of link A1B2, resulting in the following constraint relationship: 
+
+e[S′ 
+
+> 21 ]θ′
+> 21
+
+e[S′ 
+
+> 22 ]θ′
+> 22
+
+e[S′ 
+
+> 23 ]θ′
+> 23
+
+= e[S′ 
+
+> 11 ]θ′
+> 11
+
+e[S′ 
+
+> 12 ]θ′
+> 12
+
+e[S′ 
+
+> 13 ]θ′
+> 13
+
+e[S′  
+
+> 13 ]( θ14 +3π
+> 4)
+
+(3) By solving the Eq. (3), the virtual joint coordinates of the second SFB joint can be derived: 
+
+
+
+θ′ 
+
+> 22
+
+= arcsin 
+
+
+
+s′
+
+> 12
+
+c14+ 3π 
+
+> 4
+
+− c′
+
+> 12
+
+s′
+
+> 13
+
+s14+ 3π
+
+> 4
+
+
+
+θ′ 
+
+> 21
+
+= θ′ 
+
+> 11
+
+− arctan 
+
+ c′
+
+> 13 s14+ 3π
+> 4
+> c′
+> 12 c14+ 3π
+> 4
+> +s′
+> 12 s′
+> 13 s14+ 3π
+> 4
+
+ (4) 
+
+B. Five-bar spherical linkage 
+
+After obtaining the virtual joint angles, they are used to calculate the input angles of the SFB joint. The output azimuth angle of the SFB joint is the same as the azimuth angles of the first three virtual joints, thus we can obtain: 
+
+e[Si11 ]θi11 e[S12 ]θ12 e[S13 ]θ13 = e[S′ 
+
+> 11 ]θ′
+> 11
+
+e[S′ 
+
+> 12 ]θ′
+> 12
+
+e[S′ 
+
+> 13 ]θ′
+> 13
+
+(5) Expanding this, we get: 
+
+
+
+c′
+
+> 11
+
+c′ 
+
+> 12
+
+= ci11 c12 − 12 si11 s12 
+
+s′
+
+> 11
+
+c′ 
+
+> 12
+
+= si11 c12 + 12 ci11 s12  
+
+> √32
+
+s12 = −s′
+
+> 11
+
+(6) Simplifying, we obtain: 
+
+(
+
+θi11 = θ′ 
+
+> 11
+
+− arctan   12 t12 
+
+
+
+θi12 = θ′ 
+
+> 11
+
++ arctan   12 t12 
+
+ (7) Where: 
+
+θ12 = arcsin 2√33 s′
+
+> 12
+
+!
+
+(8) 
+
+C. Workspace 
+
+Fig. 4 illustrates the workspace of the proposed leg, with color mapping indicating different values of θ3 to highlight its effect—a key distinction from other bioinspired leg de-signs. When θ3 is fixed, the workspace covers approximately 7681 mm 3. In contrast, enabling θ3 expands the workspace to about 22255 mm 3.JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 5 
+
+> Fig. 4. Workspace of the leg
+
+IV. E XPERIMENT 
+
+A. Workspace Demonstration 
+
+To illustrate the workspace of the parallel leg, four phase combinations of sinusoidal input signals are applied, as shown in Fig. 5:  
+
+> •
+
+Phase 1: Channels 1 and 3 lead Channels 2 and 4 by π.No relative motion occurs inside the five-bar linkage; the end-foot moves in the YZ plane.  
+
+> •
+
+Phase 2: Channels 1 and 2 lead Channels 3 and 4 by π.The internal motions of the five-bar linkage are opposite; the end-foot moves in the XY plane.  
+
+> •
+
+Phase 3: Channels 1 and 3 are in phase with Channels 2 and 4. The internal motions are opposite; the end-foot moves in the XZ plane.  
+
+> •
+
+Phase 4: Channels 1 and 3 lag Channels 2 and 4 by π.The internal motions are in the same direction; the end-foot moves in the XZ plane. Thus, the workspace of the parallel leg approximates a spher-ical surface. 
+
+B. Inverse Kinematics Trajectory Demonstration 
+
+The end-foot was commanded to follow the green trajectory shown in Fig. 6 in the XY, XZ, and YZ planes. Additionally, linear motions along the X, Y, and Z axes were performed separately. 
+
+C. Force Output Demonstration 
+
+Following the linear trajectory described in Part B (using the Z-direction experiment as an example), the end-foot was actuated to apply force to the strain gauge sensor. The resulting output waveform is shown in Fig. 7, with a peak output force of approximately 0.5 N. V. C ONCLUSION 
+
+In this work, we developed a micro-scale parallel biomimetic leg with four degrees of freedom, addressing the inherent limitations in motion often encountered in traditional  
+
+> Fig. 5. Motion demonstration of four input channels with out-of-phase motion inputs JOURNAL OF L ATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 6
+
+Fig. 6. Physical demonstration of the workspace of the leg 
+
+Fig. 7. Force output in three directions 
+
+micro-robots. The design integrates all four actuators within the robot’s body, synthesizing hip motion with three degrees of freedom and knee motion with one degree of freedom through parallel kinematics. The total mass of the leg system is only 18.9 g, with an end-effector output force of approximately 0.5 N and a workspace exceeding 22255 mm³. This design enables micro-scale robots to achieve more agile and versatile locomotion capabilities. Our future work will focus on further miniaturizing the par-allel leg mechanism, including the incorporation of origami-inspired structures and micro-actuators. Additionally, we aim to integrate multiple copies of the proposed leg module onto a single robotic platform to achieve enhanced actuation and mobility for micro-robots. REFERENCES [1] G.-Z. Yang, J. Bellingham, P. E. Dupont, P. Fischer, L. Floridi, R. Full, N. Jacobstein, V. Kumar, M. McNutt, R. Merrifield, B. J. Nelson, B. Scassellati, M. Taddeo, R. Taylor, M. Veloso, Z. L. Wang, and R. Wood, “The grand challenges of Science Robotics ,” Science Robotics ,vol. 3, p. eaar7650, Jan. 2018. [2] F. Benzi, C. Mancus, and C. Secchi, “Whole-body control of amobile manipulator for passive collaborative transportation,” IFAC-PapersOnLine , vol. 55, no. 38, pp. 106–112, 2022. [3] M. Di Castro, M. Ferre, and A. Masi, “Cerntauro: A modular architecture for robotic inspection and telemanipulation in harsh and semi-structured environments,” IEEE Access , vol. 6, pp. 37 506–37 522, 2018. [4] N. J. Kohut, A. M. Hoover, K. Y. Ma, S. S. Baek, and R. S. Fearing, “MEDIC: A legged millirobot utilizing novel obstacle traversal,” in IEEE International Conference on Robotics and Automation . IEEE, May 2011, pp. 802–808. [5] T. Mashimo and S. Izuhara, “Review: Recent advances in micromotors,” 
+
+IEEE Access , vol. 8, pp. 213 489–213 501, 2020. [6] K. Lei, H. Li, S. Li, and T. Xu, “Design and electromagnetic perfor-mance optimization of a mems miniature outer-rotor permanent magnet motor,” Micromachines , vol. 16, no. 7, p. 815, 2025. [7] H. Fujita, “Microactuators and micromachines,” Proceedings of the IEEE , vol. 86, no. 8, pp. 1721–1732, 2002. [8] S. Hollar, A. Flynn, C. Bellew, and K. Pister, “Solar powered 10 mg silicon robot,” in The Sixteenth Annual International Conference on Micro Electro Mechanical Systems, 2003. MEMS-03 Kyoto. IEEE .IEEE, 2003, pp. 706–711. [9] J. Zhang, J. Liu, H. Zong, P. Ji, L. Fang, Y. Li, H. Yang, and B. Xu, “Bridging the gap to bionic motion: challenges in legged robot limb unit design, modeling, and control,” Cyborg and Bionic Systems , vol. 6, p. 0365, 2025. [10] Q. Lu, Y. Feng, K.-Y. Song, and W.-J. Zhang, “3d printable micro/macro dual driving multipede millirobot and its characterization for multi-locomotory modes,” IEEE/ASME Transactions on Mechatronics , vol. 28, no. 6, pp. 3492–3501, 2023. [11] K. Y. Ma, P. Chirarattananon, S. B. Fuller, and R. J. Wood, “Controlled Flight of a Biologically Inspired, Insect-Scale Robot,” Science , vol. 340, pp. 603–607, May 2013. [12] A. T. Baisch, O. Ozcan, B. Goldberg, D. Ithier, and R. J. Wood, “High speed locomotion for a quadrupedal microrobot,” The International Journal of Robotics Research , vol. 33, pp. 1063–1082, Jul. 2014. [13] K. Jayaram, J. Shum, S. Castellanos, E. F. Helbling, and R. J. Wood, “Scaling down an insect-size microrobot, HAMR-VI into HAMR-Jr,” in IEEE International Conference on Robotics and Automation (ICRA) .IEEE, May 2020, pp. 10 305–10 311. [14] Y. Chen, H. Zhao, J. Mao, P. Chirarattananon, E. F. Helbling, N.-s. P. Hyun, D. R. Clarke, and R. J. Wood, “Controlled flight of a microrobot powered by soft artificial muscles,” Nature , vol. 575, pp. 324–329, Nov. 2019. [15] M. H. Dickinson, F.-O. Lehmann, and S. P. Sane, “Wing Rotation and the Aerodynamic Basis of Insect Flight,” Science , vol. 284, pp. 1954– 1960, Jun. 1999. [16] K. M. Ben-Gharbia, A. A. Maciejewski, and R. G. Roberts, “An example of a seven joint manipulator optimized for kinematic fault tolerance,” in 
+
+2014 IEEE International Conference on Systems, Man, and Cybernetics (SMC) , 2014, pp. 802–807. [17] ——, “Kinematic design of manipulators with seven revolute joints optimized for fault tolerance,” IEEE Transactions on Systems, Man, and Cybernetics: Systems , vol. 46, no. 10, pp. 1364–1373, 2016. [18] R. J. Wood, S. Avadhanula, R. Sahai, E. Steltz, and R. S. Fearing, “Microrobot Design Using Fiber Reinforced Composites,” Journal of Mechanical Design , vol. 130, p. 052304, May 2008. [19] D. W. Haldane, M. M. Plecnik, J. K. Yim, and R. S. Fearing, “Robotic vertical jumping agility via series-elastic power modulation,” Science Robotics , vol. 1, p. eaag2048, Dec. 2016. [20] P. S. Sreetharan, J. P. Whitney, M. D. Strauss, and R. J. Wood, “Monolithic fabrication of millimeter-scale machines,” Journal of Mi-cromechanics and Microengineering , vol. 22, p. 055027, May 2012. [21] H. McClintock, F. Z. Temel, N. Doshi, J.-s. Koh, and R. J. Wood, “The milliDelta: A high-bandwidth, high-precision, millimeter-scale Delta robot,” Science Robotics , vol. 3, p. eaar3018, Jan. 2018.

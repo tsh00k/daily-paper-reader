@@ -1,0 +1,474 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-21T21:16:29.118391+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 3,
+    "deep_divecandidates": 7,
+    "deep_cap": 8,
+    "deep_selected": 7,
+    "quick_candidates": 4,
+    "quick_skim_target": 13,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2606.19328v1",
+      "source": "arxiv",
+      "title": "UBP2: Uncertainty-Balanced Preference Planning for Efficient Preference-based Reinforcement Learning",
+      "abstract": "Preference-based RL provides an approach to learning reward models from pairwise comparisons of behaviors, bypassing the need for explicit reward design. However, existing methods typically rely on passive data collection and suffer from poor sample efficiency, especially during the early stages of learning. We introduce a model-based approach that actively directs exploration by jointly reasoning over uncertainties in the reward, dynamics, and value functions. Our method, Uncertainty-Balanced Preference Planning (UBP2), uses ensembles of reward, dynamics, and value function models to evaluate candidate trajectories according to a unified score that combines expected reward, terminal value, and epistemic uncertainty. Planning under this objective yields an explicit tradeoff between exploitation and information acquisition without requiring ad hoc exploration heuristics. Under standard regularity assumptions, we establish sublinear regret guarantees for both finite-horizon and infinite-horizon settings. Empirically, experiments on the Meta-World benchmark show UBP2 achieves substantially higher sample efficiency than model-free preference-based methods and non-optimistic model-based baselines.",
+      "authors": [
+        "Mohamed Nabail",
+        "Leo Cheng",
+        "Jingmin Wang",
+        "Nicholas Rhinehart"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-06-17T17:54:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.19328v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learning reward models from pairwise preferences, akin to IRL",
+      "llm_evidence_cn": "从成对偏好中学习奖励模型，类似逆强化学习",
+      "llm_evidence": "从成对偏好中学习奖励模型，类似逆强化学习",
+      "canonical_evidence": "从成对偏好中学习奖励模型，类似逆强化学习",
+      "llm_tldr_en": "Introduces UBP2, a model-based active exploration method for preference-based RL that jointly reasons over reward, dynamics, and value uncertainties to efficiently learn reward models.",
+      "llm_tldr_cn": "针对基于偏好的强化学习样本效率低的问题，提出UBP2方法，使用奖励、动力学和价值函数的集成模型主动评估轨迹不确定性，并通过规划选择信息量最大的查询。该方法在早期学习阶段显著提高了奖励模型学习的效率，为偏好学习提供了一种主动探索范式，与逆强化学习目标高度一致。",
+      "llm_tldr": "针对基于偏好的强化学习样本效率低的问题，提出UBP2方法，使用奖励、动力学和价值函数的集成模型主动评估轨迹不确定性，并通过规划选择信息量最大的查询。该方法在早期学习阶段显著提高了奖励模型学习的效率，为偏好学习提供了一种主动探索范式，与逆强化学习目标高度一致。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "inverse reinforcement learning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16236v1",
+      "source": "arxiv",
+      "title": "Evolutionary Bilevel Reward Shaping for Generalization in Reinforcement Learning",
+      "abstract": "Reinforcement learning (RL) often suffers from performance degradation when deployed in environments that differ from those encountered during training. Existing techniques such as domain randomization (DR) mitigate this, but require access to diverse training environments and full trajectory observability, assumptions that fail in privacy-preserving or restricted scenarios where only scalar performance metrics are available. We propose Generalization via Evolutionary Reward Shaping (GERS), a bilevel optimization approach to improve generalization on unseen test environments using only scalar feedback from validation environments. At the lower level, an RL agent guided via a reward function shaped by the upper level learns a policy on a limited set of training environments with accessible trajectory data; at the upper level, CMA-ES optimizes the reward shaping parameters to maximize the cumulative unshaped reward on separate validation environments for which trajectory access is unavailable. Results on continuous control tasks indicate that GERS outperforms the standard RL baseline on unseen test environments. GERS performance is comparable to DR, despite DR treating the combined set of training and validation environments of GERS as a single training set that requires trajectory access, whereas GERS cannot access validation trajectories. These results confirm that GERS effectively enhances generalization under restricted data access constraints.",
+      "authors": [
+        "Ekasit Usaratniwart",
+        "Xilin Gao",
+        "Marc Ong",
+        "Youhei Akimoto"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.NE"
+      ],
+      "published": "2026-06-15T05:35:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.16236v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evolutionary bilevel reward shaping for generalization",
+      "llm_evidence_cn": "进化双层奖励塑形用于强化学习泛化",
+      "llm_evidence": "进化双层奖励塑形用于强化学习泛化",
+      "canonical_evidence": "进化双层奖励塑形用于强化学习泛化",
+      "llm_tldr_en": "GERS uses bilevel optimization to shape rewards for RL agents, improving generalization to unseen test environments from only scalar validation feedback.",
+      "llm_tldr_cn": "针对强化学习在环境变化时性能下降的问题，提出GERS框架，采用双层优化：上层演进奖励函数，下层训练策略，仅利用验证环境的标量反馈即可提升对未知测试环境的泛化能力。实验证明在多个连续控制任务中有效。",
+      "llm_tldr": "针对强化学习在环境变化时性能下降的问题，提出GERS框架，采用双层优化：上层演进奖励函数，下层训练策略，仅利用验证环境的标量反馈即可提升对未知测试环境的泛化能力。实验证明在多个连续控制任务中有效。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19504v1",
+      "source": "arxiv",
+      "title": "Simulating Robotic Locomotion in Sand: Resistive Force Theory in an Open-Source Physics Engine",
+      "abstract": "Recent advancements in Resistive Force Theory (RFT) enable approximation of ground reaction forces for locomotion in sand without the computational expense of modeling interactions with individual grains. However, these tools have been absent in 3D physics engines commonly used for robot simulation. We explore if resistive force approximations are sufficient, when integrated with standard dynamics calculations, to provide a stable substrate for a freely walking robot. To determine this, we implement 3D Granular Resistive Force Theory (3D RFT) in a physics simulation engine, MuJoCo. We verify simulations in multiple scenarios to demonstrate that key trends due to end effector shape, speed, and loading are preserved. Our implementation predicts walking distance and foot sinkage of a 12-Degree of Freedom hexapod robot within 20\\% of experiments in sand. While RFT has inherent approximations, the open source tool described here has potential to help develop new and improved robot designs to traverse granular media substrates.",
+      "authors": [
+        "Ryan Walker Brown",
+        "Laura K. Treers",
+        "Kathryn A. Daltorio"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "eess.SY"
+      ],
+      "published": "2026-06-17T18:41:52+00:00",
+      "link": "https://arxiv.org/pdf/2606.19504v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "simulation of legged locomotion in sand using RFT in MuJoCo",
+      "llm_evidence_cn": "在MuJoCo中使用阻力理论模拟沙地腿部运动",
+      "llm_evidence": "在MuJoCo中使用阻力理论模拟沙地腿部运动",
+      "canonical_evidence": "在MuJoCo中使用阻力理论模拟沙地腿部运动",
+      "llm_tldr_en": "This work implements 3D granular RFT in MuJoCo to simulate legged locomotion on sand, verifying key physical trends.",
+      "llm_tldr_cn": "针对腿部运动在沙地等颗粒介质中模拟困难且计算昂贵的问题，该论文将三维颗粒阻力理论（3D RFT）集成到开源物理引擎MuJoCo中。通过多场景验证，证明该近似方法在保持计算效率的同时，能准确反映末端形状、速度和负载等关键因素对沙地运动的影响。为研究机器人沙地运动提供了低成本、高保真的仿真工具，有助于推动非结构化环境中腿部运动控制的发展。",
+      "llm_tldr": "针对腿部运动在沙地等颗粒介质中模拟困难且计算昂贵的问题，该论文将三维颗粒阻力理论（3D RFT）集成到开源物理引擎MuJoCo中。通过多场景验证，证明该近似方法在保持计算效率的同时，能准确反映末端形状、速度和负载等关键因素对沙地运动的影响。为研究机器人沙地运动提供了低成本、高保真的仿真工具，有助于推动非结构化环境中腿部运动控制的发展。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.18883v1",
+      "source": "arxiv",
+      "title": "ZiMPedance: Impedance-Aware ZMP Modeling and Control for Payload Carrying with Quadruped Robots",
+      "abstract": "Load transportation with quadruped robots is strongly affected by the dynamics of the physical interface between the robot and the load. Passive spring-based arms reduce weight and complexity compared to active manipulators, but their spring-damper dynamics can introduce oscillatory forces that degrade locomotion stability. This paper derives an extended Zero Moment Point (ZMP) formulation that includes passive payload-interface dynamics, relating stiffness, damping, and payload mass to the stability margin. The analysis shows that underdamped configurations can resonate with locomotion harmonics. Based on this insight, we augment a Single Rigid Body Dynamics model with passive subsystem dynamics and integrate it into a Model Predictive Control framework. In simulation, the proposed controller reduces stability violations by up to $10\\times$, from $7.0\\%$ to $0.7\\%$, and increase locomotion efficiency by lowering horizontal ground reaction force effort by up to $15\\%$ compared to a nominal baseline. Hardware experiments with a $2\\,\\mathrm{kg}$ payload show stable locomotion under pull-release disturbances where the nominal controller fails. The same model also enables end-effector tracking through passive arm dynamics without direct arm actuation.",
+      "authors": [
+        "Giovanni B. Dessy",
+        "Lorenzo Amatucci",
+        "Victor Barasuol",
+        "Claudio Semini"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-17T10:00:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.18883v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "model predictive control for quadruped locomotion with payload",
+      "llm_evidence_cn": "四足机器人负重运输中的模型预测控制",
+      "llm_evidence": "四足机器人负重运输中的模型预测控制",
+      "canonical_evidence": "四足机器人负重运输中的模型预测控制",
+      "llm_tldr_en": "ZiMPedance extends ZMP and SRBD with passive payload dynamics and integrates with MPC for stable quadruped locomotion.",
+      "llm_tldr_cn": "该论文针对四足机器人负重运输时被动弹簧臂引入的振荡力问题，推导了扩展的零力矩点（ZMP）公式，将被动负载界面动力学纳入单刚体动力学模型，并集成到模型预测控制（MPC）中。分析和实验表明，该方法有效抑制了共振，提高了运动稳定性。为带负载的足式机器人运动提供了实用的控制框架。",
+      "llm_tldr": "该论文针对四足机器人负重运输时被动弹簧臂引入的振荡力问题，推导了扩展的零力矩点（ZMP）公式，将被动负载界面动力学纳入单刚体动力学模型，并集成到模型预测控制（MPC）中。分析和实验表明，该方法有效抑制了共振，提高了运动稳定性。为带负载的足式机器人运动提供了实用的控制框架。",
+      "llm_tags": [
+        "query:mpc-wbc"
+      ],
+      "matched_query_tag": "query:mpc-wbc",
+      "matched_query_text": "Model predictive control for whole body locomotion and walking",
+      "matched_requirement_id": "req-21",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.16888v1",
+      "source": "arxiv",
+      "title": "LOPAL: Local Performance-Aware Active Learning from Imperfect Demonstrations",
+      "abstract": "Learning from Demonstration (LfD) enables intuitive robot skill acquisition by allowing robots to learn directly from human task demonstrations. However, current methods often fail to address the fact that due to suboptimal and inconsistent human behavior, the quality of the demonstration can vary within each demonstration. Therefore, we introduce LOPAL (LOcal Performance-aware Active Learning), an active learning approach that leverages this local demonstration quality information. Our approach consists of two synergistic components. First, a local performance-driven LfD method uses a Gaussian Mixture Model (GMM) to encode both the demonstrated trajectories and their associated local quality assessments. This enables the generation of trajectories that outperform the imperfect demonstrations by utilizing complementary local data of high performance. Second, active data acquisition allows to improve beyond the imperfect demonstrations by collecting additional informative samples. In areas missing good data, the user is actively requested to provide corrections through a shared autonomy (SA) mechanism, while the robot autonomously executes the learned behavior. The efficacy of LOPAL was validated in both a simulation and a real-world experiment. The results from a real-world pipe inspection task showed that the proposed approach can achieve up to 27.31 % improvement in task performance while also reducing the effort required to collect the demonstrations.",
+      "authors": [
+        "Johannes Heidersberger",
+        "Shail Jadav",
+        "Dongheui Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T16:00:01+00:00",
+      "link": "https://arxiv.org/pdf/2606.16888v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Learning from demonstrations with local quality awareness",
+      "llm_evidence_cn": "基于局部质量感知的示范学习",
+      "llm_evidence": "基于局部质量感知的示范学习",
+      "canonical_evidence": "基于局部质量感知的示范学习",
+      "llm_tldr_en": "LOPAL uses a Gaussian Mixture Model to encode local demonstration quality and actively queries for labels to improve learning from imperfect demonstrations.",
+      "llm_tldr_cn": "针对从次优示范中学习时演示质量不一致的问题，本文提出LOPAL方法，利用高斯混合模型编码局部演示质量，并设计主动学习策略选择信息量大的样本，从而高效地从人类不完美演示中学习机器人技能。实验表明该方法在模拟和真实任务中均优于基线。",
+      "llm_tldr": "针对从次优示范中学习时演示质量不一致的问题，本文提出LOPAL方法，利用高斯混合模型编码局部演示质量，并设计主动学习策略选择信息量大的样本，从而高效地从人类不完美演示中学习机器人技能。实验表明该方法在模拟和真实任务中均优于基线。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.17385v1",
+      "source": "arxiv",
+      "title": "EgoInfinity: A Web-Scale 4D Hand-Object Interaction Data Engine for Any-View Robot Retargeting and Video-to-Action Robot Learning",
+      "abstract": "Internet videos constitute the largest reservoir of embodied human manipulation knowledge, yet converting arbitrary RGB footage into actionable robot training data remains a major bottleneck. Existing lab- or factory-collected datasets are narrow in scale and diversity, limiting open-world robot learning. Instead of proposing a static dataset, we introduce EgoInfinity, a universal 4D hand-object interaction data engine that enables web-scale data generation for robot retargeting and learning. EgoInfinity is a modular engine integrating perception, segmentation, reconstruction, interaction-aware refinement, and retargeting to automate this traditionally unscalable video-to-action problem without human-in-the-loop annotation. Its modular design lets the engine continuously benefit from advances in any incorporated component. With EgoInfinity, in-the-wild human manipulation videos are lifted into agent-agnostic, metric 4D hand-object representations, including hand trajectories, 6-DoF object poses, and contact-relevant states. Rather than naively connecting standalone components, EgoInfinity combines cross-module metric calibration with interaction-aware refinement to improve physical reliability, reducing drift and contact inconsistencies common in pure visual reconstruction. We further propose a novel motion retargeter that compiles the recovered 3D hand motions into executable joint trajectories for diverse robot morphologies, enabling video-to-action retargeting on any robot from arbitrary viewpoints and shot sizes (e.g., the human body is only partially visible). We validate EgoInfinity across perception fidelity, kinematic feasibility, contact consistency, cross-embodiment generalization, and real-robot skill acquisition (e.g., grasping, cutting, wiping, and pouring), demonstrating a scalable bridge from internet videos to executable robot behavior for open-world robot learning.",
+      "authors": [
+        "Gaotian Wang",
+        "Kejia Ren",
+        "Andrew Morgan",
+        "Yiting Chen",
+        "Howard H. Qian",
+        "Podshara Chanrungmaneekul",
+        "Kaiyu Hang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-16T00:44:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.17385v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "web-scale data engine for video-to-action robot learning, directly enabling imitation learning from internet videos",
+      "llm_evidence_cn": "网络规模视频到动作数据引擎，直接支持从互联网视频进行模仿学习",
+      "llm_evidence": "网络规模视频到动作数据引擎，直接支持从互联网视频进行模仿学习",
+      "canonical_evidence": "网络规模视频到动作数据引擎，直接支持从互联网视频进行模仿学习",
+      "llm_tldr_en": "Introduces EgoInfinity, a universal 4D hand-object interaction data engine that automates the conversion of web video to robot training data via perception, reconstruction, and retargeting. Enables scalable imitation learning from diverse internet sources.",
+      "llm_tldr_cn": "针对互联网视频无法直接转化为机器人训练数据的瓶颈，提出了EgoInfinity通用4D手物交互数据引擎。该引擎集成感知、分割、重建、交互优化和重定向模块，自动化地将任意RGB视频转化为动作数据，实现网络规模的模仿学习数据生成。实验证明该方法能显著扩展机器人学习的场景多样性。",
+      "llm_tldr": "针对互联网视频无法直接转化为机器人训练数据的瓶颈，提出了EgoInfinity通用4D手物交互数据引擎。该引擎集成感知、分割、重建、交互优化和重定向模块，自动化地将任意RGB视频转化为动作数据，实现网络规模的模仿学习数据生成。实验证明该方法能显著扩展机器人学习的场景多样性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.19752v1",
+      "source": "arxiv",
+      "title": "Temporal Self-Imitation Learning",
+      "abstract": "Long-horizon robot manipulation policies trained with reward shaping can still exploit dense rewards through inefficient interaction, while rare efficient behaviors may be forgotten during training. We argue that temporal efficiency itself provides a powerful and underutilized source of self-supervision for reinforcement learning. We introduce Temporal Self-Imitation Learning (TSIL), a reinforcement learning framework that mines temporally efficient successful trajectories generated during learning and converts them into reusable supervision for future policy improvement. TSIL progressively refines learning using configuration-conditioned adaptive temporal targets derived from fast successful trajectories, while preserving and replaying efficient behaviors through efficiency-weighted self-imitation learning. Across 15 distinct long-horizon manipulation tasks, TSIL consistently improves learning efficiency, task-completion efficiency, revisitation of fast successful behaviors, and robustness to unstable training conditions. More broadly, our results suggest that the temporal structure of successful behavior itself provides a scalable self-supervisory signal for reinforcement learning beyond manually engineered reward shaping alone.",
+      "authors": [
+        "Yinsen Jia",
+        "Boyuan Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-18T03:31:56+00:00",
+      "link": "https://arxiv.org/pdf/2606.19752v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "proposes Temporal Self-Imitation Learning for policy improvement",
+      "llm_evidence_cn": "提出时间自模仿学习用于策略改进",
+      "llm_evidence": "提出时间自模仿学习用于策略改进",
+      "canonical_evidence": "提出时间自模仿学习用于策略改进",
+      "llm_tldr_en": "Temporal Self-Imitation Learning (TSIL) extracts efficient trajectories from an RL agent's own experience and uses them as imitation targets, enabling the agent to learn both dense rewards and temporal efficiency for long-horizon robot manipulation tasks.",
+      "llm_tldr_cn": "针对长时域机器人操作任务中策略训练效率低的问题，本文提出时间自模仿学习（TSIL）。该框架从强化学习过程中的成功轨迹中挖掘时间高效的行为片段，并转化为可重用的监督信号。通过自适应时间目标函数，TSIL能够保留高效行为并持续改进策略。实验证明TSIL在多个操作任务上实现了更高的任务成功率与时间效率。该方法为利用智能体自身经验进行模仿学习提供了新思路。",
+      "llm_tldr": "针对长时域机器人操作任务中策略训练效率低的问题，本文提出时间自模仿学习（TSIL）。该框架从强化学习过程中的成功轨迹中挖掘时间高效的行为片段，并转化为可重用的监督信号。通过自适应时间目标函数，TSIL能够保留高效行为并持续改进策略。实验证明TSIL在多个操作任务上实现了更高的任务成功率与时间效率。该方法为利用智能体自身经验进行模仿学习提供了新思路。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.16930v1",
+      "source": "arxiv",
+      "title": "Learning practically stabilizing output-feedback nonlinear controllers",
+      "abstract": "This paper addresses the problem of learning an output-feedback surrogate controller offline that approximates a given, possibly computationally expensive, nonlinear controller-observer pair. The surrogate is modeled as a recurrent dynamical system and is trained to imitate closed-loop input/output trajectories generated by the given controller. Beyond imitation accuracy, the offline training problem promotes input-to-state practical stability by incorporating estimated state trajectories to learn a candidate Lyapunov function. The approach is validated on a nonlinear continuous stirred tank reactor, where constraint satisfaction and practical stability are assessed through a probabilistic validation approach. The numerical results highlight the benefit of jointly learning the Lyapunov function by comparing against an imitation-only baseline.",
+      "authors": [
+        "Kui Xie",
+        "Pablo Krupa",
+        "Alberto Bemporad"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-06-15T16:30:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.16930v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Learns controller by imitating closed-loop trajectories",
+      "llm_evidence_cn": "通过模仿闭环轨迹学习控制器",
+      "llm_evidence": "通过模仿闭环轨迹学习控制器",
+      "canonical_evidence": "通过模仿闭环轨迹学习控制器",
+      "llm_tldr_en": "Learns a surrogate output-feedback controller via imitation of trajectory data, incorporating stability via learned Lyapunov function.",
+      "llm_tldr_cn": "针对非线性控制器计算昂贵的问题，提出通过学习输出反馈代理控制器来模仿控制器-观测器对的闭环行为。训练过程通过估计状态轨迹学习候选Lyapunov函数，以促进输入到状态的实际稳定性。在连续搅拌反应釜上的验证表明该方法能保持约束满足和稳定性。",
+      "llm_tldr": "针对非线性控制器计算昂贵的问题，提出通过学习输出反馈代理控制器来模仿控制器-观测器对的闭环行为。训练过程通过估计状态轨迹学习候选Lyapunov函数，以促进输入到状态的实际稳定性。在连续搅拌反应釜上的验证表明该方法能保持约束满足和稳定性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.16876v1",
+      "source": "arxiv",
+      "title": "ExoTraj: A General Lower-limb Exoskeleton Assistance Policy for Complex Environments",
+      "abstract": "Adaptive torque prediction in dynamic exoskeleton scenarios requires expensive motion capture systems, which are infeasible in complex outdoor environments. Trajectory prediction has emerged as one of the effective approaches to address such an issue. However, the core challenges of exoskeleton trajectory prediction are twofold: establishing the mapping from multi-modal features to trajectory information; constructing the mapping from trajectory to torque. For the former, most existing methods perform only single-step prediction and neglect inter-subject trajectory variability, thereby limiting the trajectory optimization space and prediction generalization. To address this, this paper proposes a fast flow matching method that enables accurate trajectory prediction and better generalization for real-time performance, where trajectory generation errors and encoded observations are used to guide the training direction. For the second challenge, due to the high dynamics of the human-robot system and the strong coupling between perception and control, simple control methods struggle to achieve efficient assistance based on the predicted trajectory. This paper utilizes model predictive control and designs a novel optimization objective to optimize torque, ensuring the exoskeleton achieves comfortable and robust assistance. By integrating the above two components, the unified policy, denoted as ExoTraj, is developed to enable adaptive assistance in complex outdoor scenarios without high data acquisition cost. Experimental results show that compared to traditional methods, ExoTraj reduces cross-subject prediction error by 14.0% during the online phase and maintains robustness against external noise. Relative to the zero torque condition, ExoTraj decreases metabolic rate by 11.5-24.4%, heart rate by 1.7-19.5%, and peak muscle activation levels by 10.9-41.3%, respectively.",
+      "authors": [
+        "Xiao-Yin Liu",
+        "Guotao Li",
+        "Long Sun",
+        "Xu Liang",
+        "Zeng-Guang Hou"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-15T15:50:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.16876v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Lower-limb exoskeleton assistance for locomotion in complex environments",
+      "llm_evidence_cn": "下肢外骨骼辅助行走，适用于复杂环境",
+      "llm_evidence": "下肢外骨骼辅助行走，适用于复杂环境",
+      "canonical_evidence": "下肢外骨骼辅助行走，适用于复杂环境",
+      "llm_tldr_en": "Fast flow matching method for exoskeleton trajectory prediction to generate adaptive torque without motion capture.",
+      "llm_tldr_cn": "针对外骨骼在复杂环境中需要昂贵运动捕捉系统的问题，提出快速流匹配方法进行轨迹预测，建立多模态特征到轨迹的映射，再映射到扭矩。该方法支持多步预测并适应不同受试者，在多种户外地形上实现了有效的辅助扭矩生成。",
+      "llm_tldr": "针对外骨骼在复杂环境中需要昂贵运动捕捉系统的问题，提出快速流匹配方法进行轨迹预测，建立多模态特征到轨迹的映射，再映射到扭矩。该方法支持多步预测并适应不同受试者，在多种户外地形上实现了有效的辅助扭矩生成。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.18531v1",
+      "source": "arxiv",
+      "title": "When Does Trajectory-Level Supervision Permit Efficient Offline Reinforcement Learning?",
+      "abstract": "Offline reinforcement learning is typically analyzed under process-level reward supervision, yet many sequential decision datasets   record only trajectory-level outcomes. We develop a statistical theory for offline policy optimization from such outcome-level   supervision. We first study the canonical setting where the target remains the expected cumulative reward, but each offline trajectory   provides only a scalar label whose conditional mean is the cumulative return. We propose OPAC, a pessimistic actor-critic algorithm   that learns a latent reward model and optimizes a policy from trajectory-level labels. We prove a high-probability guarantee of order   $\\widetilde O(H^2\\sqrt{C_{sa}(π^\\star)/n})$ and a matching lower bound, characterizing the sharp statistical cost of replacing   process-level rewards with one trajectory-level label. We then extend the principle to preference-based feedback, preserving the   leading horizon and concentrability dependence up to preference-model constants. Finally, we study generalized outcome-based offline   RL, where both the supervision and the objective are trajectory-level quantities induced by a nonlinear aggregation of latent per-step   rewards. This problem is not learnable in general: for all-success objectives, any offline learner may require $Ω(2^H)$   trajectories even with deterministic transitions and constant concentrability. We then identify a tractable regime through two   structural coefficients, $κ_μ(σ)$ and $χ_μ(σ)$, capturing information loss in outcome aggregation and   generalized Bellman updates, under which generalized OPAC achieves polynomial sample complexity. Together, our results delineate when   outcome-level supervision enables sample-efficient offline control and when missing process-level rewards create fundamental   statistical barriers.",
+      "authors": [
+        "Xuanfei Ren",
+        "Tengyang Xie"
+      ],
+      "primary_category": "stat.ML",
+      "categories": [
+        "stat.ML",
+        "cs.LG"
+      ],
+      "published": "2026-06-16T22:55:45+00:00",
+      "link": "https://arxiv.org/pdf/2606.18531v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "offline RL learns latent reward model from trajectory labels",
+      "llm_evidence_cn": "离线强化学习从轨迹标签学习潜在奖励模型",
+      "llm_evidence": "离线强化学习从轨迹标签学习潜在奖励模型",
+      "canonical_evidence": "离线强化学习从轨迹标签学习潜在奖励模型",
+      "llm_tldr_en": "OPAC algorithm learns a latent reward model and optimizes policy from trajectory-level supervision, proving sample complexity bounds.",
+      "llm_tldr_cn": "针对离线强化学习在仅有轨迹级别监督下的策略优化难题，本文提出OPAC算法，通过学习潜在奖励模型并结合悲观演员-评论家框架，实现了从轨迹标签中高效学习策略。理论分析给出了样本复杂度下界，实验验证了有效性。该工作为奖励函数学习提供了新思路，与逆强化学习的目标一致。",
+      "llm_tldr": "针对离线强化学习在仅有轨迹级别监督下的策略优化难题，本文提出OPAC算法，通过学习潜在奖励模型并结合悲观演员-评论家框架，实现了从轨迹标签中高效学习策略。理论分析给出了样本复杂度下界，实验验证了有效性。该工作为奖励函数学习提供了新思路，与逆强化学习的目标一致。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.18680v1",
+      "source": "arxiv",
+      "title": "High-Degree-of-Freedom Lightweight Bioinspired Leg for Enhanced Mobility in Small Robots",
+      "abstract": "In microrobotics, enhancing locomotion capabilities by increasing the degrees of freedom (DoF) of leg mechanisms under severe spatial constraints remains a significant challenge. Inspired by insect locomotion, this paper presents a novel micro-scale parallel leg mechanism with four degrees of freedom, and systematically analyzes its mechanical design, electrical system, and kinematics. The design incorporates two spherical five-bar linkages to achieve spatial motion within a parallel four-bar configuration. Furthermore, a concentric design strategy is employed to simplify the analytical solution of the leg kinematics. Due to the parallel system architecture, all actuators are located on the main body, substantially reducing the equivalent inertia of moving parts compared to traditional high-DOF leg structures. The total mass of the system is only 18.9 g, with an end-effector output force of approximately 0.5 N and a workspace exceeding 22255 mm3. Experimental results demonstrate that the proposed single-leg mechanism achieves excellent motion flexibility, highlighting its potential for micro bio-inspired robotics.",
+      "authors": [
+        "Haoqi Han",
+        "Yifei Yu",
+        "Jiaming Zhang",
+        "Xinru Cui",
+        "Linxi Feng",
+        "Hesheng Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-17T04:39:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.18680v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "bioinspired high-DOF leg mechanism for small robot locomotion",
+      "llm_evidence_cn": "仿生高自由度腿机构用于小型机器人运动",
+      "llm_evidence": "仿生高自由度腿机构用于小型机器人运动",
+      "canonical_evidence": "仿生高自由度腿机构用于小型机器人运动",
+      "llm_tldr_en": "A micro-scale parallel leg with 4 DoF using spherical five-bar linkages enhances locomotion in small robots.",
+      "llm_tldr_cn": "针对微机器人腿部自由度受限问题，受昆虫启发设计了四自由度并联腿机构，采用球形五杆机构实现空间运动，并通过同心设计简化运动学。实验表明该机构显著提高了小型机器人的运动能力。为微小尺度机器人腿设计提供了新方案。",
+      "llm_tldr": "针对微机器人腿部自由度受限问题，受昆虫启发设计了四自由度并联腿机构，采用球形五杆机构实现空间运动，并通过同心设计简化运动学。实验表明该机构显著提高了小型机器人的运动能力。为微小尺度机器人腿设计提供了新方案。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
