@@ -6,53 +6,35 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-21
-- 运行时间：2026-06-21 21:24:39 UTC
+- 最新运行日期：2026-06-22
+- 运行时间：2026-06-22 22:13:09 UTC
 - 运行状态：成功
-- 本次总论文数：11
-- 精读区：7
-- 速读区：4
+- 本次总论文数：5
+- 精读区：2
+- 速读区：3
 
 ### 今日简报（AI）
-今日精读7篇，重点关注偏好强化学习的UBP2策略与进化双层奖励塑形。最值得看：UBP2通过不确定性平衡偏好规划提升样本效率；进化双层奖励塑造增强RL泛化能力。建议优先精读这两篇9分/8分论文，学习偏好学习与奖励塑形的前沿设计。
-- 详情：[/202606/21/README](/202606/21/README)
+今日共推荐5篇机器人学习论文，精读聚焦协作机器人模仿学习与频率外推两大方向。最值得关注的是《Robots that Collaborate》提出的序列非对称模仿学习，以及《VFILC》中的采样频率迭代学习法。建议优先精读这两篇高评分论文，把握协同策略与精确外推的核心思路。
+- 详情：[/202606/22/README](/202606/22/README)
 
 ### 精读区论文标签
-1. [UBP2: Uncertainty-Balanced Preference Planning for Efficient Preference-based Reinforcement Learning](/202606/21/2606.19328v1-ubp2-uncertainty-balanced-preference-planning-for-efficient-preference-based-reinforcement-learning)  
+1. [Robots that Collaborate: Sequential Asymmetric Imitation for Learning Coupled Robot Policies](/202606/22/2606.16490v1-robots-that-collaborate-sequential-asymmetric-imitation-for-learning-coupled-robot-policies)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：从成对偏好中学习奖励模型，类似逆强化学习
-2. [Evolutionary Bilevel Reward Shaping for Generalization in Reinforcement Learning](/202606/21/2606.16236v1-evolutionary-bilevel-reward-shaping-for-generalization-in-reinforcement-learning)  
+   evidence：序列非对称模仿用于多机器人学习
+2. [VFILC: Accurate Frequency Extrapolations in Imitation Learning via Sampling Frequency ILC](/202606/22/2606.20056v1-vfilc-accurate-frequency-extrapolations-in-imitation-learning-via-sampling-frequency-ilc)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：进化双层奖励塑形用于强化学习泛化
-3. [LOPAL: Local Performance-Aware Active Learning from Imperfect Demonstrations](/202606/21/2606.16888v1-lopal-local-performance-aware-active-learning-from-imperfect-demonstrations)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：基于局部质量感知的示范学习
-4. [EgoInfinity: A Web-Scale 4D Hand-Object Interaction Data Engine for Any-View Robot Retargeting and Video-to-Action Robot Learning](/202606/21/2606.17385v1-egoinfinity-a-web-scale-4d-hand-object-interaction-data-engine-for-any-view-robot-retargeting-and-video-to-action-robot-learning)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：网络规模视频到动作数据引擎，直接支持从互联网视频进行模仿学习
-5. [ZiMPedance: Impedance-Aware ZMP Modeling and Control for Payload Carrying with Quadruped Robots](/202606/21/2606.18883v1-zimpedance-impedance-aware-zmp-modeling-and-control-for-payload-carrying-with-quadruped-robots)  
-   标签：评分：8.0/10、query:mpc-wbc
-   evidence：四足机器人负重运输中的模型预测控制
-6. [Simulating Robotic Locomotion in Sand: Resistive Force Theory in an Open-Source Physics Engine](/202606/21/2606.19504v1-simulating-robotic-locomotion-in-sand-resistive-force-theory-in-an-open-source-physics-engine)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：在MuJoCo中使用阻力理论模拟沙地腿部运动
-7. [Temporal Self-Imitation Learning](/202606/21/2606.19752v1-temporal-self-imitation-learning)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：提出时间自模仿学习用于策略改进
+   evidence：提出变频率模仿学习与迭代学习控制结合的方法
 
 ### 速读区论文标签
-1. [Learning practically stabilizing output-feedback nonlinear controllers](/202606/21/2606.16930v1-learning-practically-stabilizing-output-feedback-nonlinear-controllers)  
+1. [PO-PDDL: Learning Symbolic POMDPs from Visual Demonstrations for Robot Planning Under Uncertainty](/202606/22/2606.15654v1-po-pddl-learning-symbolic-pomdps-from-visual-demonstrations-for-robot-planning-under-uncertainty)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：通过模仿闭环轨迹学习控制器
-2. [When Does Trajectory-Level Supervision Permit Efficient Offline Reinforcement Learning?](/202606/21/2606.18531v1-when-does-trajectory-level-supervision-permit-efficient-offline-reinforcement-learning)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：离线强化学习从轨迹标签学习潜在奖励模型
-3. [ExoTraj: A General Lower-limb Exoskeleton Assistance Policy for Complex Environments](/202606/21/2606.16876v1-exotraj-a-general-lower-limb-exoskeleton-assistance-policy-for-complex-environments)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：下肢外骨骼辅助行走，适用于复杂环境
-4. [High-Degree-of-Freedom Lightweight Bioinspired Leg for Enhanced Mobility in Small Robots](/202606/21/2606.18680v1-high-degree-of-freedom-lightweight-bioinspired-leg-for-enhanced-mobility-in-small-robots)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：仿生高自由度腿机构用于小型机器人运动
+   evidence：基于演示的POMDP模型学习
+2. [VEGA: Learning Navigation VLAs from In-the-Wild Egocentric Video with Geometric Trajectory Supervision](/202606/22/2606.18426v1-vega-learning-navigation-vlas-from-in-the-wild-egocentric-video-with-geometric-trajectory-supervision)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：从自我中心视频中学习导航策略作为模仿学习
+3. [Stable Transformer-Actor-Critic Model Predictive Control: A Contraction Analysis Approach](/202606/22/2606.20197v1-stable-transformer-actor-critic-model-predictive-control-a-contraction-analysis-approach)  
+   标签：评分：6.0/10、query:mpc-wbc
+   evidence：具有稳定性保证的Transformer-Actor-Critic MPC，与仿人MPC相关
 
 
 <div class="dpr-home-promo-card">
