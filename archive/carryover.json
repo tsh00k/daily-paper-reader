@@ -1,20 +1,327 @@
 {
-  "generated_at": "2026-06-22T22:09:51.208621+00:00",
-  "updated_date": "20260622",
+  "generated_at": "2026-06-29T22:04:10.892081+00:00",
+  "updated_date": "20260629",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260622",
+      "updated_date": "20260629",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260622",
+      "updated_date": "20260629",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2606.23617v1",
+          "source": "arxiv",
+          "title": "RECALL: Recovery Experience Collection for Active Lifelong Learning in Vision-Language-Action Models",
+          "abstract": "Vision-Language-Action (VLA) models are commonly fine-tuned through passive imitation learning, where additional demonstrations are collected for tasks where the policy performs poorly. This approach incurs several downsides: it requires the robot to fail before data collection is triggered, provides little guidance about which states require supervision, and wastes demonstrator effort on redundant parts of the task where the policy already performs well. In this paper, we propose an active, continual learning paradigm for VLAs. We demonstrate that active, uncertainty-guided data collection leads to more efficient fine-tuning than when using passively-collected demonstrations. However, we also find that fine-tuning only on actively-collected recovery data leads to catastrophic forgetting. We evaluate techniques for continual learning, including replay-based data mixing and elastic weight consolidation, and identify tradeoffs between plasticity to uncertainty-guided recovery data and retention of previously learned behaviors. Overall, our work contributes an empirical study of active continual learning for autoregressive VLAs, establishing that uncertainty-guided recovery demonstrations can improve adaptation efficiency while also revealing open challenges when targeted new data is incorporated into large robot policies.",
+          "authors": [
+            "Ulas Berk Karli",
+            "Tesca Fitzgerald"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI",
+            "cs.LG"
+          ],
+          "published": "2026-06-22T17:12:50+00:00",
+          "link": "https://arxiv.org/pdf/2606.23617v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "active lifelong learning paradigm for VLAs using imitation learning",
+          "llm_evidence_cn": "使用模仿学习的VLA主动持续学习范式",
+          "llm_evidence": "使用模仿学习的VLA主动持续学习范式",
+          "canonical_evidence": "使用模仿学习的VLA主动持续学习范式",
+          "llm_tldr_en": "RECALL proposes active uncertainty-guided data collection for more efficient imitation learning fine-tuning of VLA models.",
+          "llm_tldr_cn": "RECALL针对VLA模型被动模仿学习效率低的问题，提出主动不确定性引导的数据收集和持续学习范式。实验表明主动收集比被动收集更高效，但也发现仅关注困难样本效果有限。该工作为机器人的持续学习提供了更高效的数据利用策略。",
+          "llm_tldr": "RECALL针对VLA模型被动模仿学习效率低的问题，提出主动不确定性引导的数据收集和持续学习范式。实验表明主动收集比被动收集更高效，但也发现仅关注困难样本效果有限。该工作为机器人的持续学习提供了更高效的数据利用策略。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.23617v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.25398v1",
+          "source": "arxiv",
+          "title": "MAPL: Multi-Objective Preference Learning for Robot Locomotion",
+          "abstract": "Reward design remains a major bottleneck in reinforcement learning for robot locomotion, where successful policies often depend on carefully tuned, task-specific reward functions. Preference-based reinforcement learning offers an alternative, but existing LLM-based methods typically ask for a single overall judgment between behaviors, making it difficult to capture the multiple competing objectives that underlie high-quality locomotion. We present Multi-Objective AI-Informed Preference Learning (MAPL), a framework that learns locomotion rewards from high-level natural language objectives rather than manually engineered reward equations. MAPL prompts a large language model to compare trajectories independently along semantically meaningful criteria, using generic language descriptions that are terrain-invariant and require little domain expertise. These objective-wise preferences are used to train a multi-head preference scoring model, whose outputs are aggregated to form a scalar reward for policy optimization. Across four quadruped locomotion environments, MAPL trains policies using only LLM-generated preferences and achieves performance comparable to or better than expert-designed rewards, while eliminating task-specific reward engineering.",
+          "authors": [
+            "Xiyue Chen",
+            "Muhan Lin",
+            "Shuyang Shi",
+            "Joseph Campbell"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-24T04:52:04+00:00",
+          "link": "https://arxiv.org/pdf/2606.25398v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Multi-objective reward learning from language for robot locomotion",
+          "llm_evidence_cn": "从自然语言目标进行多目标奖励学习用于机器人运动",
+          "llm_evidence": "从自然语言目标进行多目标奖励学习用于机器人运动",
+          "canonical_evidence": "从自然语言目标进行多目标奖励学习用于机器人运动",
+          "llm_tldr_en": "MAPL learns locomotion rewards from high-level natural language objectives via LLM-based preference comparisons, enabling multi-objective reward design without manual engineering.",
+          "llm_tldr_cn": "该论文针对机器人运动强化学习中的奖励设计瓶颈，提出多目标AI偏好学习框架MAPL，通过利用大语言模型比较轨迹来从自然语言目标中学习奖励函数，避免了手工设计奖励方程的繁琐过程。在机器人运动任务上，该方法能够捕捉多个竞争目标，生成高质量的运动策略。该工作为偏好学习在机器人运动奖励学习中的应用提供了新思路。",
+          "llm_tldr": "该论文针对机器人运动强化学习中的奖励设计瓶颈，提出多目标AI偏好学习框架MAPL，通过利用大语言模型比较轨迹来从自然语言目标中学习奖励函数，避免了手工设计奖励方程的繁琐过程。在机器人运动任务上，该方法能够捕捉多个竞争目标，生成高质量的运动策略。该工作为偏好学习在机器人运动奖励学习中的应用提供了新思路。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "reward function learning",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.25398v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.23420v1",
+          "source": "arxiv",
+          "title": "Flowing With Purpose: Latent Action Guided Flow Matching Policies For Robotic Manipulation",
+          "abstract": "Flow matching has recently become a new standard for behavior cloning in robotic manipulation. However, state-of-the-art flow matching policies suffer from a systematic structural mismatch: they rely on a globally fixed isotropic source distribution despite the strongly fragmented and heteroscedastic structure of robotic action spaces. This agnostic initialization forces the model to learn highly entangled vector fields, bottlenecking training efficiency and limiting overall policy performance. To address this limitation, we introduce Latent Action Guided Flow Matching (LAFM), a novel framework that replaces the monolithic Gaussian with an adaptive library of learned prior distributions. By grounding these distributions using a latent action model, LAFM maps current observations to discrete motion primitives, selecting a specialized base distribution that provides an informed, structurally aligned initialization for the denoising process. This dynamic adaptivity naturally accommodates heteroscedasticity in human demonstrations and makes transport trajectories shorter and less entangled. Empirically, LAFM substantially outperforms standard flow matching formulations, increasing task success rates by 23.4% in real-world robotic deployments and by 10.4% on the LIBERO-90 benchmark. Furthermore, we demonstrate that LAFM achieves state-of-the-art results, surpassing massively pre-trained vision-language-action models while utilizing significantly smaller architectures.",
+          "authors": [
+            "Bruno Machado",
+            "Alexandre Chapin",
+            "Emmanuel Dellandrea",
+            "Liming Chen"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-22T14:42:59+00:00",
+          "link": "https://arxiv.org/pdf/2606.23420v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Behavior cloning with flow matching",
+          "llm_evidence_cn": "基于流匹配的行为克隆",
+          "llm_evidence": "基于流匹配的行为克隆",
+          "canonical_evidence": "基于流匹配的行为克隆",
+          "llm_tldr_en": "Introduces Latent Action Guided Flow Matching (LAFM) for robotic manipulation, replacing fixed isotropic source with learned adaptive priors to improve behavior cloning efficiency.",
+          "llm_tldr_cn": "针对流匹配行为克隆中固定各向同性源分布与机器人动作空间碎片化之间的结构失配问题，提出潜在动作引导流匹配（LAFM）。该方法用自适应先验库替代单一高斯分布，使模型学习更高效的向量场。实验表明LAFM提高了训练效率和策略性能，为模仿学习提供了新的范式。",
+          "llm_tldr": "针对流匹配行为克隆中固定各向同性源分布与机器人动作空间碎片化之间的结构失配问题，提出潜在动作引导流匹配（LAFM）。该方法用自适应先验库替代单一高斯分布，使模型学习更高效的向量场。实验表明LAFM提高了训练效率和策略性能，为模仿学习提供了新的范式。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.23420v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.24403v1",
+          "source": "arxiv",
+          "title": "RE4: Transformation-aware Imitation of Object Interactions Using Manipulation Modes",
+          "abstract": "Object interaction tasks have been a focus of advances in imitation learning. End-to-end methods, dominated by diffusion and flow-based variants have shown leaps in performance while sacrificing interpretability. Object-centric and pose-informed variants have had a role in learning from demonstration in manipulation tasks. In this paper, we revisit a few modern imitation learning benchmarks for object interactions, with the aim of composing a framework that repurposes principled theories of manipulation, preserving both performance and interpretability. For image observations, lightweight training is proposed for model-free pose estimation of the target object, using self-supervision over the demonstration data available for imitation learning. This information is then used to inform a manipulation mode-aware retrieval of a demonstration, a mode-aware transformation, a replan step that connects to the retrieval point while preserving mode constraints, and finally rolling out the transformed demonstration. These compose four key steps of the proposed RE4 framework, evaluated over state-based and image-based benchmarks in Push-T and Robomimic. An adversarial benchmark that evaluates sparse data regions of image-based Push-T showcases the robustness, further bolstered by indications from low-data regime experiments. The current work shows promise in using simple interpretable building blocks to learn manipulation skills.",
+          "authors": [
+            "Arsh Chawla",
+            "Rahul Shome"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.LG"
+          ],
+          "published": "2026-06-23T10:37:50+00:00",
+          "link": "https://arxiv.org/pdf/2606.24403v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Imitation learning for object interactions",
+          "llm_evidence_cn": "用于物体交互的模仿学习",
+          "llm_evidence": "用于物体交互的模仿学习",
+          "canonical_evidence": "用于物体交互的模仿学习",
+          "llm_tldr_en": "Revisits imitation learning benchmarks for object interactions, proposing a framework combining pose estimation with manipulation modes for interpretable and performant imitation.",
+          "llm_tldr_cn": "针对现代端到端模仿学习在黑盒性能与可解释性之间的权衡，重新审视物体交互模仿学习基准。提出RE4框架，利用基于理论的操控模式与轻量级自监督位姿估计，在保持高性能的同时增强了可解释性。实验证明该方法在多个标准任务上达到竞争性结果，并提供了对任务结构的洞察。",
+          "llm_tldr": "针对现代端到端模仿学习在黑盒性能与可解释性之间的权衡，重新审视物体交互模仿学习基准。提出RE4框架，利用基于理论的操控模式与轻量级自监督位姿估计，在保持高性能的同时增强了可解释性。实验证明该方法在多个标准任务上达到竞争性结果，并提供了对任务结构的洞察。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.24403v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.23371v1",
+          "source": "arxiv",
+          "title": "TSD: A Physics-Inspired Trajectory Saliency Detector for Efficient Imitation Learning",
+          "abstract": "For imitation learning in robotic manipulation, high data collection costs result in the scarcity of high quality data. In this paper, we leverage the inherent heterogeneity of trajectories to address this challenge. Based on our observations of manipulation tasks, we categorize motions into transitional, precise, and agile types, defining the latter two as trajectory saliency due to their criticality to task success in contrast to the prevalent but less relevant transitional motions. Therefore, we propose the Trajectory Saliency Detector (TSD), a training-free and plug-and-play framework to identify trajectory saliency. TSD employs two physically-grounded metrics: spatial entropy to capture fine-grained manipulation and centripetal acceleration to detect agile maneuvering. We further leverage TSD to develop a dataset compression method that reduces training costs and a dataset expansion strategy that improves data collection efficiency. Extensive experiments in both simulation and real-world settings demonstrate that models trained on TSD-condensed datasets achieve comparable or even superior performance with 25% less data on average. These results validate the effectiveness of our dataset compression and expansion strategies, thereby confirming the utility of TSD. Consequently, TSD offers a scalable and cost-effective pathway to synthesize information-dense datasets for efficient robot learning. Project page: https://trajectory-saliency-detector.github.io/trajectory-saliency-detector/",
+          "authors": [
+            "Yiming Zhao",
+            "Gongrui Ma",
+            "Qingkai Li",
+            "Mingguo Zhao"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-22T14:06:04+00:00",
+          "link": "https://arxiv.org/pdf/2606.23371v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Trajectory saliency for imitation learning",
+          "llm_evidence_cn": "轨迹显著性用于模仿学习",
+          "llm_evidence": "轨迹显著性用于模仿学习",
+          "canonical_evidence": "轨迹显著性用于模仿学习",
+          "llm_tldr_en": "Proposes Trajectory Saliency Detector (TSD) for imitation learning, using spatial entropy and centripetal acceleration to identify critical trajectory segments, improving data efficiency.",
+          "llm_tldr_cn": "针对模仿学习数据稀缺问题，提出轨迹显著性检测器（TSD），基于空间熵和向心加速度识别精确和敏捷运动作为关键轨迹段。TSD即插即用无需训练，在多个操作任务上通过突出关键轨迹提高了模仿学习的数据效率和最终性能。",
+          "llm_tldr": "针对模仿学习数据稀缺问题，提出轨迹显著性检测器（TSD），基于空间熵和向心加速度识别精确和敏捷运动作为关键轨迹段。TSD即插即用无需训练，在多个操作任务上通过突出关键轨迹提高了模仿学习的数据效率和最终性能。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.23371v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.23625v1",
+          "source": "arxiv",
+          "title": "Learning to See While Learning to Act: Diffusion Models for Active Perception in Robot Imitation",
+          "abstract": "Most imitation learning methods assume full observability in table-top settings. In practice, objects are often occluded, requiring robots to both search and act, and learning this coupled behavior from limited demonstrations remains challenging. We propose See2Act, an imitation learning approach that conditions action prediction on a sequence of actively-inferred viewpoints at test time, by coupling action denoising with viewpoint refinement. The policy is trained using camera poses anchored to keyframe actions from offline demonstrations, enabling implicit learning of where to see, while learning how to act. We empirically demonstrate that in Ravens the policy recovers informative viewpoints under severe occlusions, and on RLBench tasks it improves performance by up to 34% over prior methods. In the real world, we collect 50 demonstrations in a digital twin and achieve zero-shot sim-to-real transfer on pick-and-place tasks using depth observations. The policy handles significant occlusions, showing that learned viewpoint reasoning enables robust manipulation under partial observability.",
+          "authors": [
+            "Kuancheng Wang",
+            "Vaibhav Saxena",
+            "Shuo Cheng",
+            "Yotto Koga",
+            "Danfei Xu"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-22T17:19:57+00:00",
+          "link": "https://arxiv.org/pdf/2606.23625v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "uses imitation learning with active perception via diffusion models",
+          "llm_evidence_cn": "利用扩散模型进行主动感知的模仿学习",
+          "llm_evidence": "利用扩散模型进行主动感知的模仿学习",
+          "canonical_evidence": "利用扩散模型进行主动感知的模仿学习",
+          "llm_tldr_en": "See2Act is an imitation learning approach that couples action denoising with viewpoint refinement, enabling robots to learn informative viewpoints from demonstrations without full observability.",
+          "llm_tldr_cn": "现有的模仿学习方法通常假设完全可观测，但实际中存在遮挡。本文提出 See2Act，通过扩散模型将动作去噪与视角优化结合，使机器人从演示中隐式学习观测策略。在多个任务中，该方法在严重遮挡下恢复了信息丰富的视角，并提升了操作成功率。",
+          "llm_tldr": "现有的模仿学习方法通常假设完全可观测，但实际中存在遮挡。本文提出 See2Act，通过扩散模型将动作去噪与视角优化结合，使机器人从演示中隐式学习观测策略。在多个任务中，该方法在严重遮挡下恢复了信息丰富的视角，并提升了操作成功率。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.23625v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.23280v1",
+          "source": "arxiv",
+          "title": "Causal Reward World Models: Zero-shot Reward Design for Automated Skill Generation",
+          "abstract": "Automated Reward Design (ARD) aims to replace manual reward engineering in reinforcement learning with language-driven reward function synthesis. However, existing approaches based on large language models (LLMs) remain inherently correlation-driven, relying on iterative environmental feedback to refine reward hypotheses for each specific task. This paradigm not only results in inefficient reasoning but also makes LLMs susceptible to semantically plausible yet causally spurious reward components, leading to ineffective optimization. To address these limitations, we propose the Causal Reward World Model (CRWM), which explicitly models the causal topological relationships between candidate reward components and task-targeted physical variables through offline pre-training on multi-task interaction data. Based on a coarse-to-fine pre-training strategy, we introduce a joint optimization module that integrates Explicit Mechanism Decoupling with Confidence-Aware Soft Fusion to refine coarse structural priors using micro-level trajectories, thereby constructing a robust and interpretable causal skeleton. During inference, LLMs leverage CRWM as a task-irrelevant causal prior to constrain the reward generation, enabling zero-shot reward function design. Our work opens up a new white-box paradigm for the ARD problem. Extensive experiments on complex continuous control benchmarks demonstrate that CRWM generates executable reward functions without feedback-driven reward refinement, significantly reducing the design latency for acquiring new robotic skills while matching or surpassing state-of-the-art performance, and further exhibits strong generalization capabilities across unseen tasks and diverse robotic embodiments.",
+          "authors": [
+            "Yang Yang",
+            "Yuchuang Tong",
+            "Zhengtao Zhang",
+            "Xu Ding",
+            "Ning Yang",
+            "Yifan Zhang",
+            "Haipeng Li",
+            "Kehu Yang",
+            "Miao Xin"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-06-22T12:57:17+00:00",
+          "link": "https://arxiv.org/pdf/2606.23280v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Causal reward design for RL skill generation",
+          "llm_evidence_cn": "用于RL技能生成的因果奖励设计",
+          "llm_evidence": "用于RL技能生成的因果奖励设计",
+          "canonical_evidence": "用于RL技能生成的因果奖励设计",
+          "llm_tldr_en": "CRWM models causal relationships among reward components to enable zero-shot reward design for automated skill generation, outperforming correlation-driven LLM methods.",
+          "llm_tldr_cn": "自动奖励设计通常依赖大语言模型的迭代反馈，效率低且易受虚假相关影响。本文提出因果奖励世界模型（CRWM），显式建模候选奖励组件与任务目标物理变量之间的因果关系，实现零样本奖励设计。在机器人操作任务中，CRWM生成的奖励函数显著提升了技能学习的效率和准确性。",
+          "llm_tldr": "自动奖励设计通常依赖大语言模型的迭代反馈，效率低且易受虚假相关影响。本文提出因果奖励世界模型（CRWM），显式建模候选奖励组件与任务目标物理变量之间的因果关系，实现零样本奖励设计。在机器人操作任务中，CRWM生成的奖励函数显著提升了技能学习的效率和准确性。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "reward function learning",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.23280v1",
+          "carry_days": 1
+        }
+      ]
     },
     "MPC-WBC": {
-      "updated_date": "20260622",
+      "updated_date": "20260629",
       "carryover_days": 9,
       "items": []
     }
