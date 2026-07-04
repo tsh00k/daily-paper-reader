@@ -6,103 +6,94 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-29
-- 运行时间：2026-06-29 22:19:16 UTC
+- 最新运行日期：2026-07-04
+- 运行时间：2026-07-04 20:17:48 UTC
 - 运行状态：成功
-- 本次总论文数：27
-- 精读区：14
+- 本次总论文数：24
+- 精读区：11
 - 速读区：13
 
 ### 今日简报（AI）
-1) 今日27篇论文聚焦机器人学习，精读14篇，重点在轨迹标准化与跨机器人策略泛化。  
-2) 最值得关注：轨迹标准化提升模仿学习（9.0/10）和跨机器人数据学习通用策略（9.0/10），均获得最高评分。  
-3) 建议优先精读这两篇，深入理解如何通过数据标准化与对齐实现机器人技能迁移。
-- 详情：[/202606/29/README](/202606/29/README)
+1) 今日精读11篇、速读13篇，高分论文聚焦人形机器人全身控制与场景交互，满分10分的《ReactiveBFM》和9分的《SceneBot》领跑。
+2) 最值得看的方向是人形机器人的闭环运动规划与场景交互全身跟踪，两篇高分论文展示了从“反应式控制”到“接触提示交互”的完整链路。
+3) 普通读者建议优先啃精读高分两篇，它们代表了人形机器人落地场景的核心突破；速读区的因果奖励世界模型和轨迹显著性检测器适合想拓展自动化生成与模仿学习的进阶者。
+- 详情：[/202607/04/README](/202607/04/README)
 
 ### 精读区论文标签
-1. [Improving Robotic Imitation Learning via Trajectory Standardization](/202606/29/2606.22907v1-improving-robotic-imitation-learning-via-trajectory-standardization)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：直接针对模仿学习，通过标准化重采样提升轨迹质量
-2. [SPACE: Enabling Learning from Cross-Robot Data Toward Generalist Policies](/202606/29/2606.24049v1-space-enabling-learning-from-cross-robot-data-toward-generalist-policies)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：提出跨机器人行为克隆的通用动作表示
-3. [MinInter: Minimizing Trajectory Interpolation During Data Augmentation for Imitation Learning](/202606/29/2606.24078v1-mininter-minimizing-trajectory-interpolation-during-data-augmentation-for-imitation-learning)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：通过轨迹选择进行模仿学习数据增强
-4. [Beyond Monotonic Progress: Retry-Supervised Value Learning for Robot Imitation](/202606/29/2606.24633v1-beyond-monotonic-progress-retry-supervised-value-learning-for-robot-imitation)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：从不完美机器人演示中进行价值学习
-5. [RGB: RL Guided Whole-Body MPPI for Humanoid Control](/202606/29/2606.25123v1-rgb-rl-guided-whole-body-mppi-for-humanoid-control)  
-   标签：评分：9.0/10、query:mpc-wbc
-   evidence：RL引导的全身MPPI人形控制，结合MPC和强化学习
-6. [Learning Perceptive Platform Adaptive Locomotion Controllers for Quadrupedal Robots](/202606/29/2606.25179v1-learning-perceptive-platform-adaptive-locomotion-controllers-for-quadrupedal-robots)  
+1. [ReactiveBFM: Reactive Closed-Loop Motion Planning Towards Universal Humanoid Whole-Body Control](/202607/04/2606.30362v1-reactivebfm-reactive-closed-loop-motion-planning-towards-universal-humanoid-whole-body-control)  
+   标签：评分：10.0/10、query:locowbc
+   evidence：面向通用人形全身控制的反应式闭环运动规划
+2. [SceneBot: Contact-Prompted General Humanoid Whole Body Tracking with Scene-Interaction](/202607/04/2606.27581v1-scenebot-contact-prompted-general-humanoid-whole-body-tracking-with-scene-interaction)  
    标签：评分：9.0/10、query:locowbc
-   evidence：四足机器人的腿部运动控制器
-7. [Decoupling Semantics and Geometric Grounding: Spatial Visual Prompts for Language-Conditioned Imitation Learning](/202606/29/2606.25360v1-decoupling-semantics-and-geometric-grounding-spatial-visual-prompts-for-language-conditioned-imitation-learning)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：语言条件模仿学习
-8. [Mixture-of-Experts RL for Fault-Tolerant Legged Locomotion](/202606/29/2606.25965v1-mixture-of-experts-rl-for-fault-tolerant-legged-locomotion)  
+   evidence：人形机器人全身跟踪，利用接触提示，涵盖运动与操作
+3. [Booster Lab: A Data-Centric Pipeline for Learning Deployable Humanoid Locomotion Policies](/202607/04/2606.27813v1-booster-lab-a-data-centric-pipeline-for-learning-deployable-humanoid-locomotion-policies)  
+   标签：评分：9.0/10、query:mpc-wbc
+   evidence：使用对抗运动先验强化学习进行人形机器人运动学习
+4. [AnyBody: Free-Form Whole-Body Humanoid Control from Arbitrary Keypoint Guidance](/202607/04/2606.29209v1-anybody-free-form-whole-body-humanoid-control-from-arbitrary-keypoint-guidance)  
    标签：评分：9.0/10、query:locowbc
-   evidence：基于混合专家强化学习的容错四足运动
-9. [Play2Perfect: What Matters in Dexterous Play Pretraining for Precise Assembly?](/202606/29/2606.26428v1-play2perfect-what-matters-in-dexterous-play-pretraining-for-precise-assembly)  
+   evidence：全身人形机器人控制方法
+5. [KYON: Semi-Modular Wheel-Legged Quadruped With Agile Bimanual Capability](/202607/04/2606.30243v1-kyon-semi-modular-wheel-legged-quadruped-with-agile-bimanual-capability)  
+   标签：评分：9.0/10、query:locowbc
+   evidence：融合全身控制框架与强化学习实现轮腿四足机器人运动
+6. [FastDSAC: Enhancing Policy Plasticity via Constrained Exploration for Scalable Humanoid Locomotion](/202607/04/2606.31691v1-fastdsac-enhancing-policy-plasticity-via-constrained-exploration-for-scalable-humanoid-locomotion)  
+   标签：评分：9.0/10、query:locowbc
+   evidence：直接处理人形机器人运动，提出可扩展RL算法
+7. [Reinforcement Learning-Based Control for an Inline Skating Humanoid Robot](/202607/04/2606.31807v1-reinforcement-learning-based-control-for-an-inline-skating-humanoid-robot)  
+   标签：评分：9.0/10、query:locowbc
+   evidence：使用强化学习控制策略实现直排轮滑人形机器人运动
+8. [A Contextual-Bandit Oversight Game with Two-Sided Informational Asymmetry](/202607/04/2607.00155v1-a-contextual-bandit-oversight-game-with-two-sided-informational-asymmetry)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：用于灵巧装配的模仿学习
-10. [PressMimic: Pressure-Guided Motion Capture and Control for Humanoid Robot Imitation](/202606/29/2606.26741v1-pressmimic-pressure-guided-motion-capture-and-control-for-humanoid-robot-imitation)  
+   evidence：基于合作逆强化学习(CIRL)建模人类监督
+9. [Learning Gait-Aware Quadruped Locomotion with Temporal Logic Specifications](/202607/04/2607.00442v1-learning-gait-aware-quadruped-locomotion-with-temporal-logic-specifications)  
+   标签：评分：9.0/10、query:locowbc
+   evidence：基于信号时序逻辑的步态感知四足运动学习
+10. [Language-Critique Imitation Learning from Suboptimal Demonstrations](/202607/04/2607.01225v1-language-critique-imitation-learning-from-suboptimal-demonstrations)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：用于人形机器人模仿的压力引导动作捕捉与控制
-11. [Humanoid-DART: Humanoid Loco-Manipulation using Diffusion-guided Augmentation through Relabeling and Tracking](/202606/29/2606.26855v1-humanoid-dart-humanoid-loco-manipulation-using-diffusion-guided-augmentation-through-relabeling-and-tracking)  
+   evidence：从次优演示中进行语言批判模仿学习
+11. [Multi-Rate Nonlinear Model Predictive Control for Wall-Supported Bipedal Locomotion of Quadrupedal Robots](/202607/04/2607.01574v1-multi-rate-nonlinear-model-predictive-control-for-wall-supported-bipedal-locomotion-of-quadrupedal-robots)  
    标签：评分：9.0/10、query:mpc-wbc
-   evidence：通过扩散和RL从稀疏演示中自监督学习人形机器人操作
-12. [World Action Models Enable Continual Imitation Learning with Recurrent Generative Replays](/202606/29/2606.27374v1-world-action-models-enable-continual-imitation-learning-with-recurrent-generative-replays)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：使用生成回放的持续模仿学习
-13. [CWI: Composite Humanoid Whole-Body Imitation System for Loco-manipulation](/202606/29/2606.27676v1-cwi-composite-humanoid-whole-body-imitation-system-for-loco-manipulation)  
-   标签：评分：9.0/10、query:mpc-wbc
-   evidence：提出用于人形机器人全身模仿操作的复合系统
-14. [CacheMPC: Certified Cached Model Predictive Control for Quadruped Locomotion](/202606/29/2606.28300v1-cachempc-certified-cached-model-predictive-control-for-quadruped-locomotion)  
-   标签：评分：9.0/10、query:mpc-wbc
-   evidence：四足运动的认证缓存模型预测控制
+   evidence：多速率非线性模型预测控制用于墙壁支撑双足运动
 
 ### 速读区论文标签
-1. [ARP: Enhancing Quantized Skill Abstractions via Visual Alignment and Iterative Refinement for Robotic Manipulation](/202606/29/2606.22480v1-arp-enhancing-quantized-skill-abstractions-via-visual-alignment-and-iterative-refinement-for-robotic-manipulation)  
+1. [Causal Reward World Models: Zero-shot Reward Design for Automated Skill Generation](/202607/04/2606.23280v1-causal-reward-world-models-zero-shot-reward-design-for-automated-skill-generation)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：基于技能的模仿学习，结合视觉对齐和迭代细化用于机器人操作
-2. [PanoVine: Whole-Body Visuomotor Control for Soft Growing Vine Robot](/202606/29/2606.22923v1-panovine-whole-body-visuomotor-control-for-soft-growing-vine-robot)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：软体生长机器人的全身体态视觉运动控制
-3. [PanoVine: Whole-Body Visuomotor Control for Soft Growing Vine Robot](/202606/29/2606.22923v2-panovine-whole-body-visuomotor-control-for-soft-growing-vine-robot)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：软体藤蔓机器人的全身视觉运动控制
-4. [TEXEDO : Test Time Scaling for Controller-aware Language-conditioned Humanoid Motion Generation](/202606/29/2606.22998v1-texedo--test-time-scaling-for-controller-aware-language-conditioned-humanoid-motion-generation)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：考虑控制器的人形运动生成测试时扩展
-5. [TEXEDO : Test Time Scaling for Controller-aware Language-conditioned Humanoid Motion Generation](/202606/29/2606.22998v2-texedo--test-time-scaling-for-controller-aware-language-conditioned-humanoid-motion-generation)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：生成考虑全身控制器动力学的人形运动
-6. [HiL-ResRL: A Model-Agnostic Finetuning Adapter via Human-in-the-loop Residual Reinforcement Learning](/202606/29/2606.22860v1-hil-resrl-a-model-agnostic-finetuning-adapter-via-human-in-the-loop-residual-reinforcement-learning)  
+   evidence：用于RL技能生成的因果奖励设计
+2. [TSD: A Physics-Inspired Trajectory Saliency Detector for Efficient Imitation Learning](/202607/04/2606.23371v1-tsd-a-physics-inspired-trajectory-saliency-detector-for-efficient-imitation-learning)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：轨迹显著性用于模仿学习
+3. [Flowing With Purpose: Latent Action Guided Flow Matching Policies For Robotic Manipulation](/202607/04/2606.23420v1-flowing-with-purpose-latent-action-guided-flow-matching-policies-for-robotic-manipulation)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：基于流匹配的行为克隆
+4. [RECALL: Recovery Experience Collection for Active Lifelong Learning in Vision-Language-Action Models](/202607/04/2606.23617v1-recall-recovery-experience-collection-for-active-lifelong-learning-in-vision-language-action-models)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：使用模仿学习的VLA主动持续学习范式
+5. [Learning to See While Learning to Act: Diffusion Models for Active Perception in Robot Imitation](/202607/04/2606.23625v1-learning-to-see-while-learning-to-act-diffusion-models-for-active-perception-in-robot-imitation)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：利用扩散模型进行主动感知的模仿学习
+6. [FADA: Few-Shot Domain Adaptation via Dynamics Alignment for Humanoid Control](/202607/04/2606.28476v1-fada-few-shot-domain-adaptation-via-dynamics-alignment-for-humanoid-control)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：人形机器人控制与动力学自适应
+7. [Hierarchical Decision Making with Structured Policies: A Principled Design via Inverse Optimization](/202607/04/2606.28764v1-hierarchical-decision-making-with-structured-policies-a-principled-design-via-inverse-optimization)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：通过人在环路残差强化学习微调模仿学习模型
-7. [Learning Process Rewards via Success Visitation Matching for Efficient RL](/202606/29/2606.23640v1-learning-process-rewards-via-success-visitation-matching-for-efficient-rl)  
+   evidence：逆优化方法设计分层策略
+8. [WARP: Whole-Body Retargeting for Learning from Offline Human Demonstrations](/202607/04/2606.29940v1-warp-whole-body-retargeting-for-learning-from-offline-human-demonstrations)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：通过人体演示重定向实现机器人全身控制
+9. [From Grasps to Dexterity: Large-Scale Grasp Pretraining for Dexterous Manipulation](/202607/04/2606.30749v1-from-grasps-to-dexterity-large-scale-grasp-pretraining-for-dexterous-manipulation)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：通过访问匹配学习过程奖励
-8. [LaST-HD: Learning Latent Physical Reasoning from Scalable Human Data for Robot Manipulation](/202606/29/2606.23685v1-last-hd-learning-latent-physical-reasoning-from-scalable-human-data-for-robot-manipulation)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：人至机器人模仿学习与潜在推理
-9. [Memory Retrieval in Visuomotor Policies for Long-Horizon Robot Control](/202606/29/2606.25136v1-memory-retrieval-in-visuomotor-policies-for-long-horizon-robot-control)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：结合记忆检索的模仿学习
-10. [AdaReP:Adaptive Re-Planning under Model Mismatch for Neural World-Model Predictive Control](/202606/29/2606.23079v1-adarepadaptive-re-planning-under-model-mismatch-for-neural-world-model-predictive-control)  
-   标签：评分：6.0/10、query:mpc-wbc
-   evidence：神经世界模型MPC的自适应重规划容忍度
-11. [Asymmetric physics enables efficient learning in quadrupedal robot swarms](/202606/29/2606.23153v1-asymmetric-physics-enables-efficient-learning-in-quadrupedal-robot-swarms)  
+   evidence：用于灵巧操作的层次化模仿学习
+10. [Unleashing Infinite Motion: Scaling Expressive Quadrupedal Motion via Generative Video Priors](/202607/04/2606.28237v1-unleashing-infinite-motion-scaling-expressive-quadrupedal-motion-via-generative-video-priors)  
    标签：评分：6.0/10、query:locowbc
-   evidence：四足机器人群体中基于视觉的高效运动学习
-12. [SlipSense: Multimodal Sensing for Online Slip Detection in Legged Robots](/202606/29/2606.24350v1-slipsense-multimodal-sensing-for-online-slip-detection-in-legged-robots)  
-   标签：评分：6.0/10、query:locowbc
-   evidence：利用多模态感知在线检测四足机器人滑倒
-13. [InSight: Self-Guided Skill Acquisition via Steerable VLAs](/202606/29/2606.24884v1-insight-self-guided-skill-acquisition-via-steerable-vlas)  
+   evidence：通过视频先验生成四足机器人运动
+11. [Human2Any: Human-to-Robot Transfer via Constraint-Aware Compositional Planning](/202607/04/2606.28813v1-human2any-human-to-robot-transfer-via-constraint-aware-compositional-planning)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：从示教中学习技能的可操控VLA
+   evidence：通过组合规划从人类视频迁移到机器人
+12. [Behavior Uncloning: Distilling Mode Redirection into Policy Weights without Inference-Time Steering](/202607/04/2606.29201v1-behavior-uncloning-distilling-mode-redirection-into-policy-weights-without-inference-time-steering)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：研究行为克隆中的模式重定向
+13. [Trust Your Instincts: Confidence-Driven Test-Time RL for Vision-Language-Action Models](/202607/04/2606.29892v1-trust-your-instincts-confidence-driven-test-time-rl-for-vision-language-action-models)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：解决VLA静态模仿学习的局限性
 
 
 <div class="dpr-home-promo-card">

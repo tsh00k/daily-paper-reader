@@ -1,0 +1,1067 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-04T20:02:46.841458+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 3,
+    "deep_divecandidates": 31,
+    "deep_cap": 8,
+    "deep_selected": 11,
+    "quick_candidates": 40,
+    "quick_skim_target": 13,
+    "quick_selected": 13
+  },
+  "deep_dive": [
+    {
+      "id": "2606.30362v1",
+      "source": "arxiv",
+      "title": "ReactiveBFM: Reactive Closed-Loop Motion Planning Towards Universal Humanoid Whole-Body Control",
+      "abstract": "While current Behavior Foundation Models (BFMs) provide robust control priors for humanoids, they only execute pre-defined reference motions. As a result, they are vulnerable to environmental shifts and incapable of reactive whole-body coordination. Naively cascading them with generative motion planners fails to achieve true reactivity, as inevitable tracking discrepancies induce fatal cumulative exposure bias. To bridge this gap, we propose ReactiveBFM, a real-time closed-loop planning-control framework. At its core, we effectively mitigate exposure bias via a scheduled prefix sampling curriculum, forcing the generative planner to actively learn error-recovery behaviors from imperfect physical states rather than ground-truth trajectories. Systematically, to reconcile the severe latency mismatch between auto-regressive planning and high-frequency tracking, we introduce an asynchronous replanning mechanism. Combined with trajectory chunking to temporally ensemble spatial references, our system guarantees spatio-temporally fluid execution without physical jitter. Deployed on the Unitree G1 humanoid, ReactiveBFM demonstrates unprecedented physical agility across a vast repertoire of text-conditioned closed-loop motions. Notably, ReactiveBFM achieves zero-shot moving target reaching, showcasing intricate whole-body coordination and on-the-fly replanning. In sim-to-sim benchmarking under severe perturbations, ReactiveBFM achieves a 93.1% success rate, significantly outperforming cascaded open-loop baselines by 28.6%.",
+      "authors": [
+        "Xiao Chen",
+        "Weishuai Zeng",
+        "Xiaojie Niu",
+        "Zirui Wang",
+        "Jianan Li",
+        "Huayi Wang",
+        "Furui Xu",
+        "Jiahe Chen",
+        "Weixiang Zhong",
+        "Lihe Ding",
+        "Kailin Li",
+        "Jiangmiao Pang",
+        "Tai Wang",
+        "Tianfan Xue",
+        "Jingbo Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-06-29T14:27:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.30362v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "reactive closed-loop motion planning for universal humanoid whole-body control",
+      "llm_evidence_cn": "面向通用人形全身控制的反应式闭环运动规划",
+      "llm_evidence": "面向通用人形全身控制的反应式闭环运动规划",
+      "canonical_evidence": "面向通用人形全身控制的反应式闭环运动规划",
+      "llm_tldr_en": "ReactiveBFM bridges behavior foundation models with reactive planning via prefix sampling curriculum, enabling real-time whole-body coordination and error recovery under environmental shifts.",
+      "llm_tldr_cn": "ReactiveBFM提出一种实时闭环规划-控制框架，通过调度前缀采样课程有效缓解生成式运动规划器的累积偏差，使基础行为模型能够主动学习错误恢复行为。该方法在多种环境干扰下实现了稳健的人形全身运动控制，突破了现有BFM只能执行固定参考运动的限制。",
+      "llm_tldr": "ReactiveBFM提出一种实时闭环规划-控制框架，通过调度前缀采样课程有效缓解生成式运动规划器的累积偏差，使基础行为模型能够主动学习错误恢复行为。该方法在多种环境干扰下实现了稳健的人形全身运动控制，突破了现有BFM只能执行固定参考运动的限制。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27581v1",
+      "source": "arxiv",
+      "title": "SceneBot: Contact-Prompted General Humanoid Whole Body Tracking with Scene-Interaction",
+      "abstract": "Current humanoid reinforcement-learning policies excel at free-space motions but struggle with contact-rich tasks, as pure kinematic tracking cannot resolve the physical ambiguities of interacting with objects and uneven terrain. To address this, we introduce SceneBot, a unified motion-tracking framework capable of handling freespace locomotion, terrain traversal, and whole-body manipulation. SceneBot conditions a single policy on both reference motions and per-link contact labels, explicitly defining expected environmental interactions. To overcome the lack of annotated interaction data, we propose a hindsight scene reconstruction approach that infers scene-interaction graphs from retargeted human motion. Trained on 7.5 hours of this reconstructed, contact-rich data, SceneBot successfully generalizes to unseen motions and environments. Our results demonstrate that SceneBot is the first general framework to seamlessly unify free-space and contact-rich behaviors executing complex, long-horizon tasks like carrying a box upstairs and establishing contact conditioning as a powerful interface for humanoid control. All code and data will be open-sourced. More demos and information are available at: https://ericcsr.github.io/scenebot/",
+      "authors": [
+        "Sirui Chen",
+        "Shibo Zhao",
+        "Zhen Wu",
+        "Jiaman Li",
+        "Guanya Shi",
+        "C. Karen Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-25T22:13:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.27581v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "humanoid whole body tracking with contact prompt, covering locomotion and manipulation",
+      "llm_evidence_cn": "人形机器人全身跟踪，利用接触提示，涵盖运动与操作",
+      "llm_evidence": "人形机器人全身跟踪，利用接触提示，涵盖运动与操作",
+      "canonical_evidence": "人形机器人全身跟踪，利用接触提示，涵盖运动与操作",
+      "llm_tldr_en": "SceneBot is a unified motion tracking framework for humanoid whole-body tasks including locomotion, terrain traversal, and manipulation, using contact prompts and hindsight scene reconstruction.",
+      "llm_tldr_cn": "现有的人形机器人强化学习策略在自由空间运动表现良好，但在接触丰富的任务中因无法解决物理歧义而受限。为此，本文提出SceneBot，一个统一的全身运动跟踪框架，通过接触标签和事后场景重建，使单一策略能够同时处理自由空间运动、地形穿越和全身操作。在7.5小时的retargeted human motion训练后，SceneBot在多个场景中展示了优越的鲁棒性和泛化能力。该工作为人形机器人的全身控制与场景交互提供了一个高效且可扩展的解决方案。",
+      "llm_tldr": "现有的人形机器人强化学习策略在自由空间运动表现良好，但在接触丰富的任务中因无法解决物理歧义而受限。为此，本文提出SceneBot，一个统一的全身运动跟踪框架，通过接触标签和事后场景重建，使单一策略能够同时处理自由空间运动、地形穿越和全身操作。在7.5小时的retargeted human motion训练后，SceneBot在多个场景中展示了优越的鲁棒性和泛化能力。该工作为人形机器人的全身控制与场景交互提供了一个高效且可扩展的解决方案。",
+      "llm_tags": [
+        "query:locowbc:composite"
+      ],
+      "matched_query_tag": "query:locowbc:composite",
+      "matched_query_text": "Papers central to 请帮我查找机器人locomotion、WBC的工作, especially work that connects or combines: robot locomotion techniques and algorithms; whole-body control for robots; humanoid robot locomotion and control; legged locomotion planning and control; motion planning for robot locomotion; contact force control in locomotion; methods for whole body control in robot locomotion; recent advances in humanoid walking and whole body control; control strategies for bipedal robot locomotion; WBC framework for legged robot locomotion.",
+      "matched_requirement_id": "req-composite-locowbc",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.27813v1",
+      "source": "arxiv",
+      "title": "Booster Lab: A Data-Centric Pipeline for Learning Deployable Humanoid Locomotion Policies",
+      "abstract": "Humanoid robot motion learning requires not only task-oriented control policies but also physically feasible and natural behaviors that can be transferred to real robots. However, robot-feasible motion data are often scarce: raw human demonstrations may be incompatible with the robot morphology, open-source clips vary in quality, and simulation-collected robot trajectories still require feasibility checking. To address these challenges, we propose a data-centric training and deployment pipeline that integrates motion data curation, real-to-sim model adaptation, AMP-based reinforcement learning, and sim-to-real deployment. We validate the framework on the Booster T1 robot and further provide preliminary cross-platform validation on Booster K1.",
+      "authors": [
+        "Penghui Chen",
+        "Tinglong Zheng",
+        "Yufeng Zhang",
+        "Mingguo Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-26T07:55:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.27813v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "uses AMP-based reinforcement learning for humanoid locomotion",
+      "llm_evidence_cn": "使用对抗运动先验强化学习进行人形机器人运动学习",
+      "llm_evidence": "使用对抗运动先验强化学习进行人形机器人运动学习",
+      "canonical_evidence": "使用对抗运动先验强化学习进行人形机器人运动学习",
+      "llm_tldr_en": "Proposes a data-centric pipeline that integrates motion data curation, AMP-based RL, and sim-to-real for deployable humanoid locomotion policies.",
+      "llm_tldr_cn": "该工作针对人形机器人运动学习中可行数据稀缺的问题，提出了一种数据中心流水线，融合运动数据筛选、真实到仿真模型适应、基于对抗运动先验（AMP）的强化学习以及仿真到现实部署。在Booster T1机器人上验证了框架的有效性，并提供了跨平台初步验证。该方法降低了数据要求，提升了策略的可部署性。",
+      "llm_tldr": "该工作针对人形机器人运动学习中可行数据稀缺的问题，提出了一种数据中心流水线，融合运动数据筛选、真实到仿真模型适应、基于对抗运动先验（AMP）的强化学习以及仿真到现实部署。在Booster T1机器人上验证了框架的有效性，并提供了跨平台初步验证。该方法降低了数据要求，提升了策略的可部署性。",
+      "llm_tags": [
+        "query:mpc-wbc"
+      ],
+      "matched_query_tag": "query:mpc-wbc",
+      "matched_query_text": "Imitation learning for legged locomotion and whole body control",
+      "matched_requirement_id": "req-23",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.29209v1",
+      "source": "arxiv",
+      "title": "AnyBody: Free-Form Whole-Body Humanoid Control from Arbitrary Keypoint Guidance",
+      "abstract": "We present AnyBody, a unified whole-body humanoid controller driven by an arbitrary subset of body keypoints chosen at deploy time. Prior physics-based trackers either rely on expensive full-body motion capture and error-prone trajectory retargeting, which bottleneck scalable data collection and policy learning, or decompose upper- and lower-body control into separate hierarchical representations, sacrificing the coordinated whole-body motions that loco-manipulation requires. We close this gap by learning a single latent motion representation that any keypoint subset can address. To achieve this, we first train a privileged teacher tracker on a large unstructured motion corpus and distill it online into a deterministic encoder-decoder student whose latent space is a unit sphere. We then train a transformer keypoint encoder that admits any subset of body keypoints through masked self-attention, aligning it to the privileged latent. Additionally, we treat the frozen decoder as a motor prior and specialize downstream tasks with a lightweight residual corrector in the latent space. We demonstrate the effectiveness of AnyBody by tracking large-scale human motions from arbitrary keypoint subsets, free-form control, flexibly teleoperating, and learning downstream behaviors including locomotion, in-air writing, and obstacle-reach.",
+      "authors": [
+        "Shuning Li",
+        "Sikai Li",
+        "Jiachen Li",
+        "Mingyu Ding"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T05:20:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.29209v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "direct method for whole-body humanoid control",
+      "llm_evidence_cn": "全身人形机器人控制方法",
+      "llm_evidence": "全身人形机器人控制方法",
+      "canonical_evidence": "全身人形机器人控制方法",
+      "llm_tldr_en": "AnyBody learns a single latent motion representation for whole-body humanoid control from arbitrary keypoint subsets, using teacher-student distillation.",
+      "llm_tldr_cn": "本文提出AnyBody，一种统一全身人形控制器，通过在大规模无结构运动语料上训练特权教师跟踪器并蒸馏为学生模型，学习单一潜在运动表示，可被任意关键点子集驱动。该方法避免了昂贵的全身体动捕和轨迹重定向，实现了灵活的全身协调运动控制。实验验证了其有效性。",
+      "llm_tldr": "本文提出AnyBody，一种统一全身人形控制器，通过在大规模无结构运动语料上训练特权教师跟踪器并蒸馏为学生模型，学习单一潜在运动表示，可被任意关键点子集驱动。该方法避免了昂贵的全身体动捕和轨迹重定向，实现了灵活的全身协调运动控制。实验验证了其有效性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.30243v1",
+      "source": "arxiv",
+      "title": "KYON: Semi-Modular Wheel-Legged Quadruped With Agile Bimanual Capability",
+      "abstract": "This paper presents KYON, a hybrid wheel-legged quadruped robot equipped with a bimanual upper body for loco-manipulation tasks. The platform features a semi-modular design with a reconfigurable lower legs, enabling both wheeled and legged locomotion depending on the environment. A design approach that places actuators in the base and uses transmission mechanisms reduces distal inertia, improving agility and dynamic performance. The robot integrates a whole-body control framework together with a reinforcement learning based policy to handle nonlinear dynamics and enhance robustness to disturbances for the execution of locomotion and manipulation tasks, independently. Experimental results demonstrate effective dynamic locomotion and bimanual manipulation, validating the platform's capability to operate in complex and unstructured scenarios.",
+      "authors": [
+        "Luca Rossini",
+        "Arturo Laurenzi",
+        "Francesco Ruscelli",
+        "Yifang Zhang",
+        "Giovanbattista Gravina",
+        "Lorenzo Baccelliere",
+        "Corrado Burchielli",
+        "Stefano Cordasco",
+        "Nikos Tsagarakis"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T12:54:09+00:00",
+      "link": "https://arxiv.org/pdf/2606.30243v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "integrates a whole-body control framework with RL for wheel-legged quadruped locomotion",
+      "llm_evidence_cn": "融合全身控制框架与强化学习实现轮腿四足机器人运动",
+      "llm_evidence": "融合全身控制框架与强化学习实现轮腿四足机器人运动",
+      "canonical_evidence": "融合全身控制框架与强化学习实现轮腿四足机器人运动",
+      "llm_tldr_en": "This paper presents KYON, a wheel-legged quadruped with bimanual capability, integrating whole-body control and RL for robust locomotion and manipulation.",
+      "llm_tldr_cn": "该论文介绍KYON，一种配备了双机械臂的轮腿混合四足机器人，采用半模块化设计，可在轮式和腿式运动间切换。机器人集成了全身控制框架和强化学习策略，以处理非线性动力学并增强对干扰的鲁棒性。实验展示了动态运动与双臂操作能力。",
+      "llm_tldr": "该论文介绍KYON，一种配备了双机械臂的轮腿混合四足机器人，采用半模块化设计，可在轮式和腿式运动间切换。机器人集成了全身控制框架和强化学习策略，以处理非线性动力学并增强对干扰的鲁棒性。实验展示了动态运动与双臂操作能力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31691v1",
+      "source": "arxiv",
+      "title": "FastDSAC: Enhancing Policy Plasticity via Constrained Exploration for Scalable Humanoid Locomotion",
+      "abstract": "Scalable reinforcement learning has popularized high-throughput sampling architectures, which significantly compresses the training time for off-policy methods in robotic locomotion. However, the rapid increase of data volume and update frequency undermines the stability of value-based methods and diminishes the plasticity of policy networks. To address these challenges, this work presents FastDSAC, a fast and high-performance variant of the Distributional Actor-Critic algorithm designed for parallel sampling scenarios. Specifically, we introduce a truncated Gaussian distribution to approximate the learned policy, which effectively excludes out-of-distribution actions that strain target value estimation while keeping necessary stochasticity for exploration. The proposed action constraint functions as an implicit regularization, which counteracts the plasticity loss typically caused by aggressive gradient updates. This preservation of network adaptability enhances sample efficiency, particularly in scenarios with a high update-to-data ratio, and accelerates the early training process. In contrast to prior fast reinforcement learning approaches that rely on discrete value distributions, our method utilizes a continuous Gaussian representation equipped with adaptive variance regulation, which improves value estimation accuracy by sampling confident and informative transitions. Extensive experiments on MuJoCo Playground and HumanoidBench demonstrate that FastDSAC not only stabilizes the overall training process but also achieves superior asymptotic performance and faster convergence compared to state-of-the-art baselines.",
+      "authors": [
+        "Guanchen Lu",
+        "Yajuan Dun",
+        "Yi Zhou",
+        "Letian Tao",
+        "Jingliang Duan",
+        "Jie Li",
+        "Guofa Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T14:04:26+00:00",
+      "link": "https://arxiv.org/pdf/2606.31691v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly addresses humanoid locomotion with scalable RL algorithm",
+      "llm_evidence_cn": "直接处理人形机器人运动，提出可扩展RL算法",
+      "llm_evidence": "直接处理人形机器人运动，提出可扩展RL算法",
+      "canonical_evidence": "直接处理人形机器人运动，提出可扩展RL算法",
+      "llm_tldr_en": "Presents FastDSAC, a distributional actor-critic variant for scalable humanoid locomotion, using truncated Gaussian exploration to improve policy plasticity and training stability in high-throughput sampling.",
+      "llm_tldr_cn": "该论文提出FastDSAC算法，针对大规模并行采样场景下人形机器人运动强化学习的训练稳定性问题。通过引入截断高斯分布来近似学习策略，有效排除超出分布的动作，同时保持必要探索。在仿真环境中的实验表明，该方法在训练速度和策略性能上均优于现有基线，为可扩展人形机器人运动控制提供了高效解决方案。",
+      "llm_tldr": "该论文提出FastDSAC算法，针对大规模并行采样场景下人形机器人运动强化学习的训练稳定性问题。通过引入截断高斯分布来近似学习策略，有效排除超出分布的动作，同时保持必要探索。在仿真环境中的实验表明，该方法在训练速度和策略性能上均优于现有基线，为可扩展人形机器人运动控制提供了高效解决方案。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31807v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning-Based Control for an Inline Skating Humanoid Robot",
+      "abstract": "As humanoid robots become increasingly dynamic, coupling them with reinforcement learning offers a promising approach to solving the complex, underactuated mechanics of passive inline skating. Equipping a humanoid robot with passive inline skating wheels presents an opportunity to combine the versatile agility of humanoids with the high-speed, energy-efficient locomotion strategies utilized by human skaters. In this paper, we train and deploy a reinforcement learning control policy that enables novel locomotion strategies for a humanoid robot modified to equip consumer inline skates instead of conventional feet. Unlike previous work limited to quadrupedal robots or actively driven wheels, our system allows for precise 6-DoF control of the skates to execute dynamic, edge-driven propulsion strategies. Our skating strategies emerge entirely from our reward structure, without reliance on human motion data, imitation learning, or kinematic priors. We overcome the inherent instability of passive wheels and simulation contact artifacts by utilizing different geometric wheel models (spherical and ellipsoidal) during training and validation, along with a custom success-based command curriculum and a specialized rolling reward. Consequently, our policy demonstrates up to a 50% reduction in Cost of Transport (CoT) compared to standard walking gaits. The resulting policy successfully transfers zero-shot to the physical Booster T1 hardware. Real-world deployments demonstrate dynamic balance, the ability to reject active physical perturbations, and agile locomotion strategies capable of turning at speed. A video of our results can be found at https://www.youtube.com/watch?v=-_APcOS7uFo.",
+      "authors": [
+        "Ethan Marot",
+        "Thomas Bi",
+        "Clemens Schwarke",
+        "Victor Klemm",
+        "Marco Hutter",
+        "Raffaello D'Andrea"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T15:25:06+00:00",
+      "link": "https://arxiv.org/pdf/2606.31807v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reinforcement learning control policy for inline skating humanoid robot locomotion",
+      "llm_evidence_cn": "使用强化学习控制策略实现直排轮滑人形机器人运动",
+      "llm_evidence": "使用强化学习控制策略实现直排轮滑人形机器人运动",
+      "canonical_evidence": "使用强化学习控制策略实现直排轮滑人形机器人运动",
+      "llm_tldr_en": "This paper trains a RL control policy enabling novel locomotion strategies for a humanoid robot with passive inline skate wheels, achieving high-speed energy-efficient locomotion.",
+      "llm_tldr_cn": "该论文训练一个强化学习控制策略，使人形机器人配备被动直排轮滑鞋，实现新颖的运动方式。不同于以往限于四足或主动驱动轮的工作，该系统可对溜冰鞋进行精确六自由度控制。实验展示了高速、节能的类人滑冰运动。",
+      "llm_tldr": "该论文训练一个强化学习控制策略，使人形机器人配备被动直排轮滑鞋，实现新颖的运动方式。不同于以往限于四足或主动驱动轮的工作，该系统可对溜冰鞋进行精确六自由度控制。实验展示了高速、节能的类人滑冰运动。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00155v1",
+      "source": "arxiv",
+      "title": "A Contextual-Bandit Oversight Game with Two-Sided Informational Asymmetry",
+      "abstract": "We study runtime human oversight of an AI agent when private information runs in both directions: the human privately knows her reward function, while the AI privately knows the quality of the action it proposes. This is the kind of asymmetry that arises naturally when an autonomous robot or software agent has inspected a situation its human supervisor cannot directly assess. Building on Cooperative Inverse Reinforcement Learning (CIRL) and the Oversight Game, we introduce a contextual-bandit team game with two-sided asymmetric information and a play/ask/trust/oversee interface. The bandit structure removes physical state transitions and thereby yields exact one-shot characterizations that would remain conjectural in the full POMDP setting, though the common belief remains a dynamically controlled state across rounds. We give two one-shot characterizations, a team optimum and a behaviorally natural myopic rule, whose gap is a slab of avoidable harm: a region in which the AI privately knows the proposed action is harmful and shutdown would help, yet a myopic human, trusting her prior, declines to oversee. We show this gap is the price of non-credible oversight communication, and give a partial analysis of how it resolves dynamically over repeated rounds through passive learning and active signaling with a one-period-lagged oversight response.",
+      "authors": [
+        "Yunjin Tong"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.GT"
+      ],
+      "published": "2026-06-30T20:30:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.00155v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "builds on Cooperative Inverse Reinforcement Learning (CIRL) to model human oversight",
+      "llm_evidence_cn": "基于合作逆强化学习(CIRL)建模人类监督",
+      "llm_evidence": "基于合作逆强化学习(CIRL)建模人类监督",
+      "canonical_evidence": "基于合作逆强化学习(CIRL)建模人类监督",
+      "llm_tldr_en": "This paper models human oversight with two-sided asymmetric information, building on Cooperative Inverse RL and the Oversight Game, using a contextual-bandit team game.",
+      "llm_tldr_cn": "该论文研究具有双向信息不对称的人机监督博弈，基于合作逆强化学习(CIRL)和监督博弈，引入上下文赌博机团队博弈，其中人类私下知道奖励函数，AI知道动作质量。该设置去除了物理状态转移，得到精确一次性刻画。",
+      "llm_tldr": "该论文研究具有双向信息不对称的人机监督博弈，基于合作逆强化学习(CIRL)和监督博弈，引入上下文赌博机团队博弈，其中人类私下知道奖励函数，AI知道动作质量。该设置去除了物理状态转移，得到精确一次性刻画。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "inverse reinforcement learning",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00442v1",
+      "source": "arxiv",
+      "title": "Learning Gait-Aware Quadruped Locomotion with Temporal Logic Specifications",
+      "abstract": "Reinforcement learning (RL) for quadruped locomotion commonly depends on fixed, hand-crafted, and Markovian reward functions that limit both interpretability of learned policies and lack explicit control over gait behaviors. We introduce a framework where distinct gaits are specified using parameterized constraints expressed in Signal Temporal Logic (STL). These include safety bounds, gait synchronization constraints, command tracking, and actuation bounds. From these specifications, we develop a reward shaping mechanism that provides learning agents a dense, continuous reward landscape that encodes desired behavior. We define parametric STL templates for three speed regimes (walking-trot, trot, bound), calibrate their parameters from reference rollouts, and compute rewards from using smooth approximations of STL robustness over the rollouts. The generated rewards can be used to provide shaped gradients compatible with Proximal Policy Optimization (PPO). We instantiate the approach on Google's Barkour quadruped robot in MuJoCo XLA (MJX). We use parallelization within the simulator to improve training speeds and use domain randomization to robustify learned policies. We show that compared to a baseline of hand-crafted rewards, the STL-shaped rewards yield tighter velocity tracking and more stable training. Videos can be found on our project website: https://stl-locomotion.github.io/.",
+      "authors": [
+        "Merve Atasever",
+        "Cagan Bakirci",
+        "Alfredo Reina Corona",
+        "Keyan Azbijari",
+        "Jyotirmoy V. Deshmukh"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T04:57:39+00:00",
+      "link": "https://arxiv.org/pdf/2607.00442v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "quadruped locomotion with gait specification via STL",
+      "llm_evidence_cn": "基于信号时序逻辑的步态感知四足运动学习",
+      "llm_evidence": "基于信号时序逻辑的步态感知四足运动学习",
+      "canonical_evidence": "基于信号时序逻辑的步态感知四足运动学习",
+      "llm_tldr_en": "Uses STL constraints for reward shaping to learn quadruped gaits via RL.",
+      "llm_tldr_cn": "该论文针对四足机器人运动学习中对步态行为的显式控制需求，提出利用参数化信号时序逻辑约束来指定不同步态（行走-小跑、小跑、跳跃），并设计奖励塑形机制将规范转化为密集连续奖励信号，使强化学习智能体学会遵循步态约束。在仿真环境中验证了方法能生成多样化步态并保持安全边界。",
+      "llm_tldr": "该论文针对四足机器人运动学习中对步态行为的显式控制需求，提出利用参数化信号时序逻辑约束来指定不同步态（行走-小跑、小跑、跳跃），并设计奖励塑形机制将规范转化为密集连续奖励信号，使强化学习智能体学会遵循步态约束。在仿真环境中验证了方法能生成多样化步态并保持安全边界。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "legged locomotion planning and control",
+      "matched_requirement_id": "req-14",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01225v1",
+      "source": "arxiv",
+      "title": "Language-Critique Imitation Learning from Suboptimal Demonstrations",
+      "abstract": "Prior work on imitation learning from suboptimal demonstrations typically relies on compressed supervision signals such as confidence estimates, discriminator scores, or importance weights. These scalar signals are inherently limited, as they cannot explicitly express intermediate reasoning about task progress, failure modes, or corrective actions. We propose a language-critique framework for imitation learning from suboptimal demonstrations that instead leverages natural language as a structured supervision signal, avoiding the collapse of expressive feedback into scalars. Our method first constructs language labels from demonstrations that explicitly describe current progress, identify suboptimal behaviors, and provide fine-grained corrective guidance. We then introduce a language-critique loss that directly trains policies using these structured signals without reducing them to scalars, and instantiate it for both behavior cloning and diffusion policies, yielding LC-BC and LC-DP. We further provide a theoretical result showing that the proposed objective upper-bounds the expert performance gap under standard assumptions. Empirically, we evaluate on diverse continuous control tasks spanning navigation, manipulation, and gameplay, where our methods consistently outperform strong imitation learning and offline reinforcement learning baselines. These results demonstrate that language can serve as a powerful and structured form of supervision for learning robust policies from suboptimal data.",
+      "authors": [
+        "Chih-Han Yang",
+        "Dai-Jie Wu",
+        "Yun-Ping Huang",
+        "Ping-Chun Hsieh",
+        "Kenneth Marino",
+        "Shao-Hua Sun"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-07-01T17:57:22+00:00",
+      "link": "https://arxiv.org/pdf/2607.01225v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "language-critique imitation learning from suboptimal demonstrations",
+      "llm_evidence_cn": "从次优演示中进行语言批判模仿学习",
+      "llm_evidence": "从次优演示中进行语言批判模仿学习",
+      "canonical_evidence": "从次优演示中进行语言批判模仿学习",
+      "llm_tldr_en": "Proposes a language-critique framework for imitation learning from suboptimal demonstrations, using natural language as structured supervision to provide expressive feedback on task progress and corrections.",
+      "llm_tldr_cn": "传统模仿学习从次优演示中依赖标量信号，表达能力有限。本文提出语言批判框架，通过构造语言标签描述进度、识别次优行为并给出纠正指导，将自然语言作为结构化监督信号。实验表明该方法能有效利用次优演示，提升模仿学习性能，为从人类反馈中学习提供了更丰富的交互方式。",
+      "llm_tldr": "传统模仿学习从次优演示中依赖标量信号，表达能力有限。本文提出语言批判框架，通过构造语言标签描述进度、识别次优行为并给出纠正指导，将自然语言作为结构化监督信号。实验表明该方法能有效利用次优演示，提升模仿学习性能，为从人类反馈中学习提供了更丰富的交互方式。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01574v1",
+      "source": "arxiv",
+      "title": "Multi-Rate Nonlinear Model Predictive Control for Wall-Supported Bipedal Locomotion of Quadrupedal Robots",
+      "abstract": "This paper presents a novel layered planning and control framework based on multi-rate nonlinear model predictive control (MR-NMPC) that enables quadrupedal robots to perform hybrid bipedal locomotion with wall-assisted support in constrained environments. Real-time trajectory optimization for this locomotion presents significant challenges, as the controller must simultaneously plan for both the contact points and the continuous trajectories of the robot's center of mass (CoM) and orientation within the robot's nonlinear dynamics while accounting for unilateral contact constraints, underactuation, and the switching nature of the robot's dynamics. At the high level of the control framework, an MR-NMPC is proposed, which dynamically plans both the discrete-time trajectories of the contact points and the continuous-time trajectories of the CoM and orientation, using a single rigid body (SRB) dynamics model. By incorporating contact-point planning within the multi-rate optimal control framework, this approach enhances dynamic stability compared to heuristic foot placement strategies. At the low level of the control framework, a nonlinear whole-body controller (WBC) based on virtual constraints and a quadratic program enforces full-order dynamics and tracks the MR-NMPC references. The proposed approach is validated through extensive numerical simulations demonstrating the robust wall-assisted bipedal locomotion of a Unitree A1 quadrupedal robot on rough terrains and under external disturbances in a constrained environment. Comparative analysis shows that the proposed MR-NMPC achieves a 2.9 times higher success rate compared to conventional MPC with heuristic-based foot placement strategies in negotiating irregular terrain at high speeds.",
+      "authors": [
+        "Taizoon Chunawala",
+        "Jeeseop Kim",
+        "Kaveh Akbari Hamed"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "math.OC"
+      ],
+      "published": "2026-07-02T01:09:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.01574v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "multi-rate nonlinear MPC for wall-supported bipedal locomotion",
+      "llm_evidence_cn": "多速率非线性模型预测控制用于墙壁支撑双足运动",
+      "llm_evidence": "多速率非线性模型预测控制用于墙壁支撑双足运动",
+      "canonical_evidence": "多速率非线性模型预测控制用于墙壁支撑双足运动",
+      "llm_tldr_en": "Proposes a layered planning and control framework based on multi-rate NMPC for quadrupedal robots to perform wall-supported bipedal locomotion, simultaneously optimizing contact points and CoM trajectories.",
+      "llm_tldr_cn": "本文针对四足机器人在受限环境中进行墙壁支撑双足运动的挑战，提出了一种基于多速率非线性模型预测控制（MR-NMPC）的分层规划与控制框架。该框架能够同时优化接触点位置和质心连续轨迹，考虑非线性动力学、单边接触约束和欠驱动等复杂因素。实验验证了该方法在实时轨迹优化中的有效性，为混合双足运动提供了新的控制策略。",
+      "llm_tldr": "本文针对四足机器人在受限环境中进行墙壁支撑双足运动的挑战，提出了一种基于多速率非线性模型预测控制（MR-NMPC）的分层规划与控制框架。该框架能够同时优化接触点位置和质心连续轨迹，考虑非线性动力学、单边接触约束和欠驱动等复杂因素。实验验证了该方法在实时轨迹优化中的有效性，为混合双足运动提供了新的控制策略。",
+      "llm_tags": [
+        "query:mpc-wbc"
+      ],
+      "matched_query_tag": "query:mpc-wbc",
+      "matched_query_text": "Model predictive control for whole body locomotion and walking",
+      "matched_requirement_id": "req-21",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.23280v1",
+      "source": "arxiv",
+      "title": "Causal Reward World Models: Zero-shot Reward Design for Automated Skill Generation",
+      "abstract": "Automated Reward Design (ARD) aims to replace manual reward engineering in reinforcement learning with language-driven reward function synthesis. However, existing approaches based on large language models (LLMs) remain inherently correlation-driven, relying on iterative environmental feedback to refine reward hypotheses for each specific task. This paradigm not only results in inefficient reasoning but also makes LLMs susceptible to semantically plausible yet causally spurious reward components, leading to ineffective optimization. To address these limitations, we propose the Causal Reward World Model (CRWM), which explicitly models the causal topological relationships between candidate reward components and task-targeted physical variables through offline pre-training on multi-task interaction data. Based on a coarse-to-fine pre-training strategy, we introduce a joint optimization module that integrates Explicit Mechanism Decoupling with Confidence-Aware Soft Fusion to refine coarse structural priors using micro-level trajectories, thereby constructing a robust and interpretable causal skeleton. During inference, LLMs leverage CRWM as a task-irrelevant causal prior to constrain the reward generation, enabling zero-shot reward function design. Our work opens up a new white-box paradigm for the ARD problem. Extensive experiments on complex continuous control benchmarks demonstrate that CRWM generates executable reward functions without feedback-driven reward refinement, significantly reducing the design latency for acquiring new robotic skills while matching or surpassing state-of-the-art performance, and further exhibits strong generalization capabilities across unseen tasks and diverse robotic embodiments.",
+      "authors": [
+        "Yang Yang",
+        "Yuchuang Tong",
+        "Zhengtao Zhang",
+        "Xu Ding",
+        "Ning Yang",
+        "Yifan Zhang",
+        "Haipeng Li",
+        "Kehu Yang",
+        "Miao Xin"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T12:57:17+00:00",
+      "link": "https://arxiv.org/pdf/2606.23280v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Causal reward design for RL skill generation",
+      "llm_evidence_cn": "用于RL技能生成的因果奖励设计",
+      "llm_evidence": "用于RL技能生成的因果奖励设计",
+      "canonical_evidence": "用于RL技能生成的因果奖励设计",
+      "llm_tldr_en": "CRWM models causal relationships among reward components to enable zero-shot reward design for automated skill generation, outperforming correlation-driven LLM methods.",
+      "llm_tldr_cn": "自动奖励设计通常依赖大语言模型的迭代反馈，效率低且易受虚假相关影响。本文提出因果奖励世界模型（CRWM），显式建模候选奖励组件与任务目标物理变量之间的因果关系，实现零样本奖励设计。在机器人操作任务中，CRWM生成的奖励函数显著提升了技能学习的效率和准确性。",
+      "llm_tldr": "自动奖励设计通常依赖大语言模型的迭代反馈，效率低且易受虚假相关影响。本文提出因果奖励世界模型（CRWM），显式建模候选奖励组件与任务目标物理变量之间的因果关系，实现零样本奖励设计。在机器人操作任务中，CRWM生成的奖励函数显著提升了技能学习的效率和准确性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.23280v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.28476v1",
+      "source": "arxiv",
+      "title": "FADA: Few-Shot Domain Adaptation via Dynamics Alignment for Humanoid Control",
+      "abstract": "High-precision humanoid control is limited by target-domain dynamics mismatch, where the same control objective can induce different realized motions under changes in terrain, payload, or actuator response. Existing methods either pursue zero-shot transfer through domain randomization or in-context adaptation without target-domain specialization, or require heavy adaptation pipelines that leverage target-domain data, such as model calibration, residual learning, or policy retraining. In this paper, we present FADA (Few-Shot Domain Adaptation via Dynamics Alignment), a three-stage Planner-Inverse Dynamics Model (Planner-IDM) framework for few-shot adaptation in humanoid control. FADA first trains an oracle policy with privileged information and then distills the oracle behavior into a deployable Planner-IDM student through DAgger. At deployment, FADA freezes the planner and finetunes only the IDM using approximately 2 minutes of target-domain rollouts with standard supervised learning. Rather than requiring optimal demonstrations or rewards, FADA uses the paired actions and observations that are observed during these rollouts as supervision, aligning the IDM's action generation with target-domain dynamics. Experiments show that FADA outperforms both in-context and end-to-end adaptation baselines, improving task performance under dynamics shifts and enabling real humanoid robots to execute diverse high-precision whole-body tasks. Implementation details and qualitative hardware rollout videos are available at https://lecar-lab.github.io/FADA-humanoid/.",
+      "authors": [
+        "Angchen Xie",
+        "Nikhil Sobanbabu",
+        "Ishayu Shikhare",
+        "Alan Wang",
+        "Max Simchowitz",
+        "Guanya Shi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-26T16:05:10+00:00",
+      "link": "https://arxiv.org/pdf/2606.28476v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "humanoid robot control with dynamics adaptation",
+      "llm_evidence_cn": "人形机器人控制与动力学自适应",
+      "llm_evidence": "人形机器人控制与动力学自适应",
+      "canonical_evidence": "人形机器人控制与动力学自适应",
+      "llm_tldr_en": "FADA proposes a Planner-IDM framework for few-shot domain adaptation in humanoid control, aligning dynamics to bridge the sim-to-real gap.",
+      "llm_tldr_cn": "FADA提出一种规划器-逆动力学模型（Planner-IDM）框架，通过动力学对齐实现人形控制的少样本域自适应。该方法首先利用特权信息训练oracle策略，然后通过少量目标域样本调整模型，有效弥合仿真与真实之间的动力学差异，提升了人形机器人在新地形、负载等条件下的控制精度。",
+      "llm_tldr": "FADA提出一种规划器-逆动力学模型（Planner-IDM）框架，通过动力学对齐实现人形控制的少样本域自适应。该方法首先利用特权信息训练oracle策略，然后通过少量目标域样本调整模型，有效弥合仿真与真实之间的动力学差异，提升了人形机器人在新地形、负载等条件下的控制精度。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "humanoid robot locomotion and control",
+      "matched_requirement_id": "req-13",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.28237v1",
+      "source": "arxiv",
+      "title": "Unleashing Infinite Motion: Scaling Expressive Quadrupedal Motion via Generative Video Priors",
+      "abstract": "Quadruped robots have achieved remarkable locomotion, yet their behavioral repertoire remains confined to a few gaits--far from the expressive, companion-like presence long envisioned for them. Attempts to import the humanoid recipe of large-scale motion data have inherited one tacit assumption: that robot motion must first pass through an animal body, making data collection dependent on cooperative animals, reconstruction fragile across species, and retargeting ill-posed across incompatible morphologies. We propose Uni-Mo, a fully automated pipeline that removes the animal from the loop by reframing data scarcity as a generation problem: an LLM proposes motion prompts, a video diffusion model synthesizes the corresponding robot behaviors, and the generated videos are lifted into 3D reference trajectories used to train tracking policies deployed on a real Unitree Go2. To make naively-drifting generations reliably extractable, we introduce an Identity Consistency Loss that enforces appearance coherence across frames. We release Quad-Imaginarium at https://github.com/GaoLii/Quad-Imaginarium.git, the resulting open-source dataset of 7,488 language-annotated quadruped motions (18.5 hours) spanning acrobatic and performative behaviors. We validate 392 randomly sampled motions on a real Unitree Go2 with a 96.7% deployment success rate, complemented by a 97.6% success rate across the full dataset in simulation.",
+      "authors": [
+        "Youzhi Liu",
+        "Li Gao",
+        "Yifei Qian",
+        "Liu Liu",
+        "Yang Cai",
+        "Ziqiao Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-26T16:23:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.28237v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "quadruped robot locomotion generation via video priors",
+      "llm_evidence_cn": "通过视频先验生成四足机器人运动",
+      "llm_evidence": "通过视频先验生成四足机器人运动",
+      "canonical_evidence": "通过视频先验生成四足机器人运动",
+      "llm_tldr_en": "Uni-Mo proposes a pipeline using LLM and video diffusion to generate diverse quadruped motions without animal data, scaling expressive locomotion.",
+      "llm_tldr_cn": "Uni-Mo提出一种全自动流水线，利用大语言模型生成运动提示，再通过视频扩散模型合成对应的四足机器人运动，无需依赖动物数据。该方法突破了传统四足运动库的局限，生成了丰富多样的步态和动作，显著扩展了机器人的行为表现力。",
+      "llm_tldr": "Uni-Mo提出一种全自动流水线，利用大语言模型生成运动提示，再通过视频扩散模型合成对应的四足机器人运动，无需依赖动物数据。该方法突破了传统四足运动库的局限，生成了丰富多样的步态和动作，显著扩展了机器人的行为表现力。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23371v1",
+      "source": "arxiv",
+      "title": "TSD: A Physics-Inspired Trajectory Saliency Detector for Efficient Imitation Learning",
+      "abstract": "For imitation learning in robotic manipulation, high data collection costs result in the scarcity of high quality data. In this paper, we leverage the inherent heterogeneity of trajectories to address this challenge. Based on our observations of manipulation tasks, we categorize motions into transitional, precise, and agile types, defining the latter two as trajectory saliency due to their criticality to task success in contrast to the prevalent but less relevant transitional motions. Therefore, we propose the Trajectory Saliency Detector (TSD), a training-free and plug-and-play framework to identify trajectory saliency. TSD employs two physically-grounded metrics: spatial entropy to capture fine-grained manipulation and centripetal acceleration to detect agile maneuvering. We further leverage TSD to develop a dataset compression method that reduces training costs and a dataset expansion strategy that improves data collection efficiency. Extensive experiments in both simulation and real-world settings demonstrate that models trained on TSD-condensed datasets achieve comparable or even superior performance with 25% less data on average. These results validate the effectiveness of our dataset compression and expansion strategies, thereby confirming the utility of TSD. Consequently, TSD offers a scalable and cost-effective pathway to synthesize information-dense datasets for efficient robot learning. Project page: https://trajectory-saliency-detector.github.io/trajectory-saliency-detector/",
+      "authors": [
+        "Yiming Zhao",
+        "Gongrui Ma",
+        "Qingkai Li",
+        "Mingguo Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T14:06:04+00:00",
+      "link": "https://arxiv.org/pdf/2606.23371v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Trajectory saliency for imitation learning",
+      "llm_evidence_cn": "轨迹显著性用于模仿学习",
+      "llm_evidence": "轨迹显著性用于模仿学习",
+      "canonical_evidence": "轨迹显著性用于模仿学习",
+      "llm_tldr_en": "Proposes Trajectory Saliency Detector (TSD) for imitation learning, using spatial entropy and centripetal acceleration to identify critical trajectory segments, improving data efficiency.",
+      "llm_tldr_cn": "针对模仿学习数据稀缺问题，提出轨迹显著性检测器（TSD），基于空间熵和向心加速度识别精确和敏捷运动作为关键轨迹段。TSD即插即用无需训练，在多个操作任务上通过突出关键轨迹提高了模仿学习的数据效率和最终性能。",
+      "llm_tldr": "针对模仿学习数据稀缺问题，提出轨迹显著性检测器（TSD），基于空间熵和向心加速度识别精确和敏捷运动作为关键轨迹段。TSD即插即用无需训练，在多个操作任务上通过突出关键轨迹提高了模仿学习的数据效率和最终性能。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.23371v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.28764v1",
+      "source": "arxiv",
+      "title": "Hierarchical Decision Making with Structured Policies: A Principled Design via Inverse Optimization",
+      "abstract": "Hierarchical decision-making frameworks are pivotal for addressing complex control tasks, enabling agents to decompose intricate problems into manageable subgoals. Despite their promise, existing hierarchical policies face critical limitations: (i) reinforcement learning (RL)-based methods struggle to guarantee strict constraint satisfaction, and (ii) optimal control (OC)-based approaches often rely on myopic and computationally prohibitive formulations. To reconcile these trade-offs, hierarchical RL-OC architectures have emerged as a promising paradigm. However, the formulation of the lower-level optimization within these frameworks remains underexplored, often relying on heuristic or myopic objectives. In this work, we propose a principled framework that systematically integrates upper-level goal abstraction with structured lower-level decision making. We adopt an inverse optimization approach to inform the structure of the lower-level problem from expert demonstrations, ensuring that the objective of the lower-level policy remains aligned with the overall long-term task goal. To validate the approach, our framework is evaluated on distinct decision making tasks: network-based resource allocation and continuous collision avoidance. Empirical results demonstrate that our method consistently outperforms strong baselines based on end-to-end RL, learning-augmented optimal control, and existing hierarchical RL approaches in both efficiency and decision quality.",
+      "authors": [
+        "Yuexuan Wang",
+        "Jingyuan Zhou",
+        "Kaidi Yang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-06-27T06:46:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.28764v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "inverse optimization for hierarchical policy design",
+      "llm_evidence_cn": "逆优化方法设计分层策略",
+      "llm_evidence": "逆优化方法设计分层策略",
+      "canonical_evidence": "逆优化方法设计分层策略",
+      "llm_tldr_en": "Uses inverse optimization to design lower-level objectives in hierarchical RL-OC frameworks.",
+      "llm_tldr_cn": "该论文针对分层决策框架中下层优化目标设计缺乏理论指导的问题，提出基于逆优化的原理性设计方法。通过从演示数据中恢复下层目标，使得分层策略在保证约束满足的同时提升计算效率。在模拟控制任务中验证了方法的有效性，为RL-OC混合架构提供了新思路。",
+      "llm_tldr": "该论文针对分层决策框架中下层优化目标设计缺乏理论指导的问题，提出基于逆优化的原理性设计方法。通过从演示数据中恢复下层目标，使得分层策略在保证约束满足的同时提升计算效率。在模拟控制任务中验证了方法的有效性，为RL-OC混合架构提供了新思路。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "inverse optimal control",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.28813v1",
+      "source": "arxiv",
+      "title": "Human2Any: Human-to-Robot Transfer via Constraint-Aware Compositional Planning",
+      "abstract": "Human videos are a scalable source of supervision for robot manipulation, as they are abundant and naturally capture rich object interactions. However, transferring human demonstrations to robots remains challenging due to embodiment mismatch, scene variation, and robot-specific feasibility constraints. We present Human2Any, a framework for learning reusable object-centric interaction priors from human videos without requiring real-world robot demonstrations in the target task contexts. Human2Any represents manipulation through object-object interaction motion, capturing task-relevant scene changes while abstracting away embodiment-specific details. It composes learned interaction priors with robot-side feasibility reasoning and motion planning, allowing the same human-derived knowledge to adapt to different embodiments, scene geometries, and task contexts. We validate Human2Any across diverse manipulation settings, including real-world experiments on a Franka tabletop setup and an RBY-1 humanoid mobile robot, demonstrating robust interaction-centric manipulation without real-world robot training data. Project website: https://human2any.github.io/.",
+      "authors": [
+        "Shuo Cheng",
+        "Chuye Zhang",
+        "Alfred Cueva",
+        "Caelan Garrett",
+        "Ajay Mandlekar",
+        "Danfei Xu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-27T08:45:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.28813v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "human-to-robot transfer via compositional planning from videos",
+      "llm_evidence_cn": "通过组合规划从人类视频迁移到机器人",
+      "llm_evidence": "通过组合规划从人类视频迁移到机器人",
+      "canonical_evidence": "通过组合规划从人类视频迁移到机器人",
+      "llm_tldr_en": "Learns reusable object-centric interaction priors from human videos and composes them with robot feasibility reasoning for manipulation transfer.",
+      "llm_tldr_cn": "本文针对人机视频演示转移中存在的形体差异和机器人可行性问题，提出Human2Any框架，从人类视频学习物体交互先验，并通过组合规划与机器人端可行性推理实现操作技能的迁移。该方法无需目标任务的真实机器人演示，利用物体交互运动抽象出具身细节，提高了迁移效率。实验证明该方法在多种操作任务上成功实现了从人类到机器人的技能转移。",
+      "llm_tldr": "本文针对人机视频演示转移中存在的形体差异和机器人可行性问题，提出Human2Any框架，从人类视频学习物体交互先验，并通过组合规划与机器人端可行性推理实现操作技能的迁移。该方法无需目标任务的真实机器人演示，利用物体交互运动抽象出具身细节，提高了迁移效率。实验证明该方法在多种操作任务上成功实现了从人类到机器人的技能转移。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23420v1",
+      "source": "arxiv",
+      "title": "Flowing With Purpose: Latent Action Guided Flow Matching Policies For Robotic Manipulation",
+      "abstract": "Flow matching has recently become a new standard for behavior cloning in robotic manipulation. However, state-of-the-art flow matching policies suffer from a systematic structural mismatch: they rely on a globally fixed isotropic source distribution despite the strongly fragmented and heteroscedastic structure of robotic action spaces. This agnostic initialization forces the model to learn highly entangled vector fields, bottlenecking training efficiency and limiting overall policy performance. To address this limitation, we introduce Latent Action Guided Flow Matching (LAFM), a novel framework that replaces the monolithic Gaussian with an adaptive library of learned prior distributions. By grounding these distributions using a latent action model, LAFM maps current observations to discrete motion primitives, selecting a specialized base distribution that provides an informed, structurally aligned initialization for the denoising process. This dynamic adaptivity naturally accommodates heteroscedasticity in human demonstrations and makes transport trajectories shorter and less entangled. Empirically, LAFM substantially outperforms standard flow matching formulations, increasing task success rates by 23.4% in real-world robotic deployments and by 10.4% on the LIBERO-90 benchmark. Furthermore, we demonstrate that LAFM achieves state-of-the-art results, surpassing massively pre-trained vision-language-action models while utilizing significantly smaller architectures.",
+      "authors": [
+        "Bruno Machado",
+        "Alexandre Chapin",
+        "Emmanuel Dellandrea",
+        "Liming Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T14:42:59+00:00",
+      "link": "https://arxiv.org/pdf/2606.23420v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Behavior cloning with flow matching",
+      "llm_evidence_cn": "基于流匹配的行为克隆",
+      "llm_evidence": "基于流匹配的行为克隆",
+      "canonical_evidence": "基于流匹配的行为克隆",
+      "llm_tldr_en": "Introduces Latent Action Guided Flow Matching (LAFM) for robotic manipulation, replacing fixed isotropic source with learned adaptive priors to improve behavior cloning efficiency.",
+      "llm_tldr_cn": "针对流匹配行为克隆中固定各向同性源分布与机器人动作空间碎片化之间的结构失配问题，提出潜在动作引导流匹配（LAFM）。该方法用自适应先验库替代单一高斯分布，使模型学习更高效的向量场。实验表明LAFM提高了训练效率和策略性能，为模仿学习提供了新的范式。",
+      "llm_tldr": "针对流匹配行为克隆中固定各向同性源分布与机器人动作空间碎片化之间的结构失配问题，提出潜在动作引导流匹配（LAFM）。该方法用自适应先验库替代单一高斯分布，使模型学习更高效的向量场。实验表明LAFM提高了训练效率和策略性能，为模仿学习提供了新的范式。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.23420v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.29940v1",
+      "source": "arxiv",
+      "title": "WARP: Whole-Body Retargeting for Learning from Offline Human Demonstrations",
+      "abstract": "Direct transfer from human demonstration to learnable robot action is a crucial step towards scalable whole-body mobile manipulation. While human data scales better than mobile teleoperation, it requires overcoming significant embodiment gaps. Existing retargeting methods yield imprecise or inconsistent solutions, causing action multi-modality that prevents supervised policies from reliably converging. We present Whole-body-Aware Retargeting from human Pose (WARP), an offline pipeline that explicitly models embodiment differences to extract precise, unique whole-body actions. WARP leverages a closed-form Shoulder-Elbow-Wrist (SEW) geometric solver for exact end-effector tracking while preserving whole-body structural intent. Paired with lazy mobile-base control, it extracts accurate, consistent robot trajectories. Evaluations show WARP provides highly reliable data for open-loop real-world replay. To our knowledge, WARP is the first framework to achieve zero-shot whole-body mobile manipulation directly from offline human demonstrations, eliminating the need for human-in-the-loop teleoperation action data. More details on https://warp-retarget.github.io/",
+      "authors": [
+        "Zhenyang Chen",
+        "Chuizheng Kong",
+        "Chuye Zhang",
+        "Yuanshao Yang",
+        "Lawrence Y. Zhu",
+        "Shreyas Kousik",
+        "Danfei Xu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T08:17:31+00:00",
+      "link": "https://arxiv.org/pdf/2606.29940v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "whole-body control for robots via human demonstration retargeting",
+      "llm_evidence_cn": "通过人体演示重定向实现机器人全身控制",
+      "llm_evidence": "通过人体演示重定向实现机器人全身控制",
+      "canonical_evidence": "通过人体演示重定向实现机器人全身控制",
+      "llm_tldr_en": "Proposes WARP, an offline whole-body retargeting pipeline that extracts precise actions from human demonstrations for mobile manipulation, using a closed-form geometric solver.",
+      "llm_tldr_cn": "针对现有重定向方法导致动作多模态、策略不收敛的问题，提出WARP离线全身重定向管线，通过闭式肩肘腕几何求解器精确跟踪末端执行器并保持全身结构意图，结合惰性移动策略实现从人体演示到机器人动作的可扩展迁移。",
+      "llm_tldr": "针对现有重定向方法导致动作多模态、策略不收敛的问题，提出WARP离线全身重定向管线，通过闭式肩肘腕几何求解器精确跟踪末端执行器并保持全身结构意图，结合惰性移动策略实现从人体演示到机器人动作的可扩展迁移。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "whole-body control for robots",
+      "matched_requirement_id": "req-12",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29201v1",
+      "source": "arxiv",
+      "title": "Behavior Uncloning: Distilling Mode Redirection into Policy Weights without Inference-Time Steering",
+      "abstract": "Behavior-cloned policies often learn multiple behavior modes from demonstration datasets, including modes that are unsafe or otherwise undesired at deployment. For example, a policy trained on diverse handover demonstrations may learn to pass a knife blade-first. Standard remedies such as data curation and inference-time steering either require access to the original demonstrations for full retraining or add substantial inference-time overhead. To address this gap, we propose MoRE(Mode Redirection), which redirects policy rollouts toward desired behavior modes through a short \"uncloning\" step. Specifically, MoRE distills the redirection signal from a temporary mode classifier into the policy weights to steer behavior. A retain loss balances this edit by preserving desired-mode competence, allowing the standalone policy to suppress unwanted modes with zero inference-time overhead. Across eight simulated and real-world tasks, MoRE improves the average deployment success rate (SR) by 44 percentage points over the original mixed-mode policy. Among all compared adaptation and steering baselines, MoRE achieves the strongest SR and approaches the filtered-data retraining reference, while preserving task competence and inference speed. MoRE also generalizes across robot policy backbones, including Diffusion Policy and the Pi0.5 VLA, diverse task categories, and real-world deployments.",
+      "authors": [
+        "Hao Wang",
+        "Jiuzhou Lei",
+        "Dayou Li",
+        "Bangya Liu",
+        "Minghui Zheng",
+        "Manling Li",
+        "Ruohan Zhang",
+        "Zhiwen Fan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-28T05:01:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.29201v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses behavior cloning and mode redirection",
+      "llm_evidence_cn": "研究行为克隆中的模式重定向",
+      "llm_evidence": "研究行为克隆中的模式重定向",
+      "canonical_evidence": "研究行为克隆中的模式重定向",
+      "llm_tldr_en": "Proposes MoRE to redirect behavior-cloned policy modes via a short uncloning step, distilling classifier signal into policy weights without inference-time overhead.",
+      "llm_tldr_cn": "针对行为克隆策略可能学习到不安全模式的问题，提出MoRE（模式重定向），通过一个短暂的“反克隆”步骤将模式分类器的重定向信号蒸馏到策略权重中，无需推理时干预。该方法有效消除不良行为，同时保持原有演示性能，具有实用价值。",
+      "llm_tldr": "针对行为克隆策略可能学习到不安全模式的问题，提出MoRE（模式重定向），通过一个短暂的“反克隆”步骤将模式分类器的重定向信号蒸馏到策略权重中，无需推理时干预。该方法有效消除不良行为，同时保持原有演示性能，具有实用价值。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23617v1",
+      "source": "arxiv",
+      "title": "RECALL: Recovery Experience Collection for Active Lifelong Learning in Vision-Language-Action Models",
+      "abstract": "Vision-Language-Action (VLA) models are commonly fine-tuned through passive imitation learning, where additional demonstrations are collected for tasks where the policy performs poorly. This approach incurs several downsides: it requires the robot to fail before data collection is triggered, provides little guidance about which states require supervision, and wastes demonstrator effort on redundant parts of the task where the policy already performs well. In this paper, we propose an active, continual learning paradigm for VLAs. We demonstrate that active, uncertainty-guided data collection leads to more efficient fine-tuning than when using passively-collected demonstrations. However, we also find that fine-tuning only on actively-collected recovery data leads to catastrophic forgetting. We evaluate techniques for continual learning, including replay-based data mixing and elastic weight consolidation, and identify tradeoffs between plasticity to uncertainty-guided recovery data and retention of previously learned behaviors. Overall, our work contributes an empirical study of active continual learning for autoregressive VLAs, establishing that uncertainty-guided recovery demonstrations can improve adaptation efficiency while also revealing open challenges when targeted new data is incorporated into large robot policies.",
+      "authors": [
+        "Ulas Berk Karli",
+        "Tesca Fitzgerald"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-22T17:12:50+00:00",
+      "link": "https://arxiv.org/pdf/2606.23617v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "active lifelong learning paradigm for VLAs using imitation learning",
+      "llm_evidence_cn": "使用模仿学习的VLA主动持续学习范式",
+      "llm_evidence": "使用模仿学习的VLA主动持续学习范式",
+      "canonical_evidence": "使用模仿学习的VLA主动持续学习范式",
+      "llm_tldr_en": "RECALL proposes active uncertainty-guided data collection for more efficient imitation learning fine-tuning of VLA models.",
+      "llm_tldr_cn": "RECALL针对VLA模型被动模仿学习效率低的问题，提出主动不确定性引导的数据收集和持续学习范式。实验表明主动收集比被动收集更高效，但也发现仅关注困难样本效果有限。该工作为机器人的持续学习提供了更高效的数据利用策略。",
+      "llm_tldr": "RECALL针对VLA模型被动模仿学习效率低的问题，提出主动不确定性引导的数据收集和持续学习范式。实验表明主动收集比被动收集更高效，但也发现仅关注困难样本效果有限。该工作为机器人的持续学习提供了更高效的数据利用策略。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.23617v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.30749v1",
+      "source": "arxiv",
+      "title": "From Grasps to Dexterity: Large-Scale Grasp Pretraining for Dexterous Manipulation",
+      "abstract": "Large-scale dexterous grasp datasets encode rich priors over hand-object interaction, but their use has largely been confined to grasp generation and pick-and-place manipulation. We study whether such data can instead support functional dexterity in articulated tool use, where a robot must acquire a tool, maintain contact, and operate its functional moving parts. We adapt a hierarchical imitation learning framework that combines high-level hand sub-goal prediction with a low-level goal-conditioned controller. We construct a 355k-trajectory grasp-pretraining dataset from large-scale dexterous grasp annotations and use it to pretrain the low-level controller. The controller is then fine-tuned on downstream task demonstrations. To evaluate this setting, we introduce DexCraft, a simulation benchmark with six articulated tool-use tasks requiring coordinated finger motion. Across simulation and real-world experiments, our approach outperforms end-to-end diffusion policy baselines and hierarchical policies trained from scratch. In the real world, it improves full-task success by 33.3 percentage points over DP3. These results show that grasp datasets can serve not only as resources for grasp synthesis, but also as scalable pretraining data for contact-rich dexterous manipulation. Videos are shown on https://yingyuan0414.github.io/grasp2dexterity/ .",
+      "authors": [
+        "Ying Yuan",
+        "Xinyu Liu",
+        "Sriram Krishna",
+        "David Held"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-29T18:00:22+00:00",
+      "link": "https://arxiv.org/pdf/2606.30749v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "hierarchical imitation learning for dexterous manipulation",
+      "llm_evidence_cn": "用于灵巧操作的层次化模仿学习",
+      "llm_evidence": "用于灵巧操作的层次化模仿学习",
+      "canonical_evidence": "用于灵巧操作的层次化模仿学习",
+      "llm_tldr_en": "Investigates using large-scale dexterous grasp datasets for functional dexterity via a hierarchical imitation learning framework with sub-goal prediction and pretrained controller.",
+      "llm_tldr_cn": "针对灵巧抓取数据集仅用于抓取生成和拾放操作的限制，探索利用大规模灵巧抓取注释构建355k轨迹预训练数据集，通过层次化模仿学习框架，结合高维手部子目标预测与低层目标控制器，在工具操作任务中验证预训练控制器经微调后能实现功能灵巧性。",
+      "llm_tldr": "针对灵巧抓取数据集仅用于抓取生成和拾放操作的限制，探索利用大规模灵巧抓取注释构建355k轨迹预训练数据集，通过层次化模仿学习框架，结合高维手部子目标预测与低层目标控制器，在工具操作任务中验证预训练控制器经微调后能实现功能灵巧性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.29892v1",
+      "source": "arxiv",
+      "title": "Trust Your Instincts: Confidence-Driven Test-Time RL for Vision-Language-Action Models",
+      "abstract": "Reinforcement learning (RL) has become indispensable for pushing Vision-Language-Action Models (VLAs) beyond static imitation learning. However, existing RL methods typically require external environmental feedback, relying on predefined success signals to guide policy updates. In this work, we show that VLA models possess useful internal evaluative capabilities: in discrete-action VLAs, trajectories with higher generation confidence are significantly more likely to succeed. Based on this observation, we introduce T^2VLA (Test-time VLA), an architecture-agnostic test-time RL framework that enables VLA models to achieve self-bootstrapping policy improvement. Instead of relying on external rewards, T^2VLA leverages trajectory-level similarity to high-confidence expert demonstrations as an intrinsic reward signal. In addition, we propose a Confidence-Driven Dual Expert Bootstrapping mechanism, which dynamically balances a Local Pseudo-Expert for exploration and a Global Expert Pool for training stability. Extensive experiments on the LIBERO and RoboTwin benchmarks show that T^2VLA consistently outperforms supervised baselines and approaches oracle RL performance with ground-truth rewards, achieving effective improvement without external reward feedback. Furthermore, T^2VLA adapts to distinct VLA paradigms, including both OpenVLA-OFT and the pi series.",
+      "authors": [
+        "Siyao Chen",
+        "Jiakang Yuan",
+        "Jiaxin Wang",
+        "Tao Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-29T07:31:41+00:00",
+      "link": "https://arxiv.org/pdf/2606.29892v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "addresses limitations of static imitation learning for VLAs",
+      "llm_evidence_cn": "解决VLA静态模仿学习的局限性",
+      "llm_evidence": "解决VLA静态模仿学习的局限性",
+      "canonical_evidence": "解决VLA静态模仿学习的局限性",
+      "llm_tldr_en": "T^2VLA uses trajectory-level confidence as internal reward for test-time RL to improve VLA policies beyond imitation learning.",
+      "llm_tldr_cn": "针对现有VLA RL方法依赖外部环境反馈的问题，发现离散动作VLA中高置信轨迹更可能成功，据此提出T^2VLA框架，利用轨迹级相似性作为内部引导，无需外部奖励就能实现策略自举改进。",
+      "llm_tldr": "针对现有VLA RL方法依赖外部环境反馈的问题，发现离散动作VLA中高置信轨迹更可能成功，据此提出T^2VLA框架，利用轨迹级相似性作为内部引导，无需外部奖励就能实现策略自举改进。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.23625v1",
+      "source": "arxiv",
+      "title": "Learning to See While Learning to Act: Diffusion Models for Active Perception in Robot Imitation",
+      "abstract": "Most imitation learning methods assume full observability in table-top settings. In practice, objects are often occluded, requiring robots to both search and act, and learning this coupled behavior from limited demonstrations remains challenging. We propose See2Act, an imitation learning approach that conditions action prediction on a sequence of actively-inferred viewpoints at test time, by coupling action denoising with viewpoint refinement. The policy is trained using camera poses anchored to keyframe actions from offline demonstrations, enabling implicit learning of where to see, while learning how to act. We empirically demonstrate that in Ravens the policy recovers informative viewpoints under severe occlusions, and on RLBench tasks it improves performance by up to 34% over prior methods. In the real world, we collect 50 demonstrations in a digital twin and achieve zero-shot sim-to-real transfer on pick-and-place tasks using depth observations. The policy handles significant occlusions, showing that learned viewpoint reasoning enables robust manipulation under partial observability.",
+      "authors": [
+        "Kuancheng Wang",
+        "Vaibhav Saxena",
+        "Shuo Cheng",
+        "Yotto Koga",
+        "Danfei Xu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-22T17:19:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.23625v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "uses imitation learning with active perception via diffusion models",
+      "llm_evidence_cn": "利用扩散模型进行主动感知的模仿学习",
+      "llm_evidence": "利用扩散模型进行主动感知的模仿学习",
+      "canonical_evidence": "利用扩散模型进行主动感知的模仿学习",
+      "llm_tldr_en": "See2Act is an imitation learning approach that couples action denoising with viewpoint refinement, enabling robots to learn informative viewpoints from demonstrations without full observability.",
+      "llm_tldr_cn": "现有的模仿学习方法通常假设完全可观测，但实际中存在遮挡。本文提出 See2Act，通过扩散模型将动作去噪与视角优化结合，使机器人从演示中隐式学习观测策略。在多个任务中，该方法在严重遮挡下恢复了信息丰富的视角，并提升了操作成功率。",
+      "llm_tldr": "现有的模仿学习方法通常假设完全可观测，但实际中存在遮挡。本文提出 See2Act，通过扩散模型将动作去噪与视角优化结合，使机器人从演示中隐式学习观测策略。在多个任务中，该方法在严重遮挡下恢复了信息丰富的视角，并提升了操作成功率。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2606.23625v1",
+      "quick_tier": "8plus"
+    }
+  ]
+}
