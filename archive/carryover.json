@@ -1,462 +1,17 @@
 {
-  "generated_at": "2026-07-04T20:02:46.843578+00:00",
-  "updated_date": "20260704",
+  "generated_at": "2026-07-05T21:07:21.845568+00:00",
+  "updated_date": "20260705",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260704",
+      "updated_date": "20260705",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260704",
+      "updated_date": "20260705",
       "carryover_days": 9,
       "items": [
-        {
-          "id": "2606.25398v1",
-          "source": "arxiv",
-          "title": "MAPL: Multi-Objective Preference Learning for Robot Locomotion",
-          "abstract": "Reward design remains a major bottleneck in reinforcement learning for robot locomotion, where successful policies often depend on carefully tuned, task-specific reward functions. Preference-based reinforcement learning offers an alternative, but existing LLM-based methods typically ask for a single overall judgment between behaviors, making it difficult to capture the multiple competing objectives that underlie high-quality locomotion. We present Multi-Objective AI-Informed Preference Learning (MAPL), a framework that learns locomotion rewards from high-level natural language objectives rather than manually engineered reward equations. MAPL prompts a large language model to compare trajectories independently along semantically meaningful criteria, using generic language descriptions that are terrain-invariant and require little domain expertise. These objective-wise preferences are used to train a multi-head preference scoring model, whose outputs are aggregated to form a scalar reward for policy optimization. Across four quadruped locomotion environments, MAPL trains policies using only LLM-generated preferences and achieves performance comparable to or better than expert-designed rewards, while eliminating task-specific reward engineering.",
-          "authors": [
-            "Xiyue Chen",
-            "Muhan Lin",
-            "Shuyang Shi",
-            "Joseph Campbell"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-06-24T04:52:04+00:00",
-          "link": "https://arxiv.org/pdf/2606.25398v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "Multi-objective reward learning from language for robot locomotion",
-          "llm_evidence_cn": "从自然语言目标进行多目标奖励学习用于机器人运动",
-          "llm_evidence": "从自然语言目标进行多目标奖励学习用于机器人运动",
-          "canonical_evidence": "从自然语言目标进行多目标奖励学习用于机器人运动",
-          "llm_tldr_en": "MAPL learns locomotion rewards from high-level natural language objectives via LLM-based preference comparisons, enabling multi-objective reward design without manual engineering.",
-          "llm_tldr_cn": "该论文针对机器人运动强化学习中的奖励设计瓶颈，提出多目标AI偏好学习框架MAPL，通过利用大语言模型比较轨迹来从自然语言目标中学习奖励函数，避免了手工设计奖励方程的繁琐过程。在机器人运动任务上，该方法能够捕捉多个竞争目标，生成高质量的运动策略。该工作为偏好学习在机器人运动奖励学习中的应用提供了新思路。",
-          "llm_tldr": "该论文针对机器人运动强化学习中的奖励设计瓶颈，提出多目标AI偏好学习框架MAPL，通过利用大语言模型比较轨迹来从自然语言目标中学习奖励函数，避免了手工设计奖励方程的繁琐过程。在机器人运动任务上，该方法能够捕捉多个竞争目标，生成高质量的运动策略。该工作为偏好学习在机器人运动奖励学习中的应用提供了新思路。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "reward function learning",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.25398v1",
-          "carry_days": 6
-        },
-        {
-          "id": "2606.24403v1",
-          "source": "arxiv",
-          "title": "RE4: Transformation-aware Imitation of Object Interactions Using Manipulation Modes",
-          "abstract": "Object interaction tasks have been a focus of advances in imitation learning. End-to-end methods, dominated by diffusion and flow-based variants have shown leaps in performance while sacrificing interpretability. Object-centric and pose-informed variants have had a role in learning from demonstration in manipulation tasks. In this paper, we revisit a few modern imitation learning benchmarks for object interactions, with the aim of composing a framework that repurposes principled theories of manipulation, preserving both performance and interpretability. For image observations, lightweight training is proposed for model-free pose estimation of the target object, using self-supervision over the demonstration data available for imitation learning. This information is then used to inform a manipulation mode-aware retrieval of a demonstration, a mode-aware transformation, a replan step that connects to the retrieval point while preserving mode constraints, and finally rolling out the transformed demonstration. These compose four key steps of the proposed RE4 framework, evaluated over state-based and image-based benchmarks in Push-T and Robomimic. An adversarial benchmark that evaluates sparse data regions of image-based Push-T showcases the robustness, further bolstered by indications from low-data regime experiments. The current work shows promise in using simple interpretable building blocks to learn manipulation skills.",
-          "authors": [
-            "Arsh Chawla",
-            "Rahul Shome"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.LG"
-          ],
-          "published": "2026-06-23T10:37:50+00:00",
-          "link": "https://arxiv.org/pdf/2606.24403v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "Imitation learning for object interactions",
-          "llm_evidence_cn": "用于物体交互的模仿学习",
-          "llm_evidence": "用于物体交互的模仿学习",
-          "canonical_evidence": "用于物体交互的模仿学习",
-          "llm_tldr_en": "Revisits imitation learning benchmarks for object interactions, proposing a framework combining pose estimation with manipulation modes for interpretable and performant imitation.",
-          "llm_tldr_cn": "针对现代端到端模仿学习在黑盒性能与可解释性之间的权衡，重新审视物体交互模仿学习基准。提出RE4框架，利用基于理论的操控模式与轻量级自监督位姿估计，在保持高性能的同时增强了可解释性。实验证明该方法在多个标准任务上达到竞争性结果，并提供了对任务结构的洞察。",
-          "llm_tldr": "针对现代端到端模仿学习在黑盒性能与可解释性之间的权衡，重新审视物体交互模仿学习基准。提出RE4框架，利用基于理论的操控模式与轻量级自监督位姿估计，在保持高性能的同时增强了可解释性。实验证明该方法在多个标准任务上达到竞争性结果，并提供了对任务结构的洞察。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.24403v1",
-          "carry_days": 6
-        },
-        {
-          "id": "2606.28133v1",
-          "source": "arxiv",
-          "title": "Translation as a Bridging Action: Transferring Manipulation Skills from Humans to Robots",
-          "abstract": "We study whether we can learn novel manipulation skills from human actions to a bi-manual robot with parallel grippers. Human action data is cheap, abundant, and diverse, making it one of the most promising resources for scaling up robot learning. Yet transferring skills from humans to robots remains hard: most prior work treats humans as just another bi-manual 6DoF embodiment, where hand-pose estimates are noisy and the contact patterns of human fingers differ fundamentally from those of a parallel gripper. We argue that learning rotation-inclusive action signals from human data is therefore sub-optimal, and instead propose a bridging action representation: the relative wrist translation within the initial head-camera frame, an action space shared by humans and robots. To handle the potential absence of certain action components in different embodiments, we build a $π_0$-like vision-language-action model with interleaved action tokens and attention masking. On a suite of novel bi-manual manipulation tasks, our bridging action transfers human manipulation knowledge to robots far more effectively than noisy 6DoF human actions and scales with the amount of human data.",
-          "authors": [
-            "Sijin Chen",
-            "Kaixuan Jiang",
-            "Haixin Shi",
-            "Yanhui Wang",
-            "Weiheng Zhong",
-            "Haosheng Li",
-            "Bo Jiang",
-            "Yuxiao Liu",
-            "Xihui Liu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.CV"
-          ],
-          "published": "2026-06-26T14:34:04+00:00",
-          "link": "https://arxiv.org/pdf/2606.28133v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "transferring manipulation skills from humans to robots via bridging action representation",
-          "llm_evidence_cn": "通过桥接动作表示将人类操作技能迁移到机器人",
-          "llm_evidence": "通过桥接动作表示将人类操作技能迁移到机器人",
-          "canonical_evidence": "通过桥接动作表示将人类操作技能迁移到机器人",
-          "llm_tldr_en": "Proposes a bridging action representation for transferring manipulation skills from human demonstrations to a bi-manual robot, focusing on relative wrist translation to avoid noise in human hand-pose estimation.",
-          "llm_tldr_cn": "从人类数据中学习机器人操作技能面临人手姿态噪声和接触模式差异的问题。本文提出以头部相机坐标系下的相对手腕平移作为桥接动作表示，避免了旋转信号的次优性。实验表明该表示能有效将人类操作技能迁移到双机械臂机器人，为利用廉价人类数据扩展机器人学习提供了新思路。",
-          "llm_tldr": "从人类数据中学习机器人操作技能面临人手姿态噪声和接触模式差异的问题。本文提出以头部相机坐标系下的相对手腕平移作为桥接动作表示，避免了旋转信号的次优性。实验表明该表示能有效将人类操作技能迁移到双机械臂机器人，为利用廉价人类数据扩展机器人学习提供了新思路。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.28133v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.31377v1",
-          "source": "arxiv",
-          "title": "Stage-Transition Dense Reward Modeling for Reinforcement Learning",
-          "abstract": "Reinforcement learning for long-horizon robotic manipulation is often limited by sparse and delayed rewards, while manually designing dense shaping signals is costly and brittle to changes in environments and object configurations. This work proposes Stage-Transition Dense Reward (STDR), a visual reward-learning framework that converts unstructured expert videos into logically grounded dense rewards for training RL agents from scratch. STDR leverages semantic understanding to infer a task's stage structure from demonstrations, and delivers two complementary learning signals during online training: (i) stage-transition feedback that provides goal-directed reward, and (ii) within-stage progress feedback that supplies fine-grained guidance toward completing each stage. Furthermore, an out-of-distribution (OOD) detection mechanism and a grasping regulation module are integrated to enhance robustness and prevent reward hacking. Experiments on 14 manipulation tasks across MetaWorld, ManiSkill, and Franka Kitchen show that STDR consistently improves sample efficiency and success rates over multiple baselines, and matches or surpasses handcrafted dense rewards on several challenging tasks. Real-robot evaluations further indicate that STDR assigns stable, progress-aligned rewards on successful executions while producing appropriately low rewards for failures, suggesting robustness to visual noise and better-calibrated reward assignment across settings.",
-          "authors": [
-            "Yang Yang",
-            "Bingjie Chen",
-            "Zihan Wang",
-            "Yizhe Li",
-            "Guoping Pan",
-            "Yi Cheng",
-            "Houde Liu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.AI"
-          ],
-          "published": "2026-06-30T09:07:19+00:00",
-          "link": "https://arxiv.org/pdf/2606.31377v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "reward function learning from demonstrations for RL",
-          "llm_evidence_cn": "从演示中学习奖励函数用于强化学习",
-          "llm_evidence": "从演示中学习奖励函数用于强化学习",
-          "canonical_evidence": "从演示中学习奖励函数用于强化学习",
-          "llm_tldr_en": "STDR converts unstructured expert videos into logically grounded dense rewards for training RL from scratch using stage-transition and within-stage progress feedback.",
-          "llm_tldr_cn": "针对长时域机器人操作中的稀疏奖励问题，提出阶段转换密集奖励（STDR），利用语义理解从示范视频中推断任务阶段结构，提供阶段转换和阶段内进展两种互补学习信号，从零开始训练RL智能体，无需手动设计奖励。",
-          "llm_tldr": "针对长时域机器人操作中的稀疏奖励问题，提出阶段转换密集奖励（STDR），利用语义理解从示范视频中推断任务阶段结构，提供阶段转换和阶段内进展两种互补学习信号，从零开始训练RL智能体，无需手动设计奖励。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "reward function learning",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.31377v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.29517v1",
-          "source": "arxiv",
-          "title": "CORE: Common Outcome Regularities from Action-Free Visual Demonstrations for Robot Manipulation",
-          "abstract": "Robot imitation learning often relies on costly robot demonstrations, while abundant action-free visual demonstrations, such as human videos, are difficult to use because they lack robot-executable actions and suffer from embodiment gaps. We propose CORE, a policy learning framework that extracts Common Outcome Regularities from visual demonstrations. Rather than transferring explicit actions across embodiments, CORE exploits a key observation: although successful trajectories for the same task can be diverse, their terminal states often share stable object configurations, spatial relations, and contact constraints. CORE first trains a terminal outcome encoder with contrastive and auxiliary temporal objectives, then aggregates successful terminal embeddings into visual goal prototypes, and finally injects these prototypes as global goal conditions into robot policies. Compared with language instructions, visual goal prototypes provide more concrete geometric and physical constraints for task completion. Across Meta-World, RoboTwin 2.0, and real-world manipulation, CORE improves the average success rate of the corresponding policy backbones by up to +3.9, +11.1, and +17.0 percentage points, respectively, and outperforms text-conditioned variants under the evaluated settings.",
-          "authors": [
-            "Juyi Sheng",
-            "Jincheng Li",
-            "Mingxin Tan",
-            "Mengyuan Liu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-06-28T17:27:23+00:00",
-          "link": "https://arxiv.org/pdf/2606.29517v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "imitation learning from action-free visual demonstrations",
-          "llm_evidence_cn": "从无动作视觉演示中进行模仿学习",
-          "llm_evidence": "从无动作视觉演示中进行模仿学习",
-          "canonical_evidence": "从无动作视觉演示中进行模仿学习",
-          "llm_tldr_en": "CORE extracts common outcome regularities from human videos for robot imitation learning without action labels, enabling policy transfer across embodiments.",
-          "llm_tldr_cn": "CORE通过对比学习从人类视频中提取任务终端状态规律，无需动作标注即可训练机器人策略，解决了跨本体模仿学习中的动作鸿沟问题。该方法在多个操作任务上取得了与有监督方法相当的效果，显著降低了模仿学习对机器人演示的依赖。",
-          "llm_tldr": "CORE通过对比学习从人类视频中提取任务终端状态规律，无需动作标注即可训练机器人策略，解决了跨本体模仿学习中的动作鸿沟问题。该方法在多个操作任务上取得了与有监督方法相当的效果，显著降低了模仿学习对机器人演示的依赖。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.29517v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.01051v1",
-          "source": "arxiv",
-          "title": "AutoSpeed: Annotation-Free Stage-Adaptive Motion Speed Learning for Robot Manipulation",
-          "abstract": "Different stages of manipulation tasks exhibit varying levels of difficulty, suggesting stage-dependent motion speeds and temporal prediction horizons. However, existing IL-based visuomotor policies typically imitate the execution speed of expert demonstrations and operate with a fixed temporal prediction horizon, limiting flexibility and overall task throughput. In this paper, we introduce AutoSpeed, a model-agnostic learning framework that enables existing visuomotor policies to predict trajectories with stage-adaptive motion speeds, without requiring speed or stage annotations. We treat future trajectories at different speeds as candidate optimization targets, evaluate each candidate using a composite cost that trades off prediction error against prediction horizon, and optimize the policy toward the minimum-cost candidate. With a fixed-length action sequence, speed modulation adjusts the effective temporal prediction horizon: simple stages are executed faster with a longer prediction horizon, whereas complex stages are executed more slowly with a shorter prediction horizon. Specifically, we implement speed modulation in the frequency domain via the discrete cosine transform (DCT), which enables smooth, non-integer speed scaling and thus preserves motion continuity. Extensive evaluations show that AutoSpeed substantially reduces task execution time while also improving success rates. Under the AutoSpeed framework, the inferred motion speeds exhibit a strong correspondence with task stages.",
-          "authors": [
-            "Qingda Hu",
-            "Ziheng Qiu",
-            "Jieru Zhao",
-            "Zhongxue Gan",
-            "Wenchao Ding"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-01T15:13:12+00:00",
-          "link": "https://arxiv.org/pdf/2607.01051v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "stage-adaptive motion speed for IL-based visuomotor policies",
-          "llm_evidence_cn": "针对基于模仿学习的视觉运动策略的阶段自适应速度学习",
-          "llm_evidence": "针对基于模仿学习的视觉运动策略的阶段自适应速度学习",
-          "canonical_evidence": "针对基于模仿学习的视觉运动策略的阶段自适应速度学习",
-          "llm_tldr_en": "AutoSpeed enables visuomotor policies to adapt execution speed per task stage without annotations, improving throughput and flexibility over fixed-speed imitation.",
-          "llm_tldr_cn": "AutoSpeed框架针对现有模仿学习策略固定速度的局限，提出无标注的阶段自适应运动速度学习。通过将不同速度的未来轨迹作为候选，并用复合代价函数评估，实现了速度的动态调整。实验表明该方法在多种操作任务中提升了任务吞吐量和成功率。",
-          "llm_tldr": "AutoSpeed框架针对现有模仿学习策略固定速度的局限，提出无标注的阶段自适应运动速度学习。通过将不同速度的未来轨迹作为候选，并用复合代价函数评估，实现了速度的动态调整。实验表明该方法在多种操作任务中提升了任务吞吐量和成功率。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.01051v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.30238v1",
-          "source": "arxiv",
-          "title": "Sparse Sensor Placement in Multi-Agent Reinforcement Learning Control of Rayleigh-Bénard Convection",
-          "abstract": "This paper studies sparse sensor placement for control of Rayleigh-Bénard convection with multi-agent reinforcement learning. We train dense expert policies with windowed observations and distill sparse apprentice policies by supervised learning with grouped regularization on encoder input weights. The framework combines ordered non-convex grouped regularization and iterative reweighted grouped regularization, and uses a grouping construction that enforces consistent pruning across overlapping observation windows. Experiments with fixed and varying initial conditions show that Multi-Agent Transformer policies train more stably than proximal policy optimization baselines, while sparse apprentices retain control behavior comparable to dense experts. Sparsity results are strong for the proposed grouped methods across settings, including maximal sparsity in all fixed-initial-condition setting variants and maximal or near-maximal sparsity in varying-initial-condition setting variants. As an additional proof of concept, training from learned minimal sensor sets reduces per-agent observation size from 360 to 12 and preserves the overall training trend in simulation while reducing data throughput. The results provide both an interpretable basis for identifying control-relevant spatial regions and state components, and a practical pathway toward sensor-efficient control under realistic hardware constraints.",
-          "authors": [
-            "Jan Stenner",
-            "Hans Harder",
-            "Sebastian Peitz"
-          ],
-          "primary_category": "cs.MA",
-          "categories": [
-            "cs.MA"
-          ],
-          "published": "2026-06-29T12:49:35+00:00",
-          "link": "https://arxiv.org/pdf/2606.30238v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "uses apprenticeship learning to distill sparse policies from dense expert",
-          "llm_evidence_cn": "使用学徒学习将密集专家策略蒸馏为稀疏策略",
-          "llm_evidence": "使用学徒学习将密集专家策略蒸馏为稀疏策略",
-          "canonical_evidence": "使用学徒学习将密集专家策略蒸馏为稀疏策略",
-          "llm_tldr_en": "This paper uses multi-agent RL to control Rayleigh-Benard convection, training dense expert policies and distilling sparse apprentice policies via supervised learning with grouped regularization.",
-          "llm_tldr_cn": "该论文利用多智能体强化学习控制瑞利-贝纳尔对流，通过窗口观测训练密集专家策略，并使用分组正则化的监督学习将专家蒸馏为稀疏学徒策略。实验表明，多智能体Transformer策略比PPO基线训练更稳定，且稀疏学徒能保持控制性能。",
-          "llm_tldr": "该论文利用多智能体强化学习控制瑞利-贝纳尔对流，通过窗口观测训练密集专家策略，并使用分组正则化的监督学习将专家蒸馏为稀疏学徒策略。实验表明，多智能体Transformer策略比PPO基线训练更稳定，且稀疏学徒能保持控制性能。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "apprenticeship learning",
-          "matched_requirement_id": "req-4",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.30238v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.01897v1",
-          "source": "arxiv",
-          "title": "Rank-Then-Act: Reward-Free Control from Frame-Order Progress",
-          "abstract": "We introduce Rank-Then-Act (RTA), a framework for learning control policies from expert video demonstrations without environment rewards. RTA trains a Vision-Language Model (VLM) offline as a progress-based ordinal scorer, using a Group Relative Policy Optimization (GRPO) objective over shuffled frame sequences, which forces the model to recover temporal ordering from visual semantics rather than trivial time cues. Importantly, instead of using the scorer directly as a scalar reward model, we propose a correlation-based reward function for reinforcement learning: at each interaction window, we compute the Spearman rank correlation between predicted progress rankings and true temporal indices, yielding a bounded, scale-invariant learning signal. This design decouples reward learning from absolute calibration and enables stable transfer across tasks and environments. We evaluate RTA on discrete control benchmarks (PyBoy: Catrap, Kirby) and continuous control tasks (PointMaze, MetaWorld). RTA consistently matches or outperforms prior video-based reward learning methods and rank-based baselines, while demonstrating strong cross-task reuse of a single pretrained progress scorer. Our results suggest that correlation-structured supervision over video-derived ordinal signals is sufficient for policy learning, offering a scalable alternative to explicit reward design.",
-          "authors": [
-            "Yuriy Maksyuta",
-            "George Bredis",
-            "Ruslan Rakhimov",
-            "Daniil Gavrilov"
-          ],
-          "primary_category": "cs.LG",
-          "categories": [
-            "cs.LG",
-            "cs.AI"
-          ],
-          "published": "2026-07-02T08:50:32+00:00",
-          "link": "https://arxiv.org/pdf/2607.01897v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "learns control policies from expert video demonstrations without environment rewards",
-          "llm_evidence_cn": "从专家视频演示中学习控制策略，无需环境奖励",
-          "llm_evidence": "从专家视频演示中学习控制策略，无需环境奖励",
-          "canonical_evidence": "从专家视频演示中学习控制策略，无需环境奖励",
-          "llm_tldr_en": "Rank-Then-Act learns control policies from expert video demonstrations without rewards by training a VLM as a progress-based ordinal scorer and using correlation-based reward.",
-          "llm_tldr_cn": "该论文提出RTA框架，从专家视频演示中学习控制策略，无需环境奖励。通过GRPO目标在打乱帧序列上训练VLM作为进度排序器，再基于斯皮尔曼等级相关设计奖励函数，提供有界、尺度不变的学习信号。实验表明该方法能有效从演示中提取时序知识。",
-          "llm_tldr": "该论文提出RTA框架，从专家视频演示中学习控制策略，无需环境奖励。通过GRPO目标在打乱帧序列上训练VLM作为进度排序器，再基于斯皮尔曼等级相关设计奖励函数，提供有界、尺度不变的学习信号。实验表明该方法能有效从演示中提取时序知识。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.01897v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.30445v1",
-          "source": "arxiv",
-          "title": "When Does Online Imitation Learning Help in LLM Post-Training? The Role of (Non-)Realizability Beyond Horizon",
-          "abstract": "Online imitation learning (IL), particularly on-policy distillation, has emerged as a strong LLM post-training approach, often outperforming offline supervised fine-tuning (SFT). Yet a principled understanding of when and why online interaction helps remains unclear. In this work, we challenge the view that error accumulation is the main source of online IL's advantage, and instead show that the benefits of online interaction depend critically on whether the setting is realizable, i.e., whether the student policy class can represent the expert policy. Under realizability, we empirically find that offline IL already matches expert performance. In contrast, in non-realizable (misspecified) settings, we prove that offline IL encounters an information-theoretic bottleneck even when horizon $H=1$, and propose a structural characterization of misspecification relative to the reward, under which online IL provably achieves high performance despite a large distributional mismatch between the expert and student policies.",
-          "authors": [
-            "Huaqing Zhang",
-            "Jingchu Gai",
-            "Juno Kim",
-            "Bingbin Liu",
-            "Andrej Risteski"
-          ],
-          "primary_category": "cs.LG",
-          "categories": [
-            "cs.LG"
-          ],
-          "published": "2026-06-29T15:17:42+00:00",
-          "link": "https://arxiv.org/pdf/2606.30445v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "query:MPC-WBC",
-            "query:inverse-rl"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "online imitation learning analysis for LLM post-training",
-          "llm_evidence_cn": "在线模仿学习在LLM后训练中的作用分析",
-          "llm_evidence": "在线模仿学习在LLM后训练中的作用分析",
-          "canonical_evidence": "在线模仿学习在LLM后训练中的作用分析",
-          "llm_tldr_en": "Analyzes when online imitation learning helps in LLM post-training under realizability assumptions.",
-          "llm_tldr_cn": "该论文研究在线模仿学习在大型语言模型后训练中的优势条件。通过理论分析和实验，证明当学生策略类别能够表示专家策略时，离线模仿学习即可达到专家性能；而在不可实现情况下，在线交互的优势显著。挑战了误差累积作为主要来源的观点，揭示了可实现性的关键作用。",
-          "llm_tldr": "该论文研究在线模仿学习在大型语言模型后训练中的优势条件。通过理论分析和实验，证明当学生策略类别能够表示专家策略时，离线模仿学习即可达到专家性能；而在不可实现情况下，在线交互的优势显著。挑战了误差累积作为主要来源的观点，揭示了可实现性的关键作用。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.30445v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.28320v1",
-          "source": "arxiv",
-          "title": "WARP-RM: A Warp-Augmented Relative Progress Reward Model for Data Curation",
-          "abstract": "Scaling imitation learning requires large datasets, yet human teleoperation inevitably produces mixed-quality demonstrations containing hesitations and recoveries. Prior frame-level progress reward models supervise on absolute temporal progress proxies that suffer from label noise, or require costly human annotations to define subtask boundaries. We present WARP (Warp-Augmented Relative Progress), a novel fully self-supervised algorithm for learning dense, signed relative progress magnitudes directly from successful demonstrations. WARP generates per-frame progress targets via time-warp augmentations of demonstrations (variable playback speeds and reversals) and we train WARP-RM to predict the normalized elapsed time between input frames. Aggregating these predictions across overlapping windows yields a dense frame-level progress signal. We then introduce WARP-BC, which leverages these scalar reward estimates to upweight high-advantage action chunks during behavior cloning, where chunk-level advantage is obtained by aggregating per-frame rewards. We evaluate our approach on a physical bimanual robot system performing a long-horizon deformable object manipulation task: folding T-shirts from a random crumpled start. To evaluate policy robustness against suboptimal data, we construct training datasets of varying quality using episode length as a proxy for teleoperation sub-optimality. As the dataset is widened to admit more inefficiencies, WARP-BC maintains a 19/20 success rate compared to vanilla BC's collapse to 2/20, improving throughput by up to 18x.",
-          "authors": [
-            "Justin Yu",
-            "Andrew Goldberg",
-            "Kavish Kondap",
-            "Karim El-Refai",
-            "Ethan Ransing",
-            "Qianzhong Chen",
-            "Mac Schwager",
-            "Fred Shentu",
-            "Philipp Wu",
-            "Ken Goldberg"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-06-26T17:58:06+00:00",
-          "link": "https://arxiv.org/pdf/2606.28320v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "self-supervised reward model for data curation in imitation learning",
-          "llm_evidence_cn": "用于模仿学习数据筛选的自监督奖励模型",
-          "llm_evidence": "用于模仿学习数据筛选的自监督奖励模型",
-          "canonical_evidence": "用于模仿学习数据筛选的自监督奖励模型",
-          "llm_tldr_en": "WARP-RM learns dense relative progress rewards from demonstrations via time-warp augmentations, improving data quality for imitation learning.",
-          "llm_tldr_cn": "该论文针对模仿学习中演示数据质量参差不齐的问题，提出WARP-RM，通过时间扭曲增强从成功演示中自监督学习密集的进度奖励模型，从而自动筛选高质量数据。实验表明该方法能有效提升策略学习效果，为大规模模仿学习数据集构建提供了自动化解决方案。",
-          "llm_tldr": "该论文针对模仿学习中演示数据质量参差不齐的问题，提出WARP-RM，通过时间扭曲增强从成功演示中自监督学习密集的进度奖励模型，从而自动筛选高质量数据。实验表明该方法能有效提升策略学习效果，为大规模模仿学习数据集构建提供了自动化解决方案。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.28320v1",
-          "carry_days": 1
-        },
         {
           "id": "2607.00483v2",
           "source": "arxiv",
@@ -498,7 +53,7 @@
           "matched_requirement_id": "req-6",
           "selection_source": "carryover_cache",
           "paper_id": "2607.00483v2",
-          "carry_days": 1
+          "carry_days": 2
         },
         {
           "id": "2607.00483v1",
@@ -541,12 +96,104 @@
           "matched_requirement_id": "req-6",
           "selection_source": "carryover_cache",
           "paper_id": "2607.00483v1",
+          "carry_days": 2
+        },
+        {
+          "id": "2607.01651v1",
+          "source": "arxiv",
+          "title": "One Demonstration Is Enough for Real-World Robotic Reinforcement Learning",
+          "abstract": "Learning effective robot control policies on physical hardware is challenging due to costly data collection and the difficulty of reward specification. Prior work has incorporated demonstrations into reinforcement learning (RL), yet existing approaches either require large numbers of demonstrations or depend on continuous human intervention during training. To address these limitations, we present AutoSERL, a framework that leverages a single demonstration to fully automate the intervention process in real-world robot RL. The framework includes three complementary mechanisms to accomplish certain tasks: a sliding window intervention mechanism that continuously guides exploration to prevent local optima and unsafe deviations, a safety recovery mechanism that detects and corrects failure states via predefined trajectory recovery points, and an intervention termination criterion that automatically disables guidance once the policy can independently complete the task, preserving its exploration advantage. We evaluate AutoSERL on six contact-intensive manipulation tasks across two robot platforms, spanning insertion, hanging, and hinge-based tasks. AutoSERL consistently outperforms SERL initialized with 20 demonstrations, behavior cloning, and MILES -- a dedicated one-shot imitation learning baseline -- across all tasks while matching HIL-SERL, achieves 100% success rate on insertion tasks, and demonstrates improved robustness to positional variations, all from a single demonstration. Code and videos are available on our project website: https://autoserl.github.io/.",
+          "authors": [
+            "Yuwan Liu",
+            "Hongze Yu",
+            "Song Liu",
+            "Yuhan Wang",
+            "Junge Zhang",
+            "Yaodong Yang",
+            "Yuanpei Chen",
+            "Ceyao Zhang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-07-02T03:23:40+00:00",
+          "link": "https://arxiv.org/pdf/2607.01651v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "single demonstration for real-world RL",
+          "llm_evidence_cn": "单次演示用于真实机器人强化学习",
+          "llm_evidence": "单次演示用于真实机器人强化学习",
+          "canonical_evidence": "单次演示用于真实机器人强化学习",
+          "llm_tldr_en": "This paper presents AutoSERL, which uses a single human demonstration to automatically guide and intervene in real-world robot RL training, enabling efficient policy learning without continuous human oversight.",
+          "llm_tldr_cn": "针对真实机器人强化学习数据收集困难、需要持续人工干预的问题，该论文提出AutoSERL框架，仅利用一次人类演示即可自动化干预过程。框架包含滑动窗口干预、安全恢复等机制，能在真实机器人上高效训练策略，显著减少所需演示数量。",
+          "llm_tldr": "针对真实机器人强化学习数据收集困难、需要持续人工干预的问题，该论文提出AutoSERL框架，仅利用一次人类演示即可自动化干预过程。框架包含滑动窗口干预、安全恢复等机制，能在真实机器人上高效训练策略，显著减少所需演示数量。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.01651v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2606.32027v1",
+          "source": "arxiv",
+          "title": "Freeform Preference Learning for Robotic Manipulation",
+          "abstract": "Reward design remains a central bottleneck for autonomous robot policy improvement, especially in long-horizon manipulation tasks where sparse success labels provide too little signal and binary preferences collapse many competing notions of quality into one ambiguous signal. We introduce Freeform Preference Learning (FPL), a method for learning robot policies from freeform human preferences. Rather than asking annotators which of two trajectories is better overall, FPL lets them define natural-language preference axes, such as speed, safety, quality of placement, or carefulness, and provide pairwise preferences along each axis. These annotations are used to learn a language-conditioned reward model that maps a trajectory and preference label to an axis-specific reward. We use this model to train a reward-conditioned policy that optimizes across the multiple human-specified dimensions. Across four real-world and two simulated long-horizon manipulation tasks, FPL improves over sparse-reward and binary-preference methods by 38 percentage points. Beyond improved performance, FPL learns dense progress signals without explicit subtask segmentation, shows compositionality of behavior not present in the data, and allows users to steer the policy towards different behaviors at test time without retraining. Blog post with videos available at https://freeform-pl.github.io/fpl.website/",
+          "authors": [
+            "Marcel Torne",
+            "Anubha Mahajan",
+            "Abhijnya Bhat",
+            "Chelsea Finn"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI",
+            "cs.LG"
+          ],
+          "published": "2026-06-30T17:54:02+00:00",
+          "link": "https://arxiv.org/pdf/2606.32027v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "learns reward model from freeform human preference annotations",
+          "llm_evidence_cn": "从自由形式的人类偏好标注中学习奖励模型",
+          "llm_evidence": "从自由形式的人类偏好标注中学习奖励模型",
+          "canonical_evidence": "从自由形式的人类偏好标注中学习奖励模型",
+          "llm_tldr_en": "FPL learns language-conditioned reward models from freeform preferences along natural-language axes, enabling reward learning for long-horizon tasks without engineered rewards.",
+          "llm_tldr_cn": "针对机器人操作中的奖励设计瓶颈，Freeform Preference Learning（FPL）允许标注者沿自然语言定义的维度（如速度、安全性）提供逐对偏好，从而学习语言条件奖励模型。该方法避免了传统二元偏好中的信号模糊问题，在长时域操作任务中实现了更高效的策略优化。实验表明FPL能从少量偏好标注中学习到高质量的奖励函数，显著提升策略性能。",
+          "llm_tldr": "针对机器人操作中的奖励设计瓶颈，Freeform Preference Learning（FPL）允许标注者沿自然语言定义的维度（如速度、安全性）提供逐对偏好，从而学习语言条件奖励模型。该方法避免了传统二元偏好中的信号模糊问题，在长时域操作任务中实现了更高效的策略优化。实验表明FPL能从少量偏好标注中学习到高质量的奖励函数，显著提升策略性能。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "reward function learning",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2606.32027v1",
           "carry_days": 1
         }
       ]
     },
     "MPC-WBC": {
-      "updated_date": "20260704",
+      "updated_date": "20260705",
       "carryover_days": 9,
       "items": []
     }
