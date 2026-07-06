@@ -1,199 +1,20 @@
 {
-  "generated_at": "2026-07-05T21:07:21.845568+00:00",
-  "updated_date": "20260705",
+  "generated_at": "2026-07-06T21:04:44.277493+00:00",
+  "updated_date": "20260706",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260705",
+      "updated_date": "20260706",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260705",
+      "updated_date": "20260706",
       "carryover_days": 9,
-      "items": [
-        {
-          "id": "2607.00483v2",
-          "source": "arxiv",
-          "title": "VLM-AR3L: Vision-Language Models for Absolute and Relative Rewards in Reinforcement Learning",
-          "abstract": "Designing effective reward functions remains a major challenge in reinforcement learning (RL), particularly in open-ended environments where task goals are abstract and difficult to quantify. In this work, we present VLM-AR3L, a framework that leverages Vision-Language Models (VLMs) to provide both absolute and relative rewards for RL. VLM-AR3L interprets an agent's visual observations in the context of a natural language task goal, and learns both absolute and relative rewards from VLM-generated preference labels. The absolute reward model predicts scalar evaluations for individual states, while the relative reward model compares consecutive observations to infer progress or regression toward the task goal. Their integration combines the stability of state-based evaluation with the robustness of comparative supervision. We evaluate VLM-AR3L across benchmarks spanning classic control, manipulation, and open-world embodied tasks, with a particular focus on Minecraft given its visual complexity and long-horizon decision-making requirements. Experimental results show that VLM-AR3L consistently outperforms prior VLM-based reward learning methods.",
-          "authors": [
-            "Kuan-Chen Chen",
-            "Winston Chen",
-            "Wei-Fang Sun",
-            "Min-Chun Hu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-01T06:11:59+00:00",
-          "link": "https://arxiv.org/pdf/2607.00483v2",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "VLM-based reward function learning for RL",
-          "llm_evidence_cn": "基于VLM的强化学习奖励函数学习",
-          "llm_evidence": "基于VLM的强化学习奖励函数学习",
-          "canonical_evidence": "基于VLM的强化学习奖励函数学习",
-          "llm_tldr_en": "VLM-AR3L uses VLMs to learn absolute and relative rewards from preference labels, improving RL in open-ended environments.",
-          "llm_tldr_cn": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
-          "llm_tldr": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "reward function learning",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.00483v2",
-          "carry_days": 2
-        },
-        {
-          "id": "2607.00483v1",
-          "source": "arxiv",
-          "title": "VLM-AR3L: Vision-Language Models for Absolute and Relative Rewards in Reinforcement Learning",
-          "abstract": "Designing effective reward functions remains a major challenge in reinforcement learning (RL), particularly in open-ended environments where task goals are abstract and difficult to quantify. In this work, we present VLM-AR3L, a framework that leverages Vision-Language Models (VLMs) to provide both absolute and relative rewards for RL. VLM-AR3L interprets an agent's visual observations in the context of a natural language task goal, and learns both absolute and relative rewards from VLM-generated preference labels. The absolute reward model predicts scalar evaluations for individual states, while the relative reward model compares consecutive observations to infer progress or regression toward the task goal. Their integration combines the stability of state-based evaluation with the robustness of comparative supervision. We evaluate VLM-AR3L across benchmarks spanning classic control, manipulation, and open-world embodied tasks, with a particular focus on Minecraft given its visual complexity and long-horizon decision-making requirements. Experimental results show that VLM-AR3L consistently outperforms prior VLM-based reward learning methods.",
-          "authors": [
-            "Kuan-Chen Chen",
-            "Winston Chen",
-            "Wei-Fang Sun",
-            "Min-Chun Hu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-01T06:11:59+00:00",
-          "link": "https://arxiv.org/pdf/2607.00483v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "VLM-based reward function learning for RL",
-          "llm_evidence_cn": "基于VLM的强化学习奖励函数学习",
-          "llm_evidence": "基于VLM的强化学习奖励函数学习",
-          "canonical_evidence": "基于VLM的强化学习奖励函数学习",
-          "llm_tldr_en": "VLM-AR3L uses VLMs to learn absolute and relative rewards from preference labels, improving RL in open-ended environments.",
-          "llm_tldr_cn": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
-          "llm_tldr": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "reward function learning",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.00483v1",
-          "carry_days": 2
-        },
-        {
-          "id": "2607.01651v1",
-          "source": "arxiv",
-          "title": "One Demonstration Is Enough for Real-World Robotic Reinforcement Learning",
-          "abstract": "Learning effective robot control policies on physical hardware is challenging due to costly data collection and the difficulty of reward specification. Prior work has incorporated demonstrations into reinforcement learning (RL), yet existing approaches either require large numbers of demonstrations or depend on continuous human intervention during training. To address these limitations, we present AutoSERL, a framework that leverages a single demonstration to fully automate the intervention process in real-world robot RL. The framework includes three complementary mechanisms to accomplish certain tasks: a sliding window intervention mechanism that continuously guides exploration to prevent local optima and unsafe deviations, a safety recovery mechanism that detects and corrects failure states via predefined trajectory recovery points, and an intervention termination criterion that automatically disables guidance once the policy can independently complete the task, preserving its exploration advantage. We evaluate AutoSERL on six contact-intensive manipulation tasks across two robot platforms, spanning insertion, hanging, and hinge-based tasks. AutoSERL consistently outperforms SERL initialized with 20 demonstrations, behavior cloning, and MILES -- a dedicated one-shot imitation learning baseline -- across all tasks while matching HIL-SERL, achieves 100% success rate on insertion tasks, and demonstrates improved robustness to positional variations, all from a single demonstration. Code and videos are available on our project website: https://autoserl.github.io/.",
-          "authors": [
-            "Yuwan Liu",
-            "Hongze Yu",
-            "Song Liu",
-            "Yuhan Wang",
-            "Junge Zhang",
-            "Yaodong Yang",
-            "Yuanpei Chen",
-            "Ceyao Zhang"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-02T03:23:40+00:00",
-          "link": "https://arxiv.org/pdf/2607.01651v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "single demonstration for real-world RL",
-          "llm_evidence_cn": "单次演示用于真实机器人强化学习",
-          "llm_evidence": "单次演示用于真实机器人强化学习",
-          "canonical_evidence": "单次演示用于真实机器人强化学习",
-          "llm_tldr_en": "This paper presents AutoSERL, which uses a single human demonstration to automatically guide and intervene in real-world robot RL training, enabling efficient policy learning without continuous human oversight.",
-          "llm_tldr_cn": "针对真实机器人强化学习数据收集困难、需要持续人工干预的问题，该论文提出AutoSERL框架，仅利用一次人类演示即可自动化干预过程。框架包含滑动窗口干预、安全恢复等机制，能在真实机器人上高效训练策略，显著减少所需演示数量。",
-          "llm_tldr": "针对真实机器人强化学习数据收集困难、需要持续人工干预的问题，该论文提出AutoSERL框架，仅利用一次人类演示即可自动化干预过程。框架包含滑动窗口干预、安全恢复等机制，能在真实机器人上高效训练策略，显著减少所需演示数量。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.01651v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2606.32027v1",
-          "source": "arxiv",
-          "title": "Freeform Preference Learning for Robotic Manipulation",
-          "abstract": "Reward design remains a central bottleneck for autonomous robot policy improvement, especially in long-horizon manipulation tasks where sparse success labels provide too little signal and binary preferences collapse many competing notions of quality into one ambiguous signal. We introduce Freeform Preference Learning (FPL), a method for learning robot policies from freeform human preferences. Rather than asking annotators which of two trajectories is better overall, FPL lets them define natural-language preference axes, such as speed, safety, quality of placement, or carefulness, and provide pairwise preferences along each axis. These annotations are used to learn a language-conditioned reward model that maps a trajectory and preference label to an axis-specific reward. We use this model to train a reward-conditioned policy that optimizes across the multiple human-specified dimensions. Across four real-world and two simulated long-horizon manipulation tasks, FPL improves over sparse-reward and binary-preference methods by 38 percentage points. Beyond improved performance, FPL learns dense progress signals without explicit subtask segmentation, shows compositionality of behavior not present in the data, and allows users to steer the policy towards different behaviors at test time without retraining. Blog post with videos available at https://freeform-pl.github.io/fpl.website/",
-          "authors": [
-            "Marcel Torne",
-            "Anubha Mahajan",
-            "Abhijnya Bhat",
-            "Chelsea Finn"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.AI",
-            "cs.LG"
-          ],
-          "published": "2026-06-30T17:54:02+00:00",
-          "link": "https://arxiv.org/pdf/2606.32027v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "learns reward model from freeform human preference annotations",
-          "llm_evidence_cn": "从自由形式的人类偏好标注中学习奖励模型",
-          "llm_evidence": "从自由形式的人类偏好标注中学习奖励模型",
-          "canonical_evidence": "从自由形式的人类偏好标注中学习奖励模型",
-          "llm_tldr_en": "FPL learns language-conditioned reward models from freeform preferences along natural-language axes, enabling reward learning for long-horizon tasks without engineered rewards.",
-          "llm_tldr_cn": "针对机器人操作中的奖励设计瓶颈，Freeform Preference Learning（FPL）允许标注者沿自然语言定义的维度（如速度、安全性）提供逐对偏好，从而学习语言条件奖励模型。该方法避免了传统二元偏好中的信号模糊问题，在长时域操作任务中实现了更高效的策略优化。实验表明FPL能从少量偏好标注中学习到高质量的奖励函数，显著提升策略性能。",
-          "llm_tldr": "针对机器人操作中的奖励设计瓶颈，Freeform Preference Learning（FPL）允许标注者沿自然语言定义的维度（如速度、安全性）提供逐对偏好，从而学习语言条件奖励模型。该方法避免了传统二元偏好中的信号模糊问题，在长时域操作任务中实现了更高效的策略优化。实验表明FPL能从少量偏好标注中学习到高质量的奖励函数，显著提升策略性能。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "reward function learning",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2606.32027v1",
-          "carry_days": 1
-        }
-      ]
+      "items": []
     },
     "MPC-WBC": {
-      "updated_date": "20260705",
+      "updated_date": "20260706",
       "carryover_days": 9,
       "items": []
     }

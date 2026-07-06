@@ -1,0 +1,728 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-06T21:04:44.276096+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 3,
+    "deep_divecandidates": 10,
+    "deep_cap": 8,
+    "deep_selected": 8,
+    "quick_candidates": 8,
+    "quick_skim_target": 13,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2606.32009v1",
+      "source": "arxiv",
+      "title": "Human-as-Humanoid: Enabling Zero-Shot Humanoid Learning from Ego-Exo Human Videos with Human-Aligned Embodiments",
+      "abstract": "Vision-language-action (VLA) models across robot embodiments require high-quality observation--action supervision to learn deployable action distributions, yet scaling such robot data remains difficult, especially for high-DoF humanoids. Teleoperation provides controller-aligned supervision, while human egocentric videos capture diverse bimanual manipulation but do not directly provide executable robot actions. We introduce Human-as-Humanoid, a human-to-humanoid supervision framework that enables near-real-time human-centric action generation, making human demonstrations usable for high-DoF humanoid VLA training by jointly aligning the robot embodiment, the sensing setup, and the action-label interface. Built on PrimeU, a human-aligned 60-DoF upper-body humanoid, Human-as-Humanoid uses synchronized ego-exo videos to pair deployment-aligned egocentric observations with exocentric motion recovery, retargets the recovered human motion through staged Inverse Kinematics (IK) into controller-aligned 60-DoF action chunks, and trains the VLA model with Forward Kinematics (FK)-aware supervision to preserve wrist and fingertip task-space geometry. This converts large-scale human demonstrations from visual observations into executable observation--action supervision for the target humanoid. Experiments validate the conversion chain at the motion-recovery, robot-action-space, and real-robot deployment levels. Human-as-Humanoid yields a 4.8--7.2x raw demonstration-throughput gain over humanoid teleoperation in our data-collection analysis, and on several downstream tasks, policies post-trained only with the converted human labels generalize to real-robot deployment without target-task robot demonstrations. The official project website is available at https://zgc-embodyai.github.io/Human-as-Humanoid.",
+      "authors": [
+        "Xiaopeng Lin",
+        "Ruoqi Yang",
+        "Shijie Lian",
+        "Zhaolong Shen",
+        "Bin Yu",
+        "Changti Wu",
+        "Haibao Liu",
+        "Yuxiang Zhang",
+        "Hong Li",
+        "Qiyuan Su",
+        "Haochen Liu",
+        "Xuguo He",
+        "Yukun Shi",
+        "Cong Huang",
+        "Zhirui Zhang",
+        "Bojun Cheng",
+        "Kai Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T17:44:16+00:00",
+      "link": "https://arxiv.org/pdf/2606.32009v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "enables zero-shot humanoid imitation learning from human videos via embodiment alignment",
+      "llm_evidence_cn": "通过对齐人体实现从人类视频进行零样本人形模仿学习",
+      "llm_evidence": "通过对齐人体实现从人类视频进行零样本人形模仿学习",
+      "canonical_evidence": "通过对齐人体实现从人类视频进行零样本人形模仿学习",
+      "llm_tldr_en": "Human-as-Humanoid aligns human embodiment, sensing, and action interfaces to generate robot-executable actions from ego-exo human videos, enabling zero-shot humanoid VLA training without teleoperation.",
+      "llm_tldr_cn": "问题：人形机器人需要大量遥操作数据，而人类视频可直接提供演示但无法直接转化为机器人动作。方法：提出Human-as-Humanoid框架，通过对齐机器人本体、传感设置和动作标签接口，从第一人称和第三人称人类视频实时生成机器人可执行动作。结果：实现了零样本的人形机器人视觉-语言-动作模型训练，无需遥操作数据。贡献：大幅降低了人形机器人模仿学习的数据获取成本，推动了人形机器人学习的高效化。",
+      "llm_tldr": "问题：人形机器人需要大量遥操作数据，而人类视频可直接提供演示但无法直接转化为机器人动作。方法：提出Human-as-Humanoid框架，通过对齐机器人本体、传感设置和动作标签接口，从第一人称和第三人称人类视频实时生成机器人可执行动作。结果：实现了零样本的人形机器人视觉-语言-动作模型训练，无需遥操作数据。贡献：大幅降低了人形机器人模仿学习的数据获取成本，推动了人形机器人学习的高效化。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01051v1",
+      "source": "arxiv",
+      "title": "AutoSpeed: Annotation-Free Stage-Adaptive Motion Speed Learning for Robot Manipulation",
+      "abstract": "Different stages of manipulation tasks exhibit varying levels of difficulty, suggesting stage-dependent motion speeds and temporal prediction horizons. However, existing IL-based visuomotor policies typically imitate the execution speed of expert demonstrations and operate with a fixed temporal prediction horizon, limiting flexibility and overall task throughput. In this paper, we introduce AutoSpeed, a model-agnostic learning framework that enables existing visuomotor policies to predict trajectories with stage-adaptive motion speeds, without requiring speed or stage annotations. We treat future trajectories at different speeds as candidate optimization targets, evaluate each candidate using a composite cost that trades off prediction error against prediction horizon, and optimize the policy toward the minimum-cost candidate. With a fixed-length action sequence, speed modulation adjusts the effective temporal prediction horizon: simple stages are executed faster with a longer prediction horizon, whereas complex stages are executed more slowly with a shorter prediction horizon. Specifically, we implement speed modulation in the frequency domain via the discrete cosine transform (DCT), which enables smooth, non-integer speed scaling and thus preserves motion continuity. Extensive evaluations show that AutoSpeed substantially reduces task execution time while also improving success rates. Under the AutoSpeed framework, the inferred motion speeds exhibit a strong correspondence with task stages.",
+      "authors": [
+        "Qingda Hu",
+        "Ziheng Qiu",
+        "Jieru Zhao",
+        "Zhongxue Gan",
+        "Wenchao Ding"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-01T15:13:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.01051v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "improves imitation learning by stage-adaptive speed learning",
+      "llm_evidence_cn": "通过阶段自适应速度学习改进模仿学习",
+      "llm_evidence": "通过阶段自适应速度学习改进模仿学习",
+      "canonical_evidence": "通过阶段自适应速度学习改进模仿学习",
+      "llm_tldr_en": "AutoSpeed enables visuomotor policies to predict trajectories with stage-adaptive speeds without speed annotations, improving task throughput and flexibility over standard IL.",
+      "llm_tldr_cn": "现有模仿学习策略通常固定执行速度和时间预测视野，限制了灵活性。AutoSpeed通过将不同速度的未来轨迹作为候选优化目标，并利用复合代价进行权衡，实现了无注释的阶段自适应运动速度。实验表明该方法能在保持任务成功率的同时显著提高吞吐量，为基于演示的机器人操作提供了一种高效的速度自适应框架。",
+      "llm_tldr": "现有模仿学习策略通常固定执行速度和时间预测视野，限制了灵活性。AutoSpeed通过将不同速度的未来轨迹作为候选优化目标，并利用复合代价进行权衡，实现了无注释的阶段自适应运动速度。实验表明该方法能在保持任务成功率的同时显著提高吞吐量，为基于演示的机器人操作提供了一种高效的速度自适应框架。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.32027v1",
+      "source": "arxiv",
+      "title": "Freeform Preference Learning for Robotic Manipulation",
+      "abstract": "Reward design remains a central bottleneck for autonomous robot policy improvement, especially in long-horizon manipulation tasks where sparse success labels provide too little signal and binary preferences collapse many competing notions of quality into one ambiguous signal. We introduce Freeform Preference Learning (FPL), a method for learning robot policies from freeform human preferences. Rather than asking annotators which of two trajectories is better overall, FPL lets them define natural-language preference axes, such as speed, safety, quality of placement, or carefulness, and provide pairwise preferences along each axis. These annotations are used to learn a language-conditioned reward model that maps a trajectory and preference label to an axis-specific reward. We use this model to train a reward-conditioned policy that optimizes across the multiple human-specified dimensions. Across four real-world and two simulated long-horizon manipulation tasks, FPL improves over sparse-reward and binary-preference methods by 38 percentage points. Beyond improved performance, FPL learns dense progress signals without explicit subtask segmentation, shows compositionality of behavior not present in the data, and allows users to steer the policy towards different behaviors at test time without retraining. Blog post with videos available at https://freeform-pl.github.io/fpl.website/",
+      "authors": [
+        "Marcel Torne",
+        "Anubha Mahajan",
+        "Abhijnya Bhat",
+        "Chelsea Finn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-30T17:54:02+00:00",
+      "link": "https://arxiv.org/pdf/2606.32027v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learns reward model from freeform human preferences, directly related to reward function learning",
+      "llm_evidence_cn": "从自由形式人类偏好中学习奖励模型，直接关联奖励函数学习",
+      "llm_evidence": "从自由形式人类偏好中学习奖励模型，直接关联奖励函数学习",
+      "canonical_evidence": "从自由形式人类偏好中学习奖励模型，直接关联奖励函数学习",
+      "llm_tldr_en": "Proposes Freeform Preference Learning (FPL) to learn a language-conditioned reward model from multi-axis pairwise preferences, enabling reward learning without hand-crafted costs.",
+      "llm_tldr_cn": "针对长时程操作任务中奖励函数难以设计的问题，提出自由形式偏好学习（FPL），允许标注者定义自然语言偏好轴（如速度、安全性）并提供成对偏好，从而学习语言条件化的奖励模型，为策略优化提供更丰富的监督信号。实验证明该方法能够有效学习多维度偏好，提升任务成功率。",
+      "llm_tldr": "针对长时程操作任务中奖励函数难以设计的问题，提出自由形式偏好学习（FPL），允许标注者定义自然语言偏好轴（如速度、安全性）并提供成对偏好，从而学习语言条件化的奖励模型，为策略优化提供更丰富的监督信号。实验证明该方法能够有效学习多维度偏好，提升任务成功率。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.31912v1",
+      "source": "arxiv",
+      "title": "Learning Locomotion on Discrete Terrain via Minimal Proximity Sensing",
+      "abstract": "Learning-based control has revolutionized dynamic locomotion, yet navigating unstructured terrain remains limited by a robot's incomplete awareness of imminent ground contact. While global perception systems such as LiDARs and depth cameras provide environmental context, they are frequently plagued by latencies, occlusions, and the high computational cost of dense geometric reconstruction. On the other hand, proprioceptive feedback is purely reactive, initiating corrections only after impact has occurred. This work explores embedding a minimal suite of low-cost, high-frequency infrared proximity sensors directly into the feet of a quadrupedal robot. These sensors provide \"pre-contact\" feedback that is robust to self-occlusions and significantly less computationally demanding than conventional vision-based pipelines. By integrating these localized signals into a reinforcement learning framework, we enable the robot to anticipate terrain discontinuities such as gaps and stepping stones that are problematic for traditional perception stacks due to occlusions or state estimation drift. We demonstrate that such sparse, near-field sensing can be reliably modeled in simulation and transferred to the real world with high fidelity. Experimental results show that local proximity sensing substantially improves traversal robustness over discrete terrain and offers a low-power, low-latency alternative or complement to complex global perception suites in unpredictable environments. For more information about results and methods, please see the project website: https://sites.google.com/view/foot-tof/home.",
+      "authors": [
+        "Jiale Fan",
+        "Connor Flynn",
+        "Tianao Xu",
+        "Junzhe He",
+        "Andrei Cramariuc",
+        "Marco Hutter",
+        "Robert Baines"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T16:16:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.31912v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning-based control for legged locomotion on discrete terrain",
+      "llm_evidence_cn": "基于学习的四足机器人离散地形运动控制",
+      "llm_evidence": "基于学习的四足机器人离散地形运动控制",
+      "canonical_evidence": "基于学习的四足机器人离散地形运动控制",
+      "llm_tldr_en": "Proposes embedding low-cost infrared proximity sensors in quadrupedal robot feet to provide pre-contact feedback for locomotion on discrete terrain.",
+      "llm_tldr_cn": "针对机器人在非结构化地形中运动时对即将发生的地面接触感知不足的问题，本文提出在四足机器人脚部嵌入低成本红外接近传感器，提供预接触反馈。该方法避免了全局感知系统的延迟和遮挡问题，使机器人能够更早地调整运动策略，提升离散地形上的运动鲁棒性。",
+      "llm_tldr": "针对机器人在非结构化地形中运动时对即将发生的地面接触感知不足的问题，本文提出在四足机器人脚部嵌入低成本红外接近传感器，提供预接触反馈。该方法避免了全局感知系统的延迟和遮挡问题，使机器人能够更早地调整运动策略，提升离散地形上的运动鲁棒性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.01651v1",
+      "source": "arxiv",
+      "title": "One Demonstration Is Enough for Real-World Robotic Reinforcement Learning",
+      "abstract": "Learning effective robot control policies on physical hardware is challenging due to costly data collection and the difficulty of reward specification. Prior work has incorporated demonstrations into reinforcement learning (RL), yet existing approaches either require large numbers of demonstrations or depend on continuous human intervention during training. To address these limitations, we present AutoSERL, a framework that leverages a single demonstration to fully automate the intervention process in real-world robot RL. The framework includes three complementary mechanisms to accomplish certain tasks: a sliding window intervention mechanism that continuously guides exploration to prevent local optima and unsafe deviations, a safety recovery mechanism that detects and corrects failure states via predefined trajectory recovery points, and an intervention termination criterion that automatically disables guidance once the policy can independently complete the task, preserving its exploration advantage. We evaluate AutoSERL on six contact-intensive manipulation tasks across two robot platforms, spanning insertion, hanging, and hinge-based tasks. AutoSERL consistently outperforms SERL initialized with 20 demonstrations, behavior cloning, and MILES -- a dedicated one-shot imitation learning baseline -- across all tasks while matching HIL-SERL, achieves 100% success rate on insertion tasks, and demonstrates improved robustness to positional variations, all from a single demonstration. Code and videos are available on our project website: https://autoserl.github.io/.",
+      "authors": [
+        "Yuwan Liu",
+        "Hongze Yu",
+        "Song Liu",
+        "Yuhan Wang",
+        "Junge Zhang",
+        "Yaodong Yang",
+        "Yuanpei Chen",
+        "Ceyao Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-02T03:23:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.01651v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "single demonstration for real-world robot RL, imitation learning component",
+      "llm_evidence_cn": "单次示范用于真实机器人强化学习，含模仿学习成分",
+      "llm_evidence": "单次示范用于真实机器人强化学习，含模仿学习成分",
+      "canonical_evidence": "单次示范用于真实机器人强化学习，含模仿学习成分",
+      "llm_tldr_en": "AutoSERL leverages a single human demonstration to automate intervention and reward specification for real-world robot RL, achieving efficient policy learning.",
+      "llm_tldr_cn": "该工作针对真实机器人强化学习中示范需求量大和人工干预频繁的问题，提出AutoSERL框架。仅需一次人类示范，通过滑动窗口干预机制、安全恢复机制和自动奖励设计，完全自动化训练过程。在多种真实操作任务上验证了高效性和安全性，降低了示教成本。",
+      "llm_tldr": "该工作针对真实机器人强化学习中示范需求量大和人工干预频繁的问题，提出AutoSERL框架。仅需一次人类示范，通过滑动窗口干预机制、安全恢复机制和自动奖励设计，完全自动化训练过程。在多种真实操作任务上验证了高效性和安全性，降低了示教成本。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.00483v1",
+      "source": "arxiv",
+      "title": "VLM-AR3L: Vision-Language Models for Absolute and Relative Rewards in Reinforcement Learning",
+      "abstract": "Designing effective reward functions remains a major challenge in reinforcement learning (RL), particularly in open-ended environments where task goals are abstract and difficult to quantify. In this work, we present VLM-AR3L, a framework that leverages Vision-Language Models (VLMs) to provide both absolute and relative rewards for RL. VLM-AR3L interprets an agent's visual observations in the context of a natural language task goal, and learns both absolute and relative rewards from VLM-generated preference labels. The absolute reward model predicts scalar evaluations for individual states, while the relative reward model compares consecutive observations to infer progress or regression toward the task goal. Their integration combines the stability of state-based evaluation with the robustness of comparative supervision. We evaluate VLM-AR3L across benchmarks spanning classic control, manipulation, and open-world embodied tasks, with a particular focus on Minecraft given its visual complexity and long-horizon decision-making requirements. Experimental results show that VLM-AR3L consistently outperforms prior VLM-based reward learning methods.",
+      "authors": [
+        "Kuan-Chen Chen",
+        "Winston Chen",
+        "Wei-Fang Sun",
+        "Min-Chun Hu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-01T06:11:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.00483v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "VLM-based reward function learning for RL",
+      "llm_evidence_cn": "基于VLM的强化学习奖励函数学习",
+      "llm_evidence": "基于VLM的强化学习奖励函数学习",
+      "canonical_evidence": "基于VLM的强化学习奖励函数学习",
+      "llm_tldr_en": "VLM-AR3L uses VLMs to learn absolute and relative rewards from preference labels, improving RL in open-ended environments.",
+      "llm_tldr_cn": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
+      "llm_tldr": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.00483v1"
+    },
+    {
+      "id": "2607.00483v2",
+      "source": "arxiv",
+      "title": "VLM-AR3L: Vision-Language Models for Absolute and Relative Rewards in Reinforcement Learning",
+      "abstract": "Designing effective reward functions remains a major challenge in reinforcement learning (RL), particularly in open-ended environments where task goals are abstract and difficult to quantify. In this work, we present VLM-AR3L, a framework that leverages Vision-Language Models (VLMs) to provide both absolute and relative rewards for RL. VLM-AR3L interprets an agent's visual observations in the context of a natural language task goal, and learns both absolute and relative rewards from VLM-generated preference labels. The absolute reward model predicts scalar evaluations for individual states, while the relative reward model compares consecutive observations to infer progress or regression toward the task goal. Their integration combines the stability of state-based evaluation with the robustness of comparative supervision. We evaluate VLM-AR3L across benchmarks spanning classic control, manipulation, and open-world embodied tasks, with a particular focus on Minecraft given its visual complexity and long-horizon decision-making requirements. Experimental results show that VLM-AR3L consistently outperforms prior VLM-based reward learning methods.",
+      "authors": [
+        "Kuan-Chen Chen",
+        "Winston Chen",
+        "Wei-Fang Sun",
+        "Min-Chun Hu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-01T06:11:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.00483v2",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "VLM-based reward function learning for RL",
+      "llm_evidence_cn": "基于VLM的强化学习奖励函数学习",
+      "llm_evidence": "基于VLM的强化学习奖励函数学习",
+      "canonical_evidence": "基于VLM的强化学习奖励函数学习",
+      "llm_tldr_en": "VLM-AR3L uses VLMs to learn absolute and relative rewards from preference labels, improving RL in open-ended environments.",
+      "llm_tldr_cn": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
+      "llm_tldr": "本文提出VLM-AR3L框架，利用视觉语言模型（VLM）为强化学习生成绝对和相对奖励。该框架通过VLM对视觉观测的解释和自然语言目标，从偏好标签中学习两种奖励模型：绝对奖励提供单状态评估，相对奖励比较连续状态推断进度。两者结合有效解决了开放环境中奖励函数设计困难的问题。实验表明，该方法在多种任务上提升了强化学习的样本效率和最终性能，为自动奖励设计提供了新思路。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.00483v2"
+    },
+    {
+      "id": "2607.01721v1",
+      "source": "arxiv",
+      "title": "CoRe: Combined Rewards with Vision-Language Model Feedback for Preference-Aligned Reinforcement Learning",
+      "abstract": "Reward design remains a central challenge in reinforcement learning (RL). Hand-crafted rewards are often difficult to specify and may lead to suboptimal policies, while learned rewards from preferences can suffer from inefficiency and unstable training. Inspired by the dual nature of human learning explored in cognitive science, we decompose rewards into two complementary components: Formal Rewards (FR), explicitly designed based on task knowledge, and Residual Rewards (RR), learned from observations to capture implicit and nuanced preferences. Based on this decomposition, we propose CoRe, a hybrid framework that integrates FR and RR with vision-language models (VLMs) feedback to achieve preference-aligned policies without human involvement. Our contributions are twofold: (1) We propose a Formal Reward Module (FRM) that leverages VLMs to iteratively design and optimize FR based on task knowledge and preference feedback, enabling the continual improvement of policy during training; (2) We introduce a Residual Reward Module (RRM) that learns RR from video-level preference by employing VLMs to generate preference labels and capturing nuanced rewards that complement FR, ensuring alignment with human intent. Through the synergy of FRM and RRM, CoRe enables the automatic construction of reliable rewards that are efficient and preference-aligned. Extensive experiments demonstrate that CoRe outperforms existing approaches in terms of policy learning effectiveness and efficiency on ten robotic manipulation tasks in simulation and five real-worlds. Videos can be found on our project website: https://core-2026.github.io/",
+      "authors": [
+        "Hexian Ni",
+        "Tao Lu",
+        "Yinghao Cai"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-07-02T05:20:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.01721v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "reward function learning via vision-language model feedback",
+      "llm_evidence_cn": "通过视觉-语言模型反馈进行奖励函数学习",
+      "llm_evidence": "通过视觉-语言模型反馈进行奖励函数学习",
+      "canonical_evidence": "通过视觉-语言模型反馈进行奖励函数学习",
+      "llm_tldr_en": "Proposes CoRe, a hybrid framework that combines hand-crafted formal rewards with residual rewards learned from vision-language model feedback for preference-aligned RL policies.",
+      "llm_tldr_cn": "针对奖励设计困难的问题，本文提出CoRe框架，将手写形式奖励和从视觉-语言模型反馈中学习的残差奖励结合。通过将奖励分解为显式知识和隐式偏好两部分，并利用VLM的反馈来调整残差奖励，CoRe使得强化学习策略能够更有效地对齐人类偏好，同时保持训练稳定性。",
+      "llm_tldr": "针对奖励设计困难的问题，本文提出CoRe框架，将手写形式奖励和从视觉-语言模型反馈中学习的残差奖励结合。通过将奖励分解为显式知识和隐式偏好两部分，并利用VLM的反馈来调整残差奖励，CoRe使得强化学习策略能够更有效地对齐人类偏好，同时保持训练稳定性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "reward function learning",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2606.31912v2",
+      "source": "arxiv",
+      "title": "Learning Locomotion on Discrete Terrain via Minimal Proximity Sensing",
+      "abstract": "Learning-based control has revolutionized dynamic locomotion, yet navigating unstructured terrain remains limited by a robot's incomplete awareness of imminent ground contact. While global perception systems such as LiDARs and depth cameras provide environmental context, they are frequently plagued by latencies, occlusions, and the high computational cost of dense geometric reconstruction. On the other hand, proprioceptive feedback is purely reactive, initiating corrections only after impact has occurred. This work explores embedding a minimal suite of low-cost, high-frequency infrared proximity sensors directly into the feet of a quadrupedal robot. These sensors provide \"pre-contact\" feedback that is robust to self-occlusions and significantly less computationally demanding than conventional vision-based pipelines. By integrating these localized signals into a reinforcement learning framework, we enable the robot to anticipate terrain discontinuities such as gaps and stepping stones that are problematic for traditional perception stacks due to occlusions or state estimation drift. We demonstrate that such sparse, near-field sensing can be reliably modeled in simulation and transferred to the real world with high fidelity. Experimental results show that local proximity sensing substantially improves traversal robustness over discrete terrain and offers a low-power, low-latency alternative or complement to complex global perception suites in unpredictable environments. For more information about results and methods, please see the project website: https://sites.google.com/view/foot-tof/home.",
+      "authors": [
+        "Jiale Fan",
+        "Connor Flynn",
+        "Tianao Xu",
+        "Junzhe He",
+        "Andrei Cramariuc",
+        "Marco Hutter",
+        "Robert Baines"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T16:16:37+00:00",
+      "link": "https://arxiv.org/pdf/2606.31912v2",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "learning-based control for legged locomotion on discrete terrain",
+      "llm_evidence_cn": "基于学习的四足机器人离散地形运动控制",
+      "llm_evidence": "基于学习的四足机器人离散地形运动控制",
+      "canonical_evidence": "基于学习的四足机器人离散地形运动控制",
+      "llm_tldr_en": "Proposes embedding low-cost infrared proximity sensors in quadrupedal robot feet to provide pre-contact feedback for locomotion on discrete terrain.",
+      "llm_tldr_cn": "针对机器人在非结构化地形中运动时对即将发生的地面接触感知不足的问题，本文提出在四足机器人脚部嵌入低成本红外接近传感器，提供预接触反馈。该方法避免了全局感知系统的延迟和遮挡问题，使机器人能够更早地调整运动策略，提升离散地形上的运动鲁棒性。",
+      "llm_tldr": "针对机器人在非结构化地形中运动时对即将发生的地面接触感知不足的问题，本文提出在四足机器人脚部嵌入低成本红外接近传感器，提供预接触反馈。该方法避免了全局感知系统的延迟和遮挡问题，使机器人能够更早地调整运动策略，提升离散地形上的运动鲁棒性。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "robot locomotion techniques and algorithms",
+      "matched_requirement_id": "req-11",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.31132v1",
+      "source": "arxiv",
+      "title": "ELASTIC: Efficiently Learning to Adaptively Scale Test-Time Compute for Generative Control Policies",
+      "abstract": "Generative control policies (GCPs), such as diffusion policies and flow-based vision-language-action models, enable test-time scaling in robot control. Test-time compute can be allocated along two axes: sequential scaling, which increases denoising steps to refine actions, and parallel scaling, which samples multiple candidate actions to search across modes of the policy distribution. However, the optimal allocation of sequential and parallel compute is hard to know a priori as it is state-, task-, and policy-dependent. For example, early stages of a grasp may benefit from broader parallel exploration, while near-contact phases may require more sequential refinement for precision. We present ELASTIC, an algorithm that learns state-dependent test-time compute schedules for GCPs. We formulate compute allocation as a meta-Markov Decision Process in which a meta-policy interacts with a frozen pretrained robot policy and selects sequential steps and parallel samples at each denoising iteration to maximize task success while minimizing compute. Using reinforcement learning, this meta-policy also learns adaptive compute schedules without access to the GCP's training data. Across simulated manipulation benchmarks with diffusion policies, ELASTIC Pareto-dominates fixed and single-axis scaling baselines at matched compute budgets. On real-world robot manipulation with the $π_{0.5}$ vision-language-action model, ELASTIC matches best-of-$10$ success while reducing wall-clock latency by 34%.",
+      "authors": [
+        "Andrew Zou Li",
+        "Gokul Swamy",
+        "Yonatan Bisk",
+        "Andrea Bajcsy"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T05:00:32+00:00",
+      "link": "https://arxiv.org/pdf/2606.31132v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "generative control policies used in imitation learning",
+      "llm_evidence_cn": "生成式控制策略用于模仿学习",
+      "llm_evidence": "生成式控制策略用于模仿学习",
+      "canonical_evidence": "生成式控制策略用于模仿学习",
+      "llm_tldr_en": "ELASTIC learns to adaptively scale test-time compute for generative control policies, improving efficiency for diffusion-based imitation learning.",
+      "llm_tldr_cn": "本文提出ELASTIC算法，学习自适应缩放生成式控制策略（如扩散策略）的测试时计算资源。通过优化顺序和并行计算分配，提高策略部署效率。由于扩散策略常用于模仿学习，该方法可提升模仿学习策略的推理速度。实验在机器人操作任务上验证了其有效性。",
+      "llm_tldr": "本文提出ELASTIC算法，学习自适应缩放生成式控制策略（如扩散策略）的测试时计算资源。通过优化顺序和并行计算分配，提高策略部署效率。由于扩散策略常用于模仿学习，该方法可提升模仿学习策略的推理速度。实验在机器人操作任务上验证了其有效性。",
+      "llm_tags": [
+        "query:inverse-rl:composite"
+      ],
+      "matched_query_tag": "query:inverse-rl:composite",
+      "matched_query_text": "Papers central to 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。, especially work that connects or combines: imitation learning; inverse reinforcement learning; inverse optimal control; apprenticeship learning; adversarial imitation learning; reward function learning; survey of inverse reinforcement learning methods; inverse optimal control applications in robotics; recent advances in imitation learning and inverse RL; comparison of inverse reinforcement learning algorithms.",
+      "matched_requirement_id": "req-composite-inverse-rl",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.02431v1",
+      "source": "arxiv",
+      "title": "WorldSample: Closed-loop Real-robot RL with World Modelling",
+      "abstract": "Reinforcement learning (RL) can overcome the demonstration-coverage limitation of imitation learning (IL) by allowing robots to improve through trial-and-error interaction beyond the states observed in demonstrations. However, deploying RL on real robots remains constrained by high interaction costs, since each physical rollout is costly and reflects only one realized action-outcome path. To address this challenge, we propose WorldSample, a physically grounded data augmentation framework for real-robot RL that closes a real-synthetic loop between physical rollouts, world-model generation, and policy improvement. Grounded on real rollouts, WorldSample generates high-fidelity synthetic transitions through a post-trained world model, which greatly lowers the visual hallucination. Specifically, rather than simply using these transitions as real-world experience, WorldSample introduces Policy-Paced Learning (PPL) to regulate the training process through sample selection and scheduling, balancing useful augmentation against value overestimation and mitigating the hallucination-induced noise. Experiments on robot manipulation tasks involving contact-rich and precise tasks show that WorldSample improves policy success rate by 28% while reducing training steps by 59% compared with baselines. Furthermore, WorldSample improves world model visual fidelity by 19.4dB in PSNR and 0.47 in SSIM over demonstration-only post-training, validating the effectiveness of the real-synthetic loop for both policy and world model performance.",
+      "authors": [
+        "Yuquan Xue",
+        "Le Xu",
+        "Zeyi Liu",
+        "Zhenyu Wu",
+        "Zhengyi Gu",
+        "Xinyang Song",
+        "Bofang Jia",
+        "Ziwei Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-07-02T17:00:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.02431v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "overcomes demonstration-coverage limitation of imitation learning using RL with world model",
+      "llm_evidence_cn": "利用世界模型强化学习克服模仿学习的演示覆盖限制",
+      "llm_evidence": "利用世界模型强化学习克服模仿学习的演示覆盖限制",
+      "canonical_evidence": "利用世界模型强化学习克服模仿学习的演示覆盖限制",
+      "llm_tldr_en": "Proposes WorldSample, a physically grounded data augmentation framework for real-robot RL that closes the loop between physical rollouts, world model generation, and policy improvement to overcome imitation learning limitations.",
+      "llm_tldr_cn": "本文提出WorldSample，一个物理基础的数据增强框架，用于实物机器人强化学习。它通过后训练世界模型生成高保真合成转移，闭合物理滚动、世界模型生成和策略改进之间的真实-合成循环。该框架旨在克服模仿学习中演示覆盖不足的问题，使机器人能够通过试错超越演示状态进行改进。实验表明，该方法降低了实物交互成本，同时提高了策略性能。",
+      "llm_tldr": "本文提出WorldSample，一个物理基础的数据增强框架，用于实物机器人强化学习。它通过后训练世界模型生成高保真合成转移，闭合物理滚动、世界模型生成和策略改进之间的真实-合成循环。该框架旨在克服模仿学习中演示覆盖不足的问题，使机器人能够通过试错超越演示状态进行改进。实验表明，该方法降低了实物交互成本，同时提高了策略性能。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2606.31682v1",
+      "source": "arxiv",
+      "title": "HABIT: Human-Aware Behavior and Interaction Training Dataset for Robot Manipulation",
+      "abstract": "Large-scale demonstration datasets have been central to recent progress in general-purpose robot policies. However, existing datasets are collected in human-absent settings, and policies trained on such data may perform tasks competently in isolation but fail to exhibit human-aware behaviors. To address this gap, we introduce HABIT, a large-scale robot demonstration dataset for human-present environments. We organize tasks into three roles capturing distinct modes of human-robot interaction: Collaborator, where human and robot jointly accomplish a task; Coworker, where they pursue separate tasks in a shared space; and Supervisor, where the human directs the robot. The dataset comprises over 10K episodes and over 160 hours across 60 tasks. Our experiments show that training on human-present data elicits human-aware behaviors that robot-only data fails to produce: spatiotemporal synchronization in Collaborator tasks, yielding in Coworker tasks, and gesture grounding in Supervisor tasks. Moreover, training on HABIT enables rapid adaptation to new human-robot interaction tasks. By introducing human presence as a new axis of dataset diversity, HABIT extends robot policies to environments shared with humans.",
+      "authors": [
+        "Jaehwi Song",
+        "Suchae Jeong",
+        "Byeongguk Jeon",
+        "Sungdong Kim",
+        "Minjoon Seo",
+        "Hyungmok Son",
+        "Kimin Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T13:58:19+00:00",
+      "link": "https://arxiv.org/pdf/2606.31682v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "provides large-scale robot demonstration dataset for training imitation learning policies",
+      "llm_evidence_cn": "提供大规模机器人演示数据集，用于训练模仿学习策略",
+      "llm_evidence": "提供大规模机器人演示数据集，用于训练模仿学习策略",
+      "canonical_evidence": "提供大规模机器人演示数据集，用于训练模仿学习策略",
+      "llm_tldr_en": "HABIT is a large-scale robot manipulation dataset collected in human-present environments across 60 tasks and three interaction roles, enabling the training of human-aware imitation learning policies.",
+      "llm_tldr_cn": "问题：现有机器人演示数据集缺乏人类在场环境，导致策略无法感知人类行为。方法：提出HABIT数据集，包含超过10K条演示，涵盖协作、共存和监督三种人机交互角色，总计160小时。结果：该数据集可以训练出更人性化的操作策略。贡献：弥补了机器人模仿学习中人类感知数据的空白。",
+      "llm_tldr": "问题：现有机器人演示数据集缺乏人类在场环境，导致策略无法感知人类行为。方法：提出HABIT数据集，包含超过10K条演示，涵盖协作、共存和监督三种人机交互角色，总计160小时。结果：该数据集可以训练出更人性化的操作策略。贡献：弥补了机器人模仿学习中人类感知数据的空白。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.31836v1",
+      "source": "arxiv",
+      "title": "RoboTacDex: A Dexterous Visual-Tactile-Action Dataset for Humanoid Manipulation",
+      "abstract": "In the field of robot learning, large-scale and diverse demonstration trajectories provide the fundamental basis for enhancing robotic manipulation ability. We introduce RoboTacDex, a large, multi-modal, and diverse dataset of dexterous manipulation behaviors performed with a humanoid robot. Built on the publicly accessible humanoid robot Unitree G1, RoboTacDex consists of 6k trajectories covering 19 tasks, 23 skills, and interactions with 22 objects. RoboTacDex provides comprehensive records including multi-view RGB and depth information, tactile feedback, and detailed semantic annotations. Furthermore, the dataset features a variety of relatively challenging tasks that can only be completed by dual arms and dexterous hands, aiming to mimic human-like operational logic and simulate real-world manipulation complexity. To ensure data collection quality, we develop an improved multi-camera synchronization system to enable millisecond data synchronization and recording of modalities. In our experiments, we evaluate three representative imitation learning models on our dataset,   analyzing their performance as well as their respective strengths and limitations across different task categories. Successful trial results and a moderate level of generalization capabilities across a suite of tasks indicate the effectiveness and diversity of the collected dataset. Our dataset will be open-sourced soon.",
+      "authors": [
+        "Xinyi Wang",
+        "Donghan Li",
+        "Zi'Ang Chen",
+        "Chong Yu",
+        "Chen Xin",
+        "Peng Ye",
+        "Yingkai Sun",
+        "Tao Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T15:39:29+00:00",
+      "link": "https://arxiv.org/pdf/2606.31836v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "large-scale multi-modal dexterous manipulation dataset for imitation learning on humanoid",
+      "llm_evidence_cn": "大规模多模态人形机器人灵巧操作数据集用于模仿学习",
+      "llm_evidence": "大规模多模态人形机器人灵巧操作数据集用于模仿学习",
+      "canonical_evidence": "大规模多模态人形机器人灵巧操作数据集用于模仿学习",
+      "llm_tldr_en": "RoboTacDex provides 6k trajectories with RGB-D, tactile, and semantic annotations for dexterous manipulation tasks on a humanoid robot, enabling imitation learning research.",
+      "llm_tldr_cn": "人形机器人操作学习缺乏大规模多模态演示数据集。本文发布RoboTacDex，包含Unitree G1上6k条轨迹、19个任务、23种技能，提供多视角RGB-D、触觉反馈和语义标注。该数据集覆盖了需要双臂和灵巧手才能完成的复杂任务，为模仿学习提供了丰富资源。",
+      "llm_tldr": "人形机器人操作学习缺乏大规模多模态演示数据集。本文发布RoboTacDex，包含Unitree G1上6k条轨迹、19个任务、23种技能，提供多视角RGB-D、触觉反馈和语义标注。该数据集覆盖了需要双臂和灵巧手才能完成的复杂任务，为模仿学习提供了丰富资源。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.31846v1",
+      "source": "arxiv",
+      "title": "Z-1: Efficient Reinforcement Learning for Vision-Language-Action Models",
+      "abstract": "Vision-Language-Action (VLA) models offer a promising framework for robotic manipulation by connecting language instructions, visual observations, and continuous control. However, most existing policies remain limited by behavior cloning or supervised fine-tuning (SFT) from fixed demonstrations, which provides limited opportunity to improve from the policy's own failures. In this paper, we present Z-1, a reinforcement learning (RL) post-training framework for flow-based VLA models. Built on top of $π_{0.5}$, Z-1 uses only publicly released RoboCasa demonstrations for SFT and then applies a task-wise Group Relative Policy Optimization (GRPO) strategy across $24$ standard RoboCasa tasks. To improve the efficiency and stability of online optimization, Z-1 combines shared-prefix rollout construction, tree-structured trajectory branching, completion-aware reward calibration, and selective joint training of VLM and Action Expert. Across all $24$ RoboCasa tasks, Z-1 achieves an average success rate of $80.6\\%$, improving over its SFT initialization by $13.2\\%$ points and outperforms the published sota models. These results show that systematic GRPO post-training can substantially improve flow-based VLA policies without additional private demonstrations.",
+      "authors": [
+        "Lang Cao",
+        "Renhong Chen",
+        "Luyi Li",
+        "Peng Wang",
+        "Mofan Peng",
+        "Yitong Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-06-30T15:46:57+00:00",
+      "link": "https://arxiv.org/pdf/2606.31846v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "uses behavior cloning from demonstrations and RL post-training, related to imitation learning",
+      "llm_evidence_cn": "使用行为克隆从演示中训练，并结合强化学习微调，与模仿学习相关",
+      "llm_evidence": "使用行为克隆从演示中训练，并结合强化学习微调，与模仿学习相关",
+      "canonical_evidence": "使用行为克隆从演示中训练，并结合强化学习微调，与模仿学习相关",
+      "llm_tldr_en": "Proposes Z-1, an RL post-training framework for VLA models that combines behavior cloning with GRPO to improve policy beyond supervised fine-tuning.",
+      "llm_tldr_cn": "针对现有视觉-语言-动作模型主要依赖行为克隆和固定演示微调、难以从自身失败中改进的问题，提出Z-1框架：先使用公开RoboCasa演示进行监督微调，再通过分组近端策略优化（GRPO）进行强化学习训练。在24个标准任务上验证了该方法的有效性。",
+      "llm_tldr": "针对现有视觉-语言-动作模型主要依赖行为克隆和固定演示微调、难以从自身失败中改进的问题，提出Z-1框架：先使用公开RoboCasa演示进行监督微调，再通过分组近端策略优化（GRPO）进行强化学习训练。在24个标准任务上验证了该方法的有效性。",
+      "llm_tags": [
+        "query:inverse-rl"
+      ],
+      "matched_query_tag": "query:inverse-rl",
+      "matched_query_text": "imitation learning",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.00215v1",
+      "source": "arxiv",
+      "title": "ELMP: Efficient Learning for Motion Planning via Analytical Policy Gradients",
+      "abstract": "Neural Motion Planners (NMPs) enable fast reactive motion generation, but adapting them to new environments typically requires recollecting large expert datasets, which is computationally prohibitive. We propose ELMP, a framework for data-efficient adaptation via self-supervised fine-tuning. Rather than generating additional expert trajectories with expensive global planners, ELMP directly optimizes the policy through a differentiable kinematic layer using dense collision, target-reaching, and smoothness objectives. This replaces expert data generation with rapid problem sampling, reducing per-sample adaptation cost by roughly two orders of magnitude. To further support robust generalization across changing kinematic chains, we introduce a mechanism to explicitly encode tool geometry via point clouds. Benchmarked against classical and neural baselines, ELMP achieves an 84.8% average success rate with orders-of-magnitude lower cold-start latency than classical methods. In unseen environments, self-supervised fine-tuning improves success rate from 57.3% (zero-shot) to 89.8%, removing the data collection bottleneck. Our approach maintains millisecond-level inference latency and is validated on a physical Franka Emika Panda robot.",
+      "authors": [
+        "Yixiao Li",
+        "Tifanny Portela",
+        "Jordis Herrmann",
+        "René Zurbrügg",
+        "Marco Hutter"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-06-30T21:47:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.00215v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "self-supervised fine-tuning for neural motion planners",
+      "llm_evidence_cn": "基于解析策略梯度的自监督微调用于神经运动规划器",
+      "llm_evidence": "基于解析策略梯度的自监督微调用于神经运动规划器",
+      "canonical_evidence": "基于解析策略梯度的自监督微调用于神经运动规划器",
+      "llm_tldr_en": "ELMP replaces expert data generation with self-supervised fine-tuning via analytical policy gradients in a differentiable kinematic layer, reducing adaptation cost by two orders of magnitude.",
+      "llm_tldr_cn": "现有神经运动规划器适应新环境需要重新收集大量专家数据。本文提出ELMP框架，通过可微运动学层中的解析策略梯度直接优化策略，用密集碰撞、目标到达和平滑度目标替代专家数据生成。实验证明ELMP将每个样本的适应成本降低约两个数量级，并支持跨运动链的泛化。",
+      "llm_tldr": "现有神经运动规划器适应新环境需要重新收集大量专家数据。本文提出ELMP框架，通过可微运动学层中的解析策略梯度直接优化策略，用密集碰撞、目标到达和平滑度目标替代专家数据生成。实验证明ELMP将每个样本的适应成本降低约两个数量级，并支持跨运动链的泛化。",
+      "llm_tags": [
+        "query:locowbc"
+      ],
+      "matched_query_tag": "query:locowbc",
+      "matched_query_text": "motion planning for robot locomotion",
+      "matched_requirement_id": "req-15",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.01586v1",
+      "source": "arxiv",
+      "title": "VLAFlow: A Unified Training Framework for Vision-Language-Action Models via Co-training and Future Latent Alignment",
+      "abstract": "Vision-language-action models (VLAs) have recently advanced robotic manipulation, yet the effects of different robot-data pre-training paradigms remain difficult to compare because existing models often differ in architecture, data, action space, and evaluation protocol. We present VLAFlow (Vision-Language-Action Flow), a unified flow-matching framework for controlled comparison of VLA training objectives. Using a heterogeneous robot corpus, OXEMix, containing approximately 5,000 hours of data from DROID, OpenX-Embodiment, OpenX-Augmented, and RoboCOIN, we evaluate four paradigms under the same pi0-style architecture, shared VLM backbone, action expert, and 14-dimensional action space: action-only modeling (MindPI), language-supervised co-training (MindLPI), future latent alignment (MindWPI), and their combination (MindLWPI). Experiments on LIBERO, LIBERO-Plus, and SimplerEnv show that action-only pre-training is sensitive to heterogeneous data. In contrast, language supervision helps preserve vision-language generalization, while future latent alignment improves state-transition and action-outcome modeling. By combining both signals, MindLWPI achieves the most stable overall transfer performance across benchmarks. These results suggest a meta-action space view: language and future latent representations provide complementary intermediate constraints that make heterogeneous action supervision smoother and more transferable.",
+      "authors": [
+        "Guoyang Xia",
+        "Fengfa Li",
+        "Hongjin Ji",
+        "Lei Ren",
+        "Fangxiang Feng",
+        "Kun Zhan",
+        "Yan Xie"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-07-02T01:38:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.01586v1",
+      "tags": [
+        "keyword:MPC-WBC",
+        "keyword:inverse-rl",
+        "keyword:locoWBC",
+        "query:MPC-WBC",
+        "query:inverse-rl",
+        "query:locoWBC"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "unified training framework for vision-language-action models, relevant to imitation learning",
+      "llm_evidence_cn": "视觉-语言-动作模型的统一训练框架，与模仿学习相关",
+      "llm_evidence": "视觉-语言-动作模型的统一训练框架，与模仿学习相关",
+      "canonical_evidence": "视觉-语言-动作模型的统一训练框架，与模仿学习相关",
+      "llm_tldr_en": "Presents VLAFlow, a unified flow-matching framework for comparing VLA training paradigms, using heterogeneous robot data to evaluate four pre-training objectives.",
+      "llm_tldr_cn": "本文提出VLAFlow，一个统一的流匹配框架，用于比较视觉-语言-动作模型的不同训练范式。使用包含约5000小时异构机器人数据的数据集OXEMix，在相同架构下评估四种训练目标。这些范式通常涉及模仿学习，但论文专注于训练目标对比，而非提出新模仿学习算法。",
+      "llm_tldr": "本文提出VLAFlow，一个统一的流匹配框架，用于比较视觉-语言-动作模型的不同训练范式。使用包含约5000小时异构机器人数据的数据集OXEMix，在相同架构下评估四种训练目标。这些范式通常涉及模仿学习，但论文专注于训练目标对比，而非提出新模仿学习算法。",
+      "llm_tags": [
+        "query:inverse-rl:composite"
+      ],
+      "matched_query_tag": "query:inverse-rl:composite",
+      "matched_query_text": "Papers central to 请帮我查找模仿学习论文，尤其是逆强化学习，逆最优控制方向。, especially work that connects or combines: imitation learning; inverse reinforcement learning; inverse optimal control; apprenticeship learning; adversarial imitation learning; reward function learning; survey of inverse reinforcement learning methods; inverse optimal control applications in robotics; recent advances in imitation learning and inverse RL; comparison of inverse reinforcement learning algorithms.",
+      "matched_requirement_id": "req-composite-inverse-rl",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
