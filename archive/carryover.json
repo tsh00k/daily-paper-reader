@@ -1,20 +1,109 @@
 {
-  "generated_at": "2026-07-06T21:04:44.277493+00:00",
-  "updated_date": "20260706",
+  "generated_at": "2026-07-12T21:11:29.055513+00:00",
+  "updated_date": "20260712",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260706",
+      "updated_date": "20260712",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260706",
+      "updated_date": "20260712",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2607.08436v1",
+          "source": "arxiv",
+          "title": "EgoWAM: World Action Models Beyond Pixels with In-the-Wild Egocentric Human Data",
+          "abstract": "Egocentric human data offers scalable supervision for robot manipulation. However, behavior cloning entangles transferable content like objects, scenes, and task semantics, with non-transferable factors like human morphology, head motion, and behavioral style. We study whether World Action Models (WAMs) provide a better training signal by requiring policies to predict not only actions, but also how the scene evolves. The central question is what world representation best enables human-to-robot transfer. We hypothesize that an effective world target should abstract appearance, capture agent-invariant physical effects, and separate camera motion from environment change. We introduce EgoWAM, a controlled human-robot co-training framework that fixes the policy backbone, action head, and data mixture while varying only the world prediction target, comparing Pixel, DINO, and 3D motion flow. Across three real-world bimanual tasks, WAM co-training scales more effectively with in-the-wild egocentric human data than behavior cloning. Pixel-based prediction transfers weakly, while DINO and 3D flow yield substantial gains: DINO improves out-of-distribution object and scene generalization by up to 4x, and 3D flow improves in-domain performance by 20-30%. More details: https://gatech-rl2.github.io/egowam.github.io",
+          "authors": [
+            "Baoyu Li",
+            "Xinchen Yin",
+            "Mengying Lin",
+            "Yixin Zhang",
+            "Danfei Xu"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI"
+          ],
+          "published": "2026-07-08T16:11:37+00:00",
+          "link": "https://arxiv.org/pdf/2607.08436v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "behavior cloning from egocentric human data for robot manipulation",
+          "llm_evidence_cn": "利用第一人称人类数据进行行为克隆用于机器人操作",
+          "llm_evidence": "利用第一人称人类数据进行行为克隆用于机器人操作",
+          "canonical_evidence": "利用第一人称人类数据进行行为克隆用于机器人操作",
+          "llm_tldr_en": "EgoWAM studies world action models for human-to-robot transfer, showing that predicting scene evolution improves behavior cloning from egocentric data.",
+          "llm_tldr_cn": "针对行为克隆中人类形态等不可迁移因素的干扰，提出EgoWAM：研究世界动作模型(WAM)作为训练信号，要求策略不仅预测动作还预测场景演变。通过协同训练框架分离可迁移内容与不可迁移因素，在野外第一人称人类数据上验证了WAM能有效提升人-机器人迁移性能，证明世界表示对模仿学习的重要性。",
+          "llm_tldr": "针对行为克隆中人类形态等不可迁移因素的干扰，提出EgoWAM：研究世界动作模型(WAM)作为训练信号，要求策略不仅预测动作还预测场景演变。通过协同训练框架分离可迁移内容与不可迁移因素，在野外第一人称人类数据上验证了WAM能有效提升人-机器人迁移性能，证明世界表示对模仿学习的重要性。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.08436v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2607.07859v1",
+          "source": "arxiv",
+          "title": "Feedback Manipulation Regularization: Enabling Offline Agent Alignment for Imitation Learning",
+          "abstract": "Reinforcement learning (RL) research has increasingly shifted focus towards alignment, ensuring agents learn behaviors adhering to human values. While human demonstrations and feedback have proven crucial for alignment, existing approaches predominantly combine these signals using multi-stage pipelines designed for the contextual bandit framing of language generation. Yet little work explores how these complementary inputs can serve as a richer, interconnected signal for single-stage offline training in fully sequential decision-making environments. We propose Feedback Manipulation Regularization (FMR), an algorithm-agnostic method that harnesses evaluative feedback as a corrective signal to improve the alignment of imitation learning policies. We adapt Safety Gymnasium environments to be a principled testbed for alignment evaluation, demonstrating improved aptitude and up to a 98\\% reduction in misalignment across a range of imitation learning algorithms. FMR remains robust in limited data regimes, even when learning from scarce aligned and uninformative noisy demonstrations.",
+          "authors": [
+            "Benjamin Poole",
+            "Minwoo Lee"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI",
+            "cs.HC",
+            "cs.LG"
+          ],
+          "published": "2026-07-08T18:47:29+00:00",
+          "link": "https://arxiv.org/pdf/2607.07859v1",
+          "tags": [
+            "keyword:MPC-WBC",
+            "keyword:inverse-rl",
+            "keyword:locoWBC",
+            "query:MPC-WBC",
+            "query:inverse-rl",
+            "query:locoWBC"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "addresses imitation learning with feedback signals",
+          "llm_evidence_cn": "提出利用反馈信号的模仿学习方法",
+          "llm_evidence": "提出利用反馈信号的模仿学习方法",
+          "canonical_evidence": "提出利用反馈信号的模仿学习方法",
+          "llm_tldr_en": "Proposes Feedback Manipulation Regularization (FMR) that uses evaluative feedback as a corrective signal to improve offline imitation learning alignment, enabling single-stage training from demonstrations and feedback in sequential decision-making.",
+          "llm_tldr_cn": "提出反馈操纵正则化方法，利用评估反馈作为纠正信号提升离线模仿学习智能体的对齐能力。与现有多阶段方法不同，本文实现单阶段离线训练，在完整序列决策环境中结合演示和反馈。实验显示FMR有效改善智能体行为与人类价值观的一致性，是一种算法无关的通用框架。",
+          "llm_tldr": "提出反馈操纵正则化方法，利用评估反馈作为纠正信号提升离线模仿学习智能体的对齐能力。与现有多阶段方法不同，本文实现单阶段离线训练，在完整序列决策环境中结合演示和反馈。实验显示FMR有效改善智能体行为与人类价值观的一致性，是一种算法无关的通用框架。",
+          "llm_tags": [
+            "query:inverse-rl"
+          ],
+          "matched_query_tag": "query:inverse-rl",
+          "matched_query_text": "imitation learning",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.07859v1",
+          "carry_days": 1
+        }
+      ]
     },
     "MPC-WBC": {
-      "updated_date": "20260706",
+      "updated_date": "20260712",
       "carryover_days": 9,
       "items": []
     }
