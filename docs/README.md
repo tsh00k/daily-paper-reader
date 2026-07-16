@@ -6,89 +6,89 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-12
-- 运行时间：2026-07-12 21:26:26 UTC
+- 最新运行日期：2026-07-16
+- 运行时间：2026-07-16 21:32:53 UTC
 - 运行状态：成功
 - 本次总论文数：23
 - 精读区：10
 - 速读区：13
 
 ### 今日简报（AI）
-今日重点扫描了扩散策略执行地平线自适应与人形机器人长尾全身控制两项前沿工作。高价值方向：空间注意力机制通过观察灵敏度动态调整扩散策略执行步长，能力对齐多专家系统则有效应对人形机器人长尾动作分布。建议优先精读这两篇9分论文，同时速读《SIEVE》的结构感知数据选择方法以优化VLA模型训练数据质量。
-- 详情：[/202607/12/README](/202607/12/README)
+今日共收录23篇论文，精读10篇，其中两篇获9.0高分——聚焦离线模仿学习对齐的反馈操纵正则化与非参数贝叶斯逆强化学习。最值得关注的是通过数据并行吉布斯采样的逆强化学习新框架，以及利用频谱基元实现机器人技能泛化的方法。建议优先精读高分论文，并速读SPECTRA与组合运动生成等面向实际部署的技术。
+- 详情：[/202607/16/README](/202607/16/README)
 
 ### 精读区论文标签
-1. [Spatial Attention: Adapting Execution Horizons for Diffusion Policies via Observation Sensitivity](/202607/12/2607.04739v1-spatial-attention-adapting-execution-horizons-for-diffusion-policies-via-observation-sensitivity)  
+1. [Feedback Manipulation Regularization: Enabling Offline Agent Alignment for Imitation Learning](/202607/16/2607.07859v1-feedback-manipulation-regularization-enabling-offline-agent-alignment-for-imitation-learning)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：为模仿学习中的扩散策略自适应调整执行时间跨度
-2. [Athena-WBC: Capability-Aligned Policy Experts for Long-Tail Humanoid Whole-Body Control](/202607/12/2607.04837v1-athena-wbc-capability-aligned-policy-experts-for-long-tail-humanoid-whole-body-control)  
+   evidence：利用反馈操作正则化的离线模仿学习
+2. [Nonparametric Bayesian Inverse Reinforcement Learning with Data-Parallel Gibbs Sampling](/202607/16/2607.09886v1-nonparametric-bayesian-inverse-reinforcement-learning-with-data-parallel-gibbs-sampling)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：非参数贝叶斯逆强化学习
+3. [TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation](/202607/16/2607.10132v1-tac-loco-unified-whole-body-control-for-quadrupedal-tactile-informed-loco-manipulation)  
    标签：评分：9.0/10、query:locowbc
-   evidence：面向仿人全身控制的能力对齐策略专家
-3. [Athena-WBC: Capability-Aligned Policy Experts for Long-Tail Humanoid Whole-Body Control](/202607/12/2607.04837v2-athena-wbc-capability-aligned-policy-experts-for-long-tail-humanoid-whole-body-control)  
+   evidence：用于四足机器人的统一全身控制框架，融合触觉感知
+4. [Source-Lifted Flow Matching for Intervenable Multimodal Imitation](/202607/16/2607.10206v1-source-lifted-flow-matching-for-intervenable-multimodal-imitation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：用于多模态模仿学习的流匹配策略，支持用户干预
+5. [Dual-Process Atomic Skill Learning: Decoupling Semantic Reasoning and Real-Time Control](/202607/16/2607.10625v1-dual-process-atomic-skill-learning-decoupling-semantic-reasoning-and-real-time-control)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：提出了一种层次化模仿学习框架，用于语言条件下的任务执行
+6. [SKooP: Symmetric Koopman Predictions for Faster and More Generalizable Legged Robot Locomotion with Reinforcement Learning](/202607/16/2607.11624v1-skoop-symmetric-koopman-predictions-for-faster-and-more-generalizable-legged-robot-locomotion-with-reinforcement-learning)  
    标签：评分：9.0/10、query:locowbc
-   evidence：仿人机器人全身控制
-4. [WristMimic: Full-Body Humanoid Control with Wrist-Guided Manipulation](/202607/12/2607.06438v1-wristmimic-full-body-humanoid-control-with-wrist-guided-manipulation)  
+   evidence：直接针对四足机器人运动控制与强化学习
+7. [Robust bipedal locomotion on flowable slopes via foot-driven terrain manipulation](/202607/16/2607.11855v1-robust-bipedal-locomotion-on-flowable-slopes-via-foot-driven-terrain-manipulation)  
    标签：评分：9.0/10、query:locowbc
-   evidence：直接提出全身人形控制框架
-5. [RynnWorld-Teleop: An Action-Conditioned World Model for Digital Teleoperation](/202607/12/2607.06558v1-rynnworld-teleop-an-action-conditioned-world-model-for-digital-teleoperation)  
+   evidence：基于足部地形操控的双足斜坡行走
+8. [Distributionally Robust and Safe Imitation Learning](/202607/16/2607.13436v1-distributionally-robust-and-safe-imitation-learning)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：通过数字遥操作生成模仿学习数据
-6. [SPECTRA: Context-Conditioned Spectral Movement Primitives for Robot Skill Generalization](/202607/12/2607.06978v1-spectra-context-conditioned-spectral-movement-primitives-for-robot-skill-generalization)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：使用频谱运动原语的机器人技能泛化模仿学习
-7. [Physics-Guided Biomechanical Gait Adaptation for Humanoid Locomotion on Extreme Sloped Terrains](/202607/12/2607.07830v1-physics-guided-biomechanical-gait-adaptation-for-humanoid-locomotion-on-extreme-sloped-terrains)  
+   evidence：提出分布鲁棒且安全的模仿学习框架
+9. [Agile perceptive multi-skill locomotion for quadrupedal robots in the wild](/202607/16/2607.13579v1-agile-perceptive-multi-skill-locomotion-for-quadrupedal-robots-in-the-wild)  
    标签：评分：9.0/10、query:locowbc
-   evidence：基于强化学习和ZMP正则化的人形机器人在斜坡地形上的行走控制
-8. [AnyDexRT: Calibration-Free Dexterous Hand Retargeting with Few-Shot Human Guidance](/202607/12/2607.08341v1-anydexrt-calibration-free-dexterous-hand-retargeting-with-few-shot-human-guidance)  
+   evidence：四足机器人的多技能运动规划与控制
+10. [Discriminative Barrier Functions for Safe Adversarial Imitation Learning from Observation](/202607/16/2607.13938v1-discriminative-barrier-functions-for-safe-adversarial-imitation-learning-from-observation)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：无标定灵巧手重定位，用于遥操作收集模仿学习数据
-9. [SkillPlug: Unsupervised Skill Mining for Few-Shot Adaptation in Robotic Manipulation](/202607/12/2607.08354v1-skillplug-unsupervised-skill-mining-for-few-shot-adaptation-in-robotic-manipulation)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：无监督技能挖掘用于视觉运动模仿策略的少样本适应
-10. [Multi-Modal, Multi-Environment Machine Teaching for Robust Reward Learning](/202607/12/2607.08647v1-multi-modal-multi-environment-machine-teaching-for-robust-reward-learning)  
-   标签：评分：9.0/10、query:inverse-rl
-   evidence：直接针对逆强化学习，研究跨环境鲁棒奖励学习
+   evidence：将对抗模仿学习与控制屏障函数结合，实现安全的观察逆强化学习
 
 ### 速读区论文标签
-1. [GPU-Accelerated Polygonal Signed Distance Functions for Real-Time Collision Avoidance](/202607/12/2607.04310v1-gpu-accelerated-polygonal-signed-distance-functions-for-real-time-collision-avoidance)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：GPU加速的碰撞避免用于运动规划
-2. [ThorArena: Benchmarking Humanoid Physical Interaction with Human Motion-Force Demonstrations](/202607/12/2607.06052v1-thorarena-benchmarking-humanoid-physical-interaction-with-human-motion-force-demonstrations)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：基于人类运动-力示范的仿人全身控制基准
-3. [SIEVE: Structure-Aware Data Selection for Imitation Learning with VLA Models](/202607/12/2607.06442v1-sieve-structure-aware-data-selection-for-imitation-learning-with-vla-models)  
+1. [SPECTRA: Context-Conditioned Spectral Movement Primitives for Robot Skill Generalization](/202607/16/2607.06978v2-spectra-context-conditioned-spectral-movement-primitives-for-robot-skill-generalization)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：面向VLA模仿学习的数据选择方法
-4. [PriGo: Test-Time Primitive Guidance to Diffusion and Flow Policies for Adaptive Robotic Manipulation](/202607/12/2607.07076v1-prigo-test-time-primitive-guidance-to-diffusion-and-flow-policies-for-adaptive-robotic-manipulation)  
+   evidence：基于光谱运动基元的机器人模仿学习
+2. [WAM-TTT: Steering World-Action Models by Watching Human Play at Test Time](/202607/16/2607.06988v1-wam-ttt-steering-world-action-models-by-watching-human-play-at-test-time)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：针对扩散/流策略模仿学习泛化失败问题
-5. [Behavior Foundations for Quadruped Robots: ABot-C0 Technical Report](/202607/12/2607.07370v1-behavior-foundations-for-quadruped-robots-abot-c0-technical-report)  
+   evidence：通过测试时训练从人类视频中引导机器人基础模型，类似于模仿学习
+3. [Compositional Motion Generation from Demonstration with Object-Centric Neural Fields](/202607/16/2607.07129v1-compositional-motion-generation-from-demonstration-with-object-centric-neural-fields)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：基于目标中心神经场的示范组合运动生成
+4. [Behavior Foundations for Quadruped Robots: ABot-C0 Technical Report](/202607/16/2607.07370v2-behavior-foundations-for-quadruped-robots-abot-c0-technical-report)  
    标签：评分：8.0/10、query:locowbc
-   evidence：四足机器人运动与策略学习
-6. [WSA$_1$: a 3D-Centric World-Spatial-Action Model for Generalizable Robot Control](/202607/12/2607.03941v1-wsa1-a-3d-centric-world-spatial-action-model-for-generalizable-robot-control)  
+   evidence：四足机器人运动控制与运动策略学习
+5. [Immersive Social Interaction with VR and LLM-Assisted Humanoids](/202607/16/2607.07430v1-immersive-social-interaction-with-vr-and-llm-assisted-humanoids)  
+   标签：评分：8.0/10、query:locowbc
+   evidence：VR和LLM辅助的全身人形机器人控制
+6. [WAM-TTT: Steering World-Action Models by Watching Human Play at Test Time](/202607/16/2607.06988v2-wam-ttt-steering-world-action-models-by-watching-human-play-at-test-time)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：利用模仿学习从机器人演示中学习映射
-7. [Simple-to-Complex Structured Demonstrations for Vision-Language-Action Learning](/202607/12/2607.04591v1-simple-to-complex-structured-demonstrations-for-vision-language-action-learning)  
+   evidence：从人类视频测试时训练引导世界行动模型
+7. [Generating Personalized Lower-Limb Kinematics Across Walking Speeds Using Subject-Conditioned Diffusion](/202607/16/2607.07533v1-generating-personalized-lower-limb-kinematics-across-walking-speeds-using-subject-conditioned-diffusion)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：使用扩散模型生成个性化下肢运动学以支持行走
+8. [EgoWAM: World Action Models Beyond Pixels with In-the-Wild Egocentric Human Data](/202607/16/2607.08436v1-egowam-world-action-models-beyond-pixels-with-in-the-wild-egocentric-human-data)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：通过结构化演示进行模仿学习
-8. [Qantara: Bridge-Flow Training for Multi-Paradigm JEPA Control](/202607/12/2607.04978v1-qantara-bridge-flow-training-for-multi-paradigm-jepa-control)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：潜在世界模型，桥接轨迹优化和行为克隆的控制范式
-9. [InternVLA-A1.5: Unifying Understanding, Latent Foresight, and Action for Compositional Generalization](/202607/12/2607.04988v1-internvla-a15-unifying-understanding-latent-foresight-and-action-for-compositional-generalization)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：统一VLA模型基于模仿学习训练
-10. [XS-VLA: Coupling Coarse-grained Spatial Distillation with Latent Flow Matching for Lightweight Robotic Control](/202607/12/2607.04171v1-xs-vla-coupling-coarse-grained-spatial-distillation-with-latent-flow-matching-for-lightweight-robotic-control)  
+   evidence：通过世界行动模型进行人类到机器人的行为克隆
+9. [ContactMimic: Humanoid Object Interaction via Contact Control](/202607/16/2607.08742v1-contactmimic-humanoid-object-interaction-via-contact-control)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：用于人形机器人物体交互的学习框架，显式控制接触
+10. [ARDY: Autoregressive Diffusion with Hybrid Representation for Interactive Human Motion Generation](/202607/16/2607.08741v1-ardy-autoregressive-diffusion-with-hybrid-representation-for-interactive-human-motion-generation)  
+   标签：评分：6.0/10、query:locowbc
+   evidence：人体运动生成用于人形机器人，与运动规划相关
+11. [FlowDAgger: Human-in-the-Loop Adaptation of Generative Robot Policies in Latent Space](/202607/16/2607.08877v1-flowdagger-human-in-the-loop-adaptation-of-generative-robot-policies-in-latent-space)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：基于空间蒸馏和潜在流匹配的轻量级VLA模型，从演示中学习机器人操作
-11. [On the effectiveness of reward functions in reinforcement learning for confidence calibration of large language models](/202607/12/2607.04332v1-on-the-effectiveness-of-reward-functions-in-reinforcement-learning-for-confidence-calibration-of-large-language-models)  
+   evidence：类似模仿学习的人类在环生成策略适应方法
+12. [Implicit-Behavior Coordination from Unlabeled Sub-Task Demonstrations for Rearrangement Tasks](/202607/16/2607.09234v1-implicit-behavior-coordination-from-unlabeled-sub-task-demonstrations-for-rearrangement-tasks)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：用于LLM置信度校准的奖励函数设计
-12. [KAM-WM: Kinematic Affordance Maps from Latent World Models for Robot Manipulation](/202607/12/2607.04652v1-kam-wm-kinematic-affordance-maps-from-latent-world-models-for-robot-manipulation)  
+   evidence：从无标签子任务演示进行模仿学习
+13. [PAC-ACT: Post-training Actor-Critic for Action Chunking Transformers](/202607/16/2607.09590v1-pac-act-post-training-actor-critic-for-action-chunking-transformers)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：从少量演示学习操作，使用扩散策略
-13. [PRISM: Personalized Robotic Dataset Generation via Image-based Scene and Motion Synthesis](/202607/12/2607.04880v1-prism-personalized-robotic-dataset-generation-via-image-based-scene-and-motion-synthesis)  
-   标签：评分：6.0/10、query:inverse-rl
-   evidence：生成个性化机器人数据集用于模仿学习
+   evidence：通过强化学习后训练改进行为克隆策略
 
 
 <div class="dpr-home-promo-card">
