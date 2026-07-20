@@ -6,83 +6,86 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 21:34:08 UTC
+- 最新运行日期：2026-07-20
+- 运行时间：2026-07-20 20:47:11 UTC
 - 运行状态：成功
-- 本次总论文数：21
-- 精读区：8
+- 本次总论文数：22
+- 精读区：9
 - 速读区：13
 
 ### 今日简报（AI）
-今日共处理21篇论文，精读8篇，聚焦人形与四足机器人运动控制领域突破。推荐精读《GaitSpan: Growing Humanoid Locomotion from Walking to Running》（满分10）与《TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation》（9分），前者实现人形机器人从行走到跑步的连续运动生成，后者将触觉反馈融入四足机器人全身操控。建议追踪具身智能中运动能力与灵巧操作的交叉研究，尤其关注多模态感知赋能的控制框架。
-- 详情：[/202607/17/README](/202607/17/README)
+今天精读9篇、速读13篇，重点突破智能体策略优化与足式机器人运动学习。最推荐《Agentic-DPO》用策略优化超越模仿学习（9.0分），以及《SKooP》用Koopman预测加速强化学习泛化（9.0分）。建议优先精读这两篇论文，掌握方法论后可直接复用于机器人学习任务。
+- 详情：[/202607/20/README](/202607/20/README)
 
 ### 精读区论文标签
-1. [GaitSpan: Growing Humanoid Locomotion from Walking to Running](/202607/17/2607.12114v1-gaitspan-growing-humanoid-locomotion-from-walking-to-running)  
-   标签：评分：10.0/10、query:locowbc
-   evidence：人形机器人从走到跑的步态扩展
-2. [TAC-LOCO: Unified Whole-Body Control for Quadrupedal TACtile-Informed LOCO-Manipulation](/202607/17/2607.10132v2-tac-loco-unified-whole-body-control-for-quadrupedal-tactile-informed-loco-manipulation)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：利用触觉反馈的四足操作统一全身控制
-3. [Learning Roller-Skating Motions of Humanoid Robots Based on Adversarial Motion Priors](/202607/17/2607.10815v1-learning-roller-skating-motions-of-humanoid-robots-based-on-adversarial-motion-priors)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：人形机器人滑冰，涉及全身平衡和对抗模仿学习（AMP）
-4. [SegDiff: Segmented Trajectory Diffusion for Consistent and Adaptive Robot Manipulation](/202607/17/2607.11027v1-segdiff-segmented-trajectory-diffusion-for-consistent-and-adaptive-robot-manipulation)  
+1. [Agentic-DPO: From Imitation to Agentic Policy Optimization on Expert Trajectories](/202607/20/2607.10601v1-agentic-dpo-from-imitation-to-agentic-policy-optimization-on-expert-trajectories)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：通过分割轨迹和学习扩散模型来模仿演示，用于操作任务
-5. [PAKE: Learning Whole-Body Loco-Manipulation with Partial Kinematic Embeddings](/202607/17/2607.11041v1-pake-learning-whole-body-loco-manipulation-with-partial-kinematic-embeddings)  
+   evidence：提出从专家轨迹通过模仿和偏好学习进行策略优化
+2. [SKooP: Symmetric Koopman Predictions for Faster and More Generalizable Legged Robot Locomotion with Reinforcement Learning](/202607/20/2607.11624v3-skoop-symmetric-koopman-predictions-for-faster-and-more-generalizable-legged-robot-locomotion-with-reinforcement-learning)  
    标签：评分：9.0/10、query:locowbc
-   evidence：用于运动操作的全身控制框架，使用模仿控制
-6. [Deployable Human Preference Alignment in Robotics: Learning Representative Rewards from Diverse Human Preferences](/202607/17/2607.12466v1-deployable-human-preference-alignment-in-robotics-learning-representative-rewards-from-diverse-human-preferences)  
+   evidence：关注腿部机器人运动，结合强化学习和Koopman模型
+3. [Generalizable VLA Finetuning via Representation Anchoring and Language-Action Alignment](/202607/20/2607.13429v1-generalizable-vla-finetuning-via-representation-anchoring-and-language-action-alignment)  
    标签：评分：9.0/10、query:inverse-rl
-   evidence：从多样化人类偏好中学习奖励函数
-7. [Semantic Audio-driven Understanding for Dynamic Humanoid Whole Body Control](/202607/17/2607.14182v1-semantic-audio-driven-understanding-for-dynamic-humanoid-whole-body-control)  
-   标签：评分：9.0/10、query:locowbc
-   evidence：动态人形机器人全身控制
-8. [One-Shot Multimodal Learning from Demonstration with Force-Constrained Elastic Maps](/202607/17/2607.09515v1-one-shot-multimodal-learning-from-demonstration-with-force-constrained-elastic-maps)  
-   标签：评分：8.0/10、query:inverse-rl
-   evidence：单次多模态演示学习，包含力约束
+   evidence：行为克隆微调视觉语言动作模型
+4. [Joint On-and-Off Policy Learning for Vision-and-Language Navigation](/202607/20/2607.13461v1-joint-on-and-off-policy-learning-for-vision-and-language-navigation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：在视觉语言导航中结合离线模仿学习和在线探索
+5. [Industrial Dexterity Benchmark: A Hardware-Software Benchmarking Platform for Industrial Dexterous Manipulation](/202607/20/2607.14021v1-industrial-dexterity-benchmark-a-hardware-software-benchmarking-platform-for-industrial-dexterous-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：面向工业灵巧操作的多模态模仿学习框架
+6. [A Noise-Robust Elicit-to-Optimize Framework for Distortion Riskmetrics via Inverse Reinforcement Learning](/202607/20/2607.14373v1-a-noise-robust-elicit-to-optimize-framework-for-distortion-riskmetrics-via-inverse-reinforcement-learning)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：提出使用逆强化学习推断风险偏好
+7. [RoboTTT: Context Scaling for Robot Policies](/202607/20/2607.15275v1-robottt-context-scaling-for-robot-policies)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：从人类视频演示中进行一次模仿学习
+8. [Risk-Aware Preference Learning for Stochastic Outcomes](/202607/20/2607.15483v1-risk-aware-preference-learning-for-stochastic-outcomes)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：从人类偏好学习风险感知的奖励函数
+9. [Dynamics-Aware Meta-Imitation for Generalization to Unseen Robotic Manipulation](/202607/20/2607.15880v1-dynamics-aware-meta-imitation-for-generalization-to-unseen-robotic-manipulation)  
+   标签：评分：9.0/10、query:inverse-rl
+   evidence：面向未见任务泛化的动力学感知元模仿学习框架
 
 ### 速读区论文标签
-1. [More Structure, Not More Capacity: Object-Centric Representations for Visuomotor Imitation Learning](/202607/17/2607.09825v1-more-structure-not-more-capacity-object-centric-representations-for-visuomotor-imitation-learning)  
+1. [Learning Roller-Skating Motions of Humanoid Robots Based on Adversarial Motion Priors](/202607/20/2607.10815v1-learning-roller-skating-motions-of-humanoid-robots-based-on-adversarial-motion-priors)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：目标中心表示提升视觉运动模仿学习
-2. [Chalito: An Extensible Library for Filtering-Based State Estimation in Quadruped Robots](/202607/17/2607.09968v1-chalito-an-extensible-library-for-filtering-based-state-estimation-in-quadruped-robots)  
+   evidence：基于对抗运动先验的模仿学习训练人形机器人滑冰
+2. [A Minimalist Retargeting-Guided Reinforcement Learning Recipe for Dexterous Manipulation](/202607/20/2607.11874v1-a-minimalist-retargeting-guided-reinforcement-learning-recipe-for-dexterous-manipulation)  
+   标签：评分：8.0/10、query:inverse-rl
+   evidence：从人类演示进行重定向引导的RL模仿学习方法
+3. [Vision-Based Dribbling for Humanoid Soccer via Privileged Representation Learning](/202607/20/2607.12702v1-vision-based-dribbling-for-humanoid-soccer-via-privileged-representation-learning)  
    标签：评分：8.0/10、query:locowbc
-   evidence：提供面向四足机器人的可扩展滤波状态估计基准库，对机器人运动至关重要
-3. [Pix2Act: Image-Space Manipulation Policies with Equivariant Augmentation](/202607/17/2607.11167v1-pix2act-image-space-manipulation-policies-with-equivariant-augmentation)  
+   evidence：使用强化学习的人形机器人定位操作
+4. [UR-VC: Unsupervised Robotic Value Correction for Time-Derived Progress Proxies](/202607/20/2607.12892v1-ur-vc-unsupervised-robotic-value-correction-for-time-derived-progress-proxies)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：图像空间操作策略的模仿学习方法
-4. [WALA Learning Executable Latent Actions from Action-Labeled Demonstrations and Action-Free Videos](/202607/17/2607.11397v1-wala-learning-executable-latent-actions-from-action-labeled-demonstrations-and-action-free-videos)  
+   evidence：无监督值校正改善奖励信号质量
+5. [Worlds in One Demo: A Synthetic Data Engine for Learning Open-World Mobile Manipulation](/202607/20/2607.13154v2-worlds-in-one-demo-a-synthetic-data-engine-for-learning-open-world-mobile-manipulation)  
    标签：评分：8.0/10、query:inverse-rl
-   evidence：从示范和视频中学习
-5. [SKooP: Symmetric Koopman Predictions for Faster and More Generalizable Legged Robot Locomotion with Reinforcement Learning](/202607/17/2607.11624v2-skoop-symmetric-koopman-predictions-for-faster-and-more-generalizable-legged-robot-locomotion-with-reinforcement-learning)  
-   标签：评分：8.0/10、query:locowbc
-   evidence：使用Koopman预测加速和提升腿式机器人强化学习行走的泛化性
-6. [AgenticFocus: Object-Preserving Mixed Reality Synthesis from Human FPV Video for Dexterous Humanoid Learning](/202607/17/2607.08857v1-agenticfocus-object-preserving-mixed-reality-synthesis-from-human-fpv-video-for-dexterous-humanoid-learning)  
+   evidence：通过合成数据生成从单演示进行模仿学习
+6. [Whole-Body Semantic-to-Actuation Grounding of Elephant-Inspired Soft-Trunk Motion via Lightweight Flow Matching](/202607/20/2607.11018v1-whole-body-semantic-to-actuation-grounding-of-elephant-inspired-soft-trunk-motion-via-lightweight-flow-matching)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：针对软体连续体机械臂的全身语义到驱动映射框架
+7. [Generalizing Preference-based Reinforcement Learning: a Rationality Model for Incomparability](/202607/20/2607.11432v1-generalizing-preference-based-reinforcement-learning-a-rationality-model-for-incomparability)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：从人类视频生成混合现实演示，用于人形机器人模仿学习。
-7. [AgenticFocus: Object-Preserving Mixed Reality Synthesis from Human FPV Video for Dexterous Humanoid Learning](/202607/17/2607.08857v2-agenticfocus-object-preserving-mixed-reality-synthesis-from-human-fpv-video-for-dexterous-humanoid-learning)  
+   evidence：从带不可比较标签的轨迹对比较中推断多维奖励函数
+8. [Globalized Constrained Stein Variational Inference for Diverse Feasible Robot Motion Planning](/202607/20/2607.12732v1-globalized-constrained-stein-variational-inference-for-diverse-feasible-robot-motion-planning)  
+   标签：评分：7.0/10、query:locowbc
+   evidence：生成多样化可行运动规划，适用于机器人移动
+9. [DenseReward: Dense Reward Learning via Failure Synthesis for Robotic Manipulation](/202607/20/2607.13033v1-densereward-dense-reward-learning-via-failure-synthesis-for-robotic-manipulation)  
    标签：评分：7.0/10、query:inverse-rl
-   evidence：利用混合现实合成从人类视频中进行模仿学习
-8. [PhysV2A: Reachability-Gated and Semantic-Mask-Constrained Feasibility Completion for Video-to-Robot Manipulation](/202607/17/2607.09365v1-physv2a-reachability-gated-and-semantic-mask-constrained-feasibility-completion-for-video-to-robot-manipulation)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：基于视频的操作利用人类演示进行模仿学习
-9. [Action Map Policy: Learning 3D Closed-loop Manipulation via Pixel Classification](/202607/17/2607.10706v1-action-map-policy-learning-3d-closed-loop-manipulation-via-pixel-classification)  
-   标签：评分：7.0/10、query:inverse-rl
-   evidence：动作图策略通过像素分类学习操作，适用于模仿学习
-10. [VINE: Taming Generative Control Policies for Reinforcement Learning](/202607/17/2607.10369v1-vine-taming-generative-control-policies-for-reinforcement-learning)  
-   标签：评分：6.0/10、query:inverse-rl
-   evidence：用于机器人学习的生成控制策略，涉及流匹配，与模仿学习相关
-11. [D-SafeMPC: Diffusion-Driven Safe Model Predictive Control with Discrete-Time Control Barrier Functions](/202607/17/2607.10842v1-d-safempc-diffusion-driven-safe-model-predictive-control-with-discrete-time-control-barrier-functions)  
-   标签：评分：6.0/10、query:mpc-wbc
-   evidence：模型预测控制与扩散模型及安全约束的集成
-12. [Model-Based Diffusion Optimal Control for Multi-Robot Motion Planning](/202607/17/2607.12423v1-model-based-diffusion-optimal-control-for-multi-robot-motion-planning)  
+   evidence：机器人操作的奖励函数学习
+10. [AutoPath: Learning Transferable Goal-Conditioned Stochastic Path Prior for Safe Navigation Without Human Demonstrations](/202607/20/2607.11739v1-autopath-learning-transferable-goal-conditioned-stochastic-path-prior-for-safe-navigation-without-human-demonstrations)  
    标签：评分：6.0/10、query:locowbc
-   evidence：通过扩散模型实现多机器人运动规划的最优控制，涉及机器人运动规划
-13. [Worlds in One Demo: A Synthetic Data Engine for Learning Open-World Mobile Manipulation](/202607/17/2607.13154v1-worlds-in-one-demo-a-synthetic-data-engine-for-learning-open-world-mobile-manipulation)  
+   evidence：无需演示的机器人导航运动规划
+11. [Open-AoE: An Open Egocentric Manipulation Dataset and Toolchain for Embodied Learning](/202607/20/2607.14183v1-open-aoe-an-open-egocentric-manipulation-dataset-and-toolchain-for-embodied-learning)  
    标签：评分：6.0/10、query:inverse-rl
-   evidence：利用单次人类示范生成合成数据以训练移动操作策略
+   evidence：用于具身学习的数据集和工具链，支持模仿学习
+12. [Safe Execution of RL Policies Via Acceleration-Based CBF-QP Constraint Enforcement for Real-World Robotic Deployments](/202607/20/2607.14488v1-safe-execution-of-rl-policies-via-acceleration-based-cbf-qp-constraint-enforcement-for-real-world-robotic-deployments)  
+   标签：评分：6.0/10、query:locowbc
+   evidence：使用CBF-QP的足式机器人安全滤波器
+13. [NavCMPO: Critic-Guided MeanFlow Policy Optimization for Adaptive Navigation](/202607/20/2607.14643v1-navcmpo-critic-guided-meanflow-policy-optimization-for-adaptive-navigation)  
+   标签：评分：6.0/10、query:inverse-rl
+   evidence：在自适应导航框架中使用行为克隆（模仿学习）
 
 
 <div class="dpr-home-promo-card">

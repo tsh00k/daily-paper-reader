@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-07-17T21:22:24.578529+00:00",
-  "updated_date": "20260717",
+  "generated_at": "2026-07-20T20:35:29.367969+00:00",
+  "updated_date": "20260720",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260717",
+      "updated_date": "20260720",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260717",
+      "updated_date": "20260720",
       "carryover_days": 9,
       "items": [
         {
@@ -38,13 +38,13 @@
             "query:locoWBC"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "learning from demonstration for constrained manipulation",
-          "llm_evidence_cn": "约束操作中的演示学习",
-          "llm_evidence": "约束操作中的演示学习",
-          "canonical_evidence": "约束操作中的演示学习",
-          "llm_tldr_en": "A one-shot framework that learns forward and reverse execution from a single unfinished demonstration for constrained manipulation tasks, using DMP and screw motion primitives.",
-          "llm_tldr_cn": "该工作提出单次演示学习框架，从单个可能未完成的演示中学习约束操作的前向和反向技能。通过将演示分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，实现高效技能学习。实验表明，该方法显著减少了对完整演示的需求，并支持反向执行。",
-          "llm_tldr": "该工作提出单次演示学习框架，从单个可能未完成的演示中学习约束操作的前向和反向技能。通过将演示分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，实现高效技能学习。实验表明，该方法显著减少了对完整演示的需求，并支持反向执行。",
+          "llm_evidence_en": "one-shot learning from a single unfinished demonstration for constrained manipulation tasks",
+          "llm_evidence_cn": "从单个未完成示范中一次学习受限操作技能",
+          "llm_evidence": "从单个未完成示范中一次学习受限操作技能",
+          "canonical_evidence": "从单个未完成示范中一次学习受限操作技能",
+          "llm_tldr_en": "A unified framework that learns both forward and reverse execution from a single possibly unfinished demonstration by decomposing into contact and non-contact phases.",
+          "llm_tldr_cn": "本文提出一个统一的一次学习框架，能从单个、甚至未完成的示范中同时学习正向和逆向操作技能。通过将示范分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，解决了受限操作任务中接触力交互和运动方向泛化的挑战。",
+          "llm_tldr": "本文提出一个统一的一次学习框架，能从单个、甚至未完成的示范中同时学习正向和逆向操作技能。通过将示范分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，解决了受限操作任务中接触力交互和运动方向泛化的挑战。",
           "llm_tags": [
             "query:inverse-rl"
           ],
@@ -54,106 +54,11 @@
           "selection_source": "carryover_cache",
           "paper_id": "2607.13882v1",
           "carry_days": 1
-        },
-        {
-          "id": "2607.13461v1",
-          "source": "arxiv",
-          "title": "Joint On-and-Off Policy Learning for Vision-and-Language Navigation",
-          "abstract": "Vision-and-Language Navigation (VLN) necessitates an embodied agent to navigate in the physical world by adhering to natural language instructions. Recent advancements in Vision-Language Models (VLM) have propelled the development of VLM-based VLN methods with two predominant paradigms: (1) imitation learning (IL) on expert demonstrations, followed by the Dataset Aggregation (DAgger) algorithm to bolster error recovery capabilities; (2) reinforcement learning (RL) driven by verifiable rewards to enhance reasoning and exploration. A notable gap is the absence of integration between these two distinct paradigms. This paper introduces JOP-VLN, a novel VLN framework that synergistically combines off-policy imitation learning and on-policy exploration within a three-stage training pipeline. Initially, IL is employed on expert demonstrations to acquire basic navigation skills. Subsequently, the DAgger algorithm is utilized to generate heuristic exploration trajectories, which are then used for imitation learning to improve error recovery capabilities. Finally, a joint on-and-off policy learning framework is implemented, featuring high-entropy trajectory sampling to enhance RL training efficiency and an error-correction-prioritized trajectory sorting strategy for effective error correction. Extensive experiments demonstrate the efficacy of JOP-VLN, achieving success rates of 69.9% and 68.0% on the VLN-CE R2R and RxR benchmarks, respectively, setting a new state-of-the-art on R2R. Project page: https://qingrongh.github.io/JOP-VLN.",
-          "authors": [
-            "Qingrong He",
-            "Lin Zhao",
-            "Kevin Zheng",
-            "Liang Lin"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-15T05:46:34+00:00",
-          "link": "https://arxiv.org/pdf/2607.13461v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "uses imitation learning and DAgger algorithm",
-          "llm_evidence_cn": "使用模仿学习和DAgger算法",
-          "llm_evidence": "使用模仿学习和DAgger算法",
-          "canonical_evidence": "使用模仿学习和DAgger算法",
-          "llm_tldr_en": "JOP-VLN combines off-policy imitation learning with on-policy RL exploration for Vision-and-Language Navigation, addressing the gap between IL and RL paradigms.",
-          "llm_tldr_cn": "现有视觉语言导航方法要么依赖模仿学习(IL)进行专家演示学习，要么使用强化学习(RL)进行探索，但缺乏两者融合。本文提出JOP-VLN框架，通过联合离策略模仿学习和在策略探索，在导航任务上实现更高的成功率，弥合了两种范式的鸿沟。",
-          "llm_tldr": "现有视觉语言导航方法要么依赖模仿学习(IL)进行专家演示学习，要么使用强化学习(RL)进行探索，但缺乏两者融合。本文提出JOP-VLN框架，通过联合离策略模仿学习和在策略探索，在导航任务上实现更高的成功率，弥合了两种范式的鸿沟。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.13461v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.15275v1",
-          "source": "arxiv",
-          "title": "RoboTTT: Context Scaling for Robot Policies",
-          "abstract": "Recent robot foundation models operate with single-step or short-history visuomotor context. We introduce Test-Time-Training Robot Policies (RoboTTT), a robot model and training recipe that scale visuomotor context to 8K timesteps, three orders of magnitude beyond state-of-the-art policies, without growing inference latency. At this context length, we unlock new robot capabilities: one-shot in-context imitation from human video demonstrations, on-the-fly policy improvement, robustness to perturbations, and stronger performance on multi-stage, long-horizon tasks. We also observe, for the first time, steady gains in closed-loop performance as pretraining context length scales. At its core, RoboTTT integrates Test-Time Training into robot foundation models such as Vision-Language-Action policies, yielding a sequence model whose recurrent state consists of fast weights, parameters updated by gradient descent during both training and inference, compressing histories into weight space and retrieving contextual information for long-context conditioning. To scale training context length, the recipe combines sequence action forcing with truncated backpropagation through time. On challenging real-robot manipulation tasks, RoboTTT improves overall performance by 87% over the single-step context baseline and fully completes a five-minute, ten-stage assembly task, which no baseline ever does. RoboTTT trained with 8K-timestep context outperforms the same model pretrained with 1K timesteps by 62%, suggesting context length as a new scaling axis for robot foundation models. Videos are available at https://research.nvidia.com/labs/gear/robottt/",
-          "authors": [
-            "Yunfan Jiang",
-            "Yevgen Chebotar",
-            "Ruijie Zheng",
-            "Fengyuan Hu",
-            "Yunhao Ge",
-            "Jimmy Wu",
-            "Tianyuan Dai",
-            "Scott Reed",
-            "Li Fei-Fei",
-            "Yuke Zhu",
-            "Linxi \"Jim\" Fan"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.AI",
-            "cs.LG"
-          ],
-          "published": "2026-07-16T17:59:06+00:00",
-          "link": "https://arxiv.org/pdf/2607.15275v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "one-shot imitation from human video demonstrations",
-          "llm_evidence_cn": "从人类视频演示中一次性模仿",
-          "llm_evidence": "从人类视频演示中一次性模仿",
-          "canonical_evidence": "从人类视频演示中一次性模仿",
-          "llm_tldr_en": "RoboTTT scales visuomotor context to 8K timesteps, enabling one-shot in-context imitation from human video and on-the-fly policy improvement without increased latency.",
-          "llm_tldr_cn": "RoboTTT 将机器人策略的视觉运动上下文扩展到8000时间步，比现有方法高三个数量级，且不增加推理延迟。该长上下文使策略能够从人类视频演示中进行一次性上下文模仿学习，并在线改进。实验表明，随着预训练上下文长度增加，闭环性能持续提升。",
-          "llm_tldr": "RoboTTT 将机器人策略的视觉运动上下文扩展到8000时间步，比现有方法高三个数量级，且不增加推理延迟。该长上下文使策略能够从人类视频演示中进行一次性上下文模仿学习，并在线改进。实验表明，随着预训练上下文长度增加，闭环性能持续提升。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.15275v1",
-          "carry_days": 1
         }
       ]
     },
     "MPC-WBC": {
-      "updated_date": "20260717",
+      "updated_date": "20260720",
       "carryover_days": 9,
       "items": []
     }
