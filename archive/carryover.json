@@ -1,64 +1,20 @@
 {
-  "generated_at": "2026-07-20T20:35:29.367969+00:00",
-  "updated_date": "20260720",
+  "generated_at": "2026-07-22T21:19:08.322581+00:00",
+  "updated_date": "20260722",
   "carryover_days": 9,
   "tag_states": {
     "locoWBC": {
-      "updated_date": "20260720",
+      "updated_date": "20260722",
       "carryover_days": 9,
       "items": []
     },
     "inverse-rl": {
-      "updated_date": "20260720",
+      "updated_date": "20260722",
       "carryover_days": 9,
-      "items": [
-        {
-          "id": "2607.13882v1",
-          "source": "arxiv",
-          "title": "Learning Forward & Reverse Skills from a Single Unfinished Demonstration for Constrained Manipulation Tasks",
-          "abstract": "Learning from demonstration (LfD) enables robots to learn manipulation skills directly from expert demonstrations but remains challenging for contact-rich tasks involving geometric constraints and force interaction. Existing approaches typically require multiple complete demonstrations and do not support reverse skill execution. In this paper, we present a unified one-shot framework for constrained manipulation that learns both forward and reverse execution from a single, possibly unfinished demonstration. Our method decomposes demonstrations into non-contact and contact phases, with non-contact motion encoded with dynamic movement primitives (DMP), and contact motion represented as a sequence of screw motion primitives segmented by our proposed geometry-driven twist-direction segmentation algorithm. During execution, screw primitives are executed sequentially under admittance-guided pose correction and speed regulation, enabling task completion beyond the demonstrated trajectory length as well as reverse skill execution without additional learning data. Experiments on peg insertion, battery insertion, lock opening, and screw driving tasks demonstrate improved success rates and robustness over segmentation and one-shot trajectory learning baselines. Details are available on the project website: https://tuwien-asl.github.io/LfD-Screw/.",
-          "authors": [
-            "Yexin Hu",
-            "Haoyi Zheng",
-            "Johannes Heidersberger",
-            "Dongheui Lee"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-07-15T14:31:26+00:00",
-          "link": "https://arxiv.org/pdf/2607.13882v1",
-          "tags": [
-            "keyword:MPC-WBC",
-            "keyword:inverse-rl",
-            "keyword:locoWBC",
-            "query:MPC-WBC",
-            "query:inverse-rl",
-            "query:locoWBC"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "one-shot learning from a single unfinished demonstration for constrained manipulation tasks",
-          "llm_evidence_cn": "从单个未完成示范中一次学习受限操作技能",
-          "llm_evidence": "从单个未完成示范中一次学习受限操作技能",
-          "canonical_evidence": "从单个未完成示范中一次学习受限操作技能",
-          "llm_tldr_en": "A unified framework that learns both forward and reverse execution from a single possibly unfinished demonstration by decomposing into contact and non-contact phases.",
-          "llm_tldr_cn": "本文提出一个统一的一次学习框架，能从单个、甚至未完成的示范中同时学习正向和逆向操作技能。通过将示范分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，解决了受限操作任务中接触力交互和运动方向泛化的挑战。",
-          "llm_tldr": "本文提出一个统一的一次学习框架，能从单个、甚至未完成的示范中同时学习正向和逆向操作技能。通过将示范分解为非接触和接触阶段，分别用动态运动基元和螺旋运动基元编码，解决了受限操作任务中接触力交互和运动方向泛化的挑战。",
-          "llm_tags": [
-            "query:inverse-rl"
-          ],
-          "matched_query_tag": "query:inverse-rl",
-          "matched_query_text": "imitation learning",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.13882v1",
-          "carry_days": 1
-        }
-      ]
+      "items": []
     },
     "MPC-WBC": {
-      "updated_date": "20260720",
+      "updated_date": "20260722",
       "carryover_days": 9,
       "items": []
     }

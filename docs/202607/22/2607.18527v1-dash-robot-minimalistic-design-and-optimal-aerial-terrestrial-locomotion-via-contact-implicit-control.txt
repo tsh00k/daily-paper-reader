@@ -1,0 +1,380 @@
+Title: DASH Robot: Minimalistic Design and Optimal Aerial-Terrestrial Locomotion via Contact-Implicit Control
+
+URL Source: https://arxiv.org/pdf/2607.18527v1
+
+Published Time: Wed, 22 Jul 2026 00:21:44 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# DASH Robot: Minimalistic Design and Optimal Aerial-Terrestrial Locomotion via Contact-Implicit Control 
+
+Ryan Gomes Paiva 1,∗, Conrad Ho 1,∗, Jiarong Kang 1,∗, Kunzhao Ren 1, Xiangru Xu 1, and Xiaobin Xiong 1,2
+
+Abstract — We present a novel and minimalistic design of an aerial-terrestrial robot DASH: Ducted Aerial Spring Hopper. The goal is to enable both aerial and ground locomotion capabilities on a unified mobile robot that is mechanically-minimalistic, locomotion-versatile, and energy-efficient. We pro-pose an organic integration of ducted fan co-axial body with a springy leg at the bottom for realization. The ducted fan module provides thrust-vectoring as the main actuation for agile flying; when it is combined with the light-weight spring leg, the robot realizes highly efficient ground hopping with energy circulation. Moreover, to realize optimal locomotion with two modes, we employ a contact-implicit model predictive controller to automatically choose locomotion modes and actuation. We successfully validated the design and control of DASH through a range of tasks, including periodic hopping, aerial flight, and mode-free locomotion with autonomous mode transitions during obstacle traversal. 
+
+I. I NTRODUCTION 
+
+Mobile robots are increasingly expected to operate across diverse environments that include both structured and un-structured terrains. Legged robots [1], [2] are efficient for traversing irregular ground but struggle with discontinuities and obstacles that exceed their reach. Aerial robots can bypass such obstacles but incur high energetic cost and limited endurance [3], [4]. These complementary strengths motivate hybrid aerial–terrestrial robots that combine the efficiency of legs with the agility of flight [5]–[8]. Such systems promise to extend mobility beyond what is possible with either modality alone, enabling applications in search-and-rescue [9], inspection [10], and exploration [11]. We introduce a ducted fan-legged robot, DASH — Ducted Aerial Spring Hopper, that is capable of both hopping and flying as illustrated in Fig. 1. The design integrates a spring-loaded leg for terrestrial hopping [6], [8] with ducted fans [4] for vertical thrust and assisted aerial maneuvers. This com-bination enables the robot to traverse flat terrain, negotiate cluttered environments, and cross large gaps by seamlessly transitioning between ground and air modes. Compared to other state-of-the-art aerial-terrestrial robots that have open-propeller systems, such as PogoX [6] and PogoDrone [12], DASH with the ducted fan [13] offer high thrust-density, compactness, enhanced safety, and potential capabilities to perform efficient physical interactions with the environment. Additionally, the duct acts as a guard against debris or foreign objects entering the blades, enhancing durability. 
+
+> ∗Equal contribution.
+> 1University of Wisconsin–Madison, WI, USA.
+> 2X. Xiong is now with the Shanghai Innovation Institute (SII), Shanghai, China, and was with the University of Wisconsin–Madison. Corresponding to X. Xiong (
+
+xiaobin.xiong@sii.edu.cn)  
+
+> Fig. 1. (a) The hybrid robot DASH, equipped with unified actuation, addresses the challenge of mode-free aerial-terrestrial locomotion through Contact-Implicit Control. (b) DASH autonomously transitions between hop-ping and flight in response to environmental constraints, balancing feasibility and optimality.
+
+Despite the promise of hybrid platforms, locomotion con-trol remains a central challenge. Robot dynamics inherently couples continuous evolution with discrete contact events such as stance, liftoff, and landing. Conventional approaches have mainly focused on the control realization of individ-ual modes, biased toward terrestrial locomotion [6]. The exploration of multi-modal locomotion typically relies on predefined mode schedules [12], [14], [15], which restricts optimality since all possible contact sequences must be antic-ipated in advance. Another common approach uses layered designs [16]–[19] that combine sampling-based planning and low-level control. However, lower-dimensional models are used in the planning, which restricts the optimal solution from being found or dynamic constraints from being re-spected in dynamic maneuvers. To address these challenges, we adopt the Contact-Implicit Control (CIC) [20]–[24] in the legged robotics and manipu-lation community to solve the planning and control problem on multi-domain locomotion. The CIC eliminates the need to manually specify contact sequences or preselect between flying and hopping modes for aerial-terrestrial robots. There-fore, CIC allows the robot to automatically determine when and where contacts occur. Locomotion behaviors thus emerge directly from solving the control problem rather than from handcrafted logic. For DASH, this capability is critical: it enables seamless transitions between hopping and flight without explicit mode switching, under a unified cost design shaped around energy circulation. We demonstrate that together, these contributions high-light how contact-implicit control, coupled with ducted-fan robot design, expands the mobility and versatility of hybrid aerial–terrestrial robots in environments requiring seamless hybrid operation. arXiv:2607.18527v1 [cs.RO] 20 Jul 2026 II. R ELATED WORK 
+
+Aerial-Terrestrial Robots : The early literature on aerial-terrestrial robots has focused on enabling wheeled locomo-tion [19], [25], [26] on flying vehicles. Recent studies have also explored the potential of enabling legged locomotion with flying. PogoX [6] and Hopcopter [8] demonstrated hop-ping–flying systems that exploit low thrust-to-weight ratio and elastic energy storage to improve terrestrial efficiency and durability. These ideas were extended to insect-scale platforms [5]. Other embodiments include quadrotor-assisted bipeds [27] and flying–crawling quadrotors [16], showing the diversity of system-level innovations at a preliminary stage in hybrid aerial-terrestrial locomotion. 
+
+Ducted Fan Robot : Ducted fans on aerial vehicles [28] and ducted fan vehicles [4], [13], [29] have been well studied and used on aerial vehicles as they can offer advantages over open rotors, including higher thrust efficiency, reduced tip losses, and safer operation in cluttered environments. Yet, they have rarely been applied to robotics with a few exceptions, such as enabling flying of DRAGON [30] and bipedal robots [31]. The control of ducted-fan vehicles typically requires several control surfaces to direct the thrust direction for attitude control. Similar ideas have been widely explored on aerial vehicles [3] to enable agile flying maneuvers. That said, ducted fans have not yet been applied to hybrid mobile robots despite their potential benefits over open propellers. 
+
+Control of Hybrid Robots : On the control side, flying and ground controllers are typically designed and implemented separately. Flying behaviors are typically implemented via linear controllers [8], [12], while ground locomotion, such as hopping, is typically implemented via step-level stepping controllers [6] on top of height controllers. Besides, tradi-tional model predictive control (MPC) has been applied to wheeled aerial robot [18], and state-of-the-art data-driven predictive control [14] has demonstrated high-accuracy lo-comotion of flying and hopping. At the planning level, self-supervised cost-of-transport estimation [17] offers a scalable way to optimize multimodal trajectories, complementing ear-lier work on energy-efficient hybrid motion planning using sampling-based methods [19]. Yet, to the best of our knowl-edge, optimal control of hybrid locomotion across multiple domains with different dynamics remains underexplored. 
+
+Contact-Implicit Control : Planning and control around contact has been an essential topic in legged locomotion and robotic manipulation. Common approaches often utilize soft-contact modes [32], alternative smoothing of vector fields [33], or complementarity conditions of contact [34] to make contact implicit in the optimization of planning and control. Complementarity-based formulations of rigid-body contact dynamics [35], [36] have recently been widely adopted in Contact-Implicit MPC (CI-MPC) frameworks [20]–[22] to address legged locomotion and manipulation problems. How-ever, the potential of CI-MPC for planning across diverse locomotion modes in hybrid mobile robots remains largely unexplored, which constitutes a central focus of this work. III. R OBOT DESIGN 
+
+DASH is a compact hybrid robot that integrates thrust-assisted aerial locomotion with spring-loaded terrestrial hop-ping. Its architecture combines a ducted fan for lift and thrust vectoring with a pogo-stick-inspired leg for ground interac-tion. To support these functions, the system is built around lightweight structural components, high-power actuation, and onboard computation for real-time control. 
+
+A. Mechanical Design 
+
+DASH combines a ducted fan propulsion unit with a pogo-stick spring leg to enable both aerial and terrestrial locomo-tion. The central body houses the fan assembly, enclosed by a 3D-printed duct using PLA-Aero for safety, aerodynamic efficiency, and structural support. The fan is composed of two motorized coaxial propellers that are mounted in the duct via lightweight carbon-fiber tubes and 3D-printed PLA-CF materials. Attached to the bottom of the duct are 3D-printed vanes that provide thrust vectoring for stabilization and maneuverability. The ducted body is designed with a 10-inch radius to provide sufficient moment authority through thrust vectoring. The leg is designed as a pogo-stick spring mechanism, enabling DASH to store and release elastic energy for efficient hopping maneuvers. The elastic tubing spring also reduces the thrust required for fast takeoffs when flying from hopping. A pair of spaced pulleys constrains the leg’s vertical motion, providing smooth translation while minimizing slack compared to a single linear bearing. This novel integration of the ducted fan with the spring leg allows DASH to combine energy-efficient terrestrial motion with thrust-assisted aerial capabilities. The total structural weight of the 3D-printed duct body and vanes is 719 g, balancing robustness with manufacturability. Together with propulsion and onboard electronics, the total system mass is approximately 3.27 kg, with a height of 4 feet. A schematic of the robot design is shown in Fig. 2, highlighting the integration of the pogo-stick spring leg with the ducted fan assembly.                            
+
+> Component Model Weight (g)
+> Battery HRB 6S 3300mAh 60C 467 Motor T-Motor Cine77 3610 977KV 400 Propeller Gemfan 1050 Reinforced Nylon 34 ESC V-Good RC 32-Bit 100A 148 Flight Controller Holybro Pixhawk 6C Mini 39 IMU x-io x-IMU3 50 Servo Dynamixel XC330-T181-T 92 Computer UP-Squared-i12 111 Duct Body 3D Print 609 Vanes 3D Print 110 Leg Carbon Fiber 542 Wires Harness 670
+> Total 3272
+> TABLE I
+
+. Component list with models and weights. 
+
+B. Electronics and Actuation 
+
+The electronics of DASH are designed to provide reliable high-power actuation alongside real-time computation for Fig. 2. Illustration of the mechanical components of DASH.  
+
+> Fig. 3. Illustration of the electronics architecture of DASH.
+
+hybrid locomotion. The ducted fan is driven by two coaxial brushless DC motors, while thrust vectoring is realized through four servo actuators mounted on the duct. Together, these actuators generate lift and directional control for both flight and thrust-assisted terrestrial maneuvers. Onboard computation is distributed across two systems. A PX4 flight controller manages low-level motor regula-tion, ensuring stable thrust generation and reliable actuator communication. A single-board computer (SBC) equipped with an Intel i7 processor executes higher-level planning and control in real time. The robot is equipped with a top-mounted IMU for orientation estimation, while translational states are obtained from a motion capture system. The system can be extended to fully onboard visual–inertial state estimation using a camera, as shown in related work [37]. All the electronics are powered by one 6S LiPo battery that supplies both propulsion and computation, with distribution designed to isolate high-current actuation from sensitive electronics. Figure. 3 summarizes the electronic architecture, while Table I provides a breakdown of the weights. The PX4 flight controller provides low-level motor com-munication and PWM/servo actuation, while attitude regu-lation is performed by the geometric controller. The SBC supplies the computational resources for higher-level plan-ning and control. For hybrid locomotion, DASH generates motor PWM commands and desired orientation trajectories through the CI-MPC. Both thrust and orientation are planned within the Contact-Implicit MPC framework, with thrust allocation playing a primary role in contact transitions and mode switching. The PX4 executes the PWM commands, while a quaternion-based geometric attitude controller [38] tracks the planned orientation. This architecture allows us to evaluate the proposed contact-implicit control strategy without relying on off-the-shelf flight stabilization. IV. R OBOT DYNAMICS 
+
+We now present the dynamic modeling of DASH. Owing to the coexistence of parameterized actuation mechanisms and hybrid locomotion behavior, we first describe the actu-ation dynamics and their key parameters, followed by the formulation of the hybrid locomotion dynamics .
+
+A. Actuation Model 
+
+DASH is actuated by the total thrust force T ∈ R3 and moment τ ∈ R3 generated from the propellers and vanes, as indicated in Fig. 4. We first examine how the thrusts and moments are generated based on aerodynamics. 
+
+Thrust Force Model : We adopt common assumptions on flying robots that the total thrust from two propellers is: 
+
+Tp = [0 , 0, c 1Ω21 + c2Ω22]⊺, (1) where Ω denotes the rotational velocity of each propeller, and c1 and c2 are constant coefficients determined by the propellers and physical dimensions of the ducted body. 
+
+Moment Model of Co-Axial Motors : The two propellers also create a turning moment in the body frame z-axis: 
+
+τ p = [0 , 0, c 3(Ω 21 − Ω22)] ⊺, (2) where c3 is a parameter related to the propellers. 
+
+Vane Force Model : The vanes direct the airflow beneath the ducted fan. The change in airflow results in aerodynamic push force Fi on the vane i, where i = 1 , 2, 3, or 4 is the index of the vanes. The push force Fi is modeled as: 
+
+Fi = 12 ρACV 2 
+
+> o
+
+αi, (3) where ρ is the air density, A is the vane surface area, C is a constant coefficient, Vo denotes the air speed at the duct outlet, and α represents the servo angle. Here, small angle approximation of α is used. The air speed V 2 
+
+> o
+
+is assumed proportional to the total thrust force magnitude Tp. Thus, (3) can be rewritten as: Fi = 12 ρAc 4Tpαi, with c4 being another constant coefficient. 
+
+Total Force : The total thrust is obtained by summing the thrust of the propeller and the contributions of the four vane forces: T = Tp + P4 
+
+> i=1
+
+Fi.
+
+Moment : Tp and gravitational force go through the center of mass (COM). Therefore, aside from the propeller reaction moment τ p, the remaining moments are generated by the vane forces: τ = r × F. Assuming small angles that the Fig. 4. (a) The actuation of DASH, (b) the aerial dynamics being actuated by the total thrust and moment, and (c) the ground dynamics with additional ground reaction force. 
+
+vane force location is approximately fixed, the moment in the body frame is a linear relation to the vane angles: 
+
+τ v = 12 ρAc 4Tp
+
+−l 0 l 00 −l 0 lh h h h
+
+
+
+α1
+
+α2
+
+α3
+
+α4
+
+ , (4) where l and h represent the distances from the aerodynamic center of the vane to the body-frame x-axis and z-axis, respectively. The total moment thus is τ = τ p + τ v .
+
+The parameters c1, c 2, c 3, c 4 in the above equations are identified through hardware experiments, which are detailed in Section VI. 
+
+B. Hybrid Locomotion Dynamics 
+
+During locomotion, the robot is modeled as a single rigid body with a springy leg. Thus, we model the robot with 7 degrees of freedom. 
+
+Aerial Dynamics : The leg is designed to be naturally stable due to the spring. Additionally, the leg and foot are of small weight. As a result, we do not model the dynamics of the leg within the robot in aerial motion. Assuming the robot is a single rigid body that is actuated by the total thrust T and moment τ from the propellers and vanes, its dynamics are: 
+
+I ˙ω + ω × (Iω) = τ , (5) 
+
+m ˙v = R · T + mg, (6) where I ∈ R3×3 is the lumped body inertia of the robot, m
+
+is its total mass, R ∈ SO (3) represents the body orientation, 
+
+v is the linear velocity, and ω is the angular velocity. 
+
+Terrestrial Dynamics : When the robot is on the ground, the leg with its spring provides forces to its upper body as internal actuation. The robot is modeled as a regular legged robot, with a floating-base coordinate and a prismatic springy joint. Let q ∈ SE (3) × R1 denote its configuration, and let 
+
+v ∈ R7 denote its velocity. Its dynamics with a holonomic contact constraint are: 
+
+M(q) ˙ v + h(q, v) = ur + J(q)⊺f , (7) 
+
+J(q) ˙ v + ˙J(q, v)v = 0 , (8)  
+
+> Fig. 5. Control architecture of DASH enabling mode-free motion planning.
+
+where M(q) is the mass matrix, and h(q, v) denotes the Coriolis and gravitational vector, ur denotes the robot ac-tuation, J(q) represents the Jacobian matrix at the foot contact, and f denotes the ground reaction force. For DASH, 
+
+ur = [ T⊺, τ ⊺, 0] ⊺.At events such as landing (contact established) or lift-off (contact released), the system undergoes discrete transitions. These are captured by an impact map that instantaneously updates the velocity: 
+
+M(q)( v+ − v−) = J(q)⊺λ, (9) 
+
+J(q)v+ = 0, (10) where v− and v+ are the pre- and post-impact velocities, and 
+
+λ denotes the impulse at contact. Similar hybrid dynamics models have been commonly used in legged locomotion [39]. V. C ONTACT -I MPLICIT CONTROL 
+
+Now we present our control formulation to realize multi-modal locomotion on this robot. We choose the thrust force and rotational moment as the input to the robot: 
+
+u = [T⊺, τ ⊺, 0] ⊺. The system state is x = [q⊺, v⊺]⊺.
+
+The core of contact-implicit control lies in the modeling of contact dynamics. While the hybrid dynamics formulation described previously is well suited for theoretical analysis, it complicates controller design. In conventional approaches, locomotion behaviors are typically constructed by manu-ally scheduling contact sequences and switching between predefined modes. For example, terrestrial locomotion [6] is often designed independently, with translational velocity regulated through step-to-step dynamics and height con-trolled via a nonlinear controller. The transitions between aerial and terrestrial modes are hardcoded [14], [15]. Such designs restrict hybrid robots from achieving truly mode-free motion planning. To address this limitation, we adopt complementarity-based contact dynamics within a model predictive control framework, unifying planning and control in a recursive manner. This formulation, as shown in Fig. 5, allows the robot to compute optimal control actions directly from the dynamics, without relying on manually defined locomotion modes or predefined switching logic. 
+
+A. Complementarity-Conditioned Dynamics 
+
+Without prescribing the contact sequence in advance, we model the contact dynamics using the following complemen-tarity conditions. Time-stepping Dynamics: For rigid body systems modeled by Lagrangian dynamics, the continuous time dynamics (7) can be approximated by a discrete-time system using a semi-implicit Euler integration scheme: 
+
+q+ − q = ∆ t v+, (11) 
+
+M(q)( v+ − v) = ∆ t ur − h(q, v) + J(q)⊺f , (12) where q+ and v+ denote the state at the next time step, and 
+
+∆t is the discrete time interval. Instead of imposing regu-larized dynamics for predefined contact modes, the contact impulse λ = ∆ tf is obtained from a complementarity for-mulation of the contact constraints, enabling mode-consistent contact resolution. 
+
+Non-penetration: For contact at the next time step, both the signed distance between two bodies ϕ(q+) and the normal contact impulse λn = ∆ tf n during the interval must be non-negative. Moreover, normal contact impulse can only be nonzero when two bodies are in contact: ϕ(q+) ≥ 0 ⊥
+
+λn ≥ 0. A linear approximation of this condition is used for computation [40]: 
+
+ϕ(q) + ∇ϕ(q)( q+ − q) ≥ 0 ⊥ λn ≥ 0. (13) 
+
+Maximum Dissipation: The maximum dissipation principle states that tangential friction impulses act to maximize the dissipation of kinetic energy. In our single foot-contact scenario, the Coulomb friction model is approximated by a polyhedral cone, yielding the following formulation: 
+
+min  
+
+> β
+
+λ⊺J(q)v+ (14) s.t. λ = nλn + Dβ, β ≥ 0, (15) 
+
+μλ n − e⊺β ≥ 0. (16) where n is the unit normal vector at the contact point, and 
+
+D positively spans the tangential contact plane with unit vectors. The vector β represents the friction force coefficients along the directions defined by D, μ is the coefficient of friction, and e is a vector of ones. The Karush–Kuhn–Tucker (KKT) conditions of the associated minimization problem are expressed as the following complementarity constraints: 
+
+D⊺Jv + + eη ≥ 0 ⊥ β ≥ 0, (17) 
+
+μλ n − eT β ≥ 0 ⊥ η ≥ 0, (18) where η denotes the Lagrange multiplier. The KKT condi-tions, together with the discrete-time robot dynamics (12) and the non-penetration constraint (13), give rise to a linear complementarity problem (LCP), whose solution determines the next state under contact dynamics: 
+
+x+ = LCP (x, u). (19) where the notation indicates that the state transition is defined through the solution of the linear complementarity problem. The LCP-based contact dynamics admit analytical gradients, which can be exploited to improve computational efficiency in optimization-based algorithms [20]. 
+
+B. Model Predictive Control 
+
+We apply model predictive control (MPC) to the dynamics of DASH formulated as a LCP (19). The MPC regulates the torso motion while planning contact interactions by balancing optimality and feasibility under the imposed costs and constraints. At each step, a nonlinear program is solved to determine an optimal sequence over a horizon of N steps. Only the first control input is executed, and the process is repeated at the next time step. 
+
+Cost Function : The cost JMPC includes trajectory tracking, control regularization, and mechanical energy tracking: 
+
+JMPC = PNk=0 
+
+ ∥xk − xref ,k ∥2
+
+> Qx
+
++ ∥E(xk) − Eref ∥2
+
+> QE
+
+ + PN −1 
+
+> k=0
+
+∥uk∥2
+
+> R
+
+, (20) where Qx, QE , and R denote the weights associated with each cost term, E(xk) denotes the mechanical energy of the system. The energy term enforces coherent energy circulation across contact and flight phases, supporting consistent hybrid behavior. The relative weighting between trajectory track-ing and control effort determines how energy is regulated: stronger control penalization promotes passive energy ex-change through terrain interaction and compliance, whereas weaker penalization allows greater active energy injection. As a result, distinct locomotion behaviors emerge from the optimization without explicit mode scheduling. 
+
+Constraints : The system dynamics at each time step are en-forced as constraints, together with an initial state condition and control input bounds. Obstacle avoidance is enforced through a minimum-distance constraint ∥pframe − pobs ∥ ≥ α,which guarantees a separation of at least α between the robot frame position pframe and the obstacle position pobs .
+
+MPC formulation : The MPC is concisely represented as: 
+
+min {x,u}Nk=0 JMPC (MPC) s.t. x0 = ˜ x0, (Initial State) 
+
+xk+1 = LCP (xk, uk), (Dynamics) 
+
+0 ≤ Constr (xk, uk), (Constraints) where the bottom constraint represents all the state and input constraints. 
+
+C. Solution Method via Differential Dynamic Programming 
+
+At each control step, we solve a finite-horizon MPC subproblem using Differential Dynamic Programming (DDP) [41]. DDP enforces dynamics implicitly by rolling out the state trajectory from the current system state and optimizes only the control sequence. The update is performed through a local quadratic approximation of the Bellman value and Q-functions, combined with a backward–forward iteration. This produces a time-varying affine feedback law over the horizon that tracks the reference trajectory while respecting the LCP-based dynamics model. Since the LCP dynamics are only piecewise differentiable, the analytic gradients are relaxed to improve numerical performance [20]. 
+
+Relaxed Analytic Gradient : Taking into account the contact mode associated with the current iterated trajectory, the contact mode is classified into three types based on the contact complementarity constraints: no contact, clamping contact (·)c, and sliding contact (·)s. Using the specified contact modes, the original LCP problem is transformed into a set of linear velocity-level constraints: 
+
+v nc
+
+v tc
+
+v ns
+
+ =
+
+000
+
+ =
+
+Jnc
+
+Jtc
+
+Jns
+
+ v+, (21) where v denotes the contact-frame velocity, and (·)n and 
+
+(·)t represent the normal and tangential components of the impulse, frame velocity, or Jacobian, respectively. The resulting contact force is then expressed as: 
+
+
+
+λnc
+
+λtc
+
+λns
+
+ = −Acc (q)−1bcc (q, ˙q), (22) 
+
+Acc =
+
+
+
+Jnc
+
+Jtc
+
+Jns
+
+ M−1
+
+
+
+Jnc
+
+Jtc
+
+Jns + Jts μ sign( λts)
+
+
+
+> ⊺
+
+, (23) 
+
+bcc =
+
+
+
+Jnc
+
+Jtc
+
+Jns
+
+ M−1 [∆ t (ur − h) + Mv ] . (24) Then, the gradient of the contact impulse is obtained as 
+
+∂
+
+
+
+λnc
+
+λtc
+
+λns
+
+ = A−1 
+
+> cc
+
+∂Acc A−1 
+
+> cc
+
+bcc − A−1 
+
+> cc
+
+∂bcc , (25) where ∂ denotes the total derivative with respect to an associated parameter vector. The analytic gradient of the contact dynamics is computed within a local region that preserves the contact mode. To pro-vide an informative gradient that enables contact breaking, the complementarity constraints of the contact foot in the normal direction: v n ≥ 0 ⊥ λn ≥ 0, is smoothed using a relaxation variable ρ > 0:
+
+v n ≥ 0, λn ≥ 0, v nλn = ρ. (26) This smoothing only takes effect in the differentiation, where velocity constraints in the normal direction are now ex-pressed as: 
+
+ρ
+
+λn = Ancc λn + bncc , (27) where the implicit relation between ∂λn and λn is given by: 
+
+− ρ
+
+(λn)2 ∂λn = ∂Ancc λn + Ancc ∂λn + ∂bcc . (28) Then the relaxed normal force gradient is given by: 
+
+∂λn = −(Ancc + ρ
+
+(λn)2 )−1(∂Ancc λn + ∂bcc ). (29) This relaxed gradient facilitates smooth transitions between contact modes when incorporated into DDP [20].  
+
+> Fig. 6. Experimental results of CI-MPC controlled in-place hopping.
+
+VI. R ESULTS 
+
+We now present the results of controlling DASH. We first present the system identification of the robot, particularly the actuation model that is rarely seen on common legged robots. Then we show the control results of the robot in simulation and hardware performing different tasks. 
+
+System Identification : DASH generates complex aerody-namic forces through its propellers and vanes. Rather than identifying the coefficients c1–c4 from first principles, we estimate them experimentally. To identify c1 and c2, the robot is mounted on a single-DOF testing stand, similar to a seesaw, with a weight scale placed on the opposite side. By varying the BLDC motor speeds and measuring the resulting thrust forces, we obtain the corresponding coefficients. To identify c3 and c4, the ducted fan assembly is mounted on a 3-DOF rotational stand. By commanding specific servo angles to adjust the vanes and generating known thrust levels, we measure the resulting moments using a force gauge, from which the coefficients are estimated. In practice, unequal speeds of the coaxial counter-rotating propellers introduce nonlinear thrust–moment coupling. We therefore enforce Ω1 = Ω 2, yielding τ p = 0 and simplifying the model without compromising achievable behaviors. 
+
+Simulation and Software : The robot is designed and assem-bled in SolidWorks, where each component is assigned its measured mass and geometric properties. This allows precise computation of the inertia and center-of-mass (COM) loca-tion. The robot is simulated using a time-stepping LCP-based contact dynamics model within a ROS2 environment. The controller and communication stack are fully implemented in C++, leveraging Crocoddyl [41] for efficient optimal control computation. The CI-MPC is configured with a 0.6 s prediction horizon and a time discretization of 0.03 s. 
+
+A. Flying and Hopping 
+
+In the flying experiments, the robot performs hovering with global position tracking and follows a reference linear velocity of up to 0.5 m/s, constrained by the laboratory workspace as illustrated in Fig. 7. In the hopping experiments, the robot executes continuous in-place hopping while tracking global position targets with zero reference translational velocity as shown in Fig. 6. The resulting behavior maintains energy circulation while reducing control effort. Compared to flying, the optimized solution decreases the injected control effort, defined as Fig. 7. Experimental demonstration of DASH. (a, b) Transition from hopping to flight planned by the CI-MPC, arising from feasibility and optimality trade-offs. (c) Flying with velocity tracking of 0.5 m/s.  
+
+> Fig. 8. Comparison of mechanical energy circulation and control effort consumption in DASH during hopping and hovering.
+
+R tend  
+
+> tstart
+
+|T( t) − Tmin | dt , to 26 .78% of that in the flying case, as illustrated in Fig. 8. This reduction reflects the efficient hybrid regime discovered by the CI-MPC. From Fig. 8, it can be observed that the majority of the residual energy ex-penditure arises from the minimal thrust command required to keep the motors active, rather than from sustained thrust injection. Unlike hovering, which requires continuous active power to counteract gravity, hopping leverages intermittent energy storage and release through contact dynamics, thereby reducing active thrust usage and improving overall efficiency. 
+
+B. Contact-Implicit Control 
+
+We present results of mode-free motion planning, in which the CI-MPC autonomously generates hopping behavior that minimizes control effort when ground contact is feasible. Simulation results are shown in Fig. 9, where the robot traverses obstacles using mode-free locomotion. On hard-ware, when an obstacle appears beneath the robot, the activated collision avoidance constraints eliminate feasible contact configurations, causing the optimizer to transition the robot to flight, as illustrated in Fig. 7. This transition is not explicitly scheduled but instead emerges from feasibility considerations within the constrained optimization. From an energy perspective, when contact is feasible, the CI-MPC   
+
+> Fig. 9. Simulation results of DASH tracking a 0.3 m/s velocity command, with hopping and flying emerging from feasibility–optimality trade-offs.
+> Fig. 10. Hybrid locomotion generated by the CI-MPC on hardware, where obstacle-triggered collision constraints regularize the motion toward the flight region.
+
+exploits passive energy exchange through terrain interaction and compliant leg dynamics, resulting in hopping with re-duced active thrust injection. When contact becomes infea-sible due to obstacle constraints, the optimizer shifts toward flight to maintain feasibility. Once the obstacle is removed and the collision constraints become inactive, ground contact becomes feasible again, and the CI-MPC naturally returns to the hopping regime, replanning the contact sequence to recover energy-efficient behavior, as shown in Fig. 10. VII. C ONCLUSION 
+
+To conclude, we present a controller design that enables mode-free motion planning and control for the novel Ducted Aerial Spring Hopper (DASH). The proposed controller effectively integrates a contact-implicit control formulation with an energy-centered cost design. A key advantage of this framework is its ability to achieve automatic locomotion mode transitions by balancing feasibility and optimality within a unified optimization problem. With optimized per-formance in terms of energy circulation and control effort, the resulting hopping behavior reduces the injected control effort to 26 .78% of that required for hovering in hardware experiments. This improvement arises from intermittent en-ergy storage and release through contact dynamics, which reduces the need for sustained active thrust injection. In future work, we aim to enable DASH to operate in outdoor and natural environments, where mode-free motion planning becomes increasingly critical. We are also interested in expanding the range of locomotion behaviors beyond the current capabilities, exploring additional hybrid modes such as swimming. REFERENCES [1] P. M. Wensing, M. Posa, Y. Hu, A. Escande, N. Mansard, and A. Del Prete, “Optimization-based control for dynamic legged robots,” 
+
+> IEEE Transactions on Robotics , vol. 40, pp. 43–63, 2023.
+
+[2] M. Dai, X. Xiong, and A. Ames, “Bipedal walking on constrained footholds: Momentum regulation via vertical com control,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE, 2022, pp. 10 435–10 441. [3] J. Lin, S. Ji, Y. Wu, T. Wu, Z. Han, and F. Gao, “Float drone: A fully-actuated coaxial aerial robot for close-proximity operations,” arXiv preprint arXiv:2503.00785 , 2025. [4] Z. Yin and H. Pei, “A ducted fan uav for safe aerial grabbing and transfer of multiple loads using electromagnets,” in 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) ,2024, pp. 10 342–10 349. [5] Y.-H. Hsiao, S. Bai, Z. Guan, S. Kim, Z. Ren, P. Chirarattananon, and Y. Chen, “Hybrid locomotion at the insect scale: Combined flying and jumping for enhanced efficiency and versatility,” Science Advances ,vol. 11, no. 15, p. eadu4474, 2025. [6] Y. Wang, J. Kang, Z. Chen, and X. Xiong, “Terrestrial locomotion of pogox: From hardware design to energy shaping and step-to-step dynamics based control,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) , 2024, pp. 3419–3425. [7] A. Salagame, S. Manjikian, C. Wang, K. V. Krishnamurthy, S. Pitroda, B. Gupta, T. Jacob, B. Mottis, E. Sihite, M. Ramezani, and A. Ramezani, “A letter on progress made on husky carbon: A legged-aerial, multi-modal platform,” 2022. [8] S. Bai, Q. Pan, R. Ding, H. Jia, Z. Yang, and P. Chirarattananon, “An agile monopedal hopping quadcopter with synergistic hybrid locomotion,” Science Robotics , vol. 9, no. 89, p. eadi8912, 2024. [9] R. Siegwart, M. Hutter, P. Oettershagen, M. Burri, I. Gilitschenski, E. Galceran, and J. Nieto, “Legged and flying robots for disaster response,” in World engineering conference and convention (WECC) .ETH-Z¨ urich, 2015. [10] K. Alexis, G. Darivianakis, M. Burri, and R. Siegwart, “Aerial robotic contact-based inspection: planning and control,” Autonomous Robots ,vol. 40, no. 4, pp. 631–655, 2016. [11] A. Agha, K. Otsu, B. Morrell, D. D. Fan, R. Thakker, A. Santamaria-Navarro, S.-K. Kim, A. Bouman, X. Lei, J. Edlund et al. , “Nebula: Quest for robotic autonomy in challenging environments; team costar at the darpa subterranean challenge,” arXiv preprint arXiv:2103.11470 ,2021. [12] B. Zhu, J. Xu, A. Charway, and D. Salda˜ na, “Pogodrone: Design, model, and control of a jumping quadrotor,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE, 2022, pp. 2031–2037. [13] T. Kim, H. Jeaong, S. Kim, I. Kim, S. Kim, J. Suk, and H.-S. Shin, “Design and flight testing of the ducted-fan uav flight array system,” 
+
+Journal of Intelligent & Robotic Systems , vol. 107, no. 3, p. 32, 2023. [14] Y. Zeng, Y. Huang, and X. Xiong, “Reference-steering via data-driven predictive control for hyper-accurate robotic flying-hopping locomotion,” arXiv preprint arXiv:2411.18793 , 2024. [15] Z. Yin and H. Pei, “Skateduct: Utilizing vector thrust of ducted fan uavs for terrestrial-aerial locomotion,” IEEE Robotics and Automation Letters , vol. 10, no. 6, pp. 6047–6054, 2025. [16] D. Hu, R. Xia, X. Jin, and Y. Tang, “Trajectory planning and tracking of hybrid flying-crawling quadrotors,” arXiv preprint arXiv:2312.08718 , 2023. [17] V. Gherold, I. Mandralis, E. Sihite, A. Salagame, A. Ramezani, and M. Gharib, “Self-supervised cost of transport estimation for multimodal path planning,” IEEE Robotics and Automation Letters ,vol. 10, no. 7, pp. 6872–6879, 2025. [18] T. Wu, Y. Zhu, L. Zhang, J. Yang, and Y. Ding, “Unified terres-trial/aerial motion planning for hytaqs via nmpc,” IEEE Robotics and Automation Letters , vol. 8, no. 2, pp. 1085–1092, 2023. [19] H. T. Suh, X. Xiong, A. Singletary, A. D. Ames, and J. W. Bur-dick, “Energy-efficient motion planning for multi-modal hybrid loco-motion,” in 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2020, pp. 7027–7033. [20] G. Kim, D. Kang, J.-H. Kim, S. Hong, and H.-W. Park, “Contact-implicit model predictive control: Controlling diverse quadruped mo-tions without pre-planned contact modes or trajectories,” The Inter-national Journal of Robotics Research , vol. 44, no. 3, pp. 486–510, 2025. [21] N. J. Kong, C. Li, G. Council, and A. M. Johnson, “Hybrid ilqr model predictive control for contact implicit stabilization on legged robots,” 
+
+IEEE Transactions on Robotics , vol. 39, no. 6, pp. 4712–4727, 2023. [22] S. Le Cleac’h, T. A. Howell, S. Yang, C.-Y. Lee, J. Zhang, A. Bishop, M. Schwager, and Z. Manchester, “Fast contact-implicit model predic-tive control,” IEEE Transactions on Robotics , vol. 40, pp. 1617–1629, 2024. [23] Y. Jiang, M. Yu, X. Zhu, M. Tomizuka, and X. Li, “Contact-implicit model predictive control for dexterous in-hand manipulation: A long-horizon and robust approach,” in 2024 IEEE/RSJ International Con-ference on Intelligent Robots and Systems (IROS) . IEEE, 2024, pp. 5260–5266. [24] S. A. Esteban, V. Kurtz, A. B. Ghansah, and A. D. Ames, “Reduced-order model guided contact-implicit model predictive control for humanoid locomotion,” arXiv preprint arXiv:2502.15630 , 2025. [25] J. P. Ramirez and S. Hamaza, “Multimodal locomotion: next genera-tion aerial–terrestrial mobile robotics,” Advanced Intelligent Systems ,vol. 7, no. 7, p. 2300327, 2025. [26] K. Shi, Z. Jiang, L. Ma, L. Qi, and M. Jin, “Mtabot: An efficient morphable terrestrial-aerial robot with two transformable wheels,” 
+
+IEEE Robotics and Automation Letters , vol. 9, no. 2, pp. 1875–1882, 2024. [27] X. Zeng, L. Huang, G. Zhang, and Y. Li, “Kou-iii: A bipedal robot with quadrotor-assisted locomotion,” Mechatronics , vol. 107, p. 103310, 2025. [28] B. W. McCormick, Aerodynamics of V/STOL flight . Courier Corpo-ration, 1999. [29] L. Marconi and R. Naldi, “Control of aerial robots: Hybrid force and position feedback for a ducted fan,” IEEE Control Systems Magazine ,vol. 32, no. 4, pp. 43–65, 2012. [30] M. Zhao, T. Anzai, F. Shi, X. Chen, K. Okada, and M. Inaba, “Design, modeling, and control of an aerial robot dragon: A dual-rotor-embedded multilink robot with the ability of multi-degree-of-freedom aerial transformation,” IEEE Robotics and Automation Letters , vol. 3, no. 2, pp. 1176–1183, 2018. [31] Z. Huang, Z. Wang, J. Wei, J. Yu, Y. Zhou, P. Lao, X. Huang, X. Zhang, and Y. Zhang, “Three-dimensional posture optimization for biped robot stepping over large ditch based on a ducted-fan propulsion system,” in 2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2020, pp. 3591–3597. [32] M. Neunert, M. St¨ auble, M. Giftthaler, C. D. Bellicoso, J. Carius, C. Gehring, M. Hutter, and J. Buchli, “Whole-body nonlinear model predictive control through contacts for quadrupeds,” IEEE Robotics and Automation Letters , vol. 3, no. 3, pp. 1458–1465, 2018. [33] T. Westenbroek, X. Xiong, S. S. Sastry, and A. D. Ames, “Smooth approximations for hybrid optimal control problems with application to robotic walking,” IFAC-PapersOnLine , vol. 54, no. 5, pp. 181–186, 2021. [34] T. Pang, H. T. Suh, L. Yang, and R. Tedrake, “Global planning for contact-rich manipulation via local smoothing of quasi-dynamic contact models,” IEEE Transactions on robotics , vol. 39, no. 6, pp. 4691–4711, 2023. [35] D. P. Leins, R. Haschke, and H. Ritter, “Mujoco ros: Integrating ros with the mujoco engine for accurate and scalable robotic simulation,” in 2025 IEEE International Conference on Simulation, Modeling, and Programming for Autonomous Robots (SIMPAR) . IEEE, 2025, pp. 1–6. [36] Q. Le Lidec, W. Jallet, L. Montaut, I. Laptev, C. Schmid, and J. Carpentier, “Contact models in robotics: a comparative analysis,” 
+
+IEEE Transactions on Robotics , vol. 40, pp. 3716–3733, 2024. [37] J. Kang, Y. Wang, and X. Xiong, “Fast decentralized state estimation for legged robot locomotion via ekf and mhe,” IEEE Robotics and Automation Letters , vol. 9, no. 12, pp. 10 914–10 921, 2024. [38] T. Lee, “Geometric tracking control of the attitude dynamics of a rigid body on so(3),” in Proceedings of the 2011 American Control Conference , 2011, pp. 1200–1205. [39] J. W. Grizzle, C. Chevallereau, R. W. Sinnet, and A. D. Ames, “Models, feedback control, and open problems of 3d bipedal robotic walking,” Automatica , vol. 50, no. 8, pp. 1955–1988, 2014. [40] P. Varin and S. Kuindersma, “A constrained kalman filter for rigid body systems with frictional contact,” in International Workshop on the Algorithmic Foundations of Robotics . Springer, 2018, pp. 474– 490. [41] C. Mastalli, R. Budhiraja, W. Merkt, G. Saurel, B. Hammoud, M. Naveau, J. Carpentier, L. Righetti, S. Vijayakumar, and N. Mansard, “Crocoddyl: An efficient and versatile framework for multi-contact optimal control,” in 2020 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2020, pp. 2536–2542.
