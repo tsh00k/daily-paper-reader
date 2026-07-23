@@ -1,0 +1,242 @@
+Title: Isaac Sim-to-Real: Reinforcement Learning based Locomotion for Quadrupeds
+
+URL Source: https://arxiv.org/pdf/2607.18135v1
+
+Published Time: Tue, 21 Jul 2026 02:08:41 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Isaac Sim-to-Real: Reinforcement Learning based Locomotion for Quadrupeds 
+
+Jordan Dowdy 1 and Jean Chagas Vaz 2∗
+
+> © 2025 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. Accepted manuscript. Published in the 2025 IEEE 21st International Conference on Automation Science and Engineering (CASE), pp. 2194–2199. DOI:
+> https://doi.org/10.1109/CASE58245.2025.11163761 .
+
+Abstract — Learning-based approaches to locomotion have risen in popularity in recent years, showing the capability for complex legged locomotion and whole-body control. Reinforcement learning (RL), the primary learning-based approach for locomotion, often utilizes a high-performance simulation tool, providing a controlled and efficient training and development environment. However, policies that perform well in simulation frequently encounter unexpected challenges when deployed on a physical system, known as the sim-to-real gap. This work presents a robust RL locomotion framework capable of whole-body control. The proposed RL framework utilizes Nvidia’s new set of simulation tools, Isaac Sim, and its companion RL framework, Isaac Lab, for training, achieving a zero-shot sim-to-real policy. The performance of our policy is validated on physical hardware using the Unitree Go1, with experimental results showing similar velocity tracking performance to the quadrupeds’ integrated controller, with a greater ability to recover from large disturbances, and achieve linear velocities of 2.0 m/s and angular velocities of 1.8 rad/s .
+
+I. INTRODUCTION Quadrupedal locomotion is a key area of focus in legged robotics, with it chasing agile and robust mobility across various environments and terrains. Traditional locomotion control often combines high-level gait generation with stability control schemes such as through zero-moment point (ZMP) or model-predictive control (MPC) [1], [2], [3], with low-level high-frequency actuator controllers to track joint positions. While this hybrid approach can ensure basic mobility, it frequently struggles with the intricate, nonlinear dynamics encountered in irregular terrains. In contrast, learning-based strategies, specifically reinforcement learning (RL) techniques, leveraging high-performance simulation environments, have proven effective in developing robust and adaptive control policies [4], [5]. In recent years, research for these RL locomotion techniques has seen a paradigm shift from high-level, gait generation and foot placement, to an all-encompassing approach, training policies to learn all required components of locomotion, and enabling whole-body control. 
+
+> 1
+
+J. Dowdy is a Ph.D student with the Department of Electrical and Computer Engineering, University of Louisville. 
+
+jordan.dowdy@louisville.edu 
+
+> 2∗
+
+Dr. Jean Chagas Vaz is with the Faculty of Electrical and Computer Engineering, University of Louisville, Louisville, KY, 40208, USA. ∗direct all correspondence to this author 
+
+jean.chagasvaz@louisville.edu 
+
+Fig. 1. Unitree Go1 walking up an incline pallet using a end-to-end RL locomotion framework. 
+
+This demonstration of whole-body control potential in RL, has propelled industry leaders like OpenAI [6], NVIDIA [7], and Google [8] to each develop simulation platforms (OpenAI Gym, Isaac Sim, Mujoco), with accurate and optimized rigid-body dynamics [9], [10], [11]. Using high-performance simulation environments for training, RL-based approaches provide a controlled and efficient way to develop complex control strategies. However, despite encouraging simulation results, the well-known sim-to-real gap presents significant challenges when implementing these policies on physical robots [12]. Bridging this gap is critical to ensure the reliability and robustness of locomotion controllers in practical applications. 
+
+A. Literature Review 
+
+Recent advancements in reinforcement learning (RL) for quadruped locomotion frequently result in policies that function as high-level controllers, achieving stable and optimal gaits [13], [14]. Some studies integrate high-bandwidth sensors into the policies state to enhance locomotion in adverse terrains. These approaches still maintain the multi-modal approach [15]. In contrast, other RL policies designed for whole-body control depend on pre-trained models within a teacher-student network architecture [16]. The RL policies presented in this work share similarities with these approaches, while further incorporating advanced reward shaping techniques [17] and employing a dual-policy framework to coordinate both high-level and low-level control [18]. While simulation significantly reduces training time and obviates the need for hardware [19], several studies have arXiv:2607.18135v1 [cs.RO] 20 Jul 2026 demonstrated the effectiveness of real-world training and fine-tuning for locomotion policies [20], [21]. However, simulation training with domain randomization, noise injection, and system disturbances [22], reduces the chance of encountering challenges and hitting the so-called sim-to-real gap. These domain randomization techniques, along with proper actuator modeling [23], [24], often prove sufficient to achieve real-world performance. Nvidia’s Isaac Sim has seen a growing usage in recent years [25], along with its performance and capabilities. The latest release of Nvidia’s RL framework, Isaac Lab, and physics solver, Physx5.4, introduces a suite of new and advanced tools, giving RL new potential. However, the transfer from simulation to physical hardware remains challenging despite significant improvements to these simulation environments. To address this critical gap and build upon previous studies, we explore a robust RL-based locomotion framework, tailored to the Isaac Sim platform. Our RL locomotion framework produces a low-level position-control policy capable of whole-body control. Our policy does not utilize pre-acquired data as in teacher-student frameworks, and instead focuses on reward shaping to produce natural gaits during locomotion. The policy is subsequently validated on the Unitree Go1 quadruped through extensive hardware experiments, a performance benchmark against the platform’s integrated controller. 
+
+B. Paper Contributions  
+
+> •
+
+An end-to-end RL-based locomotion policy with azero-shot transfer to the Unitree Go1.  
+
+> •
+
+Techniques in domain randomization and actuator modeling to overcome the sim-to-real gap.  
+
+> •
+
+Policy validation and comparisons against Unitree’s Go1 integrated controller, with comparable velocity tracking performance while achieving higher velocities. Policy disturbance rejection capabilities are also reported. II. R EINFORCEMENT LEARNING FRAMEWORK 
+
+This section presents the methodology for training our RL locomotion framework. It starts with a formal definition of the problem, followed by a discussion of the approaches used to overcome the sim-to-real gap. Lastly, details on policy actions, observations, and rewards are discussed, along with the intuition behind them. 
+
+A. Problem Definition 
+
+In reinforcement learning for the locomotion of aquadruped, a Markov Decision Process (MDP) is used to model how a robot interacts with its environment. A Markov Decision Process consists of ( S, A, P, R, γ ), where S and 
+
+A are the current state and possible future state representing the agent’s state space. P is the transition probability which shows the relationship between actions At and the change in states at St to the next time step St+1 , R is the reward function representing the reward received after taking action 
+
+At in state St, finally, γ represents the discount factor and   
+
+> Fig. 2. Simulation of Unitree Go1 in Isaac Sim during policy inference. The simulation uses a terrain environment consisting of ramps, random height boxes, and a bumpy floor. During training, the terrain difficulty level as velocity tracking performance increases.
+
+determines the importance of future rewards. The agent’s goal is to maximize the reward given by: 
+
+Gt =
+
+> ∞
+
+X
+
+> k=0
+
+γkR(St+k, At+k), (1) Where a policy π(A|S defines the probability of taking an action in a state. The expected return starting from a state S
+
+under policy π is formulated as: 
+
+Vπ = Eπ
+
+> ∞
+
+X
+
+> k=0
+
+γkR(St, At|S 0 = S), (2) Similarly, the expected return starting from a state S taking action A under policy π is formulated as: 
+
+Qπ (S, A) = Eπ
+
+> ∞
+
+X
+
+> k=0
+
+γkR(St, At|S 0 = S, A0 = A), (3) Where the optimal policy π∗ maximizes the following value functions, 
+
+π∗ = arg max  
+
+> π
+
+V π (S), (4) 
+
+π∗ = arg max  
+
+> π
+
+Qπ (S, A). (5) 
+
+B. Sim-to-Real Techniques 
+
+This subsection details the techniques used to overcome the sim-to-real gap and achieve a zero-shot transfer. Additionally, implementation details are specified for domain randomization and actuator modeling for simulation. 
+
+1) Domain Randomization: The NVIDIA RTX 3090 GPU was used to run 4096 environments simultaneously for policy training, utilizing domain randomization techniques during the training process, to ensure a robust policy and overcome the sim-to-real gap. The quantities foot friction, foot restitution, body mass, initial joint positions, and initial velocities were randomized to a difference of ±[5 , 20]% 
+
+their initial values. A terrain curriculum was used, gradually increasing terrain height and roughness during training, which can be seen in Fig. 2. The terrain used during simulation creates boxes with slight variations in height close to 0 on the z-axis and bumpy patches by adding noise to TABLE I DOMAIN RANDOMIZATION                           
+
+> Term Operation Range
+> Foot Friction New (0 .4,1.1)
+> Center of Mass Add (-0.025 ,0.025)
+> Link Mass Scale (0 .8,1.3)
+> Body Velocity Add (-0.25 ,0.25)
+> Body Position Add (-0.5,0.5)
+> Body Orientation Add (-0.02 ,0.02)
+> Joint Positions Scale (-0.3,0.3)
+> Joint Velocities Scale (-2.5,2.5)
+
+terrain heights. Random pushing events were applied to the robot’s base to disturb the system. These random pushing events would occur every 10 to 15 seconds by setting the linear velocity to a value in the range [-1.0, 1.0] m/s .Command velocities are sampled from the ranges [-2, 3] m/s 
+
+in x, [-1.5, 1.5] m/s in y, and [-1.5, 1.5] rad/s for linear and angular velocities, respectively, sampled every 0.3 to 10.0 seconds. Table I provides more detail for all domain randomization quantities used. 
+
+2) Actuator Modeling: In order to accurately model the actuators on the Unitree Go1, a multilayer perception (MLP) network was used to capture the non-linear dynamics and is often referred to as an actuator-net. The model created uses the same approach shown in [23]. Joint information is recorded during the deployment of a policy and then used to train an MLP network to minimize the error between torque outputs based on a history of joint positions and velocities. The network trained on this data uses three layers of 64 neurons using the soft-sign activation function. The actuator-net was modeled with a kp = 20 and a
+
+kd = 0 .5, providing a balance between joint stiffness and compliance during locomotion. . Training the policy before integrating an actuator-net showed significant challenges with the sim-to-real gap. 
+
+C. Action Space 
+
+The policy’s action space is represented by a 12 ×1 vector corresponding to the joint positions of each actuator on the Unitree Go1 quadruped. These joint positions are scaled by a constant scale factor of 0.2 and offset by the quadruped’s nominal configuration. Scaling and offsetting these joint actions ensure that the robot has an initial stability during training, as it will make small initial movements around the nominal standing configuration. During training, these scaled and offset joint positions are then given to an actuator-net to correctly model output torques from the quadruped. 
+
+D. Observations 
+
+The observation space for our policy takes a similar approach to past studies, utilizing minimal state information, represented by a 48 ×1. The linear velocity, angular velocity, projected gravity, user command, joint positions,                                  
+
+> TABLE II OBSERVATION SPACE TERMS
+> Observation Term State Expression Injected Noise
+> Linear Velocity υbase ∈R30.02 Angular Velocity ωyaw ∈R30.01 Projected Gravity Gbase ∈R30.05 User Command u∗
+> base ∈R30.0 Joint Positions || θi−θ|| ∈ R12 0.05 Joint Velocity ˙θ∈R12 0.1 Previous Action At−1.∈R12 0.0
+
+joint velocities, and previous action, are used as the policy states. Table II gives a detailed look into these observations. The states related to IMU sensors (linear velocity, angular velocity, projected gravity) help the agent track desired velocity and model system disturbances due to foot slippage, collisions, and environment-applied forces. The user command state represents the desired linear (X, Y) and angular (Z) velocities that the policy needs to track. The joint position observation uses a relative position where θi
+
+is the nominal stance, encouraging the policy to stay at this configuration. The previous action term, given in its unscaled form, ensures the policy can learn how its actions change its subsequent states during locomotion. It should be noted that our states do not have any scaling applied, unlike other studies on RL locomotion. Scaling state information can help with policy converging to stable solutions if certain states are orders of magnitude larger. 
+
+E. Rewards 
+
+Through reward function shaping, the policy can achieve a stable periodic gate, maintaining desired command velocities. The Gait reward term enables the policy to achieve a natural gait during training by rewarding synchronous and asynchronous foot contact. To ensure the policy properly lifts the agent’s feet off the ground, large weights are set to the feet clearance reward and the foot airtime reward. Joint position and velocity limit penalties are added for safety. Previous training attempts saw the policy reach joint limits for a single timestep; to prevent this, a large penalty weight was added. Thigh and calf contact penalties improved stability from previous attempts, preventing calf links from scraping the ground when moving backwards. Compared to other work, higher weights were used for action smoothness and joint deviation, which showed performance improvements at higher command velocities. Additionally, a penalty term is added to the amount of force applied to the agent’s feet, allowing for a softer contact and a lower risk of hardware damage. III. E XPERIMENTAL SETUP AND RESULTS 
+
+With our RL-based locomotion framework now detailed, this section will focus on the network architecture used to deploy this policy. It will briefly summarize the network architecture and explain our experimental apparatus. Finally, TABLE III REWARD AND PENALTY TERMS 
+
+Reward Term General Expression Weight 
+
+Feet Air Time P4
+
+> i=1
+
+(tair ,i − 0.175) 5.0 Linear Velocity Error exp (−(|| υdes  
+
+> x,y
+
+− υcur  
+
+> x,y
+
+|| ) 5.0 Angular Velocity Error exp (−(|| ωdes z − ωcur z || /2)) 5.0 Gait Q2 
+
+> i=1
+
+fsync ,i · Q4 
+
+> i=1
+
+fasync ,i 10.0 Foot Clearance exp (− P4
+
+> i=1
+
+(fz ,i − 0.08)) 5.0 
+
+Penalty Term General Expression Weight 
+
+Action Smoothness ||A t − A t-1|| -1.5 Air Time Variance P4,4
+
+> i=1 ,j =1
+
+(tair ,i − tair ,j ) -1.0 Base Motion |ωx + ωy | -2.0 Base Orientation || Gx,y || -5.0 Foot Slippage || Cfoot · υfoot || -1.0 Foot Force P4
+
+> i=1
+
+(Ffoot , i )2 -0.00002 Joint Torque || τ || -0.0005 Joint Acceleration || ¨θ|| -0.0002 Joint Velocity || ˙θ|| -0.015 Joint Deviation P12 
+
+> i=1
+
+(θi − θ) -0.75 Joint Position Limit P12 
+
+> h=1
+
+(θ ≥ θmax ) -100.0 Joint Velocity Limit P12 
+
+> h=1
+
+( ˙θ ≥ ˙θmax ) -10.0 Thigh Contact Cthigh ∈ R4 -10.0 Calf Contact Ccalf ∈ R4 -1.0 
+
+Fig. 3. Policy velocity tracking performance with a generated sinusoidal velocity command. Each plot, from top to bottom, shows the measured, commanded, and error for linear velocities x,y, and yaw angular velocity in z.
+
+Fig. 4. Unitree’s model-based velocity tracking performance with a generated sinusoidal velocity command. Each plot, from top to bottom, shows the measured, commanded, and error for linear velocities x,y, and yaw angular velocity in z.
+
+real-world results showcase velocity tracking performance, model comparison, and the system’s response to pushes. 
+
+A. Network Architecture, Training, and Apparatus 
+
+The reinforcement learning policy in this work is modeled using a straightforward actor-critic architecture using amultilayer perception network containing three different layers of 512, 256, and 128 neurons, employing exponential linear units (ELUs) as the activation functions, with both actor and critic networks using the same-sized MLP architecture. Proximal policy optimization (PPO) is used to train the policy with tuned hyper-parameters, including an adaptive learning rate, an entropy coefficient of 0.0025 ,a target KL-Divergence at 0.01 , a discount factor ( γ) and advantage estimator discount factor ( λ) of 0.99 and 0.95 
+
+respectively, and a learning rate of 0.001 . The policy training is conducted over 5,000 iterations, taking approximately 3 hours to complete. The policy is trained with a physics 
+
+∆t=0.002 s, and a policy ∆t=0.02 s. During hardware testing of the trained policy, performance was seen to increase as the loop rate for the policy increased, going from its trained 
+
+50 Hz to 100 Hz . This visually shows a more agile and stable performance during locomotion. The Unitree Go1 employs our end-to-end RL locomotion policy for evaluation. Unitree’s Go1 is an 18-degree-of-freedom (DoF) quadruped with 12 actuated joints, expressing the trunk in a full 6 DoF. The Policy was compiled in ONNX format, with inference running on a Nvidia Jetson Nano—a Docker container with necessary Python dependencies to run the ONNX policy. Surprisingly, the policy and the necessary state collection and estimation can achieve up to 400 Hz without GPU acceleration, simplifying the overall architecture. Linear velocity state information was determined through a Kalman Filter. To Fig. 5. Policy disturbance rejection during three separate kicking events. Each kick increased in force applied to the trunk of the quadruped. The green line represents the quadruped’s height in its nominal configuration, where, after a kicking event, the quadruped should return to this nominal height. The blue line represents the height of the quadruped during these events. As an approximation of the applied force from each kick, the linear velocity of the quadruped is shown by the red curve. The raw data was recorded at 25 Hz , with the policy running at 100 Hz .
+
+achieve a loop rate of over 75 Hz , the Kalman Filter was entirely implemented in C++, compiled using Pybind11 to create a Python library. This reduces latency enough to achieve up to 400 Hz with the policy. 
+
+B. Experimental Setup 
+
+Experiments were conducted on physical hardware with the Unitree Go1 to study our learning based approach to locomotion, and compared against the integrated locomotion controller. The Unitree Go1 has three separate gaits, the default gait is used for general locomotion while the other two are specific for running and or stair climbing applications. To validate the locomotion policy, the Unitree Go1 was controlled to walk over rugged or adverse terrains such as gravel, sand, incline and decline plains. For comparison against our policy, the ”default” gait is used, as this shows the general robustness and capabilities of the model-based locomotion controller. To show the tracking performance, a sinusoidal velocity command for linear [x, y ] and angular [ωz ] velocities were used and recorded for thirty-five seconds. As disturbance rejection is an essential part of quadrupedal locomotion, a performance test was performed to determine the disturbance rejection capabilities. The disturbance rejection test performed on the quadruped was enacted by kicking the trunk of the quadruped three separate times, simulating a fall or collision, and an externally applied force during locomotion. Each kicking event occurred consecutively, with each kick applying a higher level of force onto the trunk of the quadruped. 
+
+C. Results 
+
+Validation showed the capabilities to walk on various terrain difficulties with Fig. 1, showing the quadruped walking up a steep incline pallet. The policy can also be seen walking on declined and bumpy terrain in a simulation environment, Fig. 2. Velocity tracking performance for the policy is shown in Fig. 3, with Unitree’s integrated controller performance shown in Fig. 4; however, instabilities in the model-based approach were seen at higher frequencies and amplitude (large accelerations and velocities) for the sinusoidal command velocity, causing the feet to slip. To mitigate this issue, the maximum and minimum velocities were reduced. The policy tracking performance shows a small phase lag between the desired and measured velocities, with Unitree’s model-based approach producing similar results. Our learning based approach is shown to match or produce similar results in comparison to a model-based approach. The results for the disturbance rejection abilities of the policy can be seen in Fig. 5. A velocity plot at the bottom provides a general estimate of the applied force on the trunk from the kick. Additionally, the quadruped’s nominal height shows how well the policy recovered from the disturbance. The policy successfully recovered from all three kicks while only stumbling and never entirely falling to the ground. These results indicate that the policy is robust against events such as collisions or foot slippage during locomotion. IV. C ONCLUSION 
+
+In this paper, an end-to-end reinforcement learning locomotion framework with a zero-shot transfer was presented, showing the capability to outperform or match the capabilities of modern model-based approaches such as the controller integrated on Unitree’s Go1. Additionally, the techniques used to overcome the sim-to-real gap for Isaac Sim, along with observation and reward shaping, were used to achieve these results. This RL framework showed its capability to estimate the joint angles needed to achieve robust locomotion with hardware results. The RL framework also showed the ability to closely track a desired velocity command from a user. This controller was capable of resisting and had the ability to recover from large pushing forces. REFERENCES [1] J. Carlo, P. Wensing, B. Katz, and S. Kim, “Dynamic locomotion in the mit cheetah 3 through convex model-predictive control,” 10 2018, pp. 1–9. [2] Y. Shi, P. Wang, M. Li, X. Wang, Z. Jiang, and Z. Li, “Model predictive control for motion planning of quadrupedal locomotion,” in 2019 IEEE 4th International Conference on Advanced Robotics and Mechatronics (ICARM) , 2019, pp. 87–92. [3] A. W. Winkler, F. Farshidian, D. Pardo, M. Neunert, and J. Buchli, “Fast trajectory optimization for legged robots using vertex-based zmp constraints,” IEEE Robotics and Automation Letters , vol. 2, no. 4, pp. 2201–2208, 2017. [4] S. Chen, B. Zhang, M. W. Mueller, A. Rai, and K. Sreenath, “Learning torque control for quadrupedal locomotion,” 2022. [5] J. Hwangbo, J. Lee, A. Dosovitskiy, D. Bellicoso, V. Tsounis, V. Koltun, and M. Hutter, “Learning agile and dynamic motor skills for legged robots,” 2019. [6] G. Brockman, V. Cheung, L. Pettersson, J. Schneider, J. Schulman, J. Tang, and W. Zaremba, “Openai gym,” 2016. [7] V. Makoviychuk, L. Wawrzyniak, Y. Guo, M. Lu, K. Storey, M. Macklin, D. Hoeller, N. Rudin, A. Allshire, A. Handa, and G. State, “Isaac gym: High performance gpu-based physics simulation for robot learning,” 2021. [8] K. Zakka, B. Tabanpour, Q. Liao, M. Haiderbhai, S. Holt, J. Y. Luo, A. Allshire, E. Frey, K. Sreenath, L. A. Kahrs, C. Sferrazza, Y. Tassa, and P. Abbeel, “Mujoco playground,” 2025. [9] M. K¨ orber, J. Lange, S. Rediske, S. Steinmann, and R. Gl¨ uck, “Comparing popular simulation environments in the scope of robotics and reinforcement learning,” 2021. [10] S. Ivaldi, V. Padois, and F. Nori, “Tools for dynamics simulation of robots: a survey based on user feedback,” 2014. [11] J. Collins, S. Chand, A. Vanderkop, and D. Howard, “A review of physics simulators for robotic applications,” IEEE Access , vol. 9, pp. 51 416–51 431, 2021. [12] E. Salvato, G. Fenu, E. Medvet, and F. A. Pellegrino, “Crossing the reality gap: A survey on sim-to-real transferability of robot controllers in reinforcement learning,” IEEE Access , vol. 9, pp. 153 171–153 187, 2021. [13] W. Yu, D. Jain, A. Escontrela, A. Iscen, P. Xu, E. Coumans, S. Ha, J. Tan, and T. Zhang, “Visual-locomotion: Learning to walk on complex terrains with vision,” in 5th Annual Conference on Robot Learning , 2021. [Online]. Available: https: //openreview.net/forum?id=NDYbXf-DvwZ [14] G. B. Margolis, T. Chen, K. Paigwar, X. Fu, D. Kim, S. Kim, and P. Agrawal, “Learning to jump from pixels,” 2021. [15] G. Bellegarda, M. Shafiee, and A. Ijspeert, “Visual cpg-rl: Learning central pattern generators for visually-guided quadruped locomotion,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) , 2024, pp. 1420–1427. [16] D. Liu, J. Yin, and S. See, “Towards fault-tolerant quadruped locomotion with reinforcement learning,” in 2024 IEEE Conference on Artificial Intelligence (CAI) , 2024, pp. 1438–1441. [17] X. Zhang, Z. Xiao, Q. Zhang, and W. Pan, “Synloco: Synthesizing central pattern generator and reinforcement learning for quadruped locomotion,” in 2024 IEEE 63rd Conference on Decision and Control (CDC) , 2024, pp. 2640–2645. [18] A. Loquercio, A. Kumar, and J. Malik, “Learning visual locomotion with cross-modal supervision,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023, pp. 7295–7302. [19] N. Rudin, D. Hoeller, P. Reist, and M. Hutter, “Learning to walk in minutes using massively parallel deep reinforcement learning,” 2021. [20] H. Zhang, S. Yang, and D. Wang, “A real-world quadrupedal locomotion benchmark for offline reinforcement learning,” in 2024 International Joint Conference on Neural Networks (IJCNN) , 2024, pp. 1–7. [21] L. Smith, J. C. Kew, X. Bin Peng, S. Ha, J. Tan, and S. Levine, “Legged robots that keep on learning: Fine-tuning locomotion policies in the real world,” in 2022 International Conference on Robotics and Automation (ICRA) , 2022, pp. 1593–1599. [22] A. Shakerimov, T. Alizadeh, and H. A. Varol, “Efficient sim-to-real transfer in reinforcement learning through domain randomization and domain adaptation,” IEEE Access , vol. 11, pp. 136 809–136 824, 2023. [23] G. B. Margolis and P. Agrawal, “Walk these ways: Tuning robot control for generalization with multiplicity of behavior,” 2022. [24] Y.-H. Shin, T.-G. Song, G. Ji, and H.-W. Park, “Actuator-constrained reinforcement learning for high-speed quadrupedal locomotion,” 2023. [25] M. Kaup, C. Wolff, H. Hwang, J. Mayer, and E. Bruni, “A review of nine physics engines for reinforcement learning research,” 07 2024. [26] N. Rudin, D. Hoeller, P. Reist, and M. Hutter, “Learning to walk in minutes using massively parallel deep reinforcement learning,” 2021. [27] S. Gangapurwala, A. Mitchell, and I. Havoutis, “Guided constrained policy optimization for dynamic quadrupedal robot locomotion,” IEEE Robotics and Automation Letters , vol. 5, no. 2, pp. 3642–3649, 2020. [28] M. Luo, S. Li, Y. Zheng, and Y. Zhang, “Legged robot locomotion via hybrid zero dynamics and model predictive control,” in 2023 China Automation Congress (CAC) , 2023, pp. 3680–3684. [29] D. Kim, J. Yoo, S. Kim, and J. Back, “Optimization of locomotion planning for quadruped robot adapted with terrain,” in 2024 24th International Conference on Control, Automation and Systems (ICCAS) , 2024, pp. 1188–1189. [30] S. Akki and T. Chen, “Benchmarking model predictive control and reinforcement learning based control for legged robot locomotion in mujoco simulation,” 2025. [31] G. Bellegarda, Y. Chen, Z. Liu, and Q. Nguyen, “Robust high-speed running for quadruped robots via deep reinforcement learning,” in 
+
+2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2022, pp. 10 364–10 370. [32] W. Zhu, X. Guo, D. Owaki, K. Kutsuzawa, and M. Hayashibe, “A survey of sim-to-real transfer techniques applied to reinforcement learning for bioinspired robots,” IEEE Transactions on Neural Networks and Learning Systems , vol. 34, no. 7, pp. 3444–3459, 2023. [33] H. Huang, A. Loquercio, A. Kumar, N. Thakkar, K. Goldberg, and J. Malik, “Manipulator as a tail: Promoting dynamic stability for legged locomotion,” 2023. [34] S. Xu, W. Zhang, L. Zhu, and C. P. Ho, “Distributed model predictive formation control with gait synchronization for multiple quadruped robots,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023, pp. 9995–10 002. [35] A. Aboudonia, N. Scianca, D. De Simone, L. Lanari, and G. Oriolo, “Humanoid gait generation for walk-to locomotion using single-stage mpc,” in 2017 IEEE-RAS 17th International Conference on Humanoid Robotics (Humanoids) , 2017, pp. 178–183. [36] M. Mittal, C. Yu, Q. Yu, J. Liu, N. Rudin, D. Hoeller, J. L. Yuan, R. Singh, Y. Guo, H. Mazhar, A. Mandlekar, B. Babich, G. State, M. Hutter, and A. Garg, “Orbit: A unified simulation framework for interactive robot learning environments,” IEEE Robotics and Automation Letters , vol. 8, no. 6, pp. 3740–3747, 2023. [37] P. Trentsios, M. Wolf, and D. Gerhard, “Overcoming the sim-to-real gap in autonomous robots,” Procedia CIRP , vol. 109, pp. 287–292, 2022, 32nd CIRP Design Conference (CIRP Design 2022) - Design in a changing world. [Online]. Available: https: //www.sciencedirect.com/science/article/pii/S2212827122007004

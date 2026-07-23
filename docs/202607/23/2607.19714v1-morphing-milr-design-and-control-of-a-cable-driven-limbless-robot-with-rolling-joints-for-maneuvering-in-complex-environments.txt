@@ -1,0 +1,323 @@
+Title: Morphing MILR: Design and control of a cable-driven limbless robot with rolling joints for maneuvering in complex environments
+
+URL Source: https://arxiv.org/pdf/2607.19714v1
+
+Published Time: Thu, 23 Jul 2026 00:22:22 GMT
+
+Number of Pages: 7
+
+Markdown Content:
+# Morphing MILR: Design and control of a cable-driven limbless robot with rolling joints for maneuvering in complex environments 
+
+Donoven Dortilus †, Tianyu Wang †, Galen Tunnicliffe, Matthew Fernandez, Daniel I. Goldman 
+
+Abstract — Limbless robots offer exceptional mobility in con-fined and cluttered environments due to their slender bodies and their ability to exploit body-terrain interactions. Recent designs incorporating compliance demonstrate robust locomo-tion without complex sensing or control; however, these systems typically rely on fixed body configurations, with each morphol-ogy specialized for a single locomotion mode or environment. This raises a key challenge: how can a single limbless robot achieve versatile locomotion while preserving the robustness of compliance-mediated locomotion? To address this challenge, we present a cable-driven limbless robot that reconfigures body morphology and compliance to enable diverse locomotion modes. Distributed cable actuation generates traveling body waves, while programmable passive compliance enables robust contact-rich locomotion without terrain knowledge or high-bandwidth feedback. Rolling joints reorient bending planes along the body, enabling rapid reconfiguration and smooth transitions between locomotion styles, and incorporate geared locking to maintain configuration without continuous power. By combining programmable bending compliance and morphology control, the platform achieves lateral undulation, sidewinding, rolling, and twisting within a single system. Experiments demonstrate reliable gait generation, traversal in obstacle-rich environments, and transitions between modes, establishing a versatile limbless platform for navigating complex environments with applications in search and rescue, environmental monitor-ing, and inspection. 
+
+I. I NTRODUCTION 
+
+Limbless robots show strong potential for maneuvering through complex terrain for applications such as search and rescue, environmental monitoring, and industrial inspection, largely because their slender, hyper-redundant bodies can access spaces that conventional mobile robots cannot [1]– [6]. A wide range of engineered mechanisms and bio-inspired control strategies replicate limbless locomotion and synthesize gaits in open and obstacle-rich settings [2], [7]– [15]. Many platforms can achieve out-of-plane motion, in-cluding sidewinding, lifting, climbing, and rolling [16]–[23], but these capabilities come from increased sensing, higher-bandwidth feedback, and carefully tuned control that can become uncertain when contact conditions change or when the environment is only partially known [15], [24]–[29]. In parallel, a smaller set of limbless robots demon-strates an alternative strategy that embeds mechanical intelli-gence through morphology, passive compliance, and contact-mediated interactions, allowing body-environment dynamics              
+
+> †These authors contributed equally to this work. Donoven Dortilus, Tianyu Wang, Galen Tunnicliffe, Matthew Fernandez, and Daniel I. Goldman are with Georgia Institute of Technology, Atlanta, GA 30332, USA.
+
+{ ddortilus3, tianyuwang, gtunnicliffe3, mfernandez64 }@gatech.edu, daniel.goldman@physics.gatech.edu 10 cm   
+
+> Undulator Sidewinder Free Form
+
+B C D
+
+A
+
+Fig. 1: (A) The limbless robot Morphing MILR designed for lo-comotion in complex environments, capable for quick morphology switching, such as planar undulator (B), sidewinder (C), and many more flexible morphologies (D). 
+
+to contribute directly to effective locomotion [30]–[33]. Within this paradigm, cable-driven bilateral actuation with programmable compliance simplifies control in heteroge-neous terrestrial environments by enabling robust obstacle-aided undulation without explicit terrain knowledge [34]. More recently, these design principles extended to additional gait families and domains, including sidewinding facilitated by anisotropic compliance [35] and undulatory swimming in complex aquatic terrain [36], [37]. However, such systems remain largely tied to fixed hardware morphologies and, in several cases, a fixed dominant bending plane or gait-specific configuration, limiting the diversity of locomotion styles that a single device can express. In this work, we extend compliance-enabled cable-driven undulation beyond a single configuration by introducing Morphing MILR (Mechanically Intelligent Limbless Robot) (Fig. 1), a modular platform that rapidly reconfigures its morphology to realize multiple limbless locomotion modes within a three-dimensional workspace, a capability not present in prior mechanically intelligent works [34], [35]. The robot consists of repeated modules that combine cable-driven bending with rolling joints that reorient the bending planes. By actively controlling where and how we express changes in angles, Morphing MILR unifies previously sepa-rate cable-driven limbless robot morphologies within a single architecture, enabling transitions between modes such as lateral undulation, sidewinding, and rolling while preserv-ing the compliance that facilitates robust body-environment interaction. Through experiments, we demonstrate distinct arXiv:2607.19714v1 [cs.RO] 22 Jul 2026 Servo  
+
+> Motor
+> Worm Gear
+> Helical
+> Gear
+> Cables Pulley
+> Pulley Passive Joint
+> Spur
+> Gear A
+
+A
+
+CB
+
+> 5 cm
+> Spur
+> Gear B
+
+Fig. 2: Overview of full design (A) broken down into bilateral cable actuation between modules (B) with rotating geared down servo motor controlling module rotation (C). 
+
+movement styles and reliable mode transitions driven pri-marily by morphology and compliance rather than terrain-specific sensing. These capabilities open pathways toward field-relevant behaviors in harsh, confined, and contact-rich environments. II. R OBOT DESIGN 
+
+A. Design Overview 
+
+Morphing MILR currently consists of six repeated mod-ules, with the potential to add more (Fig. 2A), each inte-grating a bending joint actuated by antagonistic cables and a rolling base joint that reorients the bending plane. This architecture preserves the mechanically intelligent behavior exhibited by the bilateral actuation mechanism [34], while no longer being confined to a single combination of joint orientation, allowing for a wider range of traversable terrains in a single architecture and enabling fast transitions between locomotion modes such as lateral undulation, sidewinding, and rolling.       
+
+> Mass Single Module: 0.25 kg Full 6 Module Robot: 1.5 kg
+> Dimensions 6.5 cm Diameter 70 cm Length
+> Power 12 V, 1 A (normal operation)
+> Communication RS-485 Serial (internal)
+> Sensing Individual cable length and tension Relative module orientation
+> Actuation Cable Motors: 1.4 Nm (stall) Rolling Base Motors: 0.92 Nm (stall)
+
+TABLE I: Morphing MILR specifications. 
+
+B. Rolling Base Design 
+
+The rolling base must reorient partially supported body segments, overcome interface friction, and in demanding Lid/Joint Top 
+
+Joint Bottom 
+
+Dual Servo 
+
+Motor Housing 
+
+Ball Bearing 
+
+Reinforced Servo 
+
+Motor Housing 
+
+Housing 
+
+Connectors 
+
+Metal Plate 
+
+Embedded Slip 
+
+Ring 
+
+Dual Servo 
+
+Motor 
+
+Fig. 3: Exploded view of the repeated module highlighting major structural components. 
+
+configurations, lift downstream modules during locomotion transitions (Fig. 2C). These requirements motivated a com-pact, high torque geared transmission constrained within a reinforced housing. An aluminum plate integrated into the housing provides the necessary reinforcement that mitigates the flexing of the printed part. This keeps gear engagement consistent while under heavier loads. A compact servo motor, Robotis XC330, applies torque through the worm, helical, and spur stages to drive the rotating base, with all gears mounted on bearing-constrained shafts. We determined the necessary overall gear reduction based on the maximum moment required to lift two adjacent modules in the most demanding joint orientation. The gear ratio of the current packaging is 1:13, including a standard safety factor. A set screw secures spur gear B to the housing of the dual-axis servo motor. The dual servo housing sits within the inner race of the main ball bearing and the reinforced housing sits around the outer race. Two connection plates constrain the housings axially while still allowing free spin (Fig. 3). The worm gear within the transmission assembly makes the system non-backdrivable, allowing the robot to maintain configuration without continuous motor power. 
+
+C. Bilateral Cable Actuation 
+
+Each bending joint uses a bilateral pulley-cable actuation scheme that models musculoskeletal actuation in limbless locomotion (Fig. 2B). A dual-axis servo motor, Robotis 2XL430, drives opposing pulleys that lengthen and shorten high-strength, inextensible, braided line to set the joint angle. The module structure incorporates the cable routing path. The bending joint between adjacent modules has a shoulder bolt that holds it together. The cable pair is on a plane perpendicular to the joint axis, so different lengths cause a bending angle for the joint up to 70 degrees, limited by module self collision. Coordinated cable actuation enables Joint Link Link 
+
+AB Force Force  
+
+> Force Force Force Force
+
+Bidirectionally non-compliant Directionally compliant Bidirectionally compliant Fig. 4: Programmable body compliance through bilateral cable actuation mechanism. (A) A geometric model illustrating a single joint (B) A schematic displaying various compliance states based on the generalized compliance variable G. Figure adapted from [34]. 
+
+bending joint angle control and body-wave propagation. This bilateral actuation scheme also enables modulation of joint compliance through cable length control, supporting adaptive terrain interaction. 
+
+D. Electrical 
+
+All actuators are daisy chained on a common power and communication bus, minimizing wiring while enabling coordinated control across the entire body. We used an exter-nal motor controller (Robotis U2D2) to communicate with the actuator network over a serial link, allowing command of the bending cables and rolling base independently or in coordinated groups, which is necessary to achieve the mechanical compliance. We placed slip rings, with wires rated to handle a current of 3 A, between modules to connect the shared bus across joints, enabling continuous rolling reconfiguration while preserving uninterrupted power and communication without twisting internal wiring. Currently, we operate while tethered to a power supply and an external computer running a script to change between gaits. III. R OBOT CONTROL 
+
+A. Joint Control with Bilateral Actuation 
+
+To realize a joint angle αi(t) on the i-th joint, the left and right cable lengths around each bending joint must be set appropriately. The required cable lengths primarily come from the robot geometry and the joint rotation range [34]. Let Ll and Lr denote the left and right cable lengths across βi ∈ {0 ◦, 0 ◦, 0 ◦,0 ◦, 0 ◦}
+
+Undulator    
+
+> βi∈{90 ◦, 0 ◦,-90 ◦, 0 ◦, 90 ◦}
+
+Sidewinder 
+
+# A
+
+# B
+
+> Fig. 5: Transitioning from lateral undulation to sidewinding via simultaneous rolling joint movement.
+
+joint i [34]. The equations for cable lengths are: 
+
+Ll(α) = 2 
+
+q
+
+L2 
+
+> c
+
++ L2 
+
+> j
+
+cos 
+
+
+
+− α
+
+2 + tan −1
+
+ Lc
+
+Lj
+
+ 
+
+Lr (α) = 2 
+
+q
+
+L2 
+
+> c
+
++ L2 
+
+> j
+
+cos 
+
+ α
+
+2 + tan −1
+
+ Lc
+
+Lj
+
+ (1) Bilateral cables also enable body compliance, as outlined in [34]. A generalized compliance variable (G) alters the robot’s body compliance using these equations: 
+
+Lli(αi) = 
+
+ Lli(αi), if αi ≤ − γ
+
+Lli[− min( A, γ )] + l0 · [γ + αi], if αi > −γLri (αi) = 
+
+ Lri (αi), if αi ≥ γ
+
+Lri [min( A, γ )] + l0 · [γ − αi], if αi < γ 
+
+(2) where γ = (2 Gi − 1) A and l0 is a design parameter that determines the amount of cable slack introduced. Detailed derivation and parameter selection comes from [34]. In this work, we only keep compliance active during obstacle interaction and gait changes, with Gi = 1 applied uniformly across modules. In the following sections, we present high-level shape-based gait templates; layering compliance modu-lation onto these templates when terrain interaction requires additional adaptability. The passive body compliance enables the use of open-loop joint commands while still remaining effective across varied terrain as displayed in past works [34]–[38]. The rolling-base morphology primarily allows transitions between the gait configurations, not requiring closed-loop control since the joints are mainly static during normal operation. 
+
+B. Gait Implementation 1) Lateral Undulation: Lateral undulation is a purely 2D morphology, aligning all rolling bases on a common plane 10 cm 
+
+## t = 0 s  t = 27 s Fig. 6: Lateral undulation, leveraging cluttered terrain to achieve motion, 20 cycles at ω = 2 Hz. 
+
+(Fig. 5A). We denote the rotation axis of the body bending joint as βi in module i,
+
+βi ∈ { 0◦, 0◦, 0◦, 0◦, 0◦} . (3) Note, that βi is in reference to the previous module and is calculated based on the encoder values with in servos. Lateral undulation is produced via a head-to-tail propagating body wave (Fig. 6) according to the “serpenoid” gait template [1]. The i-th bending joint angle, αi, is commanded as 
+
+αi(t) = A sin 
+
+
+
+2πξ iN − 2πωt 
+
+
+
+(4) where A is the wave amplitude, ξ is the spatial frequency which is number of periods expressed on the body, ω is the temporal frequency being the propagation speed of the wave over the body, i is the joint index, and N is the total number of bending joints. This wave is then propagated along the body for a set amount of cycles, where one cycle corresponds to a full wave traveling the full length of the robot. 
+
+2) Sidewinding: Sidewinding can be modeled as the co-ordinated superposition of orthogonal body waves [18], with limbless robots implementing sidewinding through shape-based gaits and control strategies [35], [39], [40]. In Mor-phing MILR, the synthesizing of the required orthogonal components is done morphologically by fixing each rolling base to a prescribed orientation pattern that alternates the bending plane along the body (Fig. 5B). We assign 
+
+βi ∈ { 90 ◦, 0◦, −90 ◦, 0◦, 90 ◦} (5) which divides the robot into alternating, orthogonal bending planes. In this configuration we describe the joint angles as: 
+
+αi(t) = 
+
+
+
+AH sin  2πξ iN − 2πωt  , i odd ,AV sin  2πξ iN − 2πωt − π
+
+> 2
+
+ , i even .
+
+(6) 
+
+AH and AV are the curvature amplitudes for the horizontal and vertical waves with the AH kept lower than AV . This produces the characteristic sidewinding body waves, with 10 cm   
+
+> t = 9 s
+> t = 0 s
+> Fig. 7: Sidewinding, orthogonal serpenoid waves at differing am-plitudes leading to motion perpendicular to orientation, 10 cycles at ω= 4 Hz.
+
+alternating lifted and contacting segments that generate trav-eling contact patches and net translation with reduced slip [17], [35] (Fig. 7). 
+
+3) Rolling: Rolling uses the same morphology as sidewinding, having the rolling bases remain fixed to the repeating orientation sequence in Eq. (5) and utilizes similar equations for describing body waves as sidewinding being: 
+
+αi(t) = 
+
+
+
+A sin  2πξ iN − 2πωt  , i odd ,A sin  2πξ iN − 2πωt − π
+
+> 2
+
+ , i even .
+
+(7) Here A, the curvature amplitude, is the same for both waves and ξ, the spatial frequency, is kept below one. This results in perpendicular motion similar to that of sidewinding with a lower profile (Fig. 8). 
+
+4) Twisting: In the twisting configuration, all cable-driven bending joints maintain a straight posture, 
+
+αi(t) = 0 ∀i (8) generating motion using only the rolling base joints (Fig. 9). Let βi(t) denote the current rolling-base angular position of module i. We actuate the rolling joints with constant, slightly offset angular velocities, 
+
+βi(t) = βi(0) + ωt, Ωi = ωˆei + Ω (i−1) , ω given (9) where ω is a constant angular velocity commanded at every rolling joint. Ωi is the ith module’s angular velocity vector w.r.t. the inertial frame, with ˆei as the local joint axis. This generates a velocity gradient w.r.t the inertial frame and produces a distributed twist along the body, allowing the robot to rotate in place on flat ground. 
+
+C. Morphology Control for Gait Transition 
+
+Morphology transitions are executed by commanding a set of target rolling angles across the module chain, effectively remapping the direction in which each joint bends. During the transition, we return the robot to a home state with aligned joint planes and straight joints , then we command 10 cm  
+
+> t = 7 s
+> t = 0 s Fig. 8: Rolling, orthogonal serpenoid waves at at the same ampli-tude leading to motion perpendicular to orientation, 10 cycles at ω
+> = 4 Hz.
+
+the rolling bases to the next configuration before undulation resumes. This approach maximizes repeatability and mini-mizes geometric coupling between gait patterns. We can use programmable compliance to improve robust-ness. By temporarily increasing compliance in the body, the robot can accommodate incidental contacts and geometric constraints, while rolling bases reorient the bending planes [32], [34]. This compliance-mediated transition helps prevent jamming in tight spaces, reduces peak transmission loads, and allows the body to settle into the new gait before full-amplitude locomotion resumes. Together, rolling base reorientation and compliance modulation provide a com-pact framework for rapidly switching between gaits and for expanding to future motion primitives beyond rolling, sidewinding, and lateral undulation. IV. E VALUATION 
+
+A. Obstacle Free Testing 
+
+We tested whether Morphing MILR can change mor-phology reliably, ensuring that rolling bases can repeatedly reorient to a desired configuration. Generalized compliance was not used ( G = 0 ) in any of the obstacle free tests. In the 5 initial trials, the robot changes the alignments of the rolling bases to form the orthogonal wave pattern used in sidewinding and then runs 10 cycles. The sidewinding parameters utilized were AV = 30 ◦, AH = 60 ◦ with a spatial frequency of 1.2 and a temporal frequency of 4 Hz (Fig. 7). The next 5 trials conducted were for rolling and used an 
+
+A = 60 ◦ for both waves, with a spatial frequency of 1.2 and a temporal frequency of 4 Hz (Fig. 8). The third set of 5 trials were done in twisting mode, with individual module rotation speeds varying from 5.6 to 22 .5 ◦/s to see if any issues arose when more than a full rotation was performed (Fig. 9). Across these trials, we use a pass fail checklist for the different key parameters. Wave amplitudes and rolling base angles must be within ±5◦ of the commanded value account-ing for gear backlash and cable re-spooling differences. The 10 cm   
+
+> t = 10 s
+> t = 0 s
+> Fig. 9: Twisting, rotating modules at different angular velocities to turn in place, 10 cycles at ω= 4 Hz.
+
+spatial and temporal frequencies should match the instructed values with no drifting over cycles, verified over video footage. For the last 5 trials, the main criterion is the measured individual module speeds matching coded values in captured videos. In the trials performed, the robot passed all above criteria checks. 
+
+B. Lattice Testing 
+
+Lattice experiments tested whether Morphing MILR pre-serves mechanical intelligence in organized obstacle fields, specifically, that the robot can progress through a lattice without localized jamming, defined as the interruption of wave propagation from sharp localized loads [32], [34], [41]. Varying G values over 20 trials, Morphing MILR achieved repeatable in-lattice progression consistent with previous ob-servations that compliance and directional interaction effects can improve obstacle-aided undulation. With G being the focus of these trials, all other parameters were kept constant with A = 60 ◦, a spatial frequency of 1.1 and a temporal frequency of 2 Hz. Trial success is defined by the robot traveling to the end of the lattice with its head reaching open space. The majority of successful runs occurred with G =1 (Fig. 6) with lower values of G more frequently leading to localized jamming and higher values leading to a lack of forward progression [34], [42]. Overall, Morphing MILR successfully preserved the mechanically intelligent benefits of bilateral cable actuation. 
+
+C. Environment Transition Testing 
+
+We designed environment transition trials to test the robot’s ability to maintain locomotion while moving between obstacle rich and obstacle free terrain, a regime where prior mechanically intelligent limbless systems typically failed due to fixed morphology. Here, Morphing MILR leveraged the behaviors previously described to reach the end of the testing area without any intervention, which is considered a successful trial (Fig. 10). Using the same settings from previous tests for the sidwinding, lateral undulation and rolling, 15 trials were run. The robot needed to progress through the lattice using compliant lateral undulation until a Undulator                      
+
+> A = 70 ξ=1.1 ω= 4 G = 1
+> Undulator
+> A= 70 ξ=1.1 ω= 4 G = 1
+> Sidewinding
+> AV= 60 A H= 30 ξ= 1.2 ω= 4 G = 0
+> Rolling
+> A= 60 ξ=0.8 ω= 4 G = 0
+
+T = 0 s  T = 28 s 
+
+T = 149 s  T = 181 sFig. 10: Morphing MILR transitions from obstacle rich lattice locomotion via compliant lateral undulation to open terrain sidewinding, using rolling gait to transition environments. 
+
+majority of the body had exited the lattice. Rolling then frees the robot entirely from the lattice and changes its heading. Sidewinding continues the traversal outside the lattice until the robot reaches the edge of the testing zone. In cases with sufficient clearance, the robot returned to an aligned home configuration before moving on to the next gait. In obstacle rich regions, the robot transitions with high G to prevent mechanical failures and motor overloads. Environment transitions accounted for most of the trial times and were the primary cause behind the failures when the robot tail jams. In 13 of the 15 cases, Morphing MILR successfully escaped the lattice and got to the end of the plat-form. These experiments demonstrate the central contribution of the platform: the morphology actively reorients without losing the mechanically intelligent benefits of compliance, allowing continuous operation in heterogeneous environ-ments. This transition capability represents a meaningful step toward generalized multi-terrain limbless locomotion, where the robot can adapt morphology on the fly in cramped situations with little sensory awareness. V. C ONCLUSION 
+
+In this work, we present Morphing MILR, a cable-driven limbless robot that unifies previously separate mechanically intelligent morphologies within a single reconfigurable ar-chitecture. Prior systems demonstrated how programmable compliance and cable-driven undulation can simplify control and improve robustness during contact-rich locomotion, but are typically tied to a fixed body configuration and, in many cases, a fixed dominant bending plane. Morphing MILR extends this paradigm by pairing bilateral cable-driven bending with body-axis rotation through rolling base joints, allowing the robot to actively remap its bending planes and reorient its body-wave direction in three dimen-sions. As a result, the platform reproduces multiple gaits, including lateral undulation, sidewinding, rolling, and twist-ing while maintaining generalized compliance. Although the present study primarily focused on demonstrating each gait independently, the same modular control structure already enables transitions by reconfiguring joint-plane orientation without requiring the robot to stop its ongoing locomotion sequence. Moving forward, we will develop continuous gait-transition controllers that leverage this morphology control to smoothly shift among locomotion modes in response to terrain feedback. Beyond the demonstrated gait set, Morph-ing MILR provides a foundation for synthesizing new three-dimensional motion patterns. Future controllers will exploit geometric descriptions of motion, such as curvature and tor-sion profiles derived from target trajectories, to map desired three-dimensional paths into coordinated joint commands.In parallel, future work will gather more quantitative data to compare this design against the purpose-built predecessors of [34], [35], determining whether the added complexity yields any change in effectiveness in key metrics such as cost of transport and body lengths per cycle. Together, these results highlight how extending mechanical intelligence from isolated gait-specific designs can be unified into versatile platform, enabling planar, volumetric, and rotational modes of movement. REFERENCES [1] S. Hirose, “Biologically inspired robots,” Snake-Like Locomotors and Manipulators , 1993. [2] S. Hirose and M. Mori, “Biologically inspired snake-like robots,” in     
+
+> 2004 IEEE International Conference on Robotics and Biomimetics .IEEE, 2004, pp. 1–7. [3] P. Liljeb¨ ack, K. Y. Pettersen, Ø. Stavdahl, and J. T. Gravdahl, “A review on modelling, implementation, and control of snake robots,”
+> Robotics and Autonomous Systems , vol. 60, no. 1, pp. 29–40, 2012. [4] C. Wright, A. Johnson, A. Peck, Z. McCord, A. Naaktgeboren, P. Gi-anfortoni, M. Gonzalez-Rivero, R. Hatton, and H. Choset, “Design of a modular snake robot,” in 2007 IEEE/RSJ International Conference on Intelligent Robots and Systems .IEEE, 2007, pp. 2609–2614.
+
+[5] C. G. Wright, A. D. Buchan, B. Brown, J. C. Geist, M. Schwerin, D. Rollinson, M. Tesch, and H. Choset, “Design and architecture of the unified modular snake robot,” in 2012 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2012, pp. 4347–4354. [6] D. Rollinson, Y. Bilgen, B. Brown, F. Enner, S. Ford, C. Layton, J. Rembisz, M. Schwerin, A. Willig, P. Velagapudi, and H. Choset, “Design and architecture of a series elastic snake robot,” in 2014 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2014, pp. 4630–4636. [7] A. Crespi and A. J. Ijspeert, “Online optimization of swimming and crawling in an amphibious snake robot,” IEEE Transactions on Robotics , vol. 24, no. 1, pp. 75–87, 2008. [8] A. Crespi, A. Badertscher, A. Guignard, and A. J. Ijspeert, “AmphiBot I: an amphibious snake-like robot,” Robotics and Autonomous Systems ,vol. 50, no. 4, pp. 163–175, 2005. [9] A. A. Transeth, R. I. Leine, C. Glocker, K. Y. Pettersen, and P. Lil-jeb¨ ack, “Snake robot obstacle-aided locomotion: Modeling, simula-tions, and experiments,” IEEE Transactions on Robotics , vol. 24, no. 1, pp. 88–104, 2008. [10] M. Tesch, K. Lipkin, I. Brown, R. Hatton, A. Peck, J. Rembisz, and H. Choset, “Parameterized and scripted gaits for modular snake robots,” Advanced Robotics , vol. 23, no. 9, pp. 1131–1158, 2009. [11] M. Travers, J. Whitman, P. Schiebel, D. I. Goldman, and H. Choset, “Shape-based compliance in locomotion,” in Robotics: Science and Systems (RSS) , 2016. [12] M. Saito, M. Fukaya, and T. Iwasaki, “Modeling, analysis, and synthesis of serpentine locomotion with a multilink robotic snake,” 
+
+IEEE Control Systems Magazine , vol. 22, no. 1, pp. 64–81, 2002. [13] C. Gong, M. J. Travers, H. C. Astley, L. Li, J. R. Mendelson, D. I. Goldman, and H. Choset, “Kinematic gait synthesis for snake robots,” 
+
+The International Journal of Robotics Research , vol. 35, no. 1-3, pp. 100–113, 2016. [14] T. Kano and A. Ishiguro, “Obstacles are beneficial to me! scaffold-based locomotion of a snake-like robot using decentralized control,” in 2013 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) . IEEE, 2013, pp. 3273–3278. [15] F. Sanfilippo, J. Azpiazu, G. Marafioti, A. A. Transeth, Ø. Stavdahl, and P. Liljeb¨ ack, “Perception-driven obstacle-aided locomotion for snake robots: the state of the art, challenges and possibilities,” Applied Sciences , vol. 7, no. 4, p. 336, 2017. [16] J. W. Burdick, J. Radford, and G. S. Chirikjian, “A’sidewinding’locomotion gait for hyper-redundant robots,” in 
+
+[1993] Proceedings IEEE International Conference on Robotics and Automation . IEEE, 1993, pp. 101–106. [17] H. Marvi, C. Gong, N. Gravish, H. Astley, M. Travers, R. L. Hatton, J. R. Mendelson III, H. Choset, D. L. Hu, and D. I. Goldman, “Sidewinding with minimal slip: Snake and robot ascent of sandy slopes,” Science , vol. 346, no. 6206, pp. 224–229, 2014. [18] H. C. Astley, C. Gong, J. Dai, M. Travers, M. M. Serrano, P. A. Vela, H. Choset, J. R. Mendelson III, D. L. Hu, and D. I. Goldman, “Modulation of orthogonal body waves enables high maneuverability in sidewinding locomotion,” Proceedings of the National Academy of Sciences , vol. 112, no. 19, pp. 6200–6205, 2015. [19] W. Zhen, C. Gong, and H. Choset, “Modeling rolling gaits of a snake robot,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2015, pp. 3741–3746. [20] T. Takemori, M. Tanaka, and F. Matsuno, “Ladder climbing with a snake robot,” in 2018 IEEE/RSJ International Conference on Intelli-gent Robots and Systems (IROS) . IEEE, 2018, pp. 8140–8145. [21] T. Takemori, M. Tanaka, and F. Matsuno, “Hoop-passing motion for a snake robot to realize motion transition across different environments,” 
+
+IEEE Transactions on Robotics , vol. 37, no. 5, pp. 1696–1711, 2021. [22] T. Takemori, M. Tanaka, and F. Matsuno, “Adaptive helical rolling of a snake robot to a straight pipe with irregular cross-sectional shape,” 
+
+IEEE Transactions on Robotics , vol. 39, no. 1, pp. 437–451, 2022. [23] T. Wang, B. Lin, B. Chong, J. Whitman, M. Travers, D. I. Goldman, G. Blekherman, and H. Choset, “Reconstruction of backbone curves for snake robots,” IEEE Robotics and Automation Letters , vol. 6, no. 2, pp. 3264–3270, 2021. [24] K. G. Hanssen, A. A. Transeth, F. Sanfilippo, P. Liljeb¨ ack, and Ø. Stavdahl, “Path-planning for perception-driven obstacle-aided snake robot locomotion,” in 2020 16th International Workshop on Advanced Motion Control (AMC) . IEEE, 2020, pp. 98–104. [25] G. Sartoretti, T. Wang, G. Chuang, Q. Li, and H. Choset, “Autonomous decentralized shape-based navigation for snake robots in dense envi-ronments,” in 2021 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2021, pp. 9276–9282. [26] F. Ruscelli, G. Sartoretti, J. Nan, Z. Feng, M. Travers, and H. Choset, “Proprioceptive-inertial autonomous locomotion for articu-lated robots,” in 2018 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2018, pp. 3436–3441. [27] M. Tanaka, K. Kon, and K. Tanaka, “Range-sensor-based semiau-tonomous whole-body collision avoidance of a snake robot,” IEEE Transactions on Control Systems Technology , vol. 23, no. 5, pp. 1927– 1934, 2015. [28] Z. Bing, C. Lemke, F. O. Morin, Z. Jiang, L. Cheng, K. Huang, and A. Knoll, “Perception-action coupling target tracking control for a snake robot via reinforcement learning,” Frontiers in Neurorobotics ,vol. 14, p. 591128, 2020. [29] D. Ramesh, Q. Fu, and C. Li, “Sensnake: A snake robot with contact force sensing for studying locomotion in complex 3-d terrain,” in 2022 International Conference on Robotics and Automation (ICRA) . IEEE, 2022, pp. 2068–2075. [30] M. Sitti, “Physical intelligence as a new paradigm,” Extreme Mechan-ics Letters , vol. 46, p. 101340, 2021. [31] Q. Fu and C. Li, “Robotic modelling of snake traversing large, smooth obstacles reveals stability benefits of body compliance,” Royal Society open science , vol. 7, no. 2, p. 191192, 2020. [32] M. J. Travers, J. Whitman, P. E. Schiebel, D. I. Goldman, and H. Choset, “Shape-based compliance in locomotion.” in Robotics: Science and Systems , 2016. [33] M. M. Serrano, A. H. Chang, G. Zhang, and P. A. Vela, “Incorporating frictional anisotropy in the design of a robotic snake through the exploitation of scales,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2015, pp. 3729–3734. [34] T. Wang, C. Pierce, V. Kojouharov, B. Chong, K. Diaz, H. Lu, and D. I. Goldman, “Mechanical intelligence simplifies control in terrestrial limbless locomotion,” Science Robotics , vol. 8, no. 85, p. eadi2243, 2023. [35] V. Kojouharov, T. Wang, M. Fernandez, J. Maeng, and D. I. Gold-man, “Anisotropic body compliance facilitates robotic sidewinding in complex environments,” in 2024 International Conference on Robotics and Automation (ICRA) . IEEE, 2024. [36] T. Wang, N. Mankame, M. Fernandez, V. Kojouharov, and D. I. Goldman, “Aquamilr: Mechanical intelligence simplifies control of undulatory robots in cluttered fluid environments,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2025, pp. 14 671–14 677. [37] M. Fernandez, T. Wang, G. Tunnicliffe, D. Dortilus, P. Gunnarson, J. O. Dabiri, and D. I. Goldman, “Aquamilr+: Design of an unteth-ered limbless robot for complex aquatic terrain navigation,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) ,Atlanta, USA, 2025. [38] T. Wang, M. Fernandez, G. Tunnicliffe, N. Cornell, J. Duong, D. Dor-tilus, Z. J. Xu, P. Meza, S. Lublinsky, D. Parikh, et al. , “Three-dimensional hydro-cluttered locomotion by an undulatory robot,” 
+
+arXiv preprint arXiv:2606.06829 , 2026. [39] J. W. Burdick, J. Radford, and G. S. Chirikjian, “A’sidewinding’locomotion gait for hyper-redundant robots,” 
+
+Advanced Robotics , vol. 9, no. 3, pp. 195–216, 1994. [40] B. Chong, T. Wang, J. M. Rieser, B. Lin, A. Kaba, G. Blekherman, H. Choset, and D. I. Goldman, “Frequency modulation of body waves to improve performance of sidewinding robots,” The International Journal of Robotics Research , vol. 40, no. 12-14, pp. 1547–1562, 2021. [41] P. E. Schiebel, M. C. Maisonneuve, K. Diaz, J. M. Rieser, and D. I. Goldman, “Robophysical modeling of bilaterally activated and soft limbless locomotors,” in Biomimetic and Biohybrid Systems: 9th International Conference, Living Machines 2020, Freiburg, Germany, July 28–30, 2020, Proceedings 9 . Springer, 2020, pp. 300–311. [42] T. Wang, J. Whitman, M. Travers, and H. Choset, “Directional compliance in obstacle-aided navigation for snake robots,” in 2020 American Control Conference (ACC) . IEEE, 2020, pp. 2458–2463.
